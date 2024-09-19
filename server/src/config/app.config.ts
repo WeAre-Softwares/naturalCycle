@@ -8,4 +8,7 @@ export const EnvConfiguration = () => ({
   postgresDb: process.env.POSTGRES_DB,
   postgresPort: +process.env.POSTGRES_PORT,
   postgresHost: process.env.DB_HOST,
+  cloudinaryName: process.env.CLOUDINARY_NAME,
+  cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
 });
