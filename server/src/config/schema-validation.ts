@@ -19,6 +19,15 @@ export const JoiSchemaValidation = Joi.object({
   JWT_EXPIRY: Joi.string().required().messages({
     'any.required': 'Please provide environment variable {#key}',
   }),
+  CLOUDINARY_NAME: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  CLOUDINARY_API_KEY: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  CLOUDINARY_API_SECRET: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
   PORT: Joi.number().default(3007),
   DB_HOST: Joi.string().default('localhost'),
   NODE_ENV: Joi.string().default('dev'),
