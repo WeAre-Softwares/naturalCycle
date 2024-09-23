@@ -1,3 +1,4 @@
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   Controller,
   Get,
@@ -8,13 +9,15 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MarcasService } from './marcas.service';
 import { CreateMarcaDto, UpdateMarcaDto } from './dto';
 import { PaginationDto } from '../common/dtos/pagination.dto';
 import { Marca } from './entities/marca.entity';
 import type { GetMarcasResponse } from './interfaces';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Marcas')
 @Controller('marcas')
@@ -22,8 +25,18 @@ export class MarcasController {
   constructor(private readonly marcasService: MarcasService) {}
 
   @Post()
-  create(@Body() createMarcaDto: CreateMarcaDto): Promise<Marca> {
-    return this.marcasService.create(createMarcaDto);
+  @ApiOperation({ summary: 'Crear una nueva marca' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Datos para crear una nueva marca junto con la imagen',
+    type: CreateMarcaDto,
+  })
+  @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
+  create(
+    @Body() createMarcaDto: CreateMarcaDto,
+    @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
+  ): Promise<Marca> {
+    return this.marcasService.create(createMarcaDto, file);
   }
 
   @Get()
@@ -37,11 +50,19 @@ export class MarcasController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar una nueva marca' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Datos para actualizar una nueva marca junto con la imagen',
+    type: CreateMarcaDto,
+  })
+  @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMarcaDto: UpdateMarcaDto,
+    @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
   ): Promise<Marca> {
-    return this.marcasService.update(id, updateMarcaDto);
+    return this.marcasService.update(id, updateMarcaDto, file);
   }
 
   @Delete(':id')
