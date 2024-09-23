@@ -12,9 +12,15 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { MarcasService } from './marcas.service';
-import { CreateMarcaDto, UpdateMarcaDto } from './dto';
+import { CreateMarcaDto, UpdateMarcaDto, SearchWithPaginationDto } from './dto';
 import { PaginationDto } from '../common/dtos/pagination.dto';
 import { Marca } from './entities/marca.entity';
 import type { GetMarcasResponse } from './interfaces';
@@ -37,6 +43,27 @@ export class MarcasController {
     @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
   ): Promise<Marca> {
     return this.marcasService.create(createMarcaDto, file);
+  }
+
+  @Get('search')
+  @ApiOperation({ summary: 'Buscar marcas por término' })
+  @ApiQuery({
+    name: 'term',
+    required: false,
+    description: 'Término de búsqueda',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Límite de resultados',
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    description: 'Desplazamiento de resultados',
+  })
+  async findByTerm(@Query() searchWithPaginationDto: SearchWithPaginationDto) {
+    return this.marcasService.findAllByTerm(searchWithPaginationDto);
   }
 
   @Get()
@@ -66,9 +93,18 @@ export class MarcasController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string): Promise<{
+  @ApiOperation({ summary: 'Desactivar una marca' })
+  deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
   }> {
-    return this.marcasService.remove(id);
+    return this.marcasService.deactivate(id);
+  }
+
+  @Patch('activate/:id')
+  @ApiOperation({ summary: 'Activar una marca' })
+  activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
+    mensaje: string;
+  }> {
+    return this.marcasService.activate(id);
   }
 }

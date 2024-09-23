@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { CreateMarcaDto, UpdateMarcaDto } from './dto';
+import { CreateMarcaDto, UpdateMarcaDto, SearchWithPaginationDto } from './dto';
 import { Marca } from './entities/marca.entity';
 import { PaginationDto } from '../common/dtos/pagination.dto';
 import type { GetMarcasResponse } from './interfaces';
@@ -128,6 +128,50 @@ export class MarcasService {
     }
   }
 
+  async findAllByTerm(SearchWithPaginationDto: SearchWithPaginationDto) {
+    const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
+
+    try {
+      const queryBuilder = this.marcaRepository
+        .createQueryBuilder('marcas')
+        .select([
+          'marcas.marca_id',
+          'marcas.nombre',
+          'marcas.marca_destacada',
+          'marcas.imagen_url',
+        ])
+        .where('marcas.esta_activo = :esta_activo', { esta_activo: true })
+        .andWhere('(LOWER(marcas.nombre) LIKE LOWER(:term))', {
+          term: `%${term}%`,
+        })
+        .take(limit)
+        .skip(offset);
+
+      // Verificar la consulta generada
+      // console.log('SQL generada:', queryBuilder.getSql());
+      // console.log('Término de búsqueda aplicado:', term);
+
+      const marcas = await queryBuilder.getMany();
+
+      // Aplanar los resultados
+      const listaMarcasAplanadas = marcas.map((marca) => ({
+        id: marca.marca_id,
+        nombre: marca.nombre,
+        marca_destacada: marca.marca_destacada,
+        imagen_url: marca.imagen_url,
+      }));
+
+      return listaMarcasAplanadas;
+    } catch (error) {
+      this.logger.error(error);
+      console.log(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las marcas por termino',
+        error,
+      );
+    }
+  }
+
   async update(
     marca_id: string,
     updateMarcaDto: UpdateMarcaDto,
@@ -208,7 +252,7 @@ export class MarcasService {
     }
   }
 
-  async remove(id: string) {
+  async deactivate(id: string) {
     try {
       const marca = await this.findOne(id);
 
@@ -223,6 +267,32 @@ export class MarcasService {
       this.logger.error(error);
       throw new InternalServerErrorException(
         `Error al marcar como inactiva la marca con ID ${id}.`,
+        error,
+      );
+    }
+  }
+
+  async activate(id: string) {
+    try {
+      const marca = await this.marcaRepository.findOne({
+        where: { marca_id: id },
+      });
+
+      if (!marca) {
+        throw new NotFoundException(`No se encontro la marca con el id: ${id}`);
+      }
+
+      // Marcar como activa la marca
+      marca.esta_activo = true;
+      // Guardar en la DB
+      await this.marcaRepository.save(marca);
+      return {
+        mensaje: `La marca con ID ${id} ha sido marcada como activa.`,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        `Error al marcar como activa la marca con ID ${id}.`,
         error,
       );
     }
