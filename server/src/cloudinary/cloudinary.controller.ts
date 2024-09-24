@@ -25,7 +25,7 @@ import {
 import { CloudinaryService } from './cloudinary.service';
 import { CLOUDINARY_CARPETAS } from './constants/cloudinary-folders.constant';
 
-@ApiTags('cloudinary')
+@ApiTags('Cloudinary')
 @Controller('cloudinary')
 export class CloudinaryController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
