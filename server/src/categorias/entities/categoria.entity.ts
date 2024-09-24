@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'categorias' })
 export class Categoria {
@@ -6,8 +6,17 @@ export class Categoria {
   categoria_id: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
+    length: 255,
+    unique: true,
     nullable: false,
   })
   nombre: string;
+
+  @Index() // Sirve para mejorar el rendimiento en búsquedas
+  @Column({
+    type: 'boolean',
+    default: true,
+  })
+  esta_activo: boolean;
 }

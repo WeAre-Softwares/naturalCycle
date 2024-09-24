@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { CreateMarcaDto, UpdateMarcaDto, SearchWithPaginationDto } from './dto';
 import { Marca } from './entities/marca.entity';
-import { PaginationDto } from '../common/dtos/pagination.dto';
+import { CreateMarcaDto, UpdateMarcaDto } from './dto';
+import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
 import type { GetMarcasResponse } from './interfaces';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CLOUDINARY_CARPETAS } from '../cloudinary/constants/cloudinary-folders.constant';
