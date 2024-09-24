@@ -23,7 +23,7 @@ import { MarcasService } from './marcas.service';
 import { CreateMarcaDto, UpdateMarcaDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { Marca } from './entities/marca.entity';
-import type { GetMarcasResponse } from './interfaces';
+import type { GetMarcasResponse, MarcaInterface } from './interfaces';
 
 @ApiTags('Marcas')
 @Controller('marcas')
@@ -41,7 +41,7 @@ export class MarcasController {
   create(
     @Body() createMarcaDto: CreateMarcaDto,
     @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
-  ): Promise<Marca> {
+  ): Promise<MarcaInterface> {
     return this.marcasService.create(createMarcaDto, file);
   }
 
@@ -62,7 +62,9 @@ export class MarcasController {
     required: false,
     description: 'Desplazamiento de resultados',
   })
-  async findByTerm(@Query() searchWithPaginationDto: SearchWithPaginationDto) {
+  async findByTerm(
+    @Query() searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<MarcaInterface>[]> {
     return this.marcasService.findAllByTerm(searchWithPaginationDto);
   }
 
@@ -74,7 +76,7 @@ export class MarcasController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Buscar marca por id' })
-  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Marca> {
+  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<MarcaInterface> {
     return this.marcasService.findOne(id);
   }
 
@@ -90,7 +92,7 @@ export class MarcasController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMarcaDto: UpdateMarcaDto,
     @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
-  ): Promise<Marca> {
+  ): Promise<MarcaInterface> {
     return this.marcasService.update(id, updateMarcaDto, file);
   }
 

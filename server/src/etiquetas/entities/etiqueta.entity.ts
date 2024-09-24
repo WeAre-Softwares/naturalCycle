@@ -1,13 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'etiquetas' })
 export class Etiqueta {
   @PrimaryGeneratedColumn('uuid')
   etiqueta_id: string;
 
+  @Index() // Índice para mejorar la búsqueda por nombre
   @Column({
-    type: 'text',
+    type: 'varchar',
+    length: 255,
+    unique: true,
     nullable: false,
   })
   nombre: string;
+
+  @Index() // Índice para optimizar consultas por estado
+  @Column({
+    type: 'boolean',
+    default: true,
+  })
+  esta_activo: boolean;
 }
