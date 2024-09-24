@@ -9,7 +9,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Categoria } from './entities/categoria.entity';
 import { CreateCategoriaDto, UpdateCategoriaDto } from './dto';
 import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
-import type { GetCategoriasResponse } from './interfaces';
+import type { CategoriaInterface, GetCategoriasResponse } from './interfaces';
 
 @Injectable()
 export class CategoriasService {
@@ -20,7 +20,9 @@ export class CategoriasService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async create(createCategoriaDto: CreateCategoriaDto) {
+  async create(
+    createCategoriaDto: CreateCategoriaDto,
+  ): Promise<CategoriaInterface> {
     const { ...rest } = createCategoriaDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -78,7 +80,7 @@ export class CategoriasService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<CategoriaInterface> {
     try {
       const categoria = await this.categoriaRepository.findOne({
         where: {
@@ -103,7 +105,9 @@ export class CategoriasService {
     }
   }
 
-  async findAllByTerm(SearchWithPaginationDto: SearchWithPaginationDto) {
+  async findAllByTerm(
+    SearchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<CategoriaInterface>[]> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -136,7 +140,10 @@ export class CategoriasService {
     }
   }
 
-  async update(id: string, updateCategoriaDto: UpdateCategoriaDto) {
+  async update(
+    id: string,
+    updateCategoriaDto: UpdateCategoriaDto,
+  ): Promise<CategoriaInterface> {
     const { ...toUpdate } = updateCategoriaDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -168,7 +175,7 @@ export class CategoriasService {
     }
   }
 
-  async deactivate(id: string) {
+  async deactivate(id: string): Promise<{ mensaje: string }> {
     try {
       const categoria = await this.findOne(id);
 
@@ -188,7 +195,7 @@ export class CategoriasService {
     }
   }
 
-  async activate(id: string) {
+  async activate(id: string): Promise<{ mensaje: string }> {
     try {
       const categoria = await this.categoriaRepository.findOne({
         where: { categoria_id: id },

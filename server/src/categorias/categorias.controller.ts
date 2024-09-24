@@ -13,7 +13,7 @@ import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto, UpdateCategoriaDto } from './dto';
 import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
-import type { GetCategoriasResponse } from './interfaces';
+import type { CategoriaInterface, GetCategoriasResponse } from './interfaces';
 
 @ApiTags('Categorías')
 @Controller('categorias')
@@ -22,7 +22,9 @@ export class CategoriasController {
 
   @Post()
   @ApiOperation({ summary: 'Crear una nueva categoría' })
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
+  create(
+    @Body() createCategoriaDto: CreateCategoriaDto,
+  ): Promise<CategoriaInterface> {
     return this.categoriasService.create(createCategoriaDto);
   }
 
@@ -43,7 +45,9 @@ export class CategoriasController {
     required: false,
     description: 'Desplazamiento de resultados',
   })
-  async findByTerm(@Query() searchWithPaginationDto: SearchWithPaginationDto) {
+  async findByTerm(
+    @Query() searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<CategoriaInterface>[]> {
     return this.categoriasService.findAllByTerm(searchWithPaginationDto);
   }
 
@@ -57,7 +61,7 @@ export class CategoriasController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Buscar una categoría por id' })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CategoriaInterface> {
     return this.categoriasService.findOne(id);
   }
 
@@ -66,19 +70,23 @@ export class CategoriasController {
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCategoriaDto: UpdateCategoriaDto,
-  ) {
+  ): Promise<CategoriaInterface> {
     return this.categoriasService.update(id, updateCategoriaDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar una categoría' })
-  deactivate(@Param('id', ParseUUIDPipe) id: string) {
+  deactivate(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<{ mensaje: string }> {
     return this.categoriasService.deactivate(id);
   }
 
   @Patch('activate/:id')
   @ApiOperation({ summary: 'Activar una categoría' })
-  activate(@Param('id', ParseUUIDPipe) id: string) {
+  activate(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<{ mensaje: string }> {
     return this.categoriasService.activate(id);
   }
 }

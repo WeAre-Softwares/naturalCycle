@@ -9,7 +9,7 @@ import { Repository, DataSource } from 'typeorm';
 import { Marca } from './entities/marca.entity';
 import { CreateMarcaDto, UpdateMarcaDto } from './dto';
 import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
-import type { GetMarcasResponse } from './interfaces';
+import type { GetMarcasResponse, MarcaInterface } from './interfaces';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CLOUDINARY_CARPETAS } from '../cloudinary/constants/cloudinary-folders.constant';
 import { CloudinaryResponse } from '../cloudinary/types/cloudinary-response.type';
@@ -28,7 +28,7 @@ export class MarcasService {
   async create(
     createMarcaDto: CreateMarcaDto,
     file: Express.Multer.File,
-  ): Promise<Marca> {
+  ): Promise<MarcaInterface> {
     const { ...rest } = createMarcaDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -109,7 +109,7 @@ export class MarcasService {
     }
   }
 
-  async findOne(marca_id: string): Promise<Marca> {
+  async findOne(marca_id: string): Promise<MarcaInterface> {
     try {
       const marca = await this.marcaRepository.findOne({
         where: { marca_id, esta_activo: true },
@@ -128,7 +128,9 @@ export class MarcasService {
     }
   }
 
-  async findAllByTerm(SearchWithPaginationDto: SearchWithPaginationDto) {
+  async findAllByTerm(
+    SearchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<MarcaInterface>[]> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -176,7 +178,7 @@ export class MarcasService {
     marca_id: string,
     updateMarcaDto: UpdateMarcaDto,
     file: Express.Multer.File,
-  ): Promise<Marca> {
+  ): Promise<MarcaInterface> {
     const { ...toUpdate } = updateMarcaDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -252,7 +254,9 @@ export class MarcasService {
     }
   }
 
-  async deactivate(id: string) {
+  async deactivate(id: string): Promise<{
+    mensaje: string;
+  }> {
     try {
       const marca = await this.findOne(id);
 
@@ -272,7 +276,9 @@ export class MarcasService {
     }
   }
 
-  async activate(id: string) {
+  async activate(id: string): Promise<{
+    mensaje: string;
+  }> {
     try {
       const marca = await this.marcaRepository.findOne({
         where: { marca_id: id },
