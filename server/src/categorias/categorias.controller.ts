@@ -1,34 +1,84 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  ParseUUIDPipe,
+} from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CategoriasService } from './categorias.service';
-import { CreateCategoriaDto } from './dto/create-categoria.dto';
-import { UpdateCategoriaDto } from './dto/update-categoria.dto';
+import { CreateCategoriaDto, UpdateCategoriaDto } from './dto';
+import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
+import type { GetCategoriasResponse } from './interfaces';
 
+@ApiTags('Categorías')
 @Controller('categorias')
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear una nueva categoría' })
   create(@Body() createCategoriaDto: CreateCategoriaDto) {
     return this.categoriasService.create(createCategoriaDto);
   }
 
+  @Get('search')
+  @ApiOperation({ summary: 'Buscar categorías por término' })
+  @ApiQuery({
+    name: 'term',
+    required: false,
+    description: 'Término de búsqueda',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Límite de resultados',
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    description: 'Desplazamiento de resultados',
+  })
+  async findByTerm(@Query() searchWithPaginationDto: SearchWithPaginationDto) {
+    return this.categoriasService.findAllByTerm(searchWithPaginationDto);
+  }
+
   @Get()
-  findAll() {
-    return this.categoriasService.findAll();
+  @ApiOperation({ summary: 'Buscar todas las categorías' })
+  findAll(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetCategoriasResponse> {
+    return this.categoriasService.findAll(paginationDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriasService.findOne(+id);
+  @ApiOperation({ summary: 'Buscar una categoría por id' })
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.categoriasService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
-    return this.categoriasService.update(+id, updateCategoriaDto);
+  @ApiOperation({ summary: 'Actualizar una categoría' })
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriaDto: UpdateCategoriaDto,
+  ) {
+    return this.categoriasService.update(id, updateCategoriaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriasService.remove(+id);
+  @ApiOperation({ summary: 'Desactivar una categoría' })
+  deactivate(@Param('id', ParseUUIDPipe) id: string) {
+    return this.categoriasService.deactivate(id);
+  }
+
+  @Patch('activate/:id')
+  @ApiOperation({ summary: 'Activar una categoría' })
+  activate(@Param('id', ParseUUIDPipe) id: string) {
+    return this.categoriasService.activate(id);
   }
 }

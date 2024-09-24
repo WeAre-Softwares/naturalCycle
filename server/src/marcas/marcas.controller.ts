@@ -20,8 +20,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { MarcasService } from './marcas.service';
-import { CreateMarcaDto, UpdateMarcaDto, SearchWithPaginationDto } from './dto';
-import { PaginationDto } from '../common/dtos/pagination.dto';
+import { CreateMarcaDto, UpdateMarcaDto } from './dto';
+import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { Marca } from './entities/marca.entity';
 import type { GetMarcasResponse } from './interfaces';
 
@@ -67,20 +67,22 @@ export class MarcasController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Buscar todas las marcas' })
   findAll(@Query() paginationDto: PaginationDto): Promise<GetMarcasResponse> {
     return this.marcasService.findAll(paginationDto);
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Buscar marca por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Marca> {
     return this.marcasService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar una nueva marca' })
+  @ApiOperation({ summary: 'Actualizar una marca' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Datos para actualizar una nueva marca junto con la imagen',
+    description: 'Datos para actualizar una marca junto con la imagen',
     type: CreateMarcaDto,
   })
   @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
