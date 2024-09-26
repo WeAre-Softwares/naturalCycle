@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container-card-info-usuario{
+    padding-top: 230px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.h2-card-info-usuario{
+    text-transform: uppercase;
+}
+
+.container-datos-usuario-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 370px;
+}
+
+.container-datos-usuario-card p{
+    font-size: 18px;
+}
+
+.fa-user{
+    background-color: rgb(129, 180, 121);
+    text-align: center;
+    padding: 30px;
+    font-size: 22px;
+    border-radius: 100%;
+    align-items: center;
+}
