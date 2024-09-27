@@ -174,85 +174,86 @@ export class MarcasService {
     }
   }
 
-  async update(
-    marca_id: string,
-    updateMarcaDto: UpdateMarcaDto,
-    file: Express.Multer.File,
-  ): Promise<MarcaInterface> {
-    const { ...toUpdate } = updateMarcaDto;
+  // FIXME:
+  // async update(
+  //   marca_id: string,
+  //   updateMarcaDto: UpdateMarcaDto,
+  //   file: Express.Multer.File,
+  // ): Promise<MarcaInterface> {
+  //   const { ...toUpdate } = updateMarcaDto;
 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+  //   const queryRunner = this.dataSource.createQueryRunner();
+  //   await queryRunner.connect();
+  //   await queryRunner.startTransaction();
 
-    let imageUpload: CloudinaryResponse | null = null;
+  //   let imageUpload: CloudinaryResponse | null = null;
 
-    try {
-      const marca = await this.findOne(marca_id);
+  //   try {
+  //     const marca = await this.findOne(marca_id);
 
-      // Guardar el public_id anterior antes de sobreescribirlo
-      const previousPublicId = marca.public_id;
+  //     // Guardar el public_id anterior antes de sobreescribirlo
+  //     const previousPublicId = marca.public_id;
 
-      // Combinar las propiedades del DTO con la entidad existente
-      this.marcaRepository.merge(marca, toUpdate);
+  //     // Combinar las propiedades del DTO con la entidad existente
+  //     this.marcaRepository.merge(marca, toUpdate);
 
-      if (file) {
-        // Subir la nueva imagen a Cloudinary
-        imageUpload = await this.cloudinaryService.uploadFile(
-          file,
-          CLOUDINARY_CARPETAS.MARCAS,
-        );
-      }
+  //     if (file) {
+  //       // Subir la nueva imagen a Cloudinary
+  //       imageUpload = await this.cloudinaryService.uploadFile(
+  //         file,
+  //         CLOUDINARY_CARPETAS.MARCAS,
+  //       );
+  //     }
 
-      // Verificar que la imagen se subió correctamente
-      if ('secure_url' in imageUpload && 'public_id' in imageUpload) {
-        // Asignar la URL y publicId de la imagen
-        marca.imagen_url = imageUpload.secure_url;
-        marca.public_id = imageUpload.public_id;
-      } else {
-        // Si falla la subida de la imagen nueva, lanzar error
-        throw new Error(
-          'Error al subir la imagen a Cloudinary: ' +
-            JSON.stringify(imageUpload),
-        );
-      }
+  //     // Verificar que la imagen se subió correctamente
+  //     if ('secure_url' in imageUpload && 'public_id' in imageUpload) {
+  //       // Asignar la URL y publicId de la imagen
+  //       marca.imagen_url = imageUpload.secure_url;
+  //       marca.public_id = imageUpload.public_id;
+  //     } else {
+  //       // Si falla la subida de la imagen nueva, lanzar error
+  //       throw new Error(
+  //         'Error al subir la imagen a Cloudinary: ' +
+  //           JSON.stringify(imageUpload),
+  //       );
+  //     }
 
-      // Guardar la marca con las actualizaciones y la URL de la imagen si aplica
-      await queryRunner.manager.save(marca);
+  //     // Guardar la marca con las actualizaciones y la URL de la imagen si aplica
+  //     await queryRunner.manager.save(marca);
 
-      // Confirmar la transacción si todo salió bien
-      await queryRunner.commitTransaction();
+  //     // Confirmar la transacción si todo salió bien
+  //     await queryRunner.commitTransaction();
 
-      // Intentar eliminar la imagen anterior fuera de la transacción
-      if (previousPublicId && previousPublicId !== marca.public_id) {
-        try {
-          await this.cloudinaryService.deleteImage(previousPublicId);
-        } catch (error) {
-          // Manejar el error de eliminación de la imagen anterior sin detener la operación
-          this.logger.error(
-            `Error al eliminar la imagen anterior con public_id ${previousPublicId}: ${error.message}`,
-          );
-        }
-      }
+  //     // Intentar eliminar la imagen anterior fuera de la transacción
+  //     if (previousPublicId && previousPublicId !== marca.public_id) {
+  //       try {
+  //         await this.cloudinaryService.deleteImage(previousPublicId);
+  //       } catch (error) {
+  //         // Manejar el error de eliminación de la imagen anterior sin detener la operación
+  //         this.logger.error(
+  //           `Error al eliminar la imagen anterior con public_id ${previousPublicId}: ${error.message}`,
+  //         );
+  //       }
+  //     }
 
-      return marca;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
+  //     return marca;
+  //   } catch (error) {
+  //     await queryRunner.rollbackTransaction();
 
-      // Si la imagen nueva se subió pero falló la transacción, eliminar la nueva imagen
-      if (imageUpload && imageUpload.public_id) {
-        await this.cloudinaryService.deleteImage(imageUpload.public_id);
-      }
+  //     // Si la imagen nueva se subió pero falló la transacción, eliminar la nueva imagen
+  //     if (imageUpload && imageUpload.public_id) {
+  //       await this.cloudinaryService.deleteImage(imageUpload.public_id);
+  //     }
 
-      this.logger.error(error);
-      throw new InternalServerErrorException(
-        `Error al actualizar la marca con ID ${marca_id}.`,
-        error,
-      );
-    } finally {
-      await queryRunner.release();
-    }
-  }
+  //     this.logger.error(error);
+  //     throw new InternalServerErrorException(
+  //       `Error al actualizar la marca con ID ${marca_id}.`,
+  //       error,
+  //     );
+  //   } finally {
+  //     await queryRunner.release();
+  //   }
+  // }
 
   async deactivate(id: string): Promise<{
     mensaje: string;

@@ -3,12 +3,19 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { TipoPrecio } from '../types/tipo-precio.enum';
-import { ProductosImagenes } from 'src/productos_imagenes/entities/productos_imagenes.entity';
+import { ProductosImagenes } from '../../productos_imagenes/entities/productos_imagenes.entity';
+import { Marca } from '../../marcas/entities/marca.entity';
+import {
+  ProductosCategorias,
+  ProductosCategorias as ProductosEtiquetas,
+} from './productos-categorias.entity';
 
 @Entity({ name: 'productos' })
 export class Producto {
@@ -91,4 +98,22 @@ export class Producto {
     },
   )
   imagenes: ProductosImagenes[];
+
+  @ManyToOne(() => Marca, (marca) => marca.productos)
+  @JoinColumn({ name: 'marca_id' })
+  marca: Marca;
+
+  // Relación 1 a N con la tabla intermedia ProductosCategorias
+  @OneToMany(
+    () => ProductosCategorias,
+    (productosCategorias) => productosCategorias.producto,
+  )
+  productosCategorias: ProductosCategorias[];
+
+  // Relación 1 a N con la tabla intermedia ProductosEtiquetas
+  @OneToMany(
+    () => ProductosEtiquetas,
+    (productosEtiquetas) => productosEtiquetas.producto,
+  )
+  productosEtiquetas: ProductosEtiquetas[];
 }

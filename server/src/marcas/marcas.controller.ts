@@ -80,21 +80,22 @@ export class MarcasController {
     return this.marcasService.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar una marca' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Datos para actualizar una marca junto con la imagen',
-    type: CreateMarcaDto,
-  })
-  @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateMarcaDto: UpdateMarcaDto,
-    @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
-  ): Promise<MarcaInterface> {
-    return this.marcasService.update(id, updateMarcaDto, file);
-  }
+  // FIXME:
+  // @Patch(':id')
+  // @ApiOperation({ summary: 'Actualizar una marca' })
+  // @ApiConsumes('multipart/form-data')
+  // @ApiBody({
+  //   description: 'Datos para actualizar una marca junto con la imagen',
+  //   type: CreateMarcaDto,
+  // })
+  // @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
+  // update(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() updateMarcaDto: UpdateMarcaDto,
+  //   @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
+  // ): Promise<MarcaInterface> {
+  //   return this.marcasService.update(id, updateMarcaDto, file);
+  // }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar una marca' })
