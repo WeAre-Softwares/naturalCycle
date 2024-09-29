@@ -1,5 +1,5 @@
-import Header from './Header/Header'; // Verifica que el nombre y la ruta sean correctos.
-import Footer from './Footer/Footer'; // Verifica que el nombre y la ruta sean correctos.
+import Header from './Header/Header'; 
+import Footer from './Footer/Footer'; 
 import Login from './Login/Login'; 
 import RegisterForm from './Register/RegisterForm';
 import OlvideContraseña from './Olvide Contraseña/OlvideContraseña';
@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import React from 'react';
 import Inicio from './Inicio/Inicio';
 import CardInfoUsuario from './CardUsuario/CardInfoUsuario';
+import Categorias from './Categorías/Categorias';
 
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/CardInfoUsuario" element={<CardInfoUsuario />} />
         <Route path="/Register" element={<RegisterForm />} />
         <Route path="/Password" element={<OlvideContraseña />} />
+        <Route path="/Categorias" element={<Categorias />} />
       </Routes>
     <Footer />
     </div>
