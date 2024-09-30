@@ -1,11 +1,11 @@
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Producto } from '../../productos/entities/producto.entity';
 
@@ -28,21 +28,11 @@ export class ProductosImagenes {
   })
   public_id: string;
 
-  @Column()
+  @CreateDateColumn({ name: 'fecha_creacion' })
   fecha_creacion: Date;
 
-  @Column()
+  @UpdateDateColumn({ name: 'fecha_actualizacion' })
   fecha_actualizacion: Date;
-
-  @BeforeInsert()
-  setCreationDate() {
-    this.fecha_creacion = new Date();
-  }
-
-  @BeforeUpdate()
-  setUpdateDate() {
-    this.fecha_actualizacion = new Date();
-  }
 
   @ManyToOne(() => Producto, (producto) => producto.imagenes, {
     onDelete: 'CASCADE',

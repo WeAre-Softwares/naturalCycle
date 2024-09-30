@@ -12,10 +12,8 @@ import {
 import { TipoPrecio } from '../types/tipo-precio.enum';
 import { ProductosImagenes } from '../../productos_imagenes/entities/productos_imagenes.entity';
 import { Marca } from '../../marcas/entities/marca.entity';
-import {
-  ProductosCategorias,
-  ProductosCategorias as ProductosEtiquetas,
-} from './productos-categorias.entity';
+import { ProductosCategorias } from './productos-categorias.entity';
+import { ProductosEtiquetas } from './productos-etiquetas.entity';
 
 @Entity({ name: 'productos' })
 export class Producto {
@@ -107,6 +105,9 @@ export class Producto {
   @OneToMany(
     () => ProductosCategorias,
     (productosCategorias) => productosCategorias.producto,
+    {
+      cascade: true, // Eliminar categorías asociadas cuando se elimina el producto
+    },
   )
   productosCategorias: ProductosCategorias[];
 
@@ -114,6 +115,9 @@ export class Producto {
   @OneToMany(
     () => ProductosEtiquetas,
     (productosEtiquetas) => productosEtiquetas.producto,
+    {
+      cascade: true, // Eliminar etiquetas asociadas cuando se elimina el producto
+    },
   )
   productosEtiquetas: ProductosEtiquetas[];
 }
