@@ -73,7 +73,7 @@ export class ProductosController {
   @Get(':id')
   @ApiOperation({ summary: 'Buscar producto por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.productosService.findOne(id);
+    return this.productosService.getProductoForResponse(id);
   }
 
   @Patch(':id')

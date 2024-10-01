@@ -17,6 +17,7 @@ import { MarcasService } from '../marcas/marcas.service';
 import { EtiquetasService } from '../etiquetas/etiquetas.service';
 import { CategoriasService } from '../categorias/categorias.service';
 import { ProductosCategorias, ProductosEtiquetas } from './entities';
+import { Marca } from '../marcas/entities/marca.entity';
 
 @Injectable()
 export class ProductosService {
@@ -49,16 +50,14 @@ export class ProductosService {
     await queryRunner.startTransaction();
 
     let imagesUpload: { secure_url: string; public_id: string }[] = [];
+    let savedCategorias = [];
+    let savedEtiquetas = [];
 
     try {
       // *Crear entidades relacionadas y guardarlas primero
 
       // Asignar la marca al producto verificando que ya exista
       const marca = await this.marcasService.findOne(marca_id);
-
-      // Validar categorías y etiquetas antes de asignarlas
-      const categoria = await this.categoriasService.findOne(categoria_id);
-      const etiqueta = await this.etiquetasService.findOne(etiqueta_id);
 
       // Subir las imágenes a Cloudinary**
       if (files && files.length > 0) {
@@ -87,8 +86,6 @@ export class ProductosService {
       // Crear la instancia de Productos
       const nuevoProducto = queryRunner.manager.create(Producto, {
         ...rest,
-        categoria,
-        etiqueta,
         marca,
       });
 
@@ -97,32 +94,46 @@ export class ProductosService {
 
       // * Guardar las relaciones en las tablas intermedias
 
-      // Relación con Categoría
-      if (categoria) {
-        const nuevoProductoCategoria = queryRunner.manager.create(
-          ProductosCategorias,
-          {
-            producto: nuevoProducto,
-            categoria: categoria,
-            esta_activo: true,
-          },
-        );
-        await queryRunner.manager.save(nuevoProductoCategoria);
+      // Relación con Categorías
+      if (categoria_id && categoria_id.length > 0) {
+        for (const categoriaId of categoria_id) {
+          const categoria = await this.categoriasService.findOne(categoriaId); // Obtener cada categoría individualmente
+
+          if (!categoria) {
+            throw new Error(`La categoría con id ${categoriaId} no existe`);
+          }
+          const nuevoProductoCategoria = queryRunner.manager.create(
+            ProductosCategorias,
+            {
+              producto: nuevoProducto,
+              categoria,
+              esta_activo: true,
+            },
+          );
+          await queryRunner.manager.save(nuevoProductoCategoria);
+          savedCategorias.push(categoria);
+        }
       }
 
-      // Relación con Etiqueta
-      if (etiqueta) {
-        const nuevoProductoEtiqueta = queryRunner.manager.create(
-          ProductosEtiquetas,
-          {
-            producto: nuevoProducto,
-            etiqueta: etiqueta,
-            esta_activo: true,
-          },
-        );
-        await queryRunner.manager.save(nuevoProductoEtiqueta);
+      // Relación con Etiquetas
+      if (etiqueta_id && etiqueta_id.length > 0) {
+        for (const etiquetaId of etiqueta_id) {
+          const etiqueta = await this.etiquetasService.findOne(etiquetaId); // Obtener cada etiqueta individualmente
+          if (!etiqueta) {
+            throw new Error(`La etiqueta con id ${etiquetaId} no existe`);
+          }
+          const nuevoProductoEtiqueta = queryRunner.manager.create(
+            ProductosEtiquetas,
+            {
+              producto: nuevoProducto,
+              etiqueta,
+              esta_activo: true,
+            },
+          );
+          await queryRunner.manager.save(nuevoProductoEtiqueta);
+          savedEtiquetas.push(etiqueta);
+        }
       }
-
       // Guardar las imágenes relacionadas**
       if (imagesUpload.length > 0) {
         const savedImages = await Promise.all(
@@ -156,6 +167,12 @@ export class ProductosService {
           marca_destacada: nuevoProducto.marca.marca_destacada,
           imagen_url: nuevoProducto.marca.imagen_url,
         },
+        categorias: savedCategorias.map((categoria) => ({
+          nombre: categoria.nombre,
+        })),
+        etiquetas: savedEtiquetas.map((etiqueta) => ({
+          nombre: etiqueta.nombre,
+        })),
         imagenes: nuevoProducto.imagenes.map((img) => ({
           url: img.url,
         })),
@@ -243,7 +260,7 @@ export class ProductosService {
         );
       }
 
-      return this.plainProduct(producto);
+      return producto;
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(
@@ -251,6 +268,11 @@ export class ProductosService {
         error,
       );
     }
+  }
+
+  async getProductoForResponse(producto_id: string): Promise<any> {
+    const producto = await this.findOne(producto_id);
+    return this.plainProduct(producto);
   }
 
   private plainProduct(producto: Producto): any {
@@ -331,56 +353,62 @@ export class ProductosService {
 
     let newImagesUpload: { secure_url: string; public_id: string }[] = [];
     let previousPublicIds: string[] = [];
+    let savedCategorias = [];
+    let savedEtiquetas = [];
 
     try {
       // Buscar el producto existente
-      const producto = await this.productoRepository.findOne({
-        where: { producto_id: id },
-        relations: {
-          marca: true,
-          imagenes: true,
-          productosCategorias: { categoria: true },
-          productosEtiquetas: { etiqueta: true },
-        },
-      });
-
-      if (!producto) {
-        throw new NotFoundException(`Producto con ID ${id} no encontrado`);
-      }
+      const producto = await this.findOne(id);
 
       // Guardar los `public_id` de las imágenes actuales
       previousPublicIds = producto.imagenes.map((img) => img.public_id);
 
-      // Actualizar las relaciones de Marca, Categoría, Etiqueta
-      const marca = await this.marcasService.findOne(marca_id);
+      // Actualizar la marca si se proporciona una nueva
+      if (marca_id) {
+        const marca = await this.marcasService.findOne(marca_id);
+        producto.marca = marca as Marca; // Asignar la nueva marca
+      }
 
-      // Actualizar relación con Categorías (Entidad Intermedia)
-      if (categoria_id) {
+      // Actualizar relaciones con Categorías
+      if (categoria_id && categoria_id.length > 0) {
+        // Eliminar relaciones anteriores
         await this.productosCategoriasRepository.delete({
           producto: { producto_id: id },
         });
 
-        const nuevaRelacionCategoria =
-          this.productosCategoriasRepository.create({
-            producto,
-            categoria: await this.categoriasService.findOne(categoria_id),
-          });
+        for (const categoriaId of categoria_id) {
+          const categoria = await this.categoriasService.findOne(categoriaId);
 
-        await queryRunner.manager.save(nuevaRelacionCategoria);
+          const nuevaRelacionCategoria =
+            this.productosCategoriasRepository.create({
+              producto,
+              categoria,
+              esta_activo: true,
+            });
+          await queryRunner.manager.save(nuevaRelacionCategoria);
+          savedCategorias.push(categoria);
+        }
       }
 
-      // Actualizar relación con Etiquetas (Entidad Intermedia)
-      if (etiqueta_id) {
+      // Actualizar relaciones con Etiquetas
+      if (etiqueta_id && etiqueta_id.length > 0) {
+        // Eliminar relaciones anteriores
         await this.productosEtiquetasRepository.delete({
           producto: { producto_id: id },
         });
 
-        const nuevaRelacionEtiqueta = this.productosEtiquetasRepository.create({
-          producto,
-          etiqueta: await this.etiquetasService.findOne(etiqueta_id),
-        });
+        for (const etiquetaId of etiqueta_id) {
+          const etiqueta = await this.etiquetasService.findOne(etiquetaId);
 
-        await queryRunner.manager.save(nuevaRelacionEtiqueta);
+          const nuevaRelacionEtiqueta =
+            this.productosEtiquetasRepository.create({
+              producto,
+              etiqueta,
+              esta_activo: true,
+            });
+          await queryRunner.manager.save(nuevaRelacionEtiqueta);
+          savedEtiquetas.push(etiqueta);
+        }
       }
 
       // Subir nuevas imágenes a Cloudinary
@@ -406,19 +434,22 @@ export class ProductosService {
         );
       }
 
-      // Actualizar el producto
+      // Actualizar los datos del producto
       this.productoRepository.merge(producto, {
         ...toUpdate,
-        marca: marca || producto.marca,
+        marca: producto.marca,
       });
 
-      // Guardar las nuevas imágenes en la base de datos
-      if (newImagesUpload.length > 0) {
-        // Primero eliminar imágenes anteriores de la base de datos
-        await this.productosImagenesRepository.delete({
-          producto: { producto_id: id },
-        });
+      // Guardar el producto actualizado
+      await queryRunner.manager.save(producto);
 
+      // Eliminar las imágenes antiguas de la base de datos
+      await this.productosImagenesRepository.delete({
+        producto: { producto_id: id },
+      });
+
+      // Guardar nuevas imágenes en la base de datos
+      if (newImagesUpload.length > 0) {
         const savedImages = await Promise.all(
           newImagesUpload.map((img) =>
             queryRunner.manager.save(
@@ -430,11 +461,8 @@ export class ProductosService {
             ),
           ),
         );
-        producto.imagenes = savedImages;
+        producto.imagenes = savedImages; // Actualizar las imágenes en el producto
       }
-
-      // Guardar los cambios en el producto
-      await queryRunner.manager.save(producto);
 
       // Confirmar la transacción
       await queryRunner.commitTransaction();
@@ -448,7 +476,29 @@ export class ProductosService {
         );
       }
 
-      return this.plainProduct(producto);
+      return {
+        producto_id: producto.producto_id,
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        tipo_de_precio: producto.tipo_de_precio,
+        producto_destacado: producto.producto_destacado,
+        en_promocion: producto.en_promocion,
+        marca: {
+          nombre: producto.marca.nombre,
+          marca_destacada: producto.marca.marca_destacada,
+          imagen_url: producto.marca.imagen_url,
+        },
+        categorias: savedCategorias.map((categoria) => ({
+          nombre: categoria.nombre,
+        })),
+        etiquetas: savedEtiquetas.map((etiqueta) => ({
+          nombre: etiqueta.nombre,
+        })),
+        imagenes: producto.imagenes.map((img) => ({
+          url: img.url,
+        })),
+      };
     } catch (error) {
       await queryRunner.rollbackTransaction();
 
@@ -460,7 +510,7 @@ export class ProductosService {
           ),
         );
       }
-
+      this.logger.error(error);
       throw new InternalServerErrorException(
         'Error al actualizar el producto',
         error,

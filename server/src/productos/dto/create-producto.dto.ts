@@ -85,23 +85,29 @@ export class CreateProductoDto {
   @IsNotEmpty()
   marca_id: string;
 
-  // Propiedad para recibir el ID de la categoria
+  // Propiedad para recibir IDs de múltiples categorías
   @ApiProperty({
-    example: 'uuid-de-la-categoria',
-    description: 'ID de la categoria asociada al producto',
+    example: ['uuid-categoria1', 'uuid-categoria2'],
+    description: 'IDs de las categorías asociadas al producto',
+    isArray: true,
+    type: String,
   })
-  @IsUUID()
-  @IsNotEmpty()
-  categoria_id: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsUUID('4', { each: true }) // Validar que cada elemento sea un UUID
+  categoria_id: string[];
 
-  // Propiedad para recibir el ID de la etiqueta
+  // Propiedad para recibir IDs de múltiples Etiquetas
   @ApiProperty({
-    example: 'uuid-de-la-etiqueta',
-    description: 'ID de la etiqueta asociada al producto',
+    example: ['uuid-etiqueta1', 'uuid-etiqueta2'],
+    description: 'IDs de las etiquetas asociadas al producto',
+    isArray: true,
+    type: String,
   })
-  @IsUUID()
-  @IsNotEmpty()
-  etiqueta_id: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsUUID('4', { each: true })
+  etiqueta_id: string[];
 
   @ApiProperty({
     type: 'string',
