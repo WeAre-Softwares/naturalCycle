@@ -12,7 +12,11 @@ import { Producto } from './entities/producto.entity';
 import { ProductosImagenes } from '../productos_imagenes/entities/productos_imagenes.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CLOUDINARY_CARPETAS } from '../cloudinary/constants/cloudinary-folders.constant';
-import type { ProductoInterface } from './interfaces/producto.interface';
+import type {
+  GetProductosResponse,
+  ProductoPlainResponse,
+  ProductoResponse,
+} from './interfaces';
 import { MarcasService } from '../marcas/marcas.service';
 import { EtiquetasService } from '../etiquetas/etiquetas.service';
 import { CategoriasService } from '../categorias/categorias.service';
@@ -42,7 +46,7 @@ export class ProductosService {
   async create(
     createProductoDto: CreateProductoDto,
     files: Express.Multer.File[], // Esperamos varios archivos
-  ) {
+  ): Promise<ProductoResponse> {
     const { marca_id, categoria_id, etiqueta_id, ...rest } = createProductoDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -199,7 +203,7 @@ export class ProductosService {
     }
   }
 
-  async findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto): Promise<GetProductosResponse> {
     const { limit = 10, offset = 0 } = paginationDto;
     try {
       const [productos, total] = await this.productoRepository.findAndCount({
@@ -270,12 +274,14 @@ export class ProductosService {
     }
   }
 
-  async getProductoForResponse(producto_id: string): Promise<any> {
+  async getProductoForResponse(
+    producto_id: string,
+  ): Promise<ProductoPlainResponse> {
     const producto = await this.findOne(producto_id);
     return this.plainProduct(producto);
   }
 
-  private plainProduct(producto: Producto): any {
+  private plainProduct(producto: Producto): ProductoPlainResponse {
     return {
       producto_id: producto.producto_id,
       nombre: producto.nombre,
@@ -298,7 +304,9 @@ export class ProductosService {
     };
   }
 
-  async findAllByTerm(searchWithPaginationDto: SearchWithPaginationDto) {
+  async findAllByTerm(
+    searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<ProductoPlainResponse>[]> {
     const { limit = 10, offset = 0, term } = searchWithPaginationDto;
 
     try {
@@ -343,7 +351,7 @@ export class ProductosService {
     id: string,
     updateProductoDto: UpdateProductoDto,
     files: Express.Multer.File[],
-  ) {
+  ): Promise<ProductoResponse> {
     const { marca_id, categoria_id, etiqueta_id, ...toUpdate } =
       updateProductoDto;
 

@@ -80,7 +80,6 @@ export class MarcasController {
     return this.marcasService.findOne(id);
   }
 
-  // FIXME:
   @Patch(':id')
   @ApiOperation({ summary: 'Actualizar una marca' })
   @ApiConsumes('multipart/form-data')

@@ -22,6 +22,11 @@ import {
 import { ProductosService } from './productos.service';
 import { CreateProductoDto, UpdateProductoDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
+import type {
+  GetProductosResponse,
+  ProductoPlainResponse,
+  ProductoResponse,
+} from './interfaces';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -39,7 +44,7 @@ export class ProductosController {
   create(
     @Body() createProductoDto: CreateProductoDto,
     @UploadedFiles() files: Express.Multer.File[], // Permite múltiples archivos
-  ) {
+  ): Promise<ProductoResponse> {
     return this.productosService.create(createProductoDto, files);
   }
 
@@ -60,19 +65,25 @@ export class ProductosController {
     required: false,
     description: 'Desplazamiento de resultados',
   })
-  async findByTerm(@Query() searchWithPaginationDto: SearchWithPaginationDto) {
+  async findByTerm(
+    @Query() searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<ProductoPlainResponse>[]> {
     return this.productosService.findAllByTerm(searchWithPaginationDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Buscar todos los productos' })
-  findAll(@Query() paginationDto: PaginationDto) {
+  findAll(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
     return this.productosService.findAll(paginationDto);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Buscar producto por id' })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ProductoPlainResponse> {
     return this.productosService.getProductoForResponse(id);
   }
 
@@ -88,7 +99,7 @@ export class ProductosController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductoDto: UpdateProductoDto,
     @UploadedFiles() files: Express.Multer.File[], // Manejo de archivo de imagen
-  ) {
+  ): Promise<ProductoResponse> {
     return this.productosService.update(id, updateProductoDto, files);
   }
 
