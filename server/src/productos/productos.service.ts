@@ -27,6 +27,10 @@ export class ProductosService {
     private readonly productoRepository: Repository<Producto>,
     @InjectRepository(ProductosImagenes)
     private readonly productosImagenesRepository: Repository<ProductosImagenes>,
+    @InjectRepository(ProductosCategorias)
+    private readonly productosCategoriasRepository: Repository<ProductosCategorias>,
+    @InjectRepository(ProductosEtiquetas)
+    private readonly productosEtiquetasRepository: Repository<ProductosEtiquetas>,
     private readonly dataSource: DataSource,
     private readonly marcasService: MarcasService,
     private readonly etiquetasService: EtiquetasService,
@@ -140,6 +144,7 @@ export class ProductosService {
       await queryRunner.commitTransaction();
 
       return {
+        producto_id: nuevoProducto.producto_id,
         nombre: nuevoProducto.nombre,
         descripcion: nuevoProducto.descripcion,
         precio: nuevoProducto.precio,
@@ -312,157 +317,158 @@ export class ProductosService {
     }
   }
 
-  // async update(
-  //   id: string,
-  //   updateProductoDto: UpdateProductoDto,
-  //   files: Express.Multer.File[],
-  // ) {
-  //   const { marca_id, categoria_id, etiqueta_id, ...toUpdate } =
-  //     updateProductoDto;
+  async update(
+    id: string,
+    updateProductoDto: UpdateProductoDto,
+    files: Express.Multer.File[],
+  ) {
+    const { marca_id, categoria_id, etiqueta_id, ...toUpdate } =
+      updateProductoDto;
 
-  //   const queryRunner = this.dataSource.createQueryRunner();
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  //   let newImagesUpload: { secure_url: string; public_id: string }[] = [];
-  //   let previousPublicIds: string[] = [];
+    let newImagesUpload: { secure_url: string; public_id: string }[] = [];
+    let previousPublicIds: string[] = [];
 
-  //   try {
-  //     // Buscar el producto existente
-  //     const producto = await this.productoRepository.findOne({
-  //       where: { producto_id: id },
-  //       relations: {
-  //         marca: true,
-  //         imagenes: true,
-  //         productosCategorias: {
-  //           categoria: true, // Cargar la relación con la tabla `Categoria`
-  //         },
-  //         productosEtiquetas: {
-  //           etiqueta: true, // Cargar la relación con la tabla `Etiqueta`
-  //         },
-  //       },
-  //     });
+    try {
+      // Buscar el producto existente
+      const producto = await this.productoRepository.findOne({
+        where: { producto_id: id },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: { categoria: true },
+          productosEtiquetas: { etiqueta: true },
+        },
+      });
 
-  //     if (!producto) {
-  //       throw new NotFoundException(`Producto con ID ${id} no encontrado`);
-  //     }
+      if (!producto) {
+        throw new NotFoundException(`Producto con ID ${id} no encontrado`);
+      }
 
-  //     // Guardar los `public_id` de las imágenes actuales antes de actualizarlas
-  //     previousPublicIds = producto.imagenes.map((img) => img.public_id);
+      // Guardar los `public_id` de las imágenes actuales
+      previousPublicIds = producto.imagenes.map((img) => img.public_id);
 
-  //     // Actualizar las relaciones de Marca, Categoría, Etiqueta
-  //     const marca = await this.marcasService.findOne(marca_id);
+      // Actualizar las relaciones de Marca, Categoría, Etiqueta
+      const marca = await this.marcasService.findOne(marca_id);
 
-  //     // Actualizar relación con Categorías (Entidad Intermedia)
-  //     if (categoria_id) {
-  //       await this.productoRepository.delete({
-  //         producto: { producto_id: id },
-  //       });
+      // Actualizar relación con Categorías (Entidad Intermedia)
+      if (categoria_id) {
+        await this.productosCategoriasRepository.delete({
+          producto: { producto_id: id },
+        });
 
-  //       const nuevaRelacionCategoria =
-  //         this.productoRepository.create({
-  //           producto,
-  //           categoria: await this.categoriasService.findOne(categoria_id),
-  //         });
+        const nuevaRelacionCategoria =
+          this.productosCategoriasRepository.create({
+            producto,
+            categoria: await this.categoriasService.findOne(categoria_id),
+          });
 
-  //       await queryRunner.manager.save(nuevaRelacionCategoria);
-  //     }
+        await queryRunner.manager.save(nuevaRelacionCategoria);
+      }
 
-  //     // Actualizar relación con Etiquetas (Entidad Intermedia)
-  //     if (etiqueta_id) {
-  //       await this.productosEtiquetasRepository.delete({
-  //         producto: { producto_id: id },
-  //       });
+      // Actualizar relación con Etiquetas (Entidad Intermedia)
+      if (etiqueta_id) {
+        await this.productosEtiquetasRepository.delete({
+          producto: { producto_id: id },
+        });
 
-  //       const nuevaRelacionEtiqueta = this.productosEtiquetasRepository.create({
-  //         producto,
-  //         etiqueta: await this.etiquetasService.findOne(etiqueta_id),
-  //       });
+        const nuevaRelacionEtiqueta = this.productosEtiquetasRepository.create({
+          producto,
+          etiqueta: await this.etiquetasService.findOne(etiqueta_id),
+        });
 
-  //       await queryRunner.manager.save(nuevaRelacionEtiqueta);
-  //     }
+        await queryRunner.manager.save(nuevaRelacionEtiqueta);
+      }
 
-  //     // Subir nuevas imágenes a Cloudinary
-  //     if (files && files.length > 0) {
-  //       newImagesUpload = await Promise.all(
-  //         files.map(async (file) => {
-  //           const response = await this.cloudinaryService.uploadFile(
-  //             file,
-  //             CLOUDINARY_CARPETAS.PRODUCTOS,
-  //           );
+      // Subir nuevas imágenes a Cloudinary
+      if (files && files.length > 0) {
+        newImagesUpload = await Promise.all(
+          files.map(async (file) => {
+            const response = await this.cloudinaryService.uploadFile(
+              file,
+              CLOUDINARY_CARPETAS.PRODUCTOS,
+            );
 
-  //           if ('error' in response) {
-  //             throw new InternalServerErrorException(
-  //               `Error al subir la imagen: ${response.error.message}`,
-  //             );
-  //           }
+            if ('error' in response) {
+              throw new InternalServerErrorException(
+                `Error al subir la imagen: ${response.error.message}`,
+              );
+            }
 
-  //           return {
-  //             secure_url: response.secure_url,
-  //             public_id: response.public_id,
-  //           };
-  //         }),
-  //       );
-  //     }
+            return {
+              secure_url: response.secure_url,
+              public_id: response.public_id,
+            };
+          }),
+        );
+      }
 
-  //     // Actualizar el producto
-  //     this.productoRepository.merge(producto, {
-  //       ...toUpdate,
-  //       marca: marca || producto.marca,
-  //     });
+      // Actualizar el producto
+      this.productoRepository.merge(producto, {
+        ...toUpdate,
+        marca: marca || producto.marca,
+      });
 
-  //     // Guardar las nuevas imágenes en la base de datos
-  //     if (newImagesUpload.length > 0) {
-  //       const savedImages = await Promise.all(
-  //         newImagesUpload.map((img) =>
-  //           queryRunner.manager.save(
-  //             this.productosImagenesRepository.create({
-  //               url: img.secure_url,
-  //               public_id: img.public_id,
-  //               producto: producto,
-  //             }),
-  //           ),
-  //         ),
-  //       );
-  //       producto.imagenes = savedImages;
-  //     }
+      // Guardar las nuevas imágenes en la base de datos
+      if (newImagesUpload.length > 0) {
+        // Primero eliminar imágenes anteriores de la base de datos
+        await this.productosImagenesRepository.delete({
+          producto: { producto_id: id },
+        });
 
-  //     // Guardar los cambios en el producto
-  //     await queryRunner.manager.save(producto);
+        const savedImages = await Promise.all(
+          newImagesUpload.map((img) =>
+            queryRunner.manager.save(
+              this.productosImagenesRepository.create({
+                url: img.secure_url,
+                public_id: img.public_id,
+                producto: producto,
+              }),
+            ),
+          ),
+        );
+        producto.imagenes = savedImages;
+      }
 
-  //     // Confirmar la transacción
-  //     await queryRunner.commitTransaction();
+      // Guardar los cambios en el producto
+      await queryRunner.manager.save(producto);
 
-  //     // Eliminar las imágenes antiguas de Cloudinary si fueron reemplazadas
-  //     if (previousPublicIds.length > 0 && newImagesUpload.length > 0) {
-  //       await Promise.all(
-  //         previousPublicIds.map((public_id) =>
-  //           this.cloudinaryService.deleteImage(public_id),
-  //         ),
-  //       );
-  //     }
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
 
-  //     return producto;
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
+      // Eliminar las imágenes antiguas de Cloudinary si fueron reemplazadas
+      if (previousPublicIds.length > 0 && newImagesUpload.length > 0) {
+        await Promise.all(
+          previousPublicIds.map((public_id) =>
+            this.cloudinaryService.deleteImage(public_id),
+          ),
+        );
+      }
 
-  //     // Si las nuevas imágenes fueron subidas pero ocurre un error, eliminarlas
-  //     if (newImagesUpload.length > 0) {
-  //       await Promise.all(
-  //         newImagesUpload.map((img) =>
-  //           this.cloudinaryService.deleteImage(img.public_id),
-  //         ),
-  //       );
-  //     }
+      return this.plainProduct(producto);
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
 
-  //     throw new InternalServerErrorException(
-  //       'Error al actualizar el producto',
-  //       error,
-  //     );
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+      // Si las nuevas imágenes fueron subidas pero ocurre un error, eliminarlas
+      if (newImagesUpload.length > 0) {
+        await Promise.all(
+          newImagesUpload.map((img) =>
+            this.cloudinaryService.deleteImage(img.public_id),
+          ),
+        );
+      }
+
+      throw new InternalServerErrorException(
+        'Error al actualizar el producto',
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   async deactivate(id: string): Promise<{
     mensaje: string;

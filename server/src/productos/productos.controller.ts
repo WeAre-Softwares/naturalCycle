@@ -76,21 +76,21 @@ export class ProductosController {
     return this.productosService.findOne(id);
   }
 
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'Actualizar un producto' })
-  // @ApiConsumes('multipart/form-data')
-  // @ApiBody({
-  //   description: 'Datos para actualizar un producto junto con las imagenes',
-  //   type: UpdateProductoDto,
-  // })
-  // @UseInterceptors(FilesInterceptor('imagenes', 2)) // Se acepta solo dos imagenes
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateProductoDto: UpdateProductoDto,
-  //   @UploadedFiles() files: Express.Multer.File[], // Manejo de archivo de imagen
-  // ) {
-  //   return this.productosService.update(id, updateProductoDto, files);
-  // }
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar un producto' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Datos para actualizar un producto junto con las imagenes',
+    type: UpdateProductoDto,
+  })
+  @UseInterceptors(FilesInterceptor('imagenes', 2)) // Se acepta solo dos imagenes
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateProductoDto: UpdateProductoDto,
+    @UploadedFiles() files: Express.Multer.File[], // Manejo de archivo de imagen
+  ) {
+    return this.productosService.update(id, updateProductoDto, files);
+  }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar un producto' })
