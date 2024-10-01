@@ -65,15 +65,14 @@ export class CategoriasController {
     return this.categoriasService.findOne(id);
   }
 
-  // FIXME:
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'Actualizar una categoría' })
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateCategoriaDto: UpdateCategoriaDto,
-  // ): Promise<CategoriaInterface> {
-  //   return this.categoriasService.update(id, updateCategoriaDto);
-  // }
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar una categoría' })
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriaDto: UpdateCategoriaDto,
+  ): Promise<CategoriaInterface> {
+    return this.categoriasService.update(id, updateCategoriaDto);
+  }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar una categoría' })

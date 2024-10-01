@@ -141,41 +141,40 @@ export class EtiquetasService {
     }
   }
 
-  // FIXME:
-  // async update(
-  //   id: string,
-  //   updateCategoriaDto: UpdateCategoriaDto,
-  // ): Promise<EtiquetaInterface> {
-  //   const { ...toUpdate } = updateCategoriaDto;
+  async update(
+    id: string,
+    updateCategoriaDto: UpdateCategoriaDto,
+  ): Promise<EtiquetaInterface> {
+    const { ...toUpdate } = updateCategoriaDto;
 
-  //   const queryRunner = this.dataSource.createQueryRunner();
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  //   try {
-  //     const etiqueta = await this.findOne(id);
+    try {
+      const etiqueta = await this.findOne(id);
 
-  //     // Combinar las propiedades del DTO con la entidad existente
-  //     this.etiquetaRepository.merge(etiqueta, toUpdate);
+      // Combinar las propiedades del DTO con la entidad existente
+      this.etiquetaRepository.merge(etiqueta, toUpdate);
 
-  //     // Guardar la Etiqueta en la DB
-  //     await queryRunner.manager.save(etiqueta);
+      // Guardar la Etiqueta en la DB
+      await queryRunner.manager.save(etiqueta);
 
-  //     // Confirmar la transacción
-  //     await queryRunner.commitTransaction();
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
 
-  //     return etiqueta;
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
-  //     this.logger.error(error);
-  //     throw new InternalServerErrorException(
-  //       'Error al actualizar la etiqueta',
-  //       error,
-  //     );
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+      return etiqueta;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al actualizar la etiqueta',
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   async deactivate(id: string): Promise<{ mensaje: string }> {
     try {

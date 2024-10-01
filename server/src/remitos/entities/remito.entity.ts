@@ -47,7 +47,6 @@ export class Remito {
   })
   fecha_generacion: Date;
 
-  //TODO: Ver cantidad digitos
   @Column({
     type: 'decimal',
     precision: 10, // Total de dígitos

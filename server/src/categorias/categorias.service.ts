@@ -140,41 +140,40 @@ export class CategoriasService {
     }
   }
 
-  // FIXME:
-  // async update(
-  //   id: string,
-  //   updateCategoriaDto: UpdateCategoriaDto,
-  // ): Promise<CategoriaInterface> {
-  //   const { ...toUpdate } = updateCategoriaDto;
+  async update(
+    id: string,
+    updateCategoriaDto: UpdateCategoriaDto,
+  ): Promise<CategoriaInterface> {
+    const { ...toUpdate } = updateCategoriaDto;
 
-  //   const queryRunner = this.dataSource.createQueryRunner();
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  //   try {
-  //     const categoria = await this.findOne(id);
+    try {
+      const categoria = await this.findOne(id);
 
-  //     // Combinar las propiedades del DTO con la entidad existente
-  //     this.categoriaRepository.merge(categoria, toUpdate);
+      // Combinar las propiedades del DTO con la entidad existente
+      this.categoriaRepository.merge(categoria, toUpdate);
 
-  //     // Guardar la categoria en la DB
-  //     await queryRunner.manager.save(categoria);
+      // Guardar la categoria en la DB
+      await queryRunner.manager.save(categoria);
 
-  //     // Confirmar la transacción
-  //     await queryRunner.commitTransaction();
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
 
-  //     return categoria;
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
-  //     this.logger.error(error);
-  //     throw new InternalServerErrorException(
-  //       'Error al actualizar la categoria',
-  //       error,
-  //     );
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+      return categoria;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al actualizar la categoria',
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   async deactivate(id: string): Promise<{ mensaje: string }> {
     try {

@@ -65,15 +65,15 @@ export class EtiquetasController {
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<EtiquetaInterface> {
     return this.etiquetasService.findOne(id);
   }
-  // FIXME:
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'Actualizar una etiqueta' })
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateEtiquetaDto: UpdateEtiquetaDto,
-  // ): Promise<EtiquetaInterface> {
-  //   return this.etiquetasService.update(id, updateEtiquetaDto);
-  // }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar una etiqueta' })
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateEtiquetaDto: UpdateEtiquetaDto,
+  ): Promise<EtiquetaInterface> {
+    return this.etiquetasService.update(id, updateEtiquetaDto);
+  }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar una etiqueta' })
