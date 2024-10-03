@@ -8,7 +8,7 @@ import React from 'react';
 import Inicio from './Inicio/Inicio';
 import CardInfoUsuario from './CardUsuario/CardInfoUsuario';
 import Categorias from './Categorías/Categorias';
-
+import About from './Sobre nosotros/About';
 
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
         <Route path="/Register" element={<RegisterForm />} />
         <Route path="/Password" element={<OlvideContraseña />} />
         <Route path="/Categorias" element={<Categorias />} />
+        <Route path="/About" element={<About />} />
       </Routes>
     <Footer />
     </div>
