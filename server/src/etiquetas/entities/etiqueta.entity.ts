@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductosEtiquetas } from '../../productos/entities';
 
 @Entity({ name: 'etiquetas' })
 export class Etiqueta {
@@ -20,4 +27,11 @@ export class Etiqueta {
     default: true,
   })
   esta_activo: boolean;
+
+  // Relación 1 a N con la tabla intermedia ProductosEtiquetas
+  @OneToMany(
+    () => ProductosEtiquetas,
+    (productosEtiquetas) => productosEtiquetas.producto,
+  )
+  productosEtiquetas: ProductosEtiquetas[];
 }

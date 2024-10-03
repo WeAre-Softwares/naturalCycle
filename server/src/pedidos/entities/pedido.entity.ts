@@ -12,7 +12,6 @@ export class Pedido {
   })
   estado_pedido: EstadoPedido;
 
-  //TODO: Ver cantidad digitos
   @Column({
     type: 'decimal', // 'decimal' para evitar problemas de precisión
     precision: 10, // Total de dígitos

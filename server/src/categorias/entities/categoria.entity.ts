@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductosCategorias } from '../../productos/entities';
 
 @Entity({ name: 'categorias' })
 export class Categoria {
@@ -20,4 +27,11 @@ export class Categoria {
     default: true,
   })
   esta_activo: boolean;
+
+  // Relación 1 a N con la tabla intermedia ProductosCategorias
+  @OneToMany(
+    () => ProductosCategorias,
+    (productosCategorias) => productosCategorias.producto,
+  )
+  productosCategorias: ProductosCategorias[];
 }

@@ -1,15 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { TipoPrecio } from '../types/tipo-precio.enum';
+import { ProductosImagenes } from '../../productos_imagenes/entities/productos_imagenes.entity';
+import { Marca } from '../../marcas/entities/marca.entity';
+import { ProductosCategorias } from './productos-categorias.entity';
+import { ProductosEtiquetas } from './productos-etiquetas.entity';
 
 @Entity({ name: 'productos' })
 export class Producto {
   @PrimaryGeneratedColumn('uuid')
   producto_id: string;
 
+  @Index() // Índice para mejorar la búsqueda por nombre
   @Column({
-    type: 'text',
-    nullable: false,
+    type: 'varchar',
+    length: 255,
     unique: true,
+    nullable: false,
   })
   nombre: string;
 
@@ -19,7 +35,6 @@ export class Producto {
   })
   descripcion: string;
 
-  //TODO: Ver cantidad digitos
   @Column({
     type: 'decimal', // 'decimal' para evitar problemas de precisión
     precision: 10, // Total de dígitos
@@ -35,16 +50,73 @@ export class Producto {
   tipo_de_precio: TipoPrecio;
 
   @Column({
-    type: 'bool',
+    type: 'boolean',
     default: true,
   })
   disponible: boolean;
 
+  @Index() // Índice para optimizar consultas por estado
   @Column({
-    type: 'bool',
+    type: 'boolean',
     default: true,
   })
-  esta_activo: string;
+  esta_activo: boolean;
+
+  @Index() // índice para mejorar el rendimiento en búsquedas por productos destacados
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  producto_destacado: boolean;
+
+  @Index() // índice para mejorar el rendimiento en búsquedas por productos con promociones
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  en_promocion: boolean;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  fecha_creacion: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  fecha_actualizacion: Date;
 
   // Establecer relaciones
+  @OneToMany(
+    () => ProductosImagenes,
+    (productosImagenes) => productosImagenes.producto,
+    {
+      cascade: true, // Esto permite que al crear un producto, también se creen las imágenes asociadas automáticamente
+    },
+  )
+  imagenes: ProductosImagenes[];
+
+  @ManyToOne(() => Marca, (marca) => marca.productos)
+  @JoinColumn({ name: 'marca_id' })
+  marca: Marca;
+
+  // Relación 1 a N con la tabla intermedia ProductosCategorias
+  @OneToMany(
+    () => ProductosCategorias,
+    (productosCategorias) => productosCategorias.producto,
+    {
+      cascade: true, // Eliminar categorías asociadas cuando se elimina el producto
+    },
+  )
+  productosCategorias: ProductosCategorias[];
+
+  // Relación 1 a N con la tabla intermedia ProductosEtiquetas
+  @OneToMany(
+    () => ProductosEtiquetas,
+    (productosEtiquetas) => productosEtiquetas.producto,
+    {
+      cascade: true, // Eliminar etiquetas asociadas cuando se elimina el producto
+    },
+  )
+  productosEtiquetas: ProductosEtiquetas[];
 }

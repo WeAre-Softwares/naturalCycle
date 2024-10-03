@@ -11,7 +11,6 @@ export class DetallesPedido {
   })
   cantidad: number;
 
-  //TODO: Ver cantidad digitos
   @Column({
     type: 'decimal',
     precision: 10, // Total de dígitos
@@ -20,7 +19,6 @@ export class DetallesPedido {
   })
   precio_unitario: number; // 99,999,999.99
 
-  //TODO: Ver cantidad digitos
   @Column({
     type: 'decimal',
     precision: 10, // Total de dígitos
