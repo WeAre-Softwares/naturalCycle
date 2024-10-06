@@ -3,14 +3,13 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
-  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class LoginUserDto {
   @ApiProperty({
-    example: 'example@domain.com',
+    example: 'usuario@example.com',
     description: 'El correo electrónico del usuario',
   })
   @IsNotEmpty()
@@ -20,15 +19,10 @@ export class LoginUserDto {
 
   @ApiProperty({
     example: 'Password123!',
-    description:
-      'La contraseña del usuario. Debe contener mayúsculas, minúsculas y un número.',
+    description: 'Ingrese la contraseña',
   })
   @IsString()
   @MinLength(8)
-  @MaxLength(50)
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message:
-      'La contraseña debe contener al menos una letra mayúscula, una minúscula y un número',
-  })
+  @MaxLength(255)
   password: string;
 }

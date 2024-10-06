@@ -1,6 +1,7 @@
 export const VALID_ROLES = {
   admin: 'admin',
-  user: 'user',
+  empleado: 'empleado',
+  usuario: 'usuario',
 } as const;
 
 export type validRoles = (typeof VALID_ROLES)[keyof typeof VALID_ROLES];

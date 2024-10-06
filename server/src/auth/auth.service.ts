@@ -48,7 +48,7 @@ export class AuthService {
       token: this.getJwtToken({
         id: usuario.usuario_id,
         email: usuario.email,
-        roles: [usuario.roles],
+        roles: usuario.roles,
       }),
     };
   }
