@@ -15,7 +15,7 @@ import { RemitosModule } from './remitos/remitos.module';
 import { DetallesPedidosModule } from './detalles_pedidos/detalles_pedidos.module';
 import { ProductosImagenesModule } from './productos_imagenes/productos_imagenes.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { AutenticacionModule } from './autenticacion/autenticacion.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -60,8 +60,7 @@ import { AutenticacionModule } from './autenticacion/autenticacion.module';
     ProductosImagenesModule,
 
     CloudinaryModule,
-
-    AutenticacionModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

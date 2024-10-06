@@ -57,6 +57,7 @@ export class Usuario {
   @Column({
     type: 'boolean',
     default: false,
+    select: false, // Este campo no se seleccionará por defecto
   })
   email_verificado: boolean;
 
@@ -64,19 +65,22 @@ export class Usuario {
     type: 'varchar',
     length: 255,
     nullable: false,
+    select: false, // Este campo no se seleccionará por defecto
   })
   password: string;
 
   @Column({
     type: 'enum',
     enum: RolesUsuario,
-    nullable: false,
+    nullable: true, // Permitir que sea nulo al registrar un nuevo usuario
+    select: false, // Este campo no se seleccionará por defecto
   })
-  roles: RolesUsuario;
+  roles: RolesUsuario | null;
 
   @Column({
     type: 'boolean',
     default: true,
+    select: false, // Este campo no se seleccionará por defecto
   })
   esta_activo: boolean;
 }
