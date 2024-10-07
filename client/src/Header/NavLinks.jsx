@@ -110,7 +110,7 @@ const NavLinks = ({ isOpen, toggleMenu }) => {
 
         <li><Link to="/Promociones" onClick={toggleMenu}>Promociones</Link></li>
         <li><Link to="/New" onClick={toggleMenu}>Nuevos ingresos</Link></li>
-        <li><Link to="/Nosotros" onClick={toggleMenu}>Sobre nosotros</Link></li>
+        <li><Link to="/About" onClick={toggleMenu}>Sobre nosotros</Link></li>
         <li><Link to="/Login" onClick={toggleMenu}>Mi cuenta</Link></li>
       </ul>
     </div>

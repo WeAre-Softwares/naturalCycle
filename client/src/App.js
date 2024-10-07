@@ -9,6 +9,7 @@ import Inicio from './Inicio/Inicio';
 import CardInfoUsuario from './CardUsuario/CardInfoUsuario';
 import Categorias from './Categorías/Categorias';
 import About from './Sobre nosotros/About';
+import Promociones from './Promociones/Promociones';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Password" element={<OlvideContraseña />} />
         <Route path="/Categorias" element={<Categorias />} />
         <Route path="/About" element={<About />} />
+        <Route path="/Promociones" element={<Promociones />}/>
       </Routes>
     <Footer />
     </div>

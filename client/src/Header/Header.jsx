@@ -3,7 +3,6 @@ import './Header.css';
 import HamburgerMenu from './HamburgerMenu';
 import NavLinks from './NavLinks';
 import CartButton from './CartButton';
-import ContainerCategorias from './ContainerCategorias';
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
