@@ -1,0 +1,106 @@
+.container-general-promociones {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 230px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  
+  .container-h2-promociones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
+  
+  .container-h2-promociones h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d4d33; /* Color púrpura para destacar */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+  
+  .container-h2-promociones h2::after {
+    content: "";
+    width: 100px;
+    height: 4px;
+    background-color: #151515;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+  }
+  
+  .container-h2-promociones h4 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    letter-spacing: 0.5px;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeInText 1.2s ease-in-out;
+  }
+  
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  
+  .carrusel-promociones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .productos-carrusel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 5px;
+  }
+  
+  .btn-carrusel {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    padding: 20px;
+  }
+  
+  
+  /* Estilos responsivos */
+  @media (min-width: 780px) {
+    .card-producto {
+      min-width: 50%;
+    }
+  }
+  
+  @media (min-width: 1400px) {
+    .card-producto {
+      min-width: 25%;
+    }
+  }
+  
+  
+  @media (max-width: 780px) {
+    .card-producto {
+      min-width: 100%; /* La card ocupará el 100% del carrusel */
+    }
+  }
