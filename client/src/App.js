@@ -10,6 +10,7 @@ import CardInfoUsuario from './CardUsuario/CardInfoUsuario';
 import Categorias from './Categorías/Categorias';
 import About from './Sobre nosotros/About';
 import Promociones from './Promociones/Promociones';
+import Marcas from './Marcas/Marcas';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/Categorias" element={<Categorias />} />
         <Route path="/About" element={<About />} />
         <Route path="/Promociones" element={<Promociones />}/>
+        <Route path="/Marcas" element={<Marcas />}/>
       </Routes>
     <Footer />
     </div>
