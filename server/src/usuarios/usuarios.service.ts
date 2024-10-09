@@ -15,7 +15,7 @@ import {
 } from './dto';
 import { AuthService } from '../auth/auth.service';
 import type { CreateUserResponse, FindAllUsersResponse } from './interfaces';
-import { PaginationDto } from '../common/dtos';
+import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 
 @Injectable()
 export class UsuariosService {
@@ -115,6 +115,62 @@ export class UsuariosService {
     }
   }
 
+  async findAllByTerm(
+    SearchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<Usuario>[]> {
+    const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
+
+    try {
+      const queryBuilder = this.usuarioRepository
+        .createQueryBuilder('usuarios')
+        .select([
+          'usuarios.usuario_id',
+          'usuarios.nombre',
+          'usuarios.apellido',
+          'usuarios.dni',
+          'usuarios.nombre_comercio',
+          'usuarios.dom_fiscal',
+          'usuarios.email',
+          'usuarios.telefono',
+        ])
+        .andWhere(
+          '(LOWER(usuarios.nombre) LIKE LOWER(:term) OR LOWER(usuarios.apellido) LIKE LOWER(:term) OR CAST(usuarios.dni AS TEXT) LIKE :term)',
+          {
+            term: `%${term}%`,
+          },
+        )
+        .take(limit)
+        .skip(offset);
+
+      // Verificar la consulta generada
+      // console.log('SQL generada:', queryBuilder.getSql());
+      // console.log('Término de búsqueda aplicado:', term);
+
+      const usuarios = await queryBuilder.getMany();
+
+      // Aplanar los resultados
+      const listaUsuariosAplanados = usuarios.map((usuario) => ({
+        id: usuario.usuario_id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        dni: usuario.dni,
+        nombre_comercio: usuario.nombre_comercio,
+        dom_fiscal: usuario.dom_fiscal,
+        email: usuario.email,
+        telefono: usuario.telefono,
+      }));
+
+      return listaUsuariosAplanados;
+    } catch (error) {
+      this.logger.error(error);
+      console.log(error);
+      throw new InternalServerErrorException(
+        'Error al buscar los usuarios por termino',
+        error,
+      );
+    }
+  }
+
   async findByEmailForLogin(email: string): Promise<Usuario | undefined> {
     try {
       return this.usuarioRepository.findOne({
@@ -160,6 +216,7 @@ export class UsuariosService {
     }
   }
 
+  // TODO: agregar campo token; null por defecto. Para recuperar generar uno nuevo
   async requestPasswordReset(email: string): Promise<void> {
     const usuario = await this.findByEmailForPasswordReset(email);
 
@@ -180,6 +237,7 @@ export class UsuariosService {
   }
 
   // FIXME: Implementar servicio de notificación por correo
+  // TODO: template
   async sendRecoveryEmail(
     user: Pick<Usuario, 'email' | 'nombre'>,
     token: string,

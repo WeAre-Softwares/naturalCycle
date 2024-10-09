@@ -17,6 +17,9 @@ export class CreateUsuarioDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 150)
+  @Transform(
+    ({ value }) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+  ) // Capitaliza la primera letra
   nombre: string;
 
   @ApiProperty({
@@ -26,6 +29,9 @@ export class CreateUsuarioDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 150)
+  @Transform(
+    ({ value }) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+  ) // Capitaliza la primera letra
   apellido: string;
 
   @ApiProperty({

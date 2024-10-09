@@ -47,7 +47,8 @@ export class ProductosService {
     createProductoDto: CreateProductoDto,
     files: Express.Multer.File[], // Esperamos varios archivos
   ): Promise<ProductoResponse> {
-    const { marca_id, categoria_id, etiqueta_id, ...rest } = createProductoDto;
+    const { marca_id, productos_categorias, productos_etiquetas, ...rest } =
+      createProductoDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -99,19 +100,17 @@ export class ProductosService {
       // * Guardar las relaciones en las tablas intermedias
 
       // Relación con Categorías
-      if (categoria_id && categoria_id.length > 0) {
-        for (const categoriaId of categoria_id) {
-          const categoria = await this.categoriasService.findOne(categoriaId); // Obtener cada categoría individualmente
+      if (productos_categorias && productos_categorias.length > 0) {
+        for (const categoriaDto of productos_categorias) {
+          const categoria = await this.categoriasService.findOne(
+            categoriaDto.categoria_id,
+          ); // Obtener cada categoría individualmente
 
-          if (!categoria) {
-            throw new Error(`La categoría con id ${categoriaId} no existe`);
-          }
           const nuevoProductoCategoria = queryRunner.manager.create(
             ProductosCategorias,
             {
               producto: nuevoProducto,
               categoria,
-              esta_activo: true,
             },
           );
           await queryRunner.manager.save(nuevoProductoCategoria);
@@ -120,18 +119,17 @@ export class ProductosService {
       }
 
       // Relación con Etiquetas
-      if (etiqueta_id && etiqueta_id.length > 0) {
-        for (const etiquetaId of etiqueta_id) {
-          const etiqueta = await this.etiquetasService.findOne(etiquetaId); // Obtener cada etiqueta individualmente
-          if (!etiqueta) {
-            throw new Error(`La etiqueta con id ${etiquetaId} no existe`);
-          }
+      if (productos_etiquetas && productos_etiquetas.length > 0) {
+        for (const etiquetaDto of productos_etiquetas) {
+          const etiqueta = await this.etiquetasService.findOne(
+            etiquetaDto.etiqueta_id,
+          ); // Obtener cada etiqueta individualmente
+
           const nuevoProductoEtiqueta = queryRunner.manager.create(
             ProductosEtiquetas,
             {
               producto: nuevoProducto,
               etiqueta,
-              esta_activo: true,
             },
           );
           await queryRunner.manager.save(nuevoProductoEtiqueta);
@@ -352,7 +350,7 @@ export class ProductosService {
     updateProductoDto: UpdateProductoDto,
     files: Express.Multer.File[],
   ): Promise<ProductoResponse> {
-    const { marca_id, categoria_id, etiqueta_id, ...toUpdate } =
+    const { marca_id, productos_categorias, productos_etiquetas, ...toUpdate } =
       updateProductoDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -378,20 +376,21 @@ export class ProductosService {
       }
 
       // Actualizar relaciones con Categorías
-      if (categoria_id && categoria_id.length > 0) {
+      if (productos_categorias && productos_categorias.length > 0) {
         // Eliminar relaciones anteriores
         await this.productosCategoriasRepository.delete({
           producto: { producto_id: id },
         });
 
-        for (const categoriaId of categoria_id) {
-          const categoria = await this.categoriasService.findOne(categoriaId);
+        for (const categoriaDto of productos_categorias) {
+          const categoria = await this.categoriasService.findOne(
+            categoriaDto.categoria_id,
+          );
 
           const nuevaRelacionCategoria =
             this.productosCategoriasRepository.create({
               producto,
               categoria,
-              esta_activo: true,
             });
           await queryRunner.manager.save(nuevaRelacionCategoria);
           savedCategorias.push(categoria);
@@ -399,20 +398,21 @@ export class ProductosService {
       }
 
       // Actualizar relaciones con Etiquetas
-      if (etiqueta_id && etiqueta_id.length > 0) {
+      if (productos_etiquetas && productos_etiquetas.length > 0) {
         // Eliminar relaciones anteriores
         await this.productosEtiquetasRepository.delete({
           producto: { producto_id: id },
         });
 
-        for (const etiquetaId of etiqueta_id) {
-          const etiqueta = await this.etiquetasService.findOne(etiquetaId);
+        for (const etiquetaDto of productos_etiquetas) {
+          const etiqueta = await this.etiquetasService.findOne(
+            etiquetaDto.etiqueta_id,
+          );
 
           const nuevaRelacionEtiqueta =
             this.productosEtiquetasRepository.create({
               producto,
               etiqueta,
-              esta_activo: true,
             });
           await queryRunner.manager.save(nuevaRelacionEtiqueta);
           savedEtiquetas.push(etiqueta);

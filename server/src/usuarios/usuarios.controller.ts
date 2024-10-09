@@ -9,7 +9,7 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UsuariosService } from './usuarios.service';
 import { Usuario } from './entities/usuario.entity';
 import {
@@ -17,7 +17,7 @@ import {
   UpdateUserByAdminDto,
   UpdateBasicUserDto,
 } from './dto';
-import { PaginationDto } from '../common/dtos';
+import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import type { FindAllUsersResponse } from './interfaces';
 
 @ApiTags('Usuarios')
@@ -29,6 +29,31 @@ export class UsuariosController {
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.create(createUsuarioDto);
+  }
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Buscar usuarios por término(nombre, apellido y dni)',
+  })
+  @ApiQuery({
+    name: 'term',
+    required: false,
+    description: 'Término de búsqueda',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Límite de resultados',
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    description: 'Desplazamiento de resultados',
+  })
+  async findByTerm(
+    @Query() searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<Partial<Usuario>[]> {
+    return this.usuariosService.findAllByTerm(searchWithPaginationDto);
   }
 
   @Get()
