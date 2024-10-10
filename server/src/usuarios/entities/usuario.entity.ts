@@ -84,4 +84,7 @@ export class Usuario {
     select: false, // Este campo no se seleccionará por defecto
   })
   esta_activo: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  last_password_reset_request: Date | null;
 }

@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Usuario } from '../usuarios/entities/usuario.entity';
-import { LoginUserDto } from './dto';
+import { LoginUserDto, ResetPasswordDto } from './dto';
 import { Auth, GetUser } from './decorators';
 
 @ApiTags('Auth')
@@ -24,5 +24,17 @@ export class AuthController {
     token: string;
   }> {
     return this.authService.checkAuthStatus(usuario);
+  }
+
+  @Post('request-password-reset')
+  async requestPasswordReset(@Body('email') email: string): Promise<void> {
+    return this.authService.requestPasswordReset(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() resetPasswordDto: ResetPasswordDto,
+  ): Promise<void> {
+    return this.authService.resetPassword(resetPasswordDto);
   }
 }

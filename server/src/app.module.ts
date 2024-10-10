@@ -16,6 +16,7 @@ import { DetallesPedidosModule } from './detalles_pedidos/detalles_pedidos.modul
 import { ProductosImagenesModule } from './productos_imagenes/productos_imagenes.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
+import { MailsModule } from './mails/mails.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { AuthModule } from './auth/auth.module';
 
     CloudinaryModule,
     AuthModule,
+    MailsModule,
   ],
 })
 export class AppModule {}

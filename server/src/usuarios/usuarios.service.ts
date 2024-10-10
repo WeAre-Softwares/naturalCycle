@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Usuario } from './entities/usuario.entity';
@@ -25,6 +26,7 @@ export class UsuariosService {
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
     private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -192,19 +194,29 @@ export class UsuariosService {
     }
   }
 
+  // Método para encontrar el usuario por email para el restablecimiento
   async findByEmailForPasswordReset(
     email: string,
   ): Promise<
-    Pick<Usuario, 'usuario_id' | 'nombre' | 'email' | 'esta_activo'> | undefined
+    | Pick<
+        Usuario,
+        | 'usuario_id'
+        | 'nombre'
+        | 'apellido'
+        | 'email'
+        | 'last_password_reset_request'
+      >
+    | undefined
   > {
     try {
       return this.usuarioRepository.findOne({
-        where: { email },
+        where: { email, esta_activo: true },
         select: {
           usuario_id: true,
           nombre: true,
+          apellido: true,
           email: true,
-          esta_activo: true,
+          last_password_reset_request: true,
         },
       });
     } catch (error) {
@@ -216,45 +228,16 @@ export class UsuariosService {
     }
   }
 
-  // TODO: agregar campo token; null por defecto. Para recuperar generar uno nuevo
-  async requestPasswordReset(email: string): Promise<void> {
-    const usuario = await this.findByEmailForPasswordReset(email);
-
-    if (!usuario || !usuario.esta_activo) {
-      // Mensaje genérico para no revelar si el email está registrado o si el usuario está inactivo
-      throw new Error(
-        'Si este correo está registrado, recibirás un enlace de recuperación.',
-      );
-    }
-
-    const token = await this.authService.generateRecoveryToken(
-      usuario.usuario_id,
-    );
-    await this.sendRecoveryEmail(
-      { email: usuario.email, nombre: usuario.nombre },
-      token,
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.usuarioRepository.update(
+      { usuario_id: userId },
+      { password: hashedPassword },
     );
   }
 
-  // FIXME: Implementar servicio de notificación por correo
-  // TODO: template
-  async sendRecoveryEmail(
-    user: Pick<Usuario, 'email' | 'nombre'>,
-    token: string,
-  ): Promise<void> {
-    const recoveryUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-    const emailContent = `
-      <p>Hola ${user.nombre},</p>
-      <p>Parece que has solicitado restablecer tu contraseña. Haz clic en el enlace de abajo para proceder:</p>
-      <a href="${recoveryUrl}">Restablecer Contraseña</a>
-      <p>Si no has solicitado esto, ignora este correo.</p>
-    `;
-
-    // await this.emailService.sendMail({
-    //   to: user.email,
-    //   subject: 'Recuperación de Contraseña',
-    //   html: emailContent,
-    // });
+  async updateUsuario(usuario: Partial<Usuario>): Promise<void> {
+    await this.usuarioRepository.save(usuario);
   }
 
   async updateUserByAdmin(

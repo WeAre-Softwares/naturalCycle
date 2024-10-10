@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Usuario } from '../usuarios/entities/usuario.entity';
 import { UsuariosService } from '../usuarios/usuarios.service';
-import { LoginUserDto } from './dto';
+import { MailsService } from 'src/mails/mails.service';
+import { Usuario } from '../usuarios/entities/usuario.entity';
+import { LoginUserDto, ResetPasswordDto } from './dto';
 import { JwtPayload } from './interfaces';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class AuthService {
   constructor(
     @Inject(forwardRef(() => UsuariosService))
     private readonly usuarioService: UsuariosService,
+    private readonly mailsService: MailsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -42,7 +44,7 @@ export class AuthService {
       this.handleDBExceptions(error);
     }
   }
-  //TODO: Ver si es conveniente dejarlo como código asincrono o quitarlo ya que el código es sincrono
+
   async checkAuthStatus(usuario: Usuario): Promise<{ token: string }> {
     return {
       token: this.getJwtToken({
@@ -59,10 +61,61 @@ export class AuthService {
     return token;
   }
 
-  //TODO: Ver si es conveniente dejarlo como código asincrono o quitarlo ya que el código es sincrono
   async generateRecoveryToken(userId: string): Promise<string> {
     const payload = { userId };
     return this.jwtService.sign(payload, { expiresIn: '15min' });
+  }
+
+  // Solicitar restablecimiento de contraseña
+  async requestPasswordReset(email: string): Promise<void> {
+    const usuario =
+      await this.usuarioService.findByEmailForPasswordReset(email);
+
+    if (!usuario) {
+      // Mensaje genérico para no revelar si el email está registrado o si el usuario está inactivo
+      throw new Error(
+        'Si este correo está registrado, recibirás un enlace de recuperación.',
+      );
+    }
+
+    // FIXME:
+    // Verificar si ya ha solicitado un restablecimiento en los últimos 10 minutos
+    // const now = new Date();
+    // const lastRequest = usuario.last_password_reset_request;
+    // if (lastRequest && now.getTime() - lastRequest.getTime() < 10 * 60 * 1000) {
+    //   throw new Error(
+    //     'Ya has solicitado restablecer tu contraseña. Inténtalo más tarde.',
+    //   );
+    // }
+
+    // Generar el token JWT
+    const token = await this.generateRecoveryToken(usuario.usuario_id);
+
+    // Actualizar la fecha de la última solicitud
+    // usuario.last_password_reset_request = now;
+    // await this.usuarioService.updateUsuario(usuario);
+
+    // Enviar correo de recuperación con el token
+    await this.mailsService.sendRecoveryEmail(usuario, token);
+  }
+
+  // Método para validar el token y actualizar la contraseña
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    const { newPassword, token } = resetPasswordDto;
+
+    // Verificar y decodificar el token
+    const decoded = this.jwtService.verify(token);
+    const { userId } = decoded;
+
+    // Encontrar el usuario asociado al token
+    const usuario = await this.usuarioService.findOne(userId);
+
+    if (!usuario) {
+      throw new Error('Token inválido o usuario no encontrado.');
+    }
+
+    // Actualizar la contraseña
+    await this.usuarioService.updatePassword(userId, newPassword);
   }
 
   private handleDBExceptions(error: any): never {
