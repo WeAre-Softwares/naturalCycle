@@ -1,0 +1,40 @@
+<style>
+  @import
+  url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+  * { font-family: Poppins, system-ui; padding: 0px; margin: 0px; }
+</style>
+<div
+  class='container-content'
+  style='display: flex; align-items: center; justify-content: center;'
+>
+  <div
+    class='card'
+    style='border-radius: 10px; background-color: white; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08); text-align: center; padding: 40px 30px; width: auto;'
+  >
+    <div class='card-header'>
+      <h1><strong>¡Felicitaciones!</strong></h1>
+    </div>
+    <div class='card-body'>
+      {{! <img
+        src='https://res.cloudinary.com/djkjuzzz6/image/upload/v1728568985/NaturalCycle-recursos/approved_image.png'
+        class='my-3'
+        alt='Account Approved'
+        style='margin-top: 30px; width: 150px; height: 150px;'
+      /> }}
+      <h2 class='my-3' style='margin: 30px 0px;'>Hola {{name}},</h2>
+      <p style='padding: 0px; margin: 0px;'>¡Tu cuenta ha sido activada
+        exitosamente en NaturalCycle!</p>
+      <p style='padding: 0px; margin: 0px;'>Ya puedes acceder a todas nuestras
+        funcionalidades y empezar a disfrutar de nuestra plataforma.</p>
+      <a
+        class='btn mt-3'
+        href='https://wearesoftwares.com/'
+        style='margin-top: 30px; border: none; padding: 15px 25px; border-radius: 5px; color: white; display: inline-block; background-color: #4CAF50; text-decoration: none;'
+      >Acceder a tu cuenta</a>
+      <p style='margin-top: 30px; font-size: 0.9rem; color: #777;'>
+        Si no has solicitado este cambio, por favor contacta con soporte.
+        ¡Gracias por formar parte de NaturalCycle!
+      </p>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JwtService } from '@nestjs/jwt';
 import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Usuario } from './entities/usuario.entity';
@@ -15,8 +14,10 @@ import {
   type UpdateBasicUserDto,
 } from './dto';
 import { AuthService } from '../auth/auth.service';
+import { MailsService } from '../mails/mails.service';
 import type { CreateUserResponse, FindAllUsersResponse } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
+import { RolesUsuario } from './types/roles.enum';
 
 @Injectable()
 export class UsuariosService {
@@ -26,7 +27,7 @@ export class UsuariosService {
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
     private readonly authService: AuthService,
-    private readonly jwtService: JwtService,
+    private readonly MailsService: MailsService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -42,6 +43,9 @@ export class UsuariosService {
 
       await this.usuarioRepository.save(usuario);
 
+      // Enviar notificación por correo
+      await this.MailsService.sendAccountPendingApprovalEmail(usuario);
+
       // Eliminar campos sensibles del objeto: Usuario directamente
       delete usuario.email;
       delete usuario.email_verificado;
@@ -49,6 +53,8 @@ export class UsuariosService {
       delete usuario.esta_activo;
       delete usuario.password;
       delete usuario.roles;
+      delete usuario.last_password_reset_request;
+      delete usuario.reset_password_token;
 
       return {
         ...usuario,
@@ -310,6 +316,9 @@ export class UsuariosService {
     // Combinar las propiedades del DTO con la entidad existente
     this.usuarioRepository.merge(usuario, updateUserByAdminDto);
 
+    // Verifica si el nuevo campo dado_de_alta ha cambiado a true
+    const rolesChanged = updateUserByAdminDto.dado_de_alta === true;
+
     // Query runner
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -317,6 +326,13 @@ export class UsuariosService {
     try {
       // Guardar cambios en la DB
       await queryRunner.manager.save(usuario);
+
+      // Enviar notificación por correo solo si el rol cambia de null a 'usuario'
+      if (rolesChanged) {
+        this.logger.debug(`Enviando correo a: ${usuario.email}`);
+        await this.MailsService.sendAccountActivatedEmail(usuario);
+      }
+
       // Confirmar transacción
       await queryRunner.commitTransaction();
 
@@ -327,11 +343,13 @@ export class UsuariosService {
         email: usuario.email,
         roles: usuario.roles,
         esta_activo: usuario.esta_activo,
+        dado_de_alta: usuario.dado_de_alta,
       };
     } catch (error) {
       // Revertir transacción en caso de error
       await queryRunner.rollbackTransaction();
       this.logger.error(error);
+      console.log(error);
       throw new InternalServerErrorException(
         `Error al actualizar el usuario con ID ${usuario.usuario_id}.`,
         error,

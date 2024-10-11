@@ -24,4 +24,29 @@ export class MailsService {
       },
     });
   }
+
+  async sendAccountPendingApprovalEmail(
+    usuario: Partial<Usuario>,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      to: usuario.email,
+      subject: 'Tu cuenta está en espera de aprobación',
+      template: './account-pending-approval',
+      context: {
+        name: usuario.nombre + ' ' + usuario.apellido,
+      },
+    });
+  }
+
+  //TODO: Cambiar URL login
+  async sendAccountActivatedEmail(usuario: Partial<Usuario>): Promise<void> {
+    await this.mailerService.sendMail({
+      to: usuario.email,
+      subject: '¡Felicidades! Tu cuenta ha sido activada en NaturalCycle',
+      template: './account-activated',
+      context: {
+        name: usuario.nombre + ' ' + usuario.apellido,
+      },
+    });
+  }
 }

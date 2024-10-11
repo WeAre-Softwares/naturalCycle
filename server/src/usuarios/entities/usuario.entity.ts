@@ -22,6 +22,7 @@ export class Usuario {
 
   @Column({
     type: 'bigint',
+    unique: true,
     nullable: false,
   })
   dni: number;
@@ -50,6 +51,7 @@ export class Usuario {
   @Column({
     type: 'varchar',
     length: 255,
+    unique: true,
     nullable: false,
   })
   email: string;
@@ -84,6 +86,13 @@ export class Usuario {
     select: false, // Este campo no se seleccionará por defecto
   })
   esta_activo: boolean;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+    select: false, // Este campo no se seleccionará por defecto
+  })
+  dado_de_alta: boolean;
 
   @Column({
     type: 'varchar',

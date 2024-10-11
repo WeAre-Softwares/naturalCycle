@@ -28,9 +28,18 @@ export class UpdateUserByAdminDto {
   esta_activo?: boolean;
 
   @ApiProperty({
+    example: false,
+    description: 'Indica si el usuario ha sido dado de alta',
+    default: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  dado_de_alta?: boolean;
+
+  @ApiProperty({
     example: ['admin', 'empleado', 'usuario'],
     description: 'Roles asignados al usuario',
-    default: [null],
+    default: [],
   })
   @IsArray()
   @IsEnum(RolesUsuario, { each: true })
