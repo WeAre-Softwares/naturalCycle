@@ -8,8 +8,6 @@ export class ResetPasswordDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsString()
-  @IsNotEmpty()
   @Length(8, 255, {
     message: 'La contraseña debe tener al menos 8 caracteres.',
   })

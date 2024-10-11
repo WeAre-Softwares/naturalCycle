@@ -12,7 +12,7 @@ export class MailsService {
     token: string,
   ): Promise<void> {
     // const recoveryUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-    const recoveryUrl = `${process.env.BACKEND_URL}/auth/reset-password?token=${token}`;
+    const url = `${process.env.BACKEND_URL}/auth/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
       to: usuario.email,
@@ -20,7 +20,7 @@ export class MailsService {
       template: './password-reset',
       context: {
         name: usuario.nombre + ' ' + usuario.apellido,
-        recoveryUrl,
+        url,
       },
     });
   }

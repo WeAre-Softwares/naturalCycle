@@ -85,6 +85,18 @@ export class Usuario {
   })
   esta_activo: boolean;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({
+    type: 'varchar',
+    length: 255, // Ajustado para tokens JWT estándar
+    nullable: true,
+    select: false, // No se seleccionará por defecto por seguridad
+  })
+  reset_password_token: string | null;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+    select: false, // No se seleccionará por defecto por seguridad
+  })
   last_password_reset_request: Date | null;
 }

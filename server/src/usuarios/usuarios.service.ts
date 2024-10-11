@@ -117,6 +117,40 @@ export class UsuariosService {
     }
   }
 
+  async findOneByResetPasswordToken(
+    id: string,
+    checkActive: boolean = true,
+  ): Promise<Usuario> {
+    try {
+      const whereCondition = checkActive
+        ? { usuario_id: id, esta_activo: true }
+        : { usuario_id: id };
+
+      const usuario = await this.usuarioRepository.findOne({
+        where: whereCondition,
+        select: {
+          last_password_reset_request: true,
+          reset_password_token: true,
+          usuario_id: true,
+        },
+      });
+
+      if (!usuario) {
+        throw new NotFoundException(
+          `No se encontro el usuario con el id: ${id}`,
+        );
+      }
+
+      return usuario;
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar el usuario',
+        error,
+      );
+    }
+  }
+
   async findAllByTerm(
     SearchWithPaginationDto: SearchWithPaginationDto,
   ): Promise<Partial<Usuario>[]> {
@@ -204,6 +238,7 @@ export class UsuariosService {
         | 'nombre'
         | 'apellido'
         | 'email'
+        | 'reset_password_token'
         | 'last_password_reset_request'
       >
     | undefined
@@ -216,6 +251,7 @@ export class UsuariosService {
           nombre: true,
           apellido: true,
           email: true,
+          reset_password_token: true,
           last_password_reset_request: true,
         },
       });
@@ -236,8 +272,33 @@ export class UsuariosService {
     );
   }
 
-  async updateUsuario(usuario: Partial<Usuario>): Promise<void> {
-    await this.usuarioRepository.save(usuario);
+  async updatePasswordResetFields(
+    userId: string,
+    resetFields: Partial<Usuario>,
+  ): Promise<void> {
+    const usuario = await this.findOne(userId, true); // Verifica si el usuario está activo
+
+    // Combinar los campos recibidos con el objeto del usuario
+    this.usuarioRepository.merge(usuario, resetFields);
+
+    // Crear query runner
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      // Guardar cambios en la DB
+      await queryRunner.manager.save(usuario);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        `Error al actualizar los campos de restablecimiento del usuario`,
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async updateUserByAdmin(

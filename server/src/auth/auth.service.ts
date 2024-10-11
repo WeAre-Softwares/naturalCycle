@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { MailsService } from 'src/mails/mails.service';
 import { Usuario } from '../usuarios/entities/usuario.entity';
-import { LoginUserDto, ResetPasswordDto } from './dto';
+import { LoginUserDto, ResetPasswordDto, RequestPasswordResetDto } from './dto';
 import { JwtPayload } from './interfaces';
 
 @Injectable()
@@ -61,39 +61,46 @@ export class AuthService {
     return token;
   }
 
+  // Método para generar el token de recuperación
   async generateRecoveryToken(userId: string): Promise<string> {
     const payload = { userId };
     return this.jwtService.sign(payload, { expiresIn: '15min' });
   }
 
   // Solicitar restablecimiento de contraseña
-  async requestPasswordReset(email: string): Promise<void> {
+  async requestPasswordReset(
+    requestPasswordResetDto: RequestPasswordResetDto,
+  ): Promise<void> {
+    const { email } = requestPasswordResetDto;
+
     const usuario =
       await this.usuarioService.findByEmailForPasswordReset(email);
 
     if (!usuario) {
       // Mensaje genérico para no revelar si el email está registrado o si el usuario está inactivo
-      throw new Error(
+      throw new NotFoundException(
         'Si este correo está registrado, recibirás un enlace de recuperación.',
       );
     }
 
-    // FIXME:
     // Verificar si ya ha solicitado un restablecimiento en los últimos 10 minutos
-    // const now = new Date();
-    // const lastRequest = usuario.last_password_reset_request;
-    // if (lastRequest && now.getTime() - lastRequest.getTime() < 10 * 60 * 1000) {
-    //   throw new Error(
-    //     'Ya has solicitado restablecer tu contraseña. Inténtalo más tarde.',
-    //   );
-    // }
+    const now = new Date();
+    const lastRequest = usuario.last_password_reset_request;
+
+    if (lastRequest && now.getTime() - lastRequest.getTime() < 10 * 60 * 1000) {
+      throw new NotFoundException(
+        'Ya has solicitado restablecer tu contraseña. Inténtalo más tarde.',
+      );
+    }
 
     // Generar el token JWT
     const token = await this.generateRecoveryToken(usuario.usuario_id);
 
-    // Actualizar la fecha de la última solicitud
-    // usuario.last_password_reset_request = now;
-    // await this.usuarioService.updateUsuario(usuario);
+    // Guardar el token y la fecha de la solicitud en la DB
+    await this.usuarioService.updatePasswordResetFields(usuario.usuario_id, {
+      last_password_reset_request: now,
+      reset_password_token: token,
+    });
 
     // Enviar correo de recuperación con el token
     await this.mailsService.sendRecoveryEmail(usuario, token);
@@ -103,19 +110,33 @@ export class AuthService {
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
     const { newPassword, token } = resetPasswordDto;
 
-    // Verificar y decodificar el token
-    const decoded = this.jwtService.verify(token);
+    // Verificar y decodificar el token para obtener el usuario
+    let decoded;
+    try {
+      decoded = this.jwtService.verify(token);
+    } catch (error) {
+      throw new NotFoundException('Token inválido o expirado.');
+    }
+
     const { userId } = decoded;
 
     // Encontrar el usuario asociado al token
-    const usuario = await this.usuarioService.findOne(userId);
+    const usuario =
+      await this.usuarioService.findOneByResetPasswordToken(userId);
+    console.log('Token almacenado:', usuario.reset_password_token);
+    console.log('Token recibido:', token);
 
-    if (!usuario) {
-      throw new Error('Token inválido o usuario no encontrado.');
+    if (!usuario || usuario.reset_password_token !== token) {
+      throw new NotFoundException('Token inválido o ya utilizado');
     }
 
     // Actualizar la contraseña
     await this.usuarioService.updatePassword(userId, newPassword);
+
+    // Limpiar el token después de que la contraseña ha sido actualizada
+    await this.usuarioService.updatePasswordResetFields(usuario.usuario_id, {
+      reset_password_token: null,
+    });
   }
 
   private handleDBExceptions(error: any): never {
