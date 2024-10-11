@@ -4,7 +4,6 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsBoolean,
-  IsDecimal,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -15,6 +14,8 @@ import {
   MinLength,
 } from 'class-validator';
 import { TipoPrecio } from '../types/tipo-precio.enum';
+import { CreateProductosCategoriasDto } from './create-productos-categorias.dto';
+import { CreateProductosEtiquetasDto } from './create-productos-etiquetas.dto';
 
 export class CreateProductoDto {
   @ApiProperty({
@@ -26,6 +27,9 @@ export class CreateProductoDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(255)
+  @Transform(
+    ({ value }) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+  ) // Capitalizar la primera letra
   nombre: string;
 
   @ApiProperty({
@@ -85,29 +89,33 @@ export class CreateProductoDto {
   @IsNotEmpty()
   marca_id: string;
 
-  // Propiedad para recibir IDs de múltiples categorías
+  // Propiedad para recibir IDs de múltiples Etiquetas para tabla intermedia
   @ApiProperty({
-    example: ['uuid-categoria1', 'uuid-categoria2'],
-    description: 'IDs de las categorías asociadas al producto',
+    example: [
+      { etiqueta_id: 'uuid-etiqueta1' },
+      { etiqueta_id: 'uuid-etiqueta2' },
+    ],
+    description: 'IDs de las etiquetas que quiero asociar al producto',
     isArray: true,
-    type: String,
+    type: CreateProductosEtiquetasDto,
   })
   @IsArray()
   @ArrayNotEmpty()
-  @IsUUID('4', { each: true }) // Validar que cada elemento sea un UUID
-  categoria_id: string[];
+  productos_etiquetas: CreateProductosEtiquetasDto[];
 
-  // Propiedad para recibir IDs de múltiples Etiquetas
+  // Propiedad para recibir IDs de múltiples Categorías para tabla intermedia
   @ApiProperty({
-    example: ['uuid-etiqueta1', 'uuid-etiqueta2'],
-    description: 'IDs de las etiquetas asociadas al producto',
+    example: [
+      { categoria_id: 'uuid-categoria1' },
+      { categoria_id: 'uuid-categoria2' },
+    ],
+    description: 'Relación entre categorías y el producto',
     isArray: true,
-    type: String,
+    type: CreateProductosCategoriasDto,
   })
   @IsArray()
   @ArrayNotEmpty()
-  @IsUUID('4', { each: true })
-  etiqueta_id: string[];
+  productos_categorias: CreateProductosCategoriasDto[];
 
   @ApiProperty({
     type: 'string',
@@ -116,6 +124,5 @@ export class CreateProductoDto {
     required: true,
     isArray: true,
   })
-  @IsOptional()
-  imagenes?: any[];
+  imagenes: any[];
 }

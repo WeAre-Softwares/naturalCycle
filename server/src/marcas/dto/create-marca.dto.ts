@@ -20,6 +20,9 @@ export class CreateMarcaDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(255)
+  @Transform(
+    ({ value }) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+  ) // Capitaliza la primera letra
   nombre: string;
 
   @ApiProperty({

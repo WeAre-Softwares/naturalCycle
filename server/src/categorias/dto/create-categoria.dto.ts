@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateCategoriaDto {
@@ -12,5 +13,8 @@ export class CreateCategoriaDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(255)
+  @Transform(
+    ({ value }) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+  ) // Capitaliza la primera letra
   nombre: string;
 }

@@ -28,6 +28,21 @@ export const JoiSchemaValidation = Joi.object({
   CLOUDINARY_API_SECRET: Joi.string().required().messages({
     'any.required': 'Please provide environment variable {#key}',
   }),
+  EMAIL_HOST: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  EMAIL_USER: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  EMAIL_PASSWORD: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  EMAIL_FROM: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
+  EMAIL_PORT: Joi.string().required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+  }),
   PORT: Joi.number().default(3007),
   DB_HOST: Joi.string().default('localhost'),
   NODE_ENV: Joi.string().default('dev'),
