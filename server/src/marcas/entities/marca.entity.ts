@@ -43,7 +43,6 @@ export class Marca {
   })
   public_id: string;
 
-  @Index()
   @Index() // Índice para optimizar consultas por estado
   @Column({
     type: 'boolean',
