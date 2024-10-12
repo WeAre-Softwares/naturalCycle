@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Producto } from '../../productos/entities/producto.entity';
+import { Pedido } from '../../pedidos/entities/pedido.entity';
 
 @Entity({ name: 'detalles_pedidos' })
 export class DetallesPedido {
@@ -27,5 +36,18 @@ export class DetallesPedido {
   })
   total_precio: number; // 99,999,999.99
 
-  // Establecer relaciones
+  @Index() // Índice para optimizar consultas por estado
+  @Column({
+    type: 'boolean',
+    default: true,
+  })
+  esta_activo: boolean;
+
+  @ManyToOne(() => Producto, (producto) => producto.detalles_pedido)
+  @JoinColumn({ name: 'producto_id' })
+  producto: Producto;
+
+  @ManyToOne(() => Pedido, (pedido) => pedido.detalles_pedido)
+  @JoinColumn({ name: 'pedido_id' })
+  pedido: Pedido;
 }

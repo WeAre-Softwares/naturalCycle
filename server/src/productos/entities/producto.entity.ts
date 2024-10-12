@@ -14,6 +14,7 @@ import { ProductosImagenes } from '../../productos_imagenes/entities/productos_i
 import { Marca } from '../../marcas/entities/marca.entity';
 import { ProductosCategorias } from './productos-categorias.entity';
 import { ProductosEtiquetas } from './productos-etiquetas.entity';
+import { DetallesPedido } from 'src/detalles_pedidos/entities/detalles_pedido.entity';
 
 @Entity({ name: 'productos' })
 export class Producto {
@@ -95,6 +96,12 @@ export class Producto {
     },
   )
   imagenes: ProductosImagenes[];
+
+  @OneToMany(
+    () => DetallesPedido,
+    (detalles_pedidos) => detalles_pedidos.producto,
+  )
+  detalles_pedido: DetallesPedido[];
 
   @ManyToOne(() => Marca, (marca) => marca.productos)
   @JoinColumn({ name: 'marca_id' })

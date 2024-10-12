@@ -1,17 +1,15 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Repository } from 'typeorm';
+import { UsuariosService } from '../../usuarios/usuarios.service';
 import { Usuario } from '../../usuarios/entities/usuario.entity';
 import { JwtPayload } from '../interfaces';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>,
+    private readonly usuariosService: UsuariosService,
     configService: ConfigService,
   ) {
     super({
@@ -23,17 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload): Promise<Usuario> {
     const { id } = payload;
 
-    const usuario = await this.usuarioRepository.findOneBy({ usuario_id: id });
+    const usuario = await this.usuariosService.findOne(id, true);
 
-    if (!usuario) throw new UnauthorizedException('Token no valido');
-
-    if (!usuario.esta_activo)
-      throw new UnauthorizedException(
-        'El usuario está inactivo, hable con un administrador',
-      );
-
-    // console.log({ user });
-
-    return usuario;
+    return usuario; // El método ya valida si el usuario existe o está activo
   }
 }

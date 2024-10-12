@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolesUsuario } from '../types/roles.enum';
+import { Pedido } from '../../pedidos/entities/pedido.entity';
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
@@ -108,4 +109,7 @@ export class Usuario {
     select: false, // No se seleccionará por defecto por seguridad
   })
   last_password_reset_request: Date | null;
+
+  @OneToMany(() => Pedido, (pedido) => pedido.usuario)
+  pedidos: Pedido[];
 }
