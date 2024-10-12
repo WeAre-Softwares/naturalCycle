@@ -5,17 +5,20 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Usuario } from '../../usuarios/entities/usuario.entity';
 import { EstadoPedido } from '../types/estado-pedido.enum';
+import { DetallesPedido } from 'src/detalles_pedidos/entities/detalles_pedido.entity';
 
 @Entity({ name: 'pedidos' })
 export class Pedido {
   @PrimaryGeneratedColumn('uuid')
   pedido_id: string;
 
+  @Index() // Índice para optimizar consultas
   @Column({
     type: 'enum',
     enum: EstadoPedido,
@@ -53,4 +56,7 @@ export class Pedido {
   @ManyToOne(() => Usuario, (usuario) => usuario.pedidos)
   @JoinColumn({ name: 'usuario_id' })
   usuario: Usuario;
+
+  @OneToMany(() => DetallesPedido, (detalles_pedido) => detalles_pedido.pedido)
+  detalles_pedido: DetallesPedido[];
 }

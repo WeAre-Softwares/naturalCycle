@@ -61,6 +61,15 @@ export class PedidosService {
     try {
       const [pedidos, total] = await this.pedidoRepository.findAndCount({
         where: { esta_activo: true },
+        relations: {
+          usuario: true,
+        },
+        select: {
+          usuario: {
+            nombre: true,
+            apellido: true,
+          },
+        },
         take: limit,
         skip: offset,
       });
@@ -84,6 +93,15 @@ export class PedidosService {
     try {
       const pedido = await this.pedidoRepository.findOne({
         where: { pedido_id: id, esta_activo: true },
+        relations: {
+          usuario: true,
+        },
+        select: {
+          usuario: {
+            nombre: true,
+            apellido: true,
+          },
+        },
       });
 
       if (!pedido) {
@@ -110,12 +128,15 @@ export class PedidosService {
     try {
       const queryBuilder = this.pedidoRepository
         .createQueryBuilder('pedidos')
+        .leftJoinAndSelect('pedidos.usuario', 'usuario')
         .select([
           'pedidos.pedido_id',
           'pedidos.estado_pedido',
           'pedidos.total_precio',
           'pedidos.fecha_pedido',
           'pedidos.fecha_actualizacion',
+          'usuario.nombre',
+          'usuario.apellido',
         ])
         .where('pedidos.esta_activo = :esta_activo', { esta_activo: true })
         .andWhere('(LOWER(pedidos.estado_pedido::text) LIKE LOWER(:term))', {
@@ -125,8 +146,8 @@ export class PedidosService {
         .skip(offset);
 
       // Verificar la consulta generada
-      console.log('SQL generada:', queryBuilder.getSql());
-      console.log('Término de búsqueda aplicado:', term);
+      // console.log('SQL generada:', queryBuilder.getSql());
+      // console.log('Término de búsqueda aplicado:', term);
 
       const pedidos = await queryBuilder.getMany();
 
@@ -137,6 +158,10 @@ export class PedidosService {
         total_precio: pedido.total_precio,
         fecha_pedido: pedido.fecha_pedido,
         fecha_actualizacion: pedido.fecha_actualizacion,
+        usuario: {
+          nombre: pedido.usuario?.nombre,
+          apellido: pedido.usuario?.apellido,
+        },
       }));
 
       return listaPedidosAplanados;
@@ -222,17 +247,17 @@ export class PedidosService {
         );
       }
 
-      // Marcar como activa la marca
+      // Marcar como activo
       pedido.esta_activo = true;
       // Guardar en la DB
       await this.pedidoRepository.save(pedido);
       return {
-        mensaje: `La marca con ID ${id} ha sido marcada como activa.`,
+        mensaje: `El pedido con ID ${id} ha sido marcado como activo.`,
       };
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(
-        `Error al marcar como activa la marca con ID ${id}.`,
+        `Error al marcar como activo el pedido con ID ${id}.`,
         error,
       );
     }

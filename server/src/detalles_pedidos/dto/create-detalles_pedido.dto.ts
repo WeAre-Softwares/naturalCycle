@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
 
 export class CreateDetallesPedidoDto {
   @ApiProperty({
@@ -7,6 +7,7 @@ export class CreateDetallesPedidoDto {
     example: 3,
   })
   @IsNumber()
+  @Min(1, { message: 'La cantidad debe ser al menos 1' })
   @IsNotEmpty()
   cantidad: number;
 
