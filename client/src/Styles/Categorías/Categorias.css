@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container-general-categorias {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 230px;
+    padding-bottom: 20px;
+    width: 100%;
+    gap: 20px;
+}
+
+
+/* Estilos para el menú de categorías */
+.container-categorias-section-categorias {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #5e5e5e;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease; /* Transición suave */
+    position: fixed;
+    top: 218px;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.menu-abierto {
+    transform: translateX(0); /* Despliega el menú */
+}
+
+.categorias-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.categorias-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    justify-content: center;
+    align-items: center;
+}
+
+.categorias-lista a {
+    text-decoration: none;
+    font-size: 19px;
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.categorias-lista a:hover {
+    background-color: #7eb280;
+    font-weight: bold;
+}
+
+.container-boton-filtrado{
+    display: flex;
+    justify-content: flex-end;
+    width: 60%;
+}
+
+.boton-categorias {
+    padding: 12px 20px;
+    background-color: #7eb280;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boton-categorias:hover {
+    background-color: #2d4d33;
+}
+
+.cerrar-menu {
+    font-size: 18px;
+    color: #ffffff;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 20px;
+}
+
+.cerrar-menu:hover {
+    color: #7eb280;
+}
+
+/* Estilos para la sección de productos */
+.container-productos-categorias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 80%;
+}
+
+
+/* Media queries para pantallas mayores a 1100px */
+@media (max-width: 1100px) {
+    .container-categorias-section-categorias {
+        transform: translateX(-100%); /* Por defecto, menú cerrado */
+    }
+
+    .menu-abierto {
+        transform: translateX(0); /* Despliega el menú */
+    }
+
+    .container-boton-filtrado {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 20px;
+    }
+
+    .container-general-categorias {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .container-productos-categorias {
+        width: 100%;
+    }
+}
+
+@media (max-width:900px) {
+    .container-categorias-section-categorias{
+        top:195px;
+    }
+}
+

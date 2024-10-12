@@ -1,0 +1,544 @@
+
+
+.div-general-categoria-panel{
+  display: flex;
+  padding-top: 212px;
+}
+
+/* Container for the permissions section */
+.permissions-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 600px; /* Limit width for better readability */
+}
+
+/* Header styling */
+.permissions-header {
+  font-size: 28px; /* Larger font size for the header */
+  margin-bottom: 20px; /* Space below the header */
+  color: #333333; /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif; /* Professional font */
+}
+
+/* Checkbox group styling */
+.permissions-checkbox-group {
+  display: flex;
+  flex-direction: column; /* Stack checkboxes vertically */
+}
+
+/* Checkbox label styling */
+.permissions-checkbox-label {
+  display: flex;
+  align-items: center; /* Center align items */
+  font-size: 18px; /* Font size for checkbox label */
+  margin-bottom: 15px; /* Space between checkboxes */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: color 0.2s; /* Smooth color transition */
+}
+
+/* Checkbox input styling */
+.permissions-checkbox-input {
+  margin-right: 12px; /* Space between checkbox and label */
+  accent-color: #5e17eb; /* Custom accent color for checkbox */
+  transform: scale(1.2); /* Slightly larger checkbox */
+}
+
+/* Change text color on hover */
+.permissions-checkbox-label:hover {
+  color: #5e17eb; /* Change text color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .permissions-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  .permissions-header {
+    font-size: 24px; /* Slightly smaller header on mobile */
+  }
+
+  .permissions-checkbox-label {
+    font-size: 16px; /* Smaller font size for checkboxes */
+  }
+}
+
+/* Container for the create product section */
+.crear-producto-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 600px; /* Limit width for better readability */
+}
+
+/* Header styling */
+.crear-producto-header {
+  font-size: 28px; /* Larger font size for the header */
+  margin-bottom: 20px; /* Space below the header */
+  color: #333333; /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif; /* Professional font */
+}
+
+/* Input styling */
+.crear-producto-input,
+.crear-producto-textarea,
+.crear-producto-select {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding inside inputs */
+  margin-bottom: 15px; /* Space between inputs */
+  border: 1px solid #dddddd; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for inputs */
+  transition: border-color 0.2s; /* Smooth border color transition */
+}
+
+/* Input focus effect */
+.crear-producto-input:focus,
+.crear-producto-textarea:focus,
+.crear-producto-select:focus {
+  border-color: #5e17eb; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Textarea styling */
+.crear-producto-textarea {
+  height: 100px; /* Set height for textarea */
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Label styling */
+.crear-producto-label {
+  font-size: 18px; /* Font size for labels */
+  margin-bottom: 10px; /* Space below labels */
+  color: #333333; /* Darker text color */
+}
+
+/* Checkbox styling */
+.crear-producto-checkbox {
+  margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Button styling */
+.crear-producto-button {
+  padding: 12px 20px; /* Padding for button */
+  background-color: #5e17eb; /* Button color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+/* Button hover effect */
+.crear-producto-button:hover {
+  background-color: #4c14a3; /* Darker shade on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .crear-producto-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  .crear-producto-header {
+    font-size: 24px; /* Slightly smaller header on mobile */
+  }
+
+  .crear-producto-input,
+  .crear-producto-textarea,
+  .crear-producto-select {
+    font-size: 14px; /* Smaller font size for inputs */
+  }
+
+  .crear-producto-label {
+    font-size: 16px; /* Smaller font size for labels */
+  }
+
+  .crear-producto-button {
+    font-size: 14px; /* Smaller font size for button */
+  }
+}
+
+/* Container for the filtering section */
+.crear-filtrado-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 20px;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 600px; /* Limit width for better readability */
+  max-height: 500px;
+}
+
+/* Header styling */
+.crear-filtrado-header {
+  font-size: 28px; /* Larger font size for the header */
+  margin-bottom: 20px; /* Space below the header */
+  color: #333333; /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif; /* Professional font */
+}
+
+/* Subheader styling */
+.crear-filtrado-subheader {
+  font-size: 24px; /* Slightly smaller font size for subheader */
+  margin-bottom: 15px; /* Space below the subheader */
+  color: #5e17eb; /* Purple color for subheader */
+}
+
+/* Button styling */
+.crear-filtrado-button {
+  padding: 10px 15px; /* Padding for buttons */
+  background-color: #5e17eb; /* Button color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+  margin-right: 10px; /* Space between buttons */
+}
+
+/* Button hover effect */
+.crear-filtrado-button:hover {
+  background-color: #4c14a3; /* Darker shade on hover */
+}
+
+/* Input styling */
+.crear-filtrado-input {
+  width: 100%; /* Full width input */
+  padding: 10px; /* Padding inside input */
+  margin-bottom: 15px; /* Space below input */
+  border: 1px solid #dddddd; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for input */
+  transition: border-color 0.2s; /* Smooth border color transition */
+}
+
+/* Input focus effect */
+.crear-filtrado-input:focus {
+  border-color: #5e17eb; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Save button styling */
+.crear-filtrado-save-button {
+  padding: 12px 20px; /* Padding for save button */
+  background-color: #5e17eb; /* Save button color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for save button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+/* Save button hover effect */
+.crear-filtrado-save-button:hover {
+  background-color: #4c14a3; /* Darker shade on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .crear-filtrado-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  .crear-filtrado-header {
+    font-size: 24px; /* Slightly smaller header on mobile */
+  }
+
+  .crear-filtrado-input {
+    font-size: 14px; /* Smaller font size for input */
+  }
+
+  .crear-filtrado-button,
+  .crear-filtrado-save-button {
+    font-size: 14px; /* Smaller font size for buttons */
+  }
+}
+
+/* Container for the user area */
+.area-usuarios-container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 600px; /* Limit width for better readability */
+}
+
+/* Header styling */
+.area-usuarios-header {
+  font-size: 28px; /* Larger font size for the header */
+  margin-bottom: 20px; /* Space below the header */
+  color: #333333; /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif; /* Professional font */
+}
+
+/* Input styling */
+.area-usuarios-input {
+  width: 100%; /* Full width input */
+  padding: 10px; /* Padding inside input */
+  margin-bottom: 15px; /* Space below input */
+  border: 1px solid #dddddd; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for input */
+  transition: border-color 0.2s; /* Smooth border color transition */
+}
+
+/* Input focus effect */
+.area-usuarios-input:focus {
+  border-color: #5e17eb; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Toggle button styling */
+.area-usuarios-toggle-button {
+  padding: 12px 20px; /* Padding for toggle button */
+  background-color: #5e17eb; /* Button color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size for toggle button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+  margin-bottom: 20px; /* Space below toggle button */
+}
+
+/* Toggle button hover effect */
+.area-usuarios-toggle-button:hover {
+  background-color: #4c14a3; /* Darker shade on hover */
+}
+
+/* List of users */
+.area-usuarios-list {
+  display: flex;
+  flex-direction: column; /* Vertical stacking of users */
+}
+
+/* User item styling */
+.area-usuarios-item {
+  display: flex;
+  justify-content: space-between; /* Space between name and button */
+  align-items: center; /* Center vertically */
+  padding: 10px; /* Padding around user item */
+  border-bottom: 1px solid #eeeeee; /* Light border below each item */
+}
+
+/* User name styling */
+.area-usuarios-name {
+  font-size: 18px; /* Font size for user name */
+  color: #333333; /* Darker color for user name */
+  cursor: pointer;
+}
+
+/* Button styling for approving */
+.area-usuarios-approve-button,
+.area-usuarios-return-button {
+  padding: 10px 15px; /* Padding for buttons */
+  background-color: #5e17eb; /* Button color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 14px; /* Font size for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+/* Button hover effect */
+.area-usuarios-approve-button:hover,
+.area-usuarios-return-button:hover {
+  background-color: #4c14a3; /* Darker shade on hover */
+}
+
+.usuario-detalle-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.usuario-detalle-card:hover {
+  transform: translateY(-2px);
+}
+
+.usuario-detalle-title {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #000000; /* Color del título */
+  text-align: center; /* Centrar el título */
+}
+
+.usuario-detalle-info {
+  flex-grow: 1; /* Permite que esta sección crezca */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.usuario-detalle-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0; /* Espaciado entre filas */
+  border-bottom: 1px solid #f0f0f0; /* Línea divisoria */
+}
+
+.usuario-detalle-row:last-child {
+  border-bottom: none; /* Eliminar línea en la última fila */
+}
+
+.estado-aprobado {
+  color: green; /* Color para estado aprobado */
+  font-weight: bold;
+}
+
+.estado-pendiente {
+  color: orange; /* Color para estado pendiente */
+  font-weight: bold;
+}
+
+.usuario-detalle-close-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #5e17eb; /* Color de fondo */
+  color: rgb(255, 255, 255); /* Color del texto */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.usuario-detalle-close-button:hover {
+  background-color: #4d14c8; /* Color al pasar el mouse */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .area-usuarios-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  .area-usuarios-header {
+    font-size: 24px; /* Slightly smaller header on mobile */
+  }
+
+  .area-usuarios-input {
+    font-size: 14px; /* Smaller font size for input */
+  }
+
+  .area-usuarios-toggle-button,
+  .area-usuarios-approve-button,
+  .area-usuarios-return-button {
+    font-size: 14px; /* Smaller font size for buttons */
+  }
+}
+
+.area-pedidos {
+  padding: 20px;
+  background-color: #f9f9f9; /* Color de fondo claro para distinguir el área */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.titulo-area {
+  font-size: 2em; /* Tamaño de fuente para el título */
+  margin-bottom: 20px; /* Margen inferior para separar el título del resto del contenido */
+  color: #333; /* Color del texto del título */
+}
+
+.filtros {
+  margin-bottom: 20px; /* Espacio debajo de los filtros */
+}
+
+.filtro-boton {
+  margin-right: 10px; /* Espacio entre botones */
+  padding: 10px 15px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  background-color: #5e17eb; /* Color de fondo */
+  color: white; /* Color del texto */
+  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+  transition: background-color 0.3s; /* Transición suave al cambiar color */
+}
+
+.filtro-boton:hover {
+  background-color: #4a14b9; /* Color más oscuro al pasar el mouse */
+}
+
+.lista-pedidos {
+  margin-top: 20px; /* Margen superior para separar la lista de pedidos del filtro */
+}
+
+.pedido-item {
+  padding: 15px; /* Espaciado interior para cada pedido */
+  margin: 5px 0; /* Margen entre pedidos */
+  border-radius: 5px; /* Bordes redondeados */
+  color: #fff; /* Color del texto dentro del pedido */
+}
+
+.pedido-nombre {
+  font-size: 1.2em; /* Tamaño de fuente para el nombre del producto */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.pedido-cantidad {
+  font-size: 1em; /* Tamaño de fuente para la cantidad */
+}
+
+.pedido-botones {
+  margin-top: 10px; /* Espacio entre el texto y los botones */
+}
+
+.cantidad-boton {
+  margin-right: 5px; /* Espacio entre botones */
+  padding: 5px 10px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  background-color: #17a2b8; /* Color de fondo */
+  color: white; /* Color del texto */
+  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+  transition: background-color 0.3s; /* Transición suave al cambiar color */
+}
+
+.cantidad-boton:hover {
+  background-color: #138496; /* Color más oscuro al pasar el mouse */
+}
+
+.estado-boton, .remito-boton {
+  margin-left: 5px; /* Espacio a la izquierda de estos botones */
+  padding: 5px 10px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  background-color: #28a745; /* Color de fondo */
+  color: white; /* Color del texto */
+  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+  transition: background-color 0.3s; /* Transición suave al cambiar color */
+}
+
+.estado-boton:hover, .remito-boton:hover {
+  background-color: #218838; /* Color más oscuro al pasar el mouse */
+}
+
+.remito-boton:disabled {
+  background-color: #6c757d; /* Color de fondo para botones deshabilitados */
+  cursor: not-allowed; /* Cambia el cursor para indicar que está deshabilitado */
+}
