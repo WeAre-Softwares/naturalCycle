@@ -1,72 +1,130 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+/* Estilos generales */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.div-superior-panel-admin{
-    padding-top: 212px;
+/* Estilos de la sección superior del panel de administración */
+.div-superior-panel-admin {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 230px 10px 20px;
+  align-items: center;
 }
 
 /* Contenedor principal del panel de administración */
 .panel-admin {
-    display: flex;
-    min-height: 100vh;
-    font-family: 'Montserrat', sans-serif;
-  }
+  display: flex;
+  padding: 25px;
+  align-items: flex-start;
+  transition: transform 0.3s ease;
   
-  /* Estilos del menú lateral */
+}
+
+/* Estilos del menú lateral */
+.menu-lateral {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60vh;
+  background-color: rgb(255, 255, 255);
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  transition: transform 0.3s ease; /* Suaviza la transición */
+  padding: 20px; /* Espaciado interno */
+}
+
+.menu-lateral h2 {
+  text-transform: uppercase;
+  margin-bottom: 20px; /* Espacio debajo del título */
+}
+
+/* Lista del menú */
+.menu-lateral ul {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  gap: 20px;
+  text-align: center;
+  list-style: none;
+}
+
+.menu-lateral li a {
+  color: black;
+  text-decoration: none;
+  transition: color 0.3s; /* Suaviza el cambio de color */
+}
+
+.menu-lateral li a:hover {
+  color: #798a3f;
+}
+
+/* Estilos para mostrar el menú lateral */
+
+
+/* Botón del menú hamburguesa */
+.menu-toggle-btn {
+  background-color: #798a3f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: none; /* Solo se mostrará en pantallas pequeñas */
+}
+
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 900px) {
+  .menu-toggle-btn {
+    display: block; /* Mostrar botón en pantallas pequeñas */
+  }
+
+  .div-superior-panel-admin{
+    padding-top: 120px;
+    justify-content: center;
+  }
+
+  .div-superior-panel-admin2{
+    padding-top: 300px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Ocultar el panel administrativo en pantallas pequeñas por defecto */
+  .panel-admin {
+    display: none; /* El panel principal no se muestra en pantallas pequeñas */
+  }
+
+  .panel-admin-open {
+    display: flex; /* Mostrar el panel cuando está abierto */
+  }
+
   .menu-lateral {
-    width: 250px; /* Ancho fijo para el menú lateral */
-    background-color: #5e17eb; /* Color de fondo del menú */
-    color: white; /* Color del texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); /* Inicia fuera de la vista */
+    transition: transform 0.3s ease; /* Suaviza la transición */
     padding: 20px; /* Espaciado interno */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de profundidad */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
   }
-  
-  .menu-lateral h2 {
-    margin-bottom: 20px; /* Espaciado inferior del título */
-    font-size: 1.5rem; /* Tamaño de fuente del título */
+
+  .menu-lateral-open {
+    transform: translateX(0); /* Menú se abre suavemente */
   }
-  
-  /* Lista del menú */
-  .menu-lateral ul {
-    list-style: none; /* Eliminar los puntos de la lista */
-    padding: 0; /* Eliminar el padding */
-  }
-  
-  .menu-lateral li {
-    margin: 15px 0; /* Espaciado entre los elementos */
-  }
-  
-  .menu-lateral li a {
-    text-decoration: none; /* Eliminar subrayado */
-    color: white; /* Color del texto de los enlaces */
-    transition: color 0.3s; /* Transición suave para el color */
-  }
-  
-  .menu-lateral li a:hover {
-    color: #ffeb3b; /* Color al pasar el mouse */
-  }
-  
-  /* Contenido del panel */
-  .contenido {
-    flex: 1; /* Ocupa el espacio restante */
-    padding: 20px; /* Espaciado interno */
-    background-color: #f4f4f4; /* Color de fondo del contenido */
-    overflow-y: auto; /* Scroll para el contenido si es necesario */
-  }
-  
-  .contenido h1 {
-    font-size: 2rem; /* Tamaño de fuente del título principal */
-    color: #333; /* Color del texto */
-    margin-bottom: 20px; /* Espaciado inferior */
-  }
-  
-  /* Estilo para mensajes de sección */
-  .contenido h2 {
-    font-size: 1.5rem; /* Tamaño de fuente de mensajes secundarios */
-    color: #555; /* Color del texto */
-    text-align: center; /* Centrar texto */
-  }
-  
+}

@@ -6,6 +6,7 @@ import { CartButton } from '../Components/CartButton';
 // import Categorias from './Categorias';
 import Logo from '/Imagenes/logo-header.svg';
 
+
 export const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isCartOpen, setIsCartOpen] = React.useState(false);

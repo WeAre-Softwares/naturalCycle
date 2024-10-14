@@ -39,6 +39,11 @@
   .nombre-view{
     text-align: start;
     margin: 10px;
+    text-transform: lowercase;
+  }
+
+  .nombre-view::first-letter{
+    text-transform: uppercase;
   }
 
   button:disabled {

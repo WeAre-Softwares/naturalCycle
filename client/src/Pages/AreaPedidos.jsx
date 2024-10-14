@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Panel/styles.css';
+import { PanelAdmin } from './PanelAdmin';
 
 const pedidosIniciales = [
   {
@@ -30,7 +31,6 @@ const pedidosIniciales = [
       { nombre: 'Producto E', cantidad: 3, precio: 450 },
     ],
   },
-  // Más pedidos...
 ];
 
 const estadosDisponibles = [
@@ -41,32 +41,37 @@ const estadosDisponibles = [
 ];
 
 export const AreaPedidos = () => {
-  const [estadoFiltro, setEstadoFiltro] = useState('todos');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
   const [pedidos, setPedidos] = useState(pedidosIniciales);
-  const [pedidoEditando, setPedidoEditando] = useState(null); // Controla qué pedido está en edición
+  const [pedidoEditando, setPedidoEditando] = useState(null);
 
-  // Recuperar los estados guardados en localStorage al cargar la página
   useEffect(() => {
     const pedidosGuardados = pedidos.map((pedido) => {
       const estadoGuardado = localStorage.getItem(`pedido-estado-${pedido.id}`);
+      const cantidadesGuardadas = JSON.parse(localStorage.getItem(`pedido-cantidades-${pedido.id}`)) || {};
+
+      const productosConCantidadGuardada = pedido.productos.map((producto) => ({
+        ...producto,
+        cantidad: cantidadesGuardadas[producto.nombre] || producto.cantidad,
+      }));
+
       return {
         ...pedido,
         estado: estadoGuardado || 'Esperando aprobación',
+        productos: productosConCantidadGuardada,
       };
     });
     setPedidos(pedidosGuardados);
   }, []);
 
-  // Guardar el estado del pedido en localStorage
   const cambiarEstado = (id, nuevoEstado) => {
     const nuevosPedidos = pedidos.map((pedido) =>
       pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido,
     );
     setPedidos(nuevosPedidos);
-    localStorage.setItem(`pedido-estado-${id}`, nuevoEstado); // Guardar el estado en localStorage
+    localStorage.setItem(`pedido-estado-${id}`, nuevoEstado);
   };
 
-  // Editar la cantidad de productos dentro del pedido
   const editarCantidadProducto = (pedidoId, productoIndex, nuevaCantidad) => {
     const nuevosPedidos = pedidos.map((pedido) => {
       if (pedido.id === pedidoId) {
@@ -76,6 +81,10 @@ export const AreaPedidos = () => {
           }
           return producto;
         });
+        const cantidadesGuardadas = JSON.parse(localStorage.getItem(`pedido-cantidades-${pedidoId}`)) || {};
+        cantidadesGuardadas[pedido.productos[productoIndex].nombre] = nuevaCantidad;
+        localStorage.setItem(`pedido-cantidades-${pedidoId}`, JSON.stringify(cantidadesGuardadas));
+
         return { ...pedido, productos: nuevosProductos };
       }
       return pedido;
@@ -84,7 +93,7 @@ export const AreaPedidos = () => {
   };
 
   const filtrarPedidos = () => {
-    if (estadoFiltro === 'todos') return pedidos;
+    if (!estadoFiltro) return pedidos;
     return pedidos.filter((pedido) => pedido.estado === estadoFiltro);
   };
 
@@ -93,167 +102,115 @@ export const AreaPedidos = () => {
   };
 
   const colorEstado = {
-    'Esperando aprobación': '#FFC107',
-    Aprobado: '#28A745',
-    Enviado: '#007BFF',
-    Recibido: '#6C757D',
+    'Esperando aprobación': '#D6A900',
+    Aprobado: 'rgb(111, 148, 89)',
+    Enviado: '#2A6A29',
+    Recibido: '#00ff51',
   };
 
   const habilitarEdicion = (id) => {
-    setPedidoEditando(id); // Habilita edición para el pedido seleccionado
+    setPedidoEditando(id);
   };
 
   const guardarEdicion = () => {
-    setPedidoEditando(null); // Guarda y cierra el modo de edición
+    setPedidoEditando(null);
+  };
+
+  const calcularTotal = (productos) => {
+    return productos.reduce((total, producto) => total + (producto.cantidad * producto.precio), 0);
   };
 
   return (
     <div className="div-general-categoria-panel">
-      <div className="panel-admin">
-        <nav className="menu-lateral">
-          <h2>Menú</h2>
-          <ul>
-            <li>
-              <Link to="/panelpedidos">Área de Pedidos</Link>
-            </li>
-            <li>
-              <Link to="/panelusuarios">Área de Usuarios</Link>
-            </li>
-            <li>
-              <Link to="/panelfiltrado">Crear Filtrado</Link>
-            </li>
-            <li>
-              <Link to="/panelproducto">Crear Producto</Link>
-            </li>
-            <li>
-              <Link to="/panelpermisos">Permisos</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <PanelAdmin />
       <div className="area-pedidos">
         <h1 className="titulo-area">Área de Pedidos</h1>
+
+        {/* Filtrado con menú desplegable */}
         <div className="filtros">
-          <button
-            className="filtro-boton"
-            onClick={() => setEstadoFiltro('todos')}
+          <label htmlFor="filtro-estado"></label>
+          <select
+            id="filtro-estado"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            className="filtro-select-panel"
           >
-            Todos
-          </button>
-          <button
-            className="filtro-boton"
-            onClick={() => setEstadoFiltro('Esperando aprobación')}
-          >
-            Esperando Aprobación
-          </button>
-          <button
-            className="filtro-boton"
-            onClick={() => setEstadoFiltro('Aprobado')}
-          >
-            Aprobados
-          </button>
-          <button
-            className="filtro-boton"
-            onClick={() => setEstadoFiltro('Enviado')}
-          >
-            Enviados
-          </button>
-          <button
-            className="filtro-boton"
-            onClick={() => setEstadoFiltro('Recibido')}
-          >
-            Recibidos
-          </button>
+            <option value="">Todos los pedidos</option>
+            {estadosDisponibles.map((estado) => (
+              <option key={estado} value={estado}>
+                {estado}
+              </option>
+            ))}
+          </select>
         </div>
+
         <div className="lista-pedidos">
           {filtrarPedidos().map((pedido) => (
             <div
               key={pedido.id}
-              className="pedido-item"
+              className="pedido-item-panel"
               style={{
                 backgroundColor: colorEstado[pedido.estado],
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: '10px',
+                alignItems: 'center',
+                marginBottom: '10px',
               }}
             >
-              {/* Detalles del pedido */}
               <div className="pedido-detalles">
-                <p>
-                  <strong>Fecha:</strong> {pedido.fecha}
-                </p>
-                <p>
-                  <strong>ID:</strong> {pedido.id}
-                </p>
-                <p>
-                  <strong>Cliente:</strong> {pedido.cliente}
-                </p>
-
-                {/* Mostrar productos solo si está en modo edición */}
+                {/* Mostrar información solo si no se está editando */}
+                {pedidoEditando !== pedido.id && (
+                  <>
+                    <p><strong>Total del Pedido:</strong> ${calcularTotal(pedido.productos)}</p>
+                    <p><strong>Fecha:</strong> {pedido.fecha}</p>
+                    <p><strong>Cliente:</strong> {pedido.cliente}</p>
+                  </>
+                )}
                 {pedidoEditando === pedido.id && (
                   <div className="productos-pedido">
                     <strong>Productos:</strong>
                     {pedido.productos.map((producto, index) => (
-                      <div key={index} className="producto-item">
+                      <div key={index} className="producto-item-panel-2">
                         <p>
-                          {producto.nombre} - Cantidad: {producto.cantidad} -
-                          Precio: ${producto.precio}
+                          {producto.nombre}  X{producto.cantidad} unidades  || Precio: ${producto.precio}
                         </p>
                         <div className="editar-cantidad">
                           <button
                             className="cantidad-boton"
-                            onClick={() =>
-                              editarCantidadProducto(
-                                pedido.id,
-                                index,
-                                producto.cantidad + 1,
-                              )
-                            }
+                            onClick={() => editarCantidadProducto(pedido.id, index, producto.cantidad + 1)}
                           >
                             +
                           </button>
                           <button
                             className="cantidad-boton"
-                            onClick={() =>
-                              editarCantidadProducto(
-                                pedido.id,
-                                index,
-                                Math.max(producto.cantidad - 1, 0),
-                              )
-                            }
+                            onClick={() => editarCantidadProducto(pedido.id, index, Math.max(producto.cantidad - 1, 0))}
                           >
                             -
                           </button>
                         </div>
                       </div>
                     ))}
+                    <p><strong>Total:</strong> ${calcularTotal(pedido.productos)}</p>
                   </div>
                 )}
               </div>
 
-              {/* Botones de acción */}
               <div className="pedido-acciones">
                 {pedidoEditando === pedido.id ? (
                   <button className="accion-boton" onClick={guardarEdicion}>
                     Guardar
                   </button>
                 ) : (
-                  <button
-                    className="accion-boton"
-                    onClick={() => habilitarEdicion(pedido.id)}
-                  >
-                    Editar Cantidad
+                  <button className="icono-accion btn-editar-prod-panel" onClick={() => habilitarEdicion(pedido.id)}>
+                    <i className="fas fa-edit" title="Editar Cantidad"></i>
                   </button>
                 )}
-                <button
-                  className="accion-boton"
-                  onClick={() => imprimirRemito(pedido.id)}
-                  disabled={pedido.estado === 'Esperando aprobación'}
-                >
-                  Imprimir Remito
+                <button className="icono-accion" onClick={() => imprimirRemito(pedido.id)}>
+                  <i className="fas fa-print" title="Imprimir Remito"></i>
                 </button>
                 <select
-                  className="estado-select"
+                  className="filtro-select-panel"
                   value={pedido.estado}
                   onChange={(e) => cambiarEstado(pedido.id, e.target.value)}
                 >

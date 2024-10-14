@@ -12,11 +12,18 @@
   align-items: center;
   flex-direction: column;
   padding-bottom: 20px;
+  padding-top: 50px;
+}
+
+@media (max-width:800px) {
+  .container-h2-promociones{
+    padding-top: 0px;
+  }
 }
 
 .container-h2-promociones h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2rem;
   font-weight: 700;
   color: #2d4d33; /* Color púrpura para destacar */
   margin-bottom: 20px;
@@ -37,8 +44,8 @@
 }
 
 .container-h2-promociones h4 {
-  font-family: 'Arial', sans-serif;
-  font-size: 1.2rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
   color: #333;
   text-align: center;
   line-height: 1.7;
