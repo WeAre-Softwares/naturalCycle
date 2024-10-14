@@ -16,6 +16,14 @@ import { Promociones } from './Pages/Promociones';
 import { Marcas } from './Pages/Marcas';
 import { Header } from './Pages/Header';
 import { Footer } from './Pages/Footer';
+import { PanelAdmin } from './Pages/PanelAdmin';
+import { ProductDetails } from './Pages/ProductDetail';
+import { AreaPedidos } from './Pages/AreaPedidos';
+import { AreaUsuarios } from './Pages/AreaUsuarios';
+import { Permisos } from './Pages/Permisos';
+import { CrearProducto } from './Pages/CrearProducto';
+import { CrearFiltrado } from './Pages/CrearFiltrado';
+
 
 function App() {
   return (
@@ -34,6 +42,13 @@ function App() {
             <Route path="/About" element={<About />} />
             <Route path="/Promociones" element={<Promociones />} />
             <Route path="/Marcas" element={<Marcas />} />
+            <Route path="/Panel" element={<PanelAdmin />} />
+            <Route path="/producto/:id" element={<ProductDetails />} />
+            <Route path="/panelpedidos" element={<AreaPedidos />} />
+            <Route path="/panelusuarios" element={<AreaUsuarios />} />
+            <Route path="/panelpermisos" element={<Permisos />} />
+            <Route path="/panelproducto" element={<CrearProducto />} />
+            <Route path="/panelfiltrado" element={<CrearFiltrado />} />
           </Routes>
           <Footer />
         </div>

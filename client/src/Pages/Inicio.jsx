@@ -1,66 +1,75 @@
 import React from 'react';
 import '../Styles/Inicio/Inicio.css';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 const productosDestacados = [
   {
     id: 1,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 1',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 2,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 2',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 3,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 3',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 4,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 4',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 5,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 5',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 6,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 6',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 7,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 7',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
   {
     id: 8,
-    imgSrc: './Imagenes/producto-banner.png',
+    img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 8',
-    precio: '$5000',
+    precio: 5000,
     stock: 'Stock disponible',
   },
 ];
 
 export const Inicio = () => {
+
+  const navigate = useNavigate(); // Crea la función navigate
+
+  const verDetallesProducto = (producto) => {
+    navigate(`/producto/${producto.id}`, { state: { producto } });
+  };
+
+
   return (
     <div className="conteiner-general-inicio">
       <div
@@ -133,7 +142,7 @@ export const Inicio = () => {
                 <img
                   name={`img-producto-card-${producto.id}`}
                   className="img-producto-card"
-                  src={producto.imgSrc}
+                  src={producto.img}
                   alt=""
                 />
                 <p name={`tipo-precio-producto-${producto.id}`}>
@@ -149,7 +158,7 @@ export const Inicio = () => {
                   className="precio-producto-card"
                   name={`precio-producto-card-${producto.id}`}
                 >
-                  {producto.precio}
+                  ${producto.precio}
                 </h2>
                 <p name={`stock-producto-card-${producto.id}`}>
                   {producto.stock}
@@ -160,9 +169,9 @@ export const Inicio = () => {
                   Añadir al carrito{' '}
                   <i className="fa-solid fa-cart-shopping"></i>
                 </button>
-                <button>
-                  Ver producto <i className="fa-solid fa-eye"></i>
-                </button>
+                <button onClick={() => verDetallesProducto(producto)}>
+                Ver producto <i className="fa-solid fa-eye"></i>
+              </button>
               </div>
             </div>
           ))}

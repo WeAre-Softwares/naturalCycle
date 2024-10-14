@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { PanelAdmin } from './PanelAdmin';
 
 export const Permisos = () => {
-  const [permisos, setPermisos] = useState({
-    verificarUsuarios: false,
-    editarPedidos: false,
-    crearBorrarFiltrado: false,
-    cargarEliminarProductos: false,
-  });
+  // Función para obtener permisos del localStorage o establecer valores por defecto
+  const getStoredPermisos = () => {
+    const storedPermisos = localStorage.getItem('permisos');
+    return storedPermisos
+      ? JSON.parse(storedPermisos)
+      : {
+          verificarUsuarios: false,
+          editarPedidos: false,
+          crearBorrarFiltrado: false,
+          cargarEliminarProductos: false,
+        };
+  };
+
+  const [permisos, setPermisos] = useState(getStoredPermisos);
+
+  // Actualiza localStorage cuando cambian los permisos
+  useEffect(() => {
+    localStorage.setItem('permisos', JSON.stringify(permisos));
+  }, [permisos]);
 
   const handleChange = (e) => {
     const { name, checked } = e.target;
@@ -16,28 +29,7 @@ export const Permisos = () => {
 
   return (
     <div className="div-general-categoria-panel">
-      <div className="panel-admin">
-        <nav className="menu-lateral">
-          <h2>Menú</h2>
-          <ul>
-            <li>
-              <Link to="/panelpedidos">Área de Pedidos</Link>
-            </li>
-            <li>
-              <Link to="/panelusuarios">Área de Usuarios</Link>
-            </li>
-            <li>
-              <Link to="/panelfiltrado">Crear Filtrado</Link>
-            </li>
-            <li>
-              <Link to="/panelproducto">Crear Producto</Link>
-            </li>
-            <li>
-              <Link to="/panelpermisos">Permisos</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <PanelAdmin />
       <div className="permissions-container">
         <h1 className="permissions-header">Asignar Permisos</h1>
         <div className="permissions-checkbox-group">

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { PanelAdmin } from './PanelAdmin';
 
 export const CrearFiltrado = () => {
   const [marca, setMarca] = useState('');
   const [productosMarca, setProductosMarca] = useState([]);
   const [productoMarcaInput, setProductoMarcaInput] = useState('');
   const [destacada, setDestacada] = useState(false);
+  const [imagenMarca, setImagenMarca] = useState(null); // Nuevo estado para la imagen
 
   const [etiqueta, setEtiqueta] = useState('');
   const [productosEtiqueta, setProductosEtiqueta] = useState([]);
@@ -50,12 +52,13 @@ export const CrearFiltrado = () => {
     if (marca && productosMarca.length > 0) {
       setMarcas((prevMarcas) => [
         ...prevMarcas,
-        { nombre: marca, productos: productosMarca, destacada },
+        { nombre: marca, productos: productosMarca, destacada, imagen: imagenMarca },
       ]);
       setMarca('');
       setProductosMarca([]);
       setProductoMarcaInput('');
       setDestacada(false);
+      setImagenMarca(null); // Resetear imagen
     }
   };
 
@@ -148,7 +151,9 @@ export const CrearFiltrado = () => {
     setMarca(marcaEditada.nombre);
     setProductosMarca(marcaEditada.productos);
     setDestacada(marcaEditada.destacada);
+    setImagenMarca(marcaEditada.imagen); // Cargar imagen para editar
     eliminarMarca(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Agregar scroll suave hacia arriba
   };
 
   const editarEtiqueta = (index) => {
@@ -156,6 +161,7 @@ export const CrearFiltrado = () => {
     setEtiqueta(etiquetaEditada.nombre);
     setProductosEtiqueta(etiquetaEditada.productos);
     eliminarEtiqueta(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Agregar scroll suave hacia arriba
   };
 
   const editarCategoria = (index) => {
@@ -163,288 +169,276 @@ export const CrearFiltrado = () => {
     setCategoria(categoriaEditada.nombre);
     setProductosCategoria(categoriaEditada.productos);
     eliminarCategoria(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Agregar scroll suave hacia arriba
   };
 
   const handleTipoCreacion = (tipo) => {
     setTipoCreacion(tipo);
   };
 
+  // Manejar carga de imagen
+  const handleImagenChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagenMarca(reader.result); // Guardar la URL de la imagen
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className="div-general-categoria-panel">
-      <div className="panel-admin">
-        <nav className="menu-lateral">
-          <h2>Menú</h2>
-          <ul>
-            <li>
-              <Link to="/panelpedidos">Área de Pedidos</Link>
-            </li>
-            <li>
-              <Link to="/panelusuarios">Área de Usuarios</Link>
-            </li>
-            <li>
-              <Link to="/panelfiltrado">Crear Filtrado</Link>
-            </li>
-            <li>
-              <Link to="/panelproducto">Crear Producto</Link>
-            </li>
-            <li>
-              <Link to="/panelpermisos">Permisos</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div className="crear-filtrado-container">
-        <h1 className="crear-filtrado-header">Crear Filtrado</h1>
+    <div className="div-gral-prod-creados">
+      <div className="div-general-categoria-panel">
+        <PanelAdmin />
+        <div className="crear-filtrado-container">
+          <h1 className="crear-filtrado-header">Crear Filtrado</h1>
 
-        <div className="tipo-filtrado">
-          <button
-            onClick={() => handleTipoCreacion('marca')}
-            className="crear-filtrado-button"
-          >
-            Crear Marca
-          </button>
-          <button
-            onClick={() => handleTipoCreacion('etiqueta')}
-            className="crear-filtrado-button"
-          >
-            Crear Etiqueta
-          </button>
-          <button
-            onClick={() => handleTipoCreacion('categoria')}
-            className="crear-filtrado-button"
-          >
-            Crear Categoría
-          </button>
-        </div>
-
-        {tipoCreacion === 'marca' && (
-          <div className="crear-filtrado-form">
-            <input
-              type="text"
-              placeholder="Nombre de la marca"
-              value={marca}
-              onChange={(e) => setMarca(e.target.value)}
-              className="crear-filtrado-input"
-            />
-            <input
-              type="text"
-              placeholder="Agregar producto"
-              value={productoMarcaInput}
-              onChange={(e) => setProductoMarcaInput(e.target.value)}
-              className="crear-filtrado-input"
-            />
+          <div className="tipo-filtrado">
             <button
-              onClick={agregarProductoMarca}
-              className="crear-filtrado-add-button"
-            >
-              Agregar Producto
-            </button>
-            <div>
-              <strong>Productos:</strong>
-              {productosMarca.length > 0 ? (
-                <ul>
-                  {productosMarca.map((producto, index) => (
-                    <li key={index}>
-                      {producto}
-                      <button
-                        onClick={() => eliminarProductoMarca(index)}
-                        className="eliminar-producto-button"
-                      >
-                        Eliminar
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No hay productos asignados</span>
-              )}
-            </div>
-            <div className="crear-filtrado-checkbox">
-              <label>
-                Marca destacada
-                <input
-                  type="checkbox"
-                  checked={destacada}
-                  onChange={(e) => setDestacada(e.target.checked)}
-                />
-              </label>
-            </div>
-            <button
-              onClick={crearMarca}
-              className="crear-filtrado-create-button"
+              onClick={() => handleTipoCreacion('marca')}
+              className="crear-filtrado-button"
             >
               Crear Marca
             </button>
-          </div>
-        )}
-
-        {tipoCreacion === 'etiqueta' && (
-          <div className="crear-filtrado-form">
-            <input
-              type="text"
-              placeholder="Nombre de la etiqueta"
-              value={etiqueta}
-              onChange={(e) => setEtiqueta(e.target.value)}
-              className="crear-filtrado-input"
-            />
-            <input
-              type="text"
-              placeholder="Agregar producto"
-              value={productoEtiquetaInput}
-              onChange={(e) => setProductoEtiquetaInput(e.target.value)}
-              className="crear-filtrado-input"
-            />
             <button
-              onClick={agregarProductoEtiqueta}
-              className="crear-filtrado-add-button"
-            >
-              Agregar Producto
-            </button>
-            <div>
-              <strong>Productos:</strong>
-              {productosEtiqueta.length > 0 ? (
-                <ul>
-                  {productosEtiqueta.map((producto, index) => (
-                    <li key={index}>
-                      {producto}
-                      <button
-                        onClick={() => eliminarProductoEtiqueta(index)}
-                        className="eliminar-producto-button"
-                      >
-                        Eliminar
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No hay productos asignados</span>
-              )}
-            </div>
-            <button
-              onClick={crearEtiqueta}
-              className="crear-filtrado-create-button"
+              onClick={() => handleTipoCreacion('etiqueta')}
+              className="crear-filtrado-button"
             >
               Crear Etiqueta
             </button>
-          </div>
-        )}
-
-        {tipoCreacion === 'categoria' && (
-          <div className="crear-filtrado-form">
-            <input
-              type="text"
-              placeholder="Nombre de la categoría"
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-              className="crear-filtrado-input"
-            />
-            <input
-              type="text"
-              placeholder="Agregar producto"
-              value={productoCategoriaInput}
-              onChange={(e) => setProductoCategoriaInput(e.target.value)}
-              className="crear-filtrado-input"
-            />
             <button
-              onClick={agregarProductoCategoria}
-              className="crear-filtrado-add-button"
-            >
-              Agregar Producto
-            </button>
-            <div>
-              <strong>Productos:</strong>
-              {productosCategoria.length > 0 ? (
-                <ul>
-                  {productosCategoria.map((producto, index) => (
-                    <li key={index}>
-                      {producto}
-                      <button
-                        onClick={() => eliminarProductoCategoria(index)}
-                        className="eliminar-producto-button"
-                      >
-                        Eliminar
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No hay productos asignados</span>
-              )}
-            </div>
-            <button
-              onClick={crearCategoria}
-              className="crear-filtrado-create-button"
+              onClick={() => handleTipoCreacion('categoria')}
+              className="crear-filtrado-button"
             >
               Crear Categoría
             </button>
           </div>
-        )}
+          {tipoCreacion === 'marca' && (
+  <div className="crear-filtrado-form">
+    <input
+      type="text"
+      placeholder="Nombre de la marca"
+      value={marca}
+      onChange={(e) => setMarca(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <input
+      type="text"
+      placeholder="Agregar producto"
+      value={productoMarcaInput}
+      onChange={(e) => setProductoMarcaInput(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <button
+      onClick={agregarProductoMarca}
+      className="crear-filtrado-button agregar-producto"
+    >
+      Agregar Producto
+    </button>
+    <div className='div-ul-prod-editar'>
+      <strong>Productos: </strong>
+      {productosMarca.length > 0 ? (
+        <ul>
+          {productosMarca.map((producto, index) => (
+            <li key={index}>
+            {producto} &nbsp;&nbsp;
+            <button
+              onClick={() => eliminarProductoMarca(index)}
+              className="crear-filtrado-button"
+            >
+              Eliminar
+            </button>
+          </li>
+          
+          ))}
+        </ul>
+      ) : (
+        <span>No hay productos asignados</span>
+      )}
+    </div>
+    <div className="crear-filtrado-checkbox">
+      <label>
+        <p>Marca destacada </p>
+        <input
+          type="checkbox"
+          checked={destacada}
+          onChange={(e) => setDestacada(e.target.checked)}
+        />
+      </label>
+    </div>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleImagenChange}
+      className="crear-filtrado-input"
+    />
+    {imagenMarca && (
+      <div className='div-img-marca-panel'>
+        <strong>Previsualización de la imagen:</strong>
+        <img
+          src={imagenMarca}
+          alt="Previsualización"
+          className='img-marca-panel'
+        />
+      </div>
+    )}
+    <button
+      onClick={crearMarca}
+      className="crear-filtrado-button"
+    >
+      {marca && productosMarca.length > 0 ? 'Actualizar Marca' : 'Crear Marca'}
+    </button>
+  </div>
+)}
 
-        <div className="filtrado-lista">
-          <h2>Marcas</h2>
-          <ul>
-            {marcas.map((marca, index) => (
-              <li key={index}>
-                {marca.nombre} {marca.destacada && '(Destacada)'}
-                <button
-                  onClick={() => editarMarca(index)}
-                  className="editar-button"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => eliminarMarca(index)}
-                  className="eliminar-button"
-                >
-                  Eliminar
-                </button>
-              </li>
-            ))}
-          </ul>
+{tipoCreacion === 'etiqueta' && (
+  <div className="crear-filtrado-form">
+    <input
+      type="text"
+      placeholder="Nombre de la etiqueta"
+      value={etiqueta}
+      onChange={(e) => setEtiqueta(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <input
+      type="text"
+      placeholder="Agregar producto"
+      value={productoEtiquetaInput}
+      onChange={(e) => setProductoEtiquetaInput(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <button
+      onClick={agregarProductoEtiqueta}
+      className="crear-filtrado-button agregar-producto"
+    >
+      Agregar Producto
+    </button>
+    <div className='div-ul-prod-editar'>
+      <strong>Productos: </strong>
+      {productosEtiqueta.length > 0 ? (
+        <ul>
+          {productosEtiqueta.map((producto, index) => (
+            <li key={index}>
+              {producto}&nbsp;&nbsp;
+              <button
+                onClick={() => eliminarProductoEtiqueta(index)}
+                className="crear-filtrado-button"
+              >
+                Eliminar
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span>No hay productos asignados</span>
+      )}
+    </div>
+    <button
+      onClick={crearEtiqueta}
+      className="crear-filtrado-button"
+    >
+      {etiqueta && productosEtiqueta.length > 0 ? 'Actualizar Etiqueta' : 'Crear Etiqueta'}
+    </button>
+  </div>
+)}
 
-          <h2>Etiquetas</h2>
-          <ul>
-            {etiquetas.map((etiqueta, index) => (
-              <li key={index}>
-                {etiqueta.nombre}
-                <button
-                  onClick={() => editarEtiqueta(index)}
-                  className="editar-button"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => eliminarEtiqueta(index)}
-                  className="eliminar-button"
-                >
-                  Eliminar
-                </button>
-              </li>
-            ))}
-          </ul>
+{tipoCreacion === 'categoria' && (
+  <div className="crear-filtrado-form">
+    <input
+      type="text"
+      placeholder="Nombre de la categoría"
+      value={categoria}
+      onChange={(e) => setCategoria(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <input
+      type="text"
+      placeholder="Agregar producto"
+      value={productoCategoriaInput}
+      onChange={(e) => setProductoCategoriaInput(e.target.value)}
+      className="crear-filtrado-input"
+    />
+    <button
+      onClick={agregarProductoCategoria}
+      className="crear-filtrado-button agregar-producto"
+    >
+      Agregar Producto
+    </button>
+    <div className='div-ul-prod-editar'>
+      <strong>Productos: </strong>
+      {productosCategoria.length > 0 ? (
+        <ul>
+          {productosCategoria.map((producto, index) => (
+            <li key={index}>
+              {producto}&nbsp;&nbsp;
+              <button
+                onClick={() => eliminarProductoCategoria(index)}
+                className="crear-filtrado-button"
+              >
+                Eliminar
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span>No hay productos asignados</span>
+      )}
+    </div>
+    <button
+      onClick={crearCategoria}
+      className="crear-filtrado-button"
+    >
+      {categoria && productosCategoria.length > 0 ? 'Actualizar Categoría' : 'Crear Categoría'}
+    </button>
+  </div>
+)}
 
-          <h2>Categorías</h2>
-          <ul>
-            {categorias.map((categoria, index) => (
-              <li key={index}>
-                {categoria.nombre}
-                <button
-                  onClick={() => editarCategoria(index)}
-                  className="editar-button"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => eliminarCategoria(index)}
-                  className="eliminar-button"
-                >
-                  Eliminar
-                </button>
-              </li>
-            ))}
-          </ul>
+
+
         </div>
       </div>
+          <div className="div-filtrados-creados">
+            <h2>Filtrados creados:</h2>
+            <h3>Marcas:</h3>
+            <ul>
+              {marcas.map((marca, index) => (
+                <li key={index}>
+                  <strong>{marca.nombre}</strong> {marca.destacada && '(Destacada)'}
+                  {marca.imagen && (
+                    <img
+                      src={marca.imagen}
+                      alt={`Logo de ${marca.nombre}`}
+                      className="img-marca-panel"
+                    />
+                  )}
+                  <button className="crear-filtrado-button"  onClick={() => editarMarca(index)}>Editar</button>
+                  <button className="crear-filtrado-button" onClick={() => eliminarMarca(index)}>Eliminar</button>
+                </li>
+              ))}
+            </ul>
+            <h3>Etiquetas:</h3>
+            <ul>
+              {etiquetas.map((etiqueta, index) => (
+                <li key={index}>
+                  <strong>{etiqueta.nombre}</strong>
+                  <button className="crear-filtrado-button" onClick={() => editarEtiqueta(index)}>Editar</button>
+                  <button className="crear-filtrado-button" onClick={() => eliminarEtiqueta(index)}>Eliminar</button>
+                </li>
+              ))}
+            </ul>
+            <h3>Categorías:</h3>
+            <ul>
+              {categorias.map((categoria, index) => (
+                <li key={index}>
+                  <strong>{categoria.nombre}</strong>
+                  <button className="crear-filtrado-button" onClick={() => editarCategoria(index)}>Editar</button>
+                  <button className="crear-filtrado-button" onClick={() => eliminarCategoria(index)}>Eliminar</button>
+                </li>
+              ))}
+            </ul>
+          </div>
     </div>
   );
 };

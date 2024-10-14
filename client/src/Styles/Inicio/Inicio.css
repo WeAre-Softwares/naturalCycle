@@ -326,6 +326,11 @@
 .nombre-producto-card{
     max-width: 300px;
     font-size: 18px;
+    text-transform: lowercase;
+}
+
+.nombre-producto-card::first-letter{
+  text-transform: uppercase;
 }
 
 .precio-producto-card{
