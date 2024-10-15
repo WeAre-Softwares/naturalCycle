@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -23,12 +23,17 @@ import { AreaUsuarios } from './Pages/AreaUsuarios';
 import { Permisos } from './Pages/Permisos';
 import { CrearProducto } from './Pages/CrearProducto';
 import { CrearFiltrado } from './Pages/CrearFiltrado';
-
+import { New } from './Pages/New';
+import { ScrollToTop } from './Components/ScrolltoTop';
+import { Checkout } from './Pages/Checkout';
 
 function App() {
+  const [carrito, setCarrito] = useState([]); // Estado del carrito
+
   return (
     <>
       <Router>
+      <ScrollToTop />
         <Header />
         <div>
           <Routes>
@@ -40,8 +45,10 @@ function App() {
             <Route path="/Password" element={<OlvideContraseña />} />
             <Route path="/Categorias" element={<Categorias />} />
             <Route path="/About" element={<About />} />
+            <Route path="/checkout" element={<Checkout carrito={carrito} />} /> 
             <Route path="/Promociones" element={<Promociones />} />
             <Route path="/Marcas" element={<Marcas />} />
+            <Route path="/New" element={<New />} />
             <Route path="/Panel" element={<PanelAdmin />} />
             <Route path="/producto/:id" element={<ProductDetails />} />
             <Route path="/panelpedidos" element={<AreaPedidos />} />

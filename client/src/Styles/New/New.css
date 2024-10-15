@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.div-general-nuevos-ingresos{
+    display: flex;
+    padding-top: 230px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.intro-nuevos-productos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.intro-nuevos-productos h2 {
+    font-size: 36px;
+      color: #2d4d33;
+      font-weight: bold;
+      text-transform: uppercase;
+  }
+
+.intro-nuevos-productos p{
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.container-productos-categorias{
+    padding: 20px;
+}
+
+.container-productos-marcas{
+    padding: 20px;
+}

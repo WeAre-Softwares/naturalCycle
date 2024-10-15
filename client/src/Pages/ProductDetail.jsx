@@ -1,31 +1,52 @@
-import React, { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
 
 export const ProductDetails = () => {
   const { id } = useParams(); // Obtener el id desde la URL
   const location = useLocation(); // Obtener el estado desde la navegación
   const producto = location.state?.producto; // Intentar obtener el producto desde el estado
+  const [carrito, setCarrito] = useState(() => {
+    const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
+    return carritoLocal;
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
+
+  const agregarAlCarrito = () => {
+    const nuevoCarrito = [...carrito];
+    const productoExistente = nuevoCarrito.find((item) => item.id === producto.id);
+
+    // Agregar producto con la cantidad seleccionada
+    if (productoExistente) {
+      productoExistente.cantidad += cantidad; // Incrementar la cantidad del producto existente
+    } else {
+      nuevoCarrito.push({ ...producto, cantidad }); // Añadir nuevo producto con la cantidad
+    }
+    setCarrito(nuevoCarrito);
+  };
 
   const [cantidad, setCantidad] = useState(1); // Estado para la cantidad
 
+  // Verificar si el producto existe
   if (!producto) {
     return <div>Producto no encontrado</div>;
   }
 
+  // Funciones para manejar la cantidad
   const incrementarCantidad = () => {
-    setCantidad(cantidad + 1);
+    if (producto.stock>1) {
+      setCantidad(cantidad + 1); // Incrementar solo si hay stock disponible
+    }
   };
 
   const decrementarCantidad = () => {
     if (cantidad > 1) {
-      setCantidad(cantidad - 1);
+      setCantidad(cantidad - 1); // Decrementar solo si la cantidad es mayor a 1
     }
-  };
-
-  const agregarAlCarrito = () => {
-    // Aquí puedes implementar la lógica para agregar el producto al carrito
-    console.log(`Agregando ${cantidad} de ${producto.nombre} al carrito`);
   };
 
   return (
@@ -49,8 +70,11 @@ export const ProductDetails = () => {
         </div>
 
         {producto.stock > 0 ? (
-          <button className="btn-view" onClick={agregarAlCarrito}>
-            Agregar al Carrito
+          <button className='btn-view'
+            onClick={agregarAlCarrito}
+          >
+            Añadir al carrito
+            <i className="fa-solid fa-cart-shopping"></i>
           </button>
         ) : (
           <button className="btn-iniciar-compra-disabled btn-view" disabled>

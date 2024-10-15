@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../Styles/Promociones/Promociones.css';
+import { useNavigate } from 'react-router-dom'; // Asegúrate de importar useNavigate
+
 
 const productosPromocion = [
   {
@@ -7,76 +9,110 @@ const productosPromocion = [
     nombre: 'Producto 1',
     precio: 100,
     stock: 10,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 2,
     nombre: 'Producto 2',
     precio: 200,
     stock: 5,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 3,
     nombre: 'Producto 3',
     precio: 300,
     stock: 8,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 4,
     nombre: 'Producto 4',
     precio: 400,
     stock: 0,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 5,
     nombre: 'Producto 5',
     precio: 500,
     stock: 2,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 6,
     nombre: 'Producto 6',
     precio: 600,
     stock: 7,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 7,
     nombre: 'Producto 7',
     precio: 700,
     stock: 0,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 8,
     nombre: 'Producto 8',
     precio: 800,
     stock: 9,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 9,
     nombre: 'Producto 9',
     precio: 900,
     stock: 6,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
   {
     id: 10,
     nombre: 'Producto 10',
     precio: 1000,
     stock: 4,
-    img: 'https://via.placeholder.com/150',
+    img: '/Imagenes/producto-banner.png',
   },
 ];
 
 export const Promociones = () => {
   const [productosPorPagina, setProductosPorPagina] = useState(1); // Muestra 1 producto por defecto
   const carruselRef = useRef(null);
+
+  const [carrito, setCarrito] = useState(() => {
+    const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
+    return carritoLocal;
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
+
+  const agregarAlCarrito = (producto) => {
+    const nuevoCarrito = [...carrito];
+    const productoExistente = nuevoCarrito.find(
+      (item) => item.id === producto.id
+    );
+
+    if (productoExistente) {
+      productoExistente.cantidad += 1;
+    } else {
+      nuevoCarrito.push({ ...producto, cantidad: 1 });
+    }
+    setCarrito(nuevoCarrito);
+  };
+
+  const verDetallesProducto = (producto) => {
+    navigate(`/producto/${producto.id}`, { state: { producto } });
+  };
+
+  // Ordenar productos para que los agotados aparezcan al final
+  const productosOrdenados = [...productosPromocion].sort((a, b) => {
+    return (a.stock === 0) - (b.stock === 0);
+  });
+
 
   useEffect(() => {
     const updateProductosPorPagina = () => {
@@ -133,7 +169,7 @@ export const Promociones = () => {
         </button>
 
         <div className="productos-carrusel" ref={carruselRef}>
-          {productosPromocion.map((producto) => (
+          {productosOrdenados.map((producto) => (
             <div className="card-producto" key={producto.id}>
               <img
                 name={`img-producto-card-${producto.id}`}
@@ -156,16 +192,17 @@ export const Promociones = () => {
               >
                 ${producto.precio}
               </h3>
-              <p name={`stock-producto-card-${producto.id}`}>
-                Stock disponible:{' '}
-                {producto.stock > 0 ? 'Disponible' : 'No disponible'}
-              </p>
+              <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
+
               <div className="botones-card-producto">
-                <button disabled={producto.stock === 0}>
-                  {producto.stock > 0 ? 'Añadir al carrito ' : 'Agotado '}
+                <button
+                  disabled={producto.stock === 0}
+                  onClick={() => agregarAlCarrito(producto)}
+                >
+                  {producto.stock > 0 ? 'Añadir al carrito' : 'Agotado'}
                   <i className="fa-solid fa-cart-shopping"></i>
                 </button>
-                <button>
+                <button onClick={() => verDetallesProducto(producto)}>
                   Ver producto <i className="fa-solid fa-eye"></i>
                 </button>
               </div>

@@ -1,6 +1,6 @@
-import React from 'react';
 import '../Styles/Inicio/Inicio.css';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; // Corrección: importamos useState y useEffect
 
 const productosDestacados = [
   {
@@ -8,60 +8,65 @@ const productosDestacados = [
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 1',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 10,
   },
   {
     id: 2,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 2',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 4,
   },
   {
     id: 3,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 3',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 3,
   },
   {
     id: 4,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 4',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 1,
   },
   {
     id: 5,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 5',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 0,
   },
   {
     id: 6,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 6',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 0,
   },
   {
     id: 7,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 7',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 29,
   },
   {
     id: 8,
     img: '/Imagenes/producto-banner.png',
     nombre: 'Nombre producto 8',
     precio: 5000,
-    stock: 'Stock disponible',
+    stock: 12,
   },
 ];
 
 export const Inicio = () => {
+
+  const [carrito, setCarrito] = useState(() => {
+    const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
+    return carritoLocal;
+  });
 
   const navigate = useNavigate(); // Crea la función navigate
 
@@ -69,6 +74,27 @@ export const Inicio = () => {
     navigate(`/producto/${producto.id}`, { state: { producto } });
   };
 
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
+
+  const agregarAlCarrito = (producto) => {
+    const nuevoCarrito = [...carrito];
+    const productoExistente = nuevoCarrito.find(
+      (item) => item.id === producto.id
+    );
+
+    if (productoExistente) {
+      productoExistente.cantidad += 1;
+    } else {
+      nuevoCarrito.push({ ...producto, cantidad: 1 });
+    }
+    setCarrito(nuevoCarrito);
+  };
+
+  const productosOrdenados = [...productosDestacados].sort((a, b) => {
+    return b.stock - a.stock;
+  });
 
   return (
     <div className="conteiner-general-inicio">
@@ -136,42 +162,31 @@ export const Inicio = () => {
           <h2 className="titulo-pre-banner">Productos destacados</h2>
         </div>
         <div className="productos-destacados">
-          {productosDestacados.map((producto) => (
+          {productosOrdenados.map((producto) => (
             <div className="card-producto" key={producto.id}>
               <div className="info-producto-card">
                 <img
                   name={`img-producto-card-${producto.id}`}
                   className="img-producto-card"
                   src={producto.img}
-                  alt=""
+                  alt={producto.nombre}
                 />
-                <p name={`tipo-precio-producto-${producto.id}`}>
-                  (Precio por unidad)
-                </p>
-                <h2
-                  className="nombre-producto-card"
-                  name={`nombre-producto-card-${producto.id}`}
-                >
-                  {producto.nombre}
-                </h2>
-                <h2
-                  className="precio-producto-card"
-                  name={`precio-producto-card-${producto.id}`}
-                >
-                  ${producto.precio}
-                </h2>
-                <p name={`stock-producto-card-${producto.id}`}>
-                  {producto.stock}
-                </p>
+                <p>(Precio por unidad)</p>
+                <h2 className="nombre-producto-card">{producto.nombre}</h2>
+                <h2 className="precio-producto-card">${producto.precio}</h2>
+                <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
               </div>
               <div className="botones-card-producto">
-                <button>
-                  Añadir al carrito{' '}
+                <button
+                  disabled={producto.stock === 0}
+                  onClick={() => agregarAlCarrito(producto)}
+                >
+                  {producto.stock > 0 ? 'Añadir al carrito' : 'Agotado'}
                   <i className="fa-solid fa-cart-shopping"></i>
                 </button>
                 <button onClick={() => verDetallesProducto(producto)}>
-                Ver producto <i className="fa-solid fa-eye"></i>
-              </button>
+                  Ver producto <i className="fa-solid fa-eye"></i>
+                </button>
               </div>
             </div>
           ))}

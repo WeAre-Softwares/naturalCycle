@@ -1,7 +1,34 @@
-import React from 'react';
+// src/components/CartButton.jsx
 
-export const CartButton = ({ carrito, toggleCart }) => (
-  <div className="cart-container">
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../Styles/Header/Cart.css'; // Asegúrate de que la ruta sea correcta
+
+export const CartButton = ({ carrito }) => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Guardar el carrito en Local Storage cada vez que se actualiza
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
+
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen); // Abre o cierra el carrito
+  };
+
+  const closeCart = () => {
+    setIsCartOpen(false); // Cierra el carrito
+  };
+
+  const eliminarDelCarrito = (id) => {
+    const nuevoCarrito = carrito.filter((item) => item.id !== id);
+    // Actualiza el estado del carrito
+    setCarrito(nuevoCarrito);
+  };
+
+  return (
+    <div className="cart-container">
     <button
       data-quantity={carrito.length}
       className="btn-cart"
@@ -20,5 +47,89 @@ export const CartButton = ({ carrito, toggleCart }) => (
         ></path>
       </svg>
     </button>
+
+    {/* Carrito */}
+    {/* Carrito */}
+    {isCartOpen && (
+      <div
+        className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}
+      >
+        <div className="header-carrito">
+          <h2>Carrito de compras</h2>
+          <button className="cerrar-carrito" onClick={closeCart}>
+            X
+          </button>
+        </div>
+        <div className="productos-lista">
+          {carrito.length === 0 ? (
+            <div className="mensaje-vacio">
+              <p>El carrito de compras está vacío.</p>
+              <p>¡Añade productos a tu carrito para comenzar a comprar!</p>
+            </div>
+          ) : (
+            carrito.map((item) => (
+              <div key={item.id} className="producto-item">
+                <img
+                  src={item.img}
+                  alt={item.nombre}
+                  className="img-producto-carrito"
+                />
+                <div className="info-producto">
+                  <p>{item.nombre}</p>
+                  <p>
+                    {item.cantidad}{' '}
+                    {item.unidadMedida === 'kg' ? 'kg' : 'unidades'}
+                  </p>
+                  <div className="cantidad-controles">
+                    <button onClick={() => modificarCantidad(item.id, -1)}>
+                      -
+                    </button>
+                    <span>{item.cantidad}</span>
+                    <button onClick={() => modificarCantidad(item.id, 1)}>
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div className="precio-producto">
+                  <p>
+                    ${(item.precio * item.cantidad).toLocaleString()}{' '}
+                    {item.unidadMedida === 'kg' ? '/kg' : ''}
+                  </p>
+                </div>
+                <button
+                  className="eliminar-producto"
+                  onClick={() => eliminarDelCarrito(item.id)}
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+        {carrito.length > 0 && (
+          <>
+            <div className="subtotal">
+              <p>Subtotal (sin envío):</p>
+              <p>${calcularSubtotal().toLocaleString()}</p>
+            </div>
+            <div className="total">
+              <h3>Total:</h3>
+              <h3>${calcularSubtotal().toLocaleString()}</h3>
+            </div>
+            <button className="btn-iniciar-compra">Iniciar Compra</button>
+            <Link to="/Categorias" className="link-categorias">
+              <button
+                className="btn-ver-productos"
+                onClick={closeCart} // Cierra el carrito al hacer clic
+              >
+                Ver más productos
+              </button>
+            </Link>
+          </>
+        )}
+      </div>
+    )}
   </div>
-);
+  );
+};
+

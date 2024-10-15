@@ -15,6 +15,7 @@ export const CrearProducto = () => {
     etiquetas: [],
     promocion: false,
     destacado: false,
+    nuevoIngreso: false, // Nuevo campo para marcar productos como nuevo ingreso
   });
 
   const [productos, setProductos] = useState([]);
@@ -84,6 +85,7 @@ export const CrearProducto = () => {
       etiquetas: [],
       promocion: false,
       destacado: false,
+      nuevoIngreso: false, // Reiniciar el nuevo ingreso también
     });
     setEditando(false); // Restablecer el estado de edición
     setIndexEditar(null); // Restablecer el índice del producto a editar
@@ -198,6 +200,16 @@ export const CrearProducto = () => {
             />
             Producto destacado
           </label>
+          <label className="crear-producto-label">
+            <input
+              type="checkbox"
+              name="nuevoIngreso"
+              checked={producto.nuevoIngreso}
+              onChange={handleChange}
+              className="crear-producto-checkbox"
+            />
+            Nuevo ingreso
+          </label>
           <button onClick={crearProducto} className="crear-producto-button">
             {editando ? 'Actualizar Producto' : 'Crear Producto'}
           </button>
@@ -235,6 +247,7 @@ export const CrearProducto = () => {
                     <p>{prod.stock ? 'En Stock' : 'Sin Stock'}</p>
                     <p>{prod.promocion ? 'En Promoción' : 'Sin Promoción'}</p>
                     <p>{prod.destacado ? 'Destacado' : 'No Destacado'}</p>
+                    <p>{prod.nuevoIngreso ? 'Nuevo Ingreso' : 'Producto Antiguo'}</p>
                   </div>
                   <div className="producto-botones">
                     <button
@@ -254,6 +267,6 @@ export const CrearProducto = () => {
               ))}
           </ul>
         </div>
-    </div>
+      </div>
   );
 };
