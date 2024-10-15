@@ -1,4 +1,6 @@
 import {
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -7,9 +9,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Pedido } from './entities/pedido.entity';
+import { Remito } from '../remitos/entities/remito.entity';
 import { CreatePedidoDto, UpdatePedidoDto } from './dto';
 import type { GetPedidosResponse, PedidoInterface } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
+import { CreateRemitoDto } from '../remitos/dto';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { VENDEDOR_INFO } from '../remitos/constants/vendedor-info.constant';
 
 @Injectable()
 export class PedidosService {
@@ -18,6 +24,7 @@ export class PedidosService {
   constructor(
     @InjectRepository(Pedido)
     private readonly pedidoRepository: Repository<Pedido>,
+    private readonly usuariosService: UsuariosService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -39,12 +46,37 @@ export class PedidosService {
       });
 
       // Guardar el pedido
-      await queryRunner.manager.save(nuevoPedido);
+      const savedPedido = await queryRunner.manager.save(Pedido, nuevoPedido);
+
+      // Obtener info del usuario
+      const comprador_info = await this.usuariosService.findOne(usuarioId);
+
+      // Obtener el pedido_id del pedido recién creado
+      const pedidoId = savedPedido.pedido_id;
+
+      // Crear el remito utilizando el servicio de remitos
+      const remitoDto: CreateRemitoDto = {
+        pedido_id: pedidoId,
+        nombre_comprador: `${comprador_info.nombre}  ${comprador_info.apellido}`,
+        domicilio_comprador: comprador_info.dom_fiscal,
+        dni_comprador: comprador_info.dni,
+        nombre_vendedor: VENDEDOR_INFO.nombre,
+        domicilio_vendedor: VENDEDOR_INFO.domicilio,
+        dni_vendedor: VENDEDOR_INFO.dni,
+        total_precio: rest.total_precio,
+      };
+
+      // Guardar el remito, utilizando el pedido_id recién creado
+      const nuevoRemito = queryRunner.manager.create(Remito, {
+        ...remitoDto,
+        pedido: savedPedido, // Relacionar el pedido directamente con el remito
+      });
+      await queryRunner.manager.save(Remito, nuevoRemito);
 
       // Confirmar la transacción
       await queryRunner.commitTransaction();
 
-      return nuevoPedido;
+      return savedPedido;
     } catch (error) {
       await queryRunner.rollbackTransaction();
 

@@ -149,6 +149,21 @@ export class DetallesPedidosService {
     }
   }
 
+  async findOneByPedidoId(pedidoId: string): Promise<DetallesPedido> {
+    try {
+      return this.detallePedidoRepository.findOne({
+        where: { pedido: { pedido_id: pedidoId }, esta_activo: true },
+        relations: { producto: true },
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar el detalle pedido',
+        error,
+      );
+    }
+  }
+
   async update(
     id: string,
     updateDetallesPedidoDto: UpdateDetallesPedidoDto,
