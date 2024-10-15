@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/Marcas/Marcas.css';
 
@@ -20,57 +20,57 @@ const productosData = [
   {
     id: 1,
     nombre: 'Producto A',
-    precio: 1000,
+    precio: 5000,
     stock: 10,
-    marca: 1,
+    categoria: 1,
     img: '/Imagenes/producto-banner.png',
   },
   {
     id: 2,
     nombre: 'Producto B',
-    precio: 2000,
+    precio: 6000,
     stock: 0,
-    marca: 2,
+    categoria: 2,
     img: '/Imagenes/producto-banner.png',
   }, // Producto sin stock
   {
     id: 3,
     nombre: 'Producto C',
-    precio: 3000,
+    precio: 7000,
     stock: 8,
-    marca: 3,
+    categoria: 3,
     img: '/Imagenes/producto-banner.png',
   },
   {
     id: 4,
     nombre: 'Producto D',
-    precio: 4000,
+    precio: 8000,
     stock: 12,
-    marca: 4,
+    categoria: 4,
     img: '/Imagenes/producto-banner.png',
   },
   {
     id: 5,
     nombre: 'Producto E',
-    precio: 5000,
-    stock: 10,
-    marca: 1,
+    precio: 8000,
+    stock: 12,
+    categoria: 4,
     img: '/Imagenes/producto-banner.png',
   },
   {
     id: 6,
     nombre: 'Producto F',
-    precio: 6000,
-    stock: 0,
-    marca: 1,
+    precio: 8000,
+    stock: 12,
+    categoria: 4,
     img: '/Imagenes/producto-banner.png',
-  }, // Producto sin stock
+  },
   {
     id: 7,
     nombre: 'Producto G',
-    precio: 7000,
-    stock: 8,
-    marca: 2,
+    precio: 8000,
+    stock: 12,
+    categoria: 4,
     img: '/Imagenes/producto-banner.png',
   },
   {
@@ -78,29 +78,56 @@ const productosData = [
     nombre: 'Producto H',
     precio: 8000,
     stock: 12,
-    marca: 4,
+    categoria: 2,
+    img: '/Imagenes/producto-banner.png',
+  },
+  {
+    id: 9,
+    nombre: 'Producto I',
+    precio: 8000,
+    stock: 12,
+    categoria: 1,
     img: '/Imagenes/producto-banner.png',
   },
 ];
 
 export const Marcas = () => {
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState(null);
-  const [menuAbierto, setMenuAbierto] = useState(false); // Estado para controlar si el menú está abierto
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState(0);
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [carrito, setCarrito] = useState(() => {
+    const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
+    return carritoLocal;
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
+
+  const agregarAlCarrito = (producto) => {
+    const nuevoCarrito = [...carrito];
+    const productoExistente = nuevoCarrito.find((item) => item.id === producto.id);
+
+    if (productoExistente) {
+      productoExistente.cantidad += 1;
+    } else {
+      nuevoCarrito.push({ ...producto, cantidad: 1 });
+    }
+    setCarrito(nuevoCarrito);
+  };
 
   const verDetallesProducto = (producto) => {
     navigate(`/producto/${producto.id}`, { state: { producto } });
   };
 
-  const filtrarProductos = () => {
+  const filtrarProductos = useMemo(() => {
     let productosFiltrados;
 
-    if (marcaSeleccionada === 0 || marcaSeleccionada === null) {
+    if (marcaSeleccionada === 0) {
       productosFiltrados = productosData;
     } else {
-      productosFiltrados = productosData.filter(
-        (producto) => producto.marca === marcaSeleccionada,
-      );
+      productosFiltrados = productosData.filter((producto) => producto.marca === marcaSeleccionada);
     }
 
     return productosFiltrados.sort((a, b) => {
@@ -108,26 +135,17 @@ export const Marcas = () => {
       if (b.stock === 0 && a.stock > 0) return -1;
       return 0;
     });
-  };
-
-  const productosFiltrados = filtrarProductos();
+  }, [marcaSeleccionada]);
 
   return (
     <div className="container-general-marcas">
       <div className="container-boton-filtrado">
-        <button
-          className="boton-marcas"
-          onClick={() => setMenuAbierto(!menuAbierto)}
-        >
+        <button className="boton-marcas" onClick={() => setMenuAbierto(!menuAbierto)}>
           Filtrar <i className="fa-solid fa-bars"></i>
         </button>
       </div>
 
-      <div
-        className={`container-marcas-section-marcas ${
-          menuAbierto ? 'menu-abierto' : ''
-        }`}
-      >
+      <div className={`container-marcas-section-marcas ${menuAbierto ? 'menu-abierto' : ''}`}>
         <button className="cerrar-menu" onClick={() => setMenuAbierto(false)}>
           X
         </button>
@@ -139,7 +157,7 @@ export const Marcas = () => {
                 href="#"
                 onClick={() => {
                   setMarcaSeleccionada(marca.id);
-                  setMenuAbierto(false); // Cierra el menú cuando se selecciona una marca
+                  setMenuAbierto(false);
                 }}
               >
                 {marca.nombre}
@@ -150,8 +168,8 @@ export const Marcas = () => {
       </div>
 
       <div className="container-productos-marcas">
-        {productosFiltrados.length > 0 ? (
-          productosFiltrados.map((producto) => (
+        {filtrarProductos.length > 0 ? (
+          filtrarProductos.map((producto) => (
             <div className="card-producto" key={producto.id}>
               <div className="info-producto-card">
                 <img
@@ -175,14 +193,14 @@ export const Marcas = () => {
                 >
                   ${producto.precio}
                 </h3>
-                <p name={`stock-producto-card-${producto.id}`}>
-                  Stock disponible:{' '}
-                  {producto.stock > 0 ? 'Disponible' : 'No disponible'}
-                </p>
+                <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
               </div>
               <div className="botones-card-producto">
-                <button disabled={producto.stock === 0}>
-                  {producto.stock > 0 ? 'Añadir al carrito ' : 'Agotado '}
+                <button
+                  disabled={producto.stock === 0}
+                  onClick={() => agregarAlCarrito(producto)}
+                >
+                  {producto.stock > 0 ? 'Añadir al carrito' : 'Agotado'}
                   <i className="fa-solid fa-cart-shopping"></i>
                 </button>
                 <button onClick={() => verDetallesProducto(producto)}>

@@ -91,14 +91,6 @@ const productosData = [
     categoria: 1,
     img: '/Imagenes/producto-banner.png',
   },
-  {
-    id: 10,
-    nombre: 'Producto J',
-    precio: 9000,
-    stock: 0,
-    categoria: 5,
-    img: '/Imagenes/producto-banner.png',
-  }, // Producto sin stock
 ];
 
 export const Categorias = () => {
@@ -189,6 +181,15 @@ export const Categorias = () => {
     setIsCartOpen(false); // Cierra el carrito
   };
 
+  const iniciarCompra = () => {
+    if (carrito.length > 0) {
+      navigate('/checkout'); // Redirige a la página de checkout
+    } else {
+      alert('El carrito está vacío');
+    }
+  };
+  
+
   return (
     <div className="container-general-categorias">
       <div className="container-boton-filtrado">
@@ -238,10 +239,8 @@ export const Categorias = () => {
               <p>Precio por unidad</p>
               <h3 className="nombre-producto-card">{producto.nombre}</h3>
               <h3 className="precio-producto-card">${producto.precio}</h3>
-              <p>
-                Stock disponible:{' '}
-                {producto.stock > 0 ? 'Disponible' : 'No disponible'}
-              </p>
+              <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
+
             </div>
             <div className="botones-card-producto">
               <button
@@ -284,8 +283,8 @@ export const Categorias = () => {
         {/* Carrito */}
         {isCartOpen && (
           <div
-            className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}
-          >
+            className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}>
+              
             <div className="header-carrito">
               <h2>Carrito de compras</h2>
               <button className="cerrar-carrito" onClick={closeCart}>
@@ -348,7 +347,9 @@ export const Categorias = () => {
                   <h3>Total:</h3>
                   <h3>${calcularSubtotal().toLocaleString()}</h3>
                 </div>
-                <button className="btn-iniciar-compra">Iniciar Compra</button>
+                <button className='btn-iniciar-compra' onClick={iniciarCompra}>
+                  Iniciar compra
+                </button>
                 <Link to="/Categorias" className="link-categorias">
                   <button
                     className="btn-ver-productos"

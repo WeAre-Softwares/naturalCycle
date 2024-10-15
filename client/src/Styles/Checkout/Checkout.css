@@ -1,0 +1,184 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.checkout-container-general{
+    padding-top: 230px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.div-h2-checkout-compra{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-h2-checkout-compra h2{
+    color: #2d4d33;
+    font-weight: bold;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
+.div-h3-form-facturacion{
+    display: flex;
+    padding: 12px;
+    width:80%;
+}
+
+.div-h3-form-facturacion h3{
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.div-form-productos{
+    display: flex;
+    width: 80%;
+}
+
+.form-facturacion{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    flex-direction: column;
+    width: 80%;
+}
+
+.form-facturacion input{
+    width: 350px;
+    padding: 10px; /* Espaciado interno */
+  border: 1px solid #e0e0e0; /* Borde gris claro */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  color: #333; /* Color del texto */
+  margin-bottom: 15px; /* Espaciado inferior entre inputs */
+  transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+}
+
+/* Estilo general del contenedor de checkout */
+.container-prod-checkout {
+    background-color: #ffffff; /* Fondo blanco para cada sección */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px; /* Espaciado interno */
+    margin: auto; /* Centrar horizontalmente */
+    width: 800px; /* Ancho máximo */
+  }
+
+
+  /* Estilo de cada item en el carrito */
+  .checkout-item {
+    display: flex; /* Flexbox para organización */
+    justify-content: space-between; /* Espaciado entre elementos */
+    align-items: center; /* Centrar verticalmente */
+    padding: 15px; /* Espaciado interno */
+    border-bottom: 1px solid #e0e0e0; /* Línea divisoria */
+    transition: background-color 0.3s; /* Transición suave */
+  }
+  
+  /* Efecto hover en los items */
+  .checkout-item:hover {
+    background-color: #f5f5f5; /* Fondo gris claro al pasar el mouse */
+  }
+  
+  /* Estilo para los textos dentro de los items */
+  .checkout-item p {
+    margin: 0; /* Eliminar márgenes */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+  }
+  
+  /* Estilo del total del pedido */
+ .container-prod-checkout h3 {
+    font-size: 17px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    padding: 2px;
+    margin-top: 20px; /* Espaciado superior */
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  /* Contenedor para el botón de confirmar pedido */
+  .div-button-container-prod-checkout {
+    text-align: center; /* Centrar el botón */
+    margin-top: 20px; /* Espaciado superior */
+  }
+
+
+  @media (max-width:870px) {
+    .container-prod-checkout{
+        width: 500px;
+    }
+  }
+  
+  @media (max-width:570px) {
+    .container-prod-checkout{
+        width: 363px;
+    }
+
+    .container-prod-checkout h3{
+        font-size: 15px;
+    }
+  }
+  
+  @media (max-width:1300px) {
+    .div-form-productos{
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .div-h3-form-facturacion{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-facturacion{
+        align-items: center;
+    }
+
+    .container-prod-checkout{
+        margin-bottom: 50px;
+        margin-top: 30px;
+    }
+}
+
+
+/* Estilo del botón de finalizar compra */
+.btn-finalizar-compra {
+    background-color: #8f8f8f; /* Color de fondo */
+    color: #ffffff; /* Color del texto */
+    padding: 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor de fuente */
+    text-transform: uppercase; /* Mayúsculas en el texto */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Transiciones suaves */
+    display: inline-block; /* Permitir márgenes y padding */
+  }
+  
+  /* Efecto hover en el botón */
+  .btn-finalizar-compra:hover {
+    background-color: #2d4d33; /* Color más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Levantar ligeramente el botón */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra más intensa */
+  }
+  
+  /* Efecto active en el botón (cuando se presiona) */
+  .btn-finalizar-compra:active {
+    transform: translateY(0); /* Restablecer al tamaño original */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+  }
+  
