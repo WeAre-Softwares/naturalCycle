@@ -65,7 +65,7 @@ export class Remito {
   })
   total_precio: number; // 99999999.99
 
-  @OneToOne(() => Pedido)
+  @OneToOne(() => Pedido, { onDelete: 'CASCADE' }) // Activa la eliminación en cascada
   @JoinColumn({ name: 'pedido_id' }) // Definición FK
   pedido: Pedido;
 }

@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { EstadoPedido } from '../types/estado-pedido.enum';
+import { CreateDetallesPedidoDto } from '../../detalles_pedidos/dto';
 
 export class CreatePedidoDto {
   @ApiProperty({
@@ -9,14 +11,15 @@ export class CreatePedidoDto {
     default: EstadoPedido.esperando_aprobacion,
   })
   @IsEnum(EstadoPedido)
-  @IsNotEmpty()
-  estado_pedido: EstadoPedido;
+  @IsOptional()
+  estado_pedido?: EstadoPedido;
 
   @ApiProperty({
-    description: 'Precio total del pedido',
-    example: 9999.99,
+    description: 'Lista de detalles de los productos en el pedido',
+    type: [CreateDetallesPedidoDto],
   })
-  @IsNumber()
-  @IsNotEmpty()
-  total_precio: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateDetallesPedidoDto) // Necesario para la transformación de objetos anidados
+  detalles: CreateDetallesPedidoDto[];
 }

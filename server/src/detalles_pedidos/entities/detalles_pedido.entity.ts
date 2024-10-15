@@ -47,7 +47,9 @@ export class DetallesPedido {
   @JoinColumn({ name: 'producto_id' })
   producto: Producto;
 
-  @ManyToOne(() => Pedido, (pedido) => pedido.detalles_pedido)
+  @ManyToOne(() => Pedido, (pedido) => pedido.detalles_pedido, {
+    onDelete: 'CASCADE', // Asegura la eliminación en cascada en base de datos //TODO: remove
+  })
   @JoinColumn({ name: 'pedido_id' })
   pedido: Pedido;
 }

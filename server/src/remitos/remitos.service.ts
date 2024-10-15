@@ -48,14 +48,6 @@ export class RemitosService {
     return this.generarPDF(remito);
   }
 
-  async create(createRemitoDto: CreateRemitoDto): Promise<Remito> {
-    // Crear una nueva instancia de Remito
-    const remito = this.remitoRepository.create(createRemitoDto);
-
-    // Guardar el remito en la base de datos
-    return await this.remitoRepository.save(remito);
-  }
-
   async findAll(paginationDto: PaginationDto): Promise<GetAllRemitosResponse> {
     const { limit = 10, offset = 0 } = paginationDto;
     try {
@@ -176,8 +168,8 @@ export class RemitosService {
       this.agregarEncabezado(doc, remito);
       this.agregarInfoClienteYVendedor(doc, remito);
       //TODO: FIX
-      this.agregarTablaProductos(doc, detallesPedido);
-      this.agregarTotales(doc, remito.pedido.pedido_id);
+      // this.agregarTablaProductos(doc, detallesPedido);
+      // this.agregarTotales(doc, remito.pedido.pedido_id);
 
       // Convertir el contenido a un buffer
       const buffer = [];
@@ -278,98 +270,98 @@ export class RemitosService {
   }
 
   //TODO: FIX
-  private agregarTablaProductos(
-    doc: PDFKit.PDFDocument,
-    detalle: DetallesPedido | null, // Permitir que detalle sea null
-  ) {
-    // Comprobar si detalle es null
-    if (!detalle) {
-      console.error('No se encontró el detalle del pedido.');
-      return; // O maneja el error de otra manera según tu lógica
-    }
+  // private agregarTablaProductos(
+  //   doc: PDFKit.PDFDocument,
+  //   detalle: DetallesPedido | null, // Permitir que detalle sea null
+  // ) {
+  //   // Comprobar si detalle es null
+  //   if (!detalle) {
+  //     console.error('No se encontró el detalle del pedido.');
+  //     return; // O maneja el error de otra manera según tu lógica
+  //   }
 
-    const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'TOTAL'];
-    const columnWidths = [50, 250, 100, 100, 100];
-    let y = 270;
+  //   const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'TOTAL'];
+  //   const columnWidths = [50, 250, 100, 100, 100];
+  //   let y = 270;
 
-    // **Encabezados de la tabla**
-    doc
-      .fontSize(10)
-      .font('Helvetica-Bold')
-      .rect(50, y, doc.page.width - 100, 20)
-      .fill('#333');
+  //   // **Encabezados de la tabla**
+  //   doc
+  //     .fontSize(10)
+  //     .font('Helvetica-Bold')
+  //     .rect(50, y, doc.page.width - 100, 20)
+  //     .fill('#333');
 
-    headers.forEach((header, i) => {
-      doc.fillColor('white');
-      doc.text(
-        header,
-        50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-        y + 5,
-        { width: columnWidths[i], align: 'center' },
-      );
-    });
+  //   headers.forEach((header, i) => {
+  //     doc.fillColor('white');
+  //     doc.text(
+  //       header,
+  //       50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+  //       y + 5,
+  //       { width: columnWidths[i], align: 'center' },
+  //     );
+  //   });
 
-    y += 20;
+  //   y += 20;
 
-    // **Fila única de la tabla**
-    const { producto, cantidad } = detalle; // Esto ya no fallará si detalle es null
-    const total = Number(detalle.total_precio); // Cambiado a Number
+  //   // **Fila única de la tabla**
+  //   const { producto, cantidad } = detalle; // Esto ya no fallará si detalle es null
+  //   const total = Number(detalle.total_precio); // Cambiado a Number
 
-    const row = [
-      '1', // Índice (siempre 1)
-      producto.nombre,
-      `$${Number(producto.precio).toFixed(2)}`, // Cambiado a Number
-      cantidad.toString(),
-      `$${total.toFixed(2)}`, // El total también se cambia a Number
-    ];
+  //   const row = [
+  //     '1', // Índice (siempre 1)
+  //     producto.nombre,
+  //     `$${Number(producto.precio).toFixed(2)}`, // Cambiado a Number
+  //     cantidad.toString(),
+  //     `$${total.toFixed(2)}`, // El total también se cambia a Number
+  //   ];
 
-    row.forEach((cell, i) => {
-      doc.fillColor('black');
-      doc.text(
-        cell,
-        50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-        y + 5,
-        { width: columnWidths[i], align: 'center' },
-      );
-    });
-  }
+  //   row.forEach((cell, i) => {
+  //     doc.fillColor('black');
+  //     doc.text(
+  //       cell,
+  //       50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+  //       y + 5,
+  //       { width: columnWidths[i], align: 'center' },
+  //     );
+  //   });
+  // }
 
   //TODO: FIX
-  private async agregarTotales(
-    doc: PDFKit.PDFDocument,
-    pedidoId: string,
-  ): Promise<void> {
-    const detallePedido =
-      await this.detallesPedidosService.findOneByPedidoId(pedidoId);
+  // private async agregarTotales(
+  //   doc: PDFKit.PDFDocument,
+  //   pedidoId: string,
+  // ): Promise<void> {
+  //   const detallePedido =
+  //     await this.detallesPedidosService.findOneByPedidoId(pedidoId);
 
-    const total = Number(detallePedido.total_precio); // Cambiado a Number
+  //   const total = Number(detallePedido.total_precio); // Cambiado a Number
 
-    const y = doc.y + 30;
-    const width = doc.page.width - 100;
-    const height = 40; // Sección más pequeña
-    const startX = 50;
-    const startY = y;
+  //   const y = doc.y + 30;
+  //   const width = doc.page.width - 100;
+  //   const height = 40; // Sección más pequeña
+  //   const startX = 50;
+  //   const startY = y;
 
-    doc.rect(startX, startY, width, height).fill('#f0f0f0'); // Fondo claro
+  //   doc.rect(startX, startY, width, height).fill('#f0f0f0'); // Fondo claro
 
-    doc
-      .fontSize(12)
-      .font('Helvetica-Bold')
-      .fillColor('black')
-      .text('TOTAL:', startX + 10, startY + 10)
-      .text(
-        `$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        startX + width - 70,
-        startY + 10,
-        {
-          align: 'right',
-        },
-      );
+  //   doc
+  //     .fontSize(12)
+  //     .font('Helvetica-Bold')
+  //     .fillColor('black')
+  //     .text('TOTAL:', startX + 10, startY + 10)
+  //     .text(
+  //       `$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+  //       startX + width - 70,
+  //       startY + 10,
+  //       {
+  //         align: 'right',
+  //       },
+  //     );
 
-    doc
-      .moveTo(startX, startY + height - 1)
-      .lineTo(startX + width, startY + height - 1)
-      .lineWidth(1.5)
-      .stroke('black'); // Cambiar st a stroke
-  }
+  //   doc
+  //     .moveTo(startX, startY + height - 1)
+  //     .lineTo(startX + width, startY + height - 1)
+  //     .lineWidth(1.5)
+  //     .stroke('black'); // Cambiar st a stroke
+  // }
 }

@@ -57,6 +57,13 @@ export class Pedido {
   @JoinColumn({ name: 'usuario_id' })
   usuario: Usuario;
 
-  @OneToMany(() => DetallesPedido, (detalles_pedido) => detalles_pedido.pedido)
+  @OneToMany(
+    () => DetallesPedido,
+    (detalles_pedido) => detalles_pedido.pedido,
+    {
+      cascade: ['remove'], // Permitir eliminación en cascada en TypeORM //TODO: remove
+      onDelete: 'CASCADE', // Asegurar que se eliminen los detalles del pedido en cascada a nivel de la base de datos
+    },
+  )
   detalles_pedido: DetallesPedido[];
 }

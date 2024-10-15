@@ -7,9 +7,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { DetallesPedido } from './entities/detalles_pedido.entity';
-import { Producto } from '../productos/entities/producto.entity';
-import { Pedido } from '../pedidos/entities/pedido.entity';
-import { CreateDetallesPedidoDto, UpdateDetallesPedidoDto } from './dto';
 import type { GetDetallesPedidosResponse } from './interfaces';
 import { PaginationDto } from '../common/dtos';
 
@@ -22,51 +19,6 @@ export class DetallesPedidosService {
     private readonly detallePedidoRepository: Repository<DetallesPedido>,
     private readonly dataSource: DataSource,
   ) {}
-
-  async create(createDetallesPedidoDto: CreateDetallesPedidoDto) {
-    const { producto_id, pedido_id, ...rest } = createDetallesPedidoDto;
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      // Busca las entidades relacionadas
-      const producto = await queryRunner.manager.findOne(Producto, {
-        where: { producto_id },
-      });
-      const pedido = await queryRunner.manager.findOne(Pedido, {
-        where: { pedido_id },
-      });
-
-      // Crear la instancia
-      const nuevoDetallePedido = queryRunner.manager.create(DetallesPedido, {
-        ...rest,
-        producto,
-        pedido,
-      });
-
-      // Guardar el pedido
-      await queryRunner.manager.save(nuevoDetallePedido);
-
-      // Confirmar la transacción
-      await queryRunner.commitTransaction();
-
-      // Todo: aplanar resultado
-      return nuevoDetallePedido;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-
-      this.logger.error(error);
-      console.log(error);
-      throw new InternalServerErrorException(
-        'Error al crear el detalle pedido',
-        error,
-      );
-    } finally {
-      await queryRunner.release();
-    }
-  }
 
   async findAll(
     paginationDto: PaginationDto,
@@ -161,61 +113,6 @@ export class DetallesPedidosService {
         'Error al buscar el detalle pedido',
         error,
       );
-    }
-  }
-
-  async update(
-    id: string,
-    updateDetallesPedidoDto: UpdateDetallesPedidoDto,
-  ): Promise<Partial<DetallesPedido>> {
-    const { producto_id, pedido_id, ...toUpdate } = updateDetallesPedidoDto;
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const detalle_pedido = await this.findOne(id);
-
-      // Si se proporciona un nuevo producto_id, buscar el producto relacionado
-      if (producto_id) {
-        const producto = await queryRunner.manager.findOne(Producto, {
-          where: { producto_id },
-        });
-
-        detalle_pedido.producto = producto; // Asignar el nuevo producto
-      }
-
-      // Si se proporciona un nuevo pedido_id, buscar el pedido relacionado
-      if (pedido_id) {
-        const pedido = await queryRunner.manager.findOne(Pedido, {
-          where: { pedido_id },
-        });
-
-        detalle_pedido.pedido = pedido; // Asignar el nuevo pedido
-      }
-
-      // Combinar las propiedades del DTO con la entidad existente
-      this.detallePedidoRepository.merge(detalle_pedido, toUpdate);
-
-      // Guardar el detalle pedido con las actualizaciones
-      await queryRunner.manager.save(detalle_pedido);
-
-      // Confirmar la transacción si todo salió bien
-      await queryRunner.commitTransaction();
-
-      //Todo: aplanar resultado
-      return detalle_pedido;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-
-      this.logger.error(error);
-      throw new InternalServerErrorException(
-        `Error al actualizar el detalle pedido con ID ${id}.`,
-        error,
-      );
-    } finally {
-      await queryRunner.release();
     }
   }
 

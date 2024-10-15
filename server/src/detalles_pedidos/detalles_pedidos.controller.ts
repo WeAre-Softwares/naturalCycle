@@ -1,25 +1,17 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
   Patch,
   Param,
   Delete,
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DetallesPedidosService } from './detalles_pedidos.service';
 import { DetallesPedido } from './entities/detalles_pedido.entity';
 import type { GetDetallesPedidosResponse } from './interfaces';
-import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
-import { CreateDetallesPedidoDto, UpdateDetallesPedidoDto } from './dto';
+import { PaginationDto } from '../common/dtos';
 
 @ApiTags('Detalles_pedidos')
 // @ApiBearerAuth()
@@ -28,12 +20,6 @@ export class DetallesPedidosController {
   constructor(
     private readonly detallesPedidosService: DetallesPedidosService,
   ) {}
-
-  @Post()
-  @ApiOperation({ summary: 'Crear un detalles pedido' })
-  create(@Body() createDetallesPedidoDto: CreateDetallesPedidoDto) {
-    return this.detallesPedidosService.create(createDetallesPedidoDto);
-  }
 
   @Get()
   @ApiOperation({ summary: 'Buscar todos los detalles pedidos' })
@@ -47,15 +33,6 @@ export class DetallesPedidosController {
   @ApiOperation({ summary: 'Buscar detalle pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido> {
     return this.detallesPedidosService.findOne(id);
-  }
-
-  @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar un detalle pedido' })
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateDetallesPedidoDto: UpdateDetallesPedidoDto,
-  ): Promise<Partial<DetallesPedido>> {
-    return this.detallesPedidosService.update(id, updateDetallesPedidoDto);
   }
 
   @Delete(':id')
