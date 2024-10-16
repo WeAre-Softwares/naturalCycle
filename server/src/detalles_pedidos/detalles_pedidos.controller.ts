@@ -35,6 +35,12 @@ export class DetallesPedidosController {
     return this.detallesPedidosService.findOne(id);
   }
 
+  @Get('todos/:id')
+  @ApiOperation({ summary: 'Buscar detalle pedido por id' })
+  findOne2(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido[]> {
+    return this.detallesPedidosService.findByPedidoId(id);
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Desactivar un detalle pedido' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{

@@ -10,13 +10,12 @@ import { DataSource, Repository } from 'typeorm';
 const PDFDocument = require('pdfkit-table');
 import { PedidosService } from '../pedidos/pedidos.service';
 import { Remito } from './entities/remito.entity';
-import { CreateRemitoDto } from './dto';
 import { EstadoPedido } from '../pedidos/types/estado-pedido.enum';
 import type { GetAllRemitosResponse } from './interfaces';
 import { PaginationDto } from '../common/dtos';
 import { VENDEDOR_INFO } from './constants/vendedor-info.constant';
 import { DetallesPedidosService } from '../detalles_pedidos/detalles_pedidos.service';
-import type { DetallesPedido } from 'src/detalles_pedidos/entities/detalles_pedido.entity';
+import { DetallesPedido } from '../detalles_pedidos/entities/detalles_pedido.entity';
 
 @Injectable()
 export class RemitosService {
@@ -121,9 +120,14 @@ export class RemitosService {
   }
 
   async generarPDF(remito: Remito): Promise<Buffer> {
-    const detallesPedido = await this.detallesPedidosService.findOneByPedidoId(
+    const detallesPedido = await this.detallesPedidosService.findByPedidoId(
       remito.pedido.pedido_id,
     );
+
+    // Calcular el total a partir de los detalles del pedido
+    const totalCalculado = detallesPedido.reduce((total, detalle) => {
+      return total + detalle.precio_unitario * detalle.cantidad;
+    }, 0);
 
     const pdfBuffer: Buffer = await new Promise((resolve) => {
       const doc = new PDFDocument({
@@ -167,9 +171,8 @@ export class RemitosService {
       // Página principal
       this.agregarEncabezado(doc, remito);
       this.agregarInfoClienteYVendedor(doc, remito);
-      //TODO: FIX
-      // this.agregarTablaProductos(doc, detallesPedido);
-      // this.agregarTotales(doc, remito.pedido.pedido_id);
+      this.agregarTablaProductos(doc, detallesPedido);
+      this.agregarTotales(doc, totalCalculado);
 
       // Convertir el contenido a un buffer
       const buffer = [];
@@ -269,99 +272,106 @@ export class RemitosService {
       .stroke();
   }
 
-  //TODO: FIX
-  // private agregarTablaProductos(
-  //   doc: PDFKit.PDFDocument,
-  //   detalle: DetallesPedido | null, // Permitir que detalle sea null
-  // ) {
-  //   // Comprobar si detalle es null
-  //   if (!detalle) {
-  //     console.error('No se encontró el detalle del pedido.');
-  //     return; // O maneja el error de otra manera según tu lógica
-  //   }
+  private agregarTablaProductos(
+    doc: PDFKit.PDFDocument,
+    detallesPedido: DetallesPedido[],
+  ) {
+    if (!detallesPedido || detallesPedido.length === 0) {
+      console.error('No se encontraron productos en el detalle del pedido.');
+      return;
+    }
 
-  //   const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'TOTAL'];
-  //   const columnWidths = [50, 250, 100, 100, 100];
-  //   let y = 270;
+    const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'TOTAL'];
+    const columnWidths = [50, 130, 100, 100, 100];
+    let y = 270;
 
-  //   // **Encabezados de la tabla**
-  //   doc
-  //     .fontSize(10)
-  //     .font('Helvetica-Bold')
-  //     .rect(50, y, doc.page.width - 100, 20)
-  //     .fill('#333');
+    // **Encabezados de la tabla**
+    doc
+      .fontSize(10)
+      .font('Helvetica-Bold')
+      .rect(50, y, doc.page.width - 100, 20)
+      .fill('#333');
 
-  //   headers.forEach((header, i) => {
-  //     doc.fillColor('white');
-  //     doc.text(
-  //       header,
-  //       50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-  //       y + 5,
-  //       { width: columnWidths[i], align: 'center' },
-  //     );
-  //   });
+    headers.forEach((header, i) => {
+      doc.fillColor('white');
+      doc.text(
+        header,
+        50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+        y + 5,
+        { width: columnWidths[i], align: 'center' },
+      );
+    });
 
-  //   y += 20;
+    y += 20;
 
-  //   // **Fila única de la tabla**
-  //   const { producto, cantidad } = detalle; // Esto ya no fallará si detalle es null
-  //   const total = Number(detalle.total_precio); // Cambiado a Number
+    // **Generar filas para cada producto**
+    detallesPedido.forEach((detalle, index) => {
+      const { producto, cantidad } = detalle;
+      const total = Number(detalle.total_precio);
 
-  //   const row = [
-  //     '1', // Índice (siempre 1)
-  //     producto.nombre,
-  //     `$${Number(producto.precio).toFixed(2)}`, // Cambiado a Number
-  //     cantidad.toString(),
-  //     `$${total.toFixed(2)}`, // El total también se cambia a Number
-  //   ];
+      const row = [
+        (index + 1).toString(), // Índice
+        producto.nombre,
+        `$${Number(producto.precio).toFixed(2)}`, // Precio unitario
+        cantidad.toString(),
+        `$${total.toFixed(2)}`, // Total calculado
+      ];
 
-  //   row.forEach((cell, i) => {
-  //     doc.fillColor('black');
-  //     doc.text(
-  //       cell,
-  //       50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-  //       y + 5,
-  //       { width: columnWidths[i], align: 'center' },
-  //     );
-  //   });
-  // }
+      row.forEach((cell, i) => {
+        doc.fillColor('#333');
+        doc.text(
+          cell,
+          50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+          y + 5,
+          { width: columnWidths[i], align: 'center' },
+        );
+      });
 
-  //TODO: FIX
-  // private async agregarTotales(
-  //   doc: PDFKit.PDFDocument,
-  //   pedidoId: string,
-  // ): Promise<void> {
-  //   const detallePedido =
-  //     await this.detallesPedidosService.findOneByPedidoId(pedidoId);
+      y += 20;
+    });
+  }
 
-  //   const total = Number(detallePedido.total_precio); // Cambiado a Number
+  private agregarTotales(doc: PDFKit.PDFDocument, totalCalculado: number) {
+    // Definir la posición inicial para dibujar el total
+    let y = doc.y + 30;
+    const startX = 50;
+    const width = doc.page.width - 100;
+    const height = 40;
 
-  //   const y = doc.y + 30;
-  //   const width = doc.page.width - 100;
-  //   const height = 40; // Sección más pequeña
-  //   const startX = 50;
-  //   const startY = y;
+    // Si no hay suficiente espacio en la página, añadir una nueva página
+    if (y + height + 20 > doc.page.height) {
+      doc.addPage();
+      y = 50; // Reiniciar la posición vertical en la nueva página
+    }
 
-  //   doc.rect(startX, startY, width, height).fill('#f0f0f0'); // Fondo claro
+    // Dibujar el cuadro del total con fondo negro
+    doc.rect(startX, y, width, height).fill('#333'); // Establecer el fondo negro sin transparencia
 
-  //   doc
-  //     .fontSize(12)
-  //     .font('Helvetica-Bold')
-  //     .fillColor('black')
-  //     .text('TOTAL:', startX + 10, startY + 10)
-  //     .text(
-  //       `$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-  //       startX + width - 70,
-  //       startY + 10,
-  //       {
-  //         align: 'right',
-  //       },
-  //     );
+    // Texto "TOTAL" y el valor estático calculado
+    doc
+      .fontSize(12)
+      .font('Helvetica-Bold')
+      .fillColor('white') // Texto en blanco
+      .text('TOTAL:', startX + 10, y + 12);
 
-  //   doc
-  //     .moveTo(startX, startY + height - 1)
-  //     .lineTo(startX + width, startY + height - 1)
-  //     .lineWidth(1.5)
-  //     .stroke('black'); // Cambiar st a stroke
-  // }
+    doc
+      .fontSize(12)
+      .font('Helvetica-Bold')
+      .fillColor('white') // Texto en blanco
+      .text(
+        `$${totalCalculado.toFixed(2)}`, // Mostrar el valor
+        startX + width - 70, // Alinear a la derecha
+        y + 12,
+        {
+          align: 'right',
+        },
+      );
+
+    // Línea blanca debajo del cuadro del total
+    doc
+      .moveTo(startX, y + height - 1)
+      .lineTo(startX + width, y + height - 1)
+      .lineWidth(1.5)
+      .stroke('white'); // Línea en blanco
+  }
 }

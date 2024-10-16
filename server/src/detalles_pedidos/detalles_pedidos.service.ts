@@ -101,9 +101,9 @@ export class DetallesPedidosService {
     }
   }
 
-  async findOneByPedidoId(pedidoId: string): Promise<DetallesPedido> {
+  async findByPedidoId(pedidoId: string): Promise<DetallesPedido[]> {
     try {
-      return this.detallePedidoRepository.findOne({
+      return this.detallePedidoRepository.find({
         where: { pedido: { pedido_id: pedidoId }, esta_activo: true },
         relations: { producto: true },
       });
