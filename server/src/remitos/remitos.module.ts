@@ -5,6 +5,7 @@ import { RemitosController } from './remitos.controller';
 import { Remito } from './entities/remito.entity';
 import { PedidosModule } from '../pedidos/pedidos.module';
 import { DetallesPedidosModule } from '../detalles_pedidos/detalles_pedidos.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [RemitosController],
@@ -13,6 +14,7 @@ import { DetallesPedidosModule } from '../detalles_pedidos/detalles_pedidos.modu
     TypeOrmModule.forFeature([Remito]),
     forwardRef(() => PedidosModule),
     DetallesPedidosModule,
+    AuthModule,
   ],
   exports: [RemitosService, TypeOrmModule],
 })

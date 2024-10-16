@@ -9,11 +9,17 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto, UpdateCategoriaDto } from './dto';
 import { SearchWithPaginationDto, PaginationDto } from '../common/dtos';
 import type { CategoriaInterface, GetCategoriasResponse } from './interfaces';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Categorías')
 @Controller('categorias')
@@ -21,6 +27,8 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Crear una nueva categoría' })
   create(
     @Body() createCategoriaDto: CreateCategoriaDto,
@@ -52,6 +60,8 @@ export class CategoriasController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las categorías' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -60,12 +70,16 @@ export class CategoriasController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar una categoría por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CategoriaInterface> {
     return this.categoriasService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Actualizar una categoría' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -75,6 +89,8 @@ export class CategoriasController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar una categoría' })
   deactivate(
     @Param('id', ParseUUIDPipe) id: string,
@@ -83,6 +99,8 @@ export class CategoriasController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar una categoría' })
   activate(
     @Param('id', ParseUUIDPipe) id: string,

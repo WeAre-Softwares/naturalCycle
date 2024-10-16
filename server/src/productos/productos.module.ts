@@ -7,7 +7,8 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { MarcasModule } from '../marcas/marcas.module';
 import { EtiquetasModule } from '../etiquetas/etiquetas.module';
 import { ProductosImagenesModule } from '../productos_imagenes/productos_imagenes.module';
-import { CategoriasModule } from 'src/categorias/categorias.module';
+import { CategoriasModule } from '../categorias/categorias.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [ProductosController],
@@ -19,6 +20,7 @@ import { CategoriasModule } from 'src/categorias/categorias.module';
     EtiquetasModule,
     MarcasModule,
     ProductosImagenesModule,
+    AuthModule,
   ],
   exports: [ProductosService, TypeOrmModule],
 })

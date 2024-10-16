@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -24,13 +25,16 @@ import {
 } from '@nestjs/swagger';
 import { CloudinaryService } from './cloudinary.service';
 import { CLOUDINARY_CARPETAS } from './constants/cloudinary-folders.constant';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Cloudinary')
+@ApiBearerAuth()
 @Controller('cloudinary')
 export class CloudinaryController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
   @Post('upload')
+  @Auth('admin')
   @ApiOperation({ summary: 'Subir una imagen a una carpeta específica' })
   @ApiConsumes('multipart/form-data')
   @ApiQuery({
@@ -71,6 +75,7 @@ export class CloudinaryController {
   }
 
   @Get(':id')
+  @Auth('admin')
   @ApiOperation({
     summary: 'Obtener un archivo por su ID y carpeta específica',
   })
@@ -94,6 +99,7 @@ export class CloudinaryController {
   }
 
   @Delete(':id')
+  @Auth('admin')
   @ApiOperation({ summary: 'Eliminar una imagen por su ID' })
   @ApiParam({
     name: 'id',

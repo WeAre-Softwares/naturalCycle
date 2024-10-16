@@ -76,10 +76,10 @@ export class Usuario {
     type: 'enum',
     enum: RolesUsuario,
     array: true, // Para aceptar múltiples roles
-    nullable: true, // Permitir que sea nulo al registrar un nuevo usuario
+    default: [], // Permitir que sea un array vacio al registrar un nuevo usuario
     select: false, // Este campo no se seleccionará por defecto
   })
-  roles: RolesUsuario[] | null;
+  roles: RolesUsuario[];
 
   @Column({
     type: 'boolean',

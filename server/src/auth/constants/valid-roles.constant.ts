@@ -1,7 +1,3 @@
-export const VALID_ROLES = {
-  admin: 'admin',
-  empleado: 'empleado',
-  usuario: 'usuario',
-} as const;
+export const VALID_ROLES = ['admin', 'empleado', 'usuario'] as const;
 
-export type validRoles = (typeof VALID_ROLES)[keyof typeof VALID_ROLES];
+export type ValidRoles = (typeof VALID_ROLES)[number];

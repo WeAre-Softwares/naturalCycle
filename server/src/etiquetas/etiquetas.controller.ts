@@ -9,12 +9,18 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { EtiquetasService } from './etiquetas.service';
 import type { GetEtiquetasResponse, EtiquetaInterface } from './interfaces';
 import { CreateEtiquetaDto, UpdateEtiquetaDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { Etiqueta } from './entities/etiqueta.entity';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Etiquetas')
 @Controller('etiquetas')
@@ -22,6 +28,8 @@ export class EtiquetasController {
   constructor(private readonly etiquetasService: EtiquetasService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Crear una nueva etiqueta' })
   create(
     @Body() createCategoriaDto: CreateEtiquetaDto,
@@ -53,6 +61,8 @@ export class EtiquetasController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las etiquetas' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -61,12 +71,16 @@ export class EtiquetasController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar una etiqueta por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<EtiquetaInterface> {
     return this.etiquetasService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Actualizar una etiqueta' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -76,6 +90,8 @@ export class EtiquetasController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar una etiqueta' })
   deactivate(
     @Param('id', ParseUUIDPipe) id: string,
@@ -84,6 +100,8 @@ export class EtiquetasController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar una etiqueta' })
   activate(
     @Param('id', ParseUUIDPipe) id: string,

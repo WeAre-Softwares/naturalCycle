@@ -12,9 +12,9 @@ import { DetallesPedidosService } from './detalles_pedidos.service';
 import { DetallesPedido } from './entities/detalles_pedido.entity';
 import type { GetDetallesPedidosResponse } from './interfaces';
 import { PaginationDto } from '../common/dtos';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Detalles_pedidos')
-// @ApiBearerAuth()
 @Controller('detalles-pedidos')
 export class DetallesPedidosController {
   constructor(
@@ -22,6 +22,8 @@ export class DetallesPedidosController {
   ) {}
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todos los detalles pedidos' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -30,18 +32,16 @@ export class DetallesPedidosController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar detalle pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido> {
     return this.detallesPedidosService.findOne(id);
   }
 
-  @Get('todos/:id')
-  @ApiOperation({ summary: 'Buscar detalle pedido por id' })
-  findOne2(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido[]> {
-    return this.detallesPedidosService.findByPedidoId(id);
-  }
-
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar un detalle pedido' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -50,6 +50,8 @@ export class DetallesPedidosController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar un detalle pedido' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

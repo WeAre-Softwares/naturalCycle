@@ -1,4 +1,6 @@
 import {
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -17,7 +19,6 @@ import { AuthService } from '../auth/auth.service';
 import { MailsService } from '../mails/mails.service';
 import type { CreateUserResponse, FindAllUsersResponse } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
-import { RolesUsuario } from './types/roles.enum';
 
 @Injectable()
 export class UsuariosService {
@@ -26,6 +27,7 @@ export class UsuariosService {
   constructor(
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
+    @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     private readonly MailsService: MailsService,
     private readonly dataSource: DataSource,
@@ -110,6 +112,44 @@ export class UsuariosService {
       if (!usuario) {
         throw new NotFoundException(
           `No se encontro el usuario con el id: ${id}`,
+        );
+      }
+
+      return usuario;
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar el usuario',
+        error,
+      );
+    }
+  }
+
+  async findOneWithRoles(
+    id: string,
+    checkActive: boolean = true,
+  ): Promise<Usuario> {
+    try {
+      const whereCondition = checkActive
+        ? { usuario_id: id, esta_activo: true }
+        : { usuario_id: id };
+
+      const usuario = await this.usuarioRepository.findOne({
+        where: whereCondition,
+        select: [
+          'usuario_id',
+          'nombre',
+          'apellido',
+          'email',
+          'roles',
+          'esta_activo',
+          'email_verificado',
+        ],
+      });
+
+      if (!usuario) {
+        throw new NotFoundException(
+          `No se encontró el usuario con el id: ${id}`,
         );
       }
 
