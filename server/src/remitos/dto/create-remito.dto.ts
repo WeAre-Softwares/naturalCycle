@@ -19,6 +19,11 @@ export class CreateRemitoDto {
   @IsString()
   @MaxLength(255)
   @IsNotEmpty()
+  nombre_comercio_comprador: string;
+
+  @IsString()
+  @MaxLength(255)
+  @IsNotEmpty()
   domicilio_comprador: string;
 
   @IsNumber()

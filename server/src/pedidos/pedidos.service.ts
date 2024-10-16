@@ -97,6 +97,7 @@ export class PedidosService {
       const remitoDto: CreateRemitoDto = {
         pedido_id: savedPedido.pedido_id,
         nombre_comprador: `${comprador_info.nombre}  ${comprador_info.apellido}`,
+        nombre_comercio_comprador: comprador_info.nombre_comercio,
         domicilio_comprador: comprador_info.dom_fiscal,
         dni_comprador: comprador_info.dni,
         nombre_vendedor: VENDEDOR_INFO.nombre,
@@ -319,6 +320,8 @@ export class PedidosService {
 
       if (remitoExistente) {
         remitoExistente.nombre_comprador = `${comprador_info.nombre} ${comprador_info.apellido}`;
+        remitoExistente.nombre_comercio_comprador =
+          comprador_info.nombre_comercio;
         remitoExistente.domicilio_comprador = comprador_info.dom_fiscal;
         remitoExistente.dni_comprador = comprador_info.dni;
         remitoExistente.total_precio = pedido.total_precio;

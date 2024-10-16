@@ -241,7 +241,7 @@ export class RemitosService {
     doc
       .fontSize(10)
       //TODO: Add campo
-      // .text('Dueño | DIETÉTICA GONZALES')
+      .text(`Dueño | ${remito.nombre_comercio_comprador}`)
       .text(`DNI: ${remito.dni_comprador}`)
       .text(`Domicilio: ${remito.domicilio_comprador}`);
 
@@ -281,7 +281,7 @@ export class RemitosService {
       return;
     }
 
-    const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'TOTAL'];
+    const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'SUBTOTAL'];
     const columnWidths = [50, 130, 100, 100, 100];
     let y = 270;
 
@@ -360,7 +360,7 @@ export class RemitosService {
       .fillColor('white') // Texto en blanco
       .text(
         `$${totalCalculado.toFixed(2)}`, // Mostrar el valor
-        startX + width - 70, // Alinear a la derecha
+        startX + width - 150, // Alinear a la derecha
         y + 12,
         {
           align: 'right',

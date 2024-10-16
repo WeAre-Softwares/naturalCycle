@@ -25,6 +25,13 @@ export class Remito {
     length: 255,
     nullable: false,
   })
+  nombre_comercio_comprador: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+  })
   domicilio_comprador: string;
 
   @Column({
