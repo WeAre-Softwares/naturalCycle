@@ -24,13 +24,12 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
-      // 💡 Asignamos el payload al objeto request aquí
-      // para que podamos acceder a él en nuestros manejadores de rutas
-      request['usuario'] = payload;
+
+      request.user = payload; // Asigna el payload del JWT al request
     } catch {
       throw new UnauthorizedException('La verificación del token falló');
     }
-    return true;
+    return true; // Permite el acceso si el JWT es válido
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

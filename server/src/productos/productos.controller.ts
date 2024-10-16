@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -27,6 +28,7 @@ import type {
   ProductoPlainResponse,
   ProductoResponse,
 } from './interfaces';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -34,6 +36,8 @@ export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Crear un nuevo producto' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -88,6 +92,8 @@ export class ProductosController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Actualizar un producto' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -104,6 +110,8 @@ export class ProductosController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar un producto' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -112,6 +120,8 @@ export class ProductosController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar un producto' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

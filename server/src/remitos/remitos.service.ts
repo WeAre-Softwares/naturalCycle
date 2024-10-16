@@ -213,7 +213,7 @@ export class RemitosService {
       .fillColor('black')
       .text('REMITO', 0, 50, { align: 'right' });
 
-    doc.fontSize(12).text(`PEDIDO N° ${remito.remito_id}`, { align: 'right' });
+    doc.fontSize(12).text(`ID PEDIDO: ${remito.remito_id}`, { align: 'right' });
 
     // Línea separadora
     doc

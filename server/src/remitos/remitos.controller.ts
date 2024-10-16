@@ -8,11 +8,12 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RemitosService } from './remitos.service';
 import { PaginationDto } from '../common/dtos';
 import { Remito } from './entities/remito.entity';
 import type { GetAllRemitosResponse } from './interfaces';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('remitos')
 @Controller('remitos')
@@ -20,6 +21,8 @@ export class RemitosController {
   constructor(private readonly remitosService: RemitosService) {}
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todos los remitos' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -28,12 +31,16 @@ export class RemitosController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar un remito por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Remito> {
     return this.remitosService.findOne(id);
   }
 
   @Get('pdf/download')
+  @ApiBearerAuth()
+  @Auth('admin')
   async downloadPDF(
     @Query('pedidoId') pedidoId: string,
     @Res() res: Response,

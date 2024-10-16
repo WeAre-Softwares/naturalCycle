@@ -9,7 +9,12 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UsuariosService } from './usuarios.service';
 import { Usuario } from './entities/usuario.entity';
 import {
@@ -19,6 +24,7 @@ import {
 } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import type { FindAllUsersResponse } from './interfaces';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Usuarios')
 @Controller('usuarios')
@@ -32,6 +38,8 @@ export class UsuariosController {
   }
 
   @Get('search')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({
     summary: 'Buscar usuarios por término(nombre, apellido y dni)',
   })
@@ -57,6 +65,8 @@ export class UsuariosController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todos los usuarios' })
   async findAll(
     @Query() paginationDto: PaginationDto,
@@ -65,12 +75,16 @@ export class UsuariosController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar un usuario por id' })
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(id);
   }
 
   @Patch('admin/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({
     summary: 'El administrador actualiza datos relevante al usuario',
   })
@@ -82,6 +96,9 @@ export class UsuariosController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  //TODO: Fix ver como manejar que el usuario sea el dueño real de la cuenta
+  @Auth() // El usuario tiene que esta autenticado para poder actualiar sus datos
   @ApiOperation({
     summary: 'Actualización de datos básicos para el usuario con rol: usuario',
   })
@@ -95,6 +112,8 @@ export class UsuariosController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar un usuario' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -103,6 +122,8 @@ export class UsuariosController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar un usuario' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

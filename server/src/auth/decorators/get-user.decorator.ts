@@ -7,10 +7,11 @@ import {
 export const GetUser = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
     const req = ctx.switchToHttp().getRequest();
-    const user = req.user;
+    const usuario = req.user;
 
-    if (!user) throw new InternalServerErrorException('User not found');
+    if (!usuario)
+      throw new InternalServerErrorException('No se encontró un usuario');
 
-    return !data ? user : user[data];
+    return !data ? usuario : usuario[data];
   },
 );

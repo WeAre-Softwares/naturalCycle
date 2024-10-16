@@ -13,6 +13,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -24,6 +25,7 @@ import { CreateMarcaDto, UpdateMarcaDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { Marca } from './entities/marca.entity';
 import type { GetMarcasResponse, MarcaInterface } from './interfaces';
+import { Auth } from '../auth/decorators';
 
 @ApiTags('Marcas')
 @Controller('marcas')
@@ -31,6 +33,8 @@ export class MarcasController {
   constructor(private readonly marcasService: MarcasService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Crear una nueva marca' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -69,18 +73,24 @@ export class MarcasController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las marcas' })
   findAll(@Query() paginationDto: PaginationDto): Promise<GetMarcasResponse> {
     return this.marcasService.findAll(paginationDto);
   }
 
   @Get(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar marca por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<MarcaInterface> {
     return this.marcasService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Actualizar una marca' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -97,6 +107,8 @@ export class MarcasController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar una marca' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -105,6 +117,8 @@ export class MarcasController {
   }
 
   @Patch('activate/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar una marca' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

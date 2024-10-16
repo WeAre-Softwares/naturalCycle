@@ -31,7 +31,7 @@ export class PedidosController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un pedido' })
-  @Auth()
+  @Auth() // Para crear un pedido tiene que esta autenticado
   create(
     @Body() createPedidoDto: CreatePedidoDto,
     @GetUser() usuario: Usuario,
@@ -40,6 +40,7 @@ export class PedidosController {
   }
 
   @Get('search')
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar pedidos por término' })
   @ApiQuery({
     name: 'term',
@@ -63,18 +64,21 @@ export class PedidosController {
   }
 
   @Get()
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todos los pedidos' })
   findAll(@Query() paginationDto: PaginationDto): Promise<GetPedidosResponse> {
     return this.pedidosService.findAll(paginationDto);
   }
 
   @Get(':id')
+  @Auth('admin')
   @ApiOperation({ summary: 'Buscar pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<PedidoInterface> {
     return this.pedidosService.findOne(id);
   }
 
   @Patch(':id')
+  @Auth('admin')
   @ApiOperation({ summary: 'Actualizar un pedido' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -84,6 +88,7 @@ export class PedidosController {
   }
 
   @Delete(':id')
+  @Auth('admin')
   @ApiOperation({ summary: 'Desactivar un pedido' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -92,6 +97,7 @@ export class PedidosController {
   }
 
   @Patch('activate/:id')
+  @Auth('admin')
   @ApiOperation({ summary: 'Activar un pedido' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
