@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -7,9 +8,16 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Pedido } from './entities/pedido.entity';
+import { Remito } from '../remitos/entities/remito.entity';
+import { Producto } from '../productos/entities/producto.entity';
+import { DetallesPedido } from '../detalles_pedidos/entities/detalles_pedido.entity';
 import { CreatePedidoDto, UpdatePedidoDto } from './dto';
 import type { GetPedidosResponse, PedidoInterface } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
+import { CreateRemitoDto } from '../remitos/dto';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { VENDEDOR_INFO } from '../remitos/constants/vendedor-info.constant';
+import { EstadoPedido } from './types/estado-pedido.enum';
 
 @Injectable()
 export class PedidosService {
@@ -18,6 +26,7 @@ export class PedidosService {
   constructor(
     @InjectRepository(Pedido)
     private readonly pedidoRepository: Repository<Pedido>,
+    private readonly usuariosService: UsuariosService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -25,26 +34,89 @@ export class PedidosService {
     createPedidoDto: CreatePedidoDto,
     usuarioId: string,
   ): Promise<PedidoInterface> {
-    const { ...rest } = createPedidoDto;
+    const { detalles } = createPedidoDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      // Validar que haya detalles en el pedido
+      if (!detalles || detalles.length === 0) {
+        throw new BadRequestException(
+          'El pedido debe contener al menos un detalle',
+        );
+      }
+
+      // 1. Crear el pedido (sin total_precio aún)
       // Crear la instancia
       const nuevoPedido = queryRunner.manager.create(Pedido, {
-        ...rest,
         usuario: { usuario_id: usuarioId },
+        estado_pedido: EstadoPedido.esperando_aprobacion,
+        total_precio: 0, // Asignar 0 para evitar el error de not-null
       });
 
       // Guardar el pedido
-      await queryRunner.manager.save(nuevoPedido);
+      const savedPedido = await queryRunner.manager.save(Pedido, nuevoPedido);
 
-      // Confirmar la transacción
+      let totalPrecio = 0;
+
+      // 2. Crear los detalles del pedido (cada producto)
+      for (const detalleDto of createPedidoDto.detalles) {
+        const producto = await queryRunner.manager.findOne(Producto, {
+          where: { producto_id: detalleDto.producto_id },
+        });
+
+        if (!producto) {
+          throw new InternalServerErrorException(
+            `Producto no encontrado: ${detalleDto.producto_id}`,
+          );
+        }
+
+        const nuevoDetallePedido = queryRunner.manager.create(DetallesPedido, {
+          cantidad: detalleDto.cantidad,
+          precio_unitario: detalleDto.precio_unitario,
+          total_precio: detalleDto.cantidad * detalleDto.precio_unitario, // Calcular el total de cada detalle
+          producto: producto,
+          pedido: savedPedido, // Asociar al pedido recién creado
+        });
+
+        await queryRunner.manager.save(DetallesPedido, nuevoDetallePedido);
+
+        totalPrecio += nuevoDetallePedido.total_precio; // Sumar al total del pedido
+      }
+
+      // Actualizar el total_precio del pedido con el valor calculado
+      savedPedido.total_precio = totalPrecio;
+      await queryRunner.manager.save(Pedido, savedPedido);
+
+      // 3. Obtener la información del usuario comprador
+      const comprador_info = await this.usuariosService.findOne(usuarioId);
+
+      // 4. Crear el remito
+      const remitoDto: CreateRemitoDto = {
+        pedido_id: savedPedido.pedido_id,
+        nombre_comprador: `${comprador_info.nombre}  ${comprador_info.apellido}`,
+        nombre_comercio_comprador: comprador_info.nombre_comercio,
+        domicilio_comprador: comprador_info.dom_fiscal,
+        dni_comprador: comprador_info.dni,
+        nombre_vendedor: VENDEDOR_INFO.nombre,
+        domicilio_vendedor: VENDEDOR_INFO.domicilio,
+        dni_vendedor: VENDEDOR_INFO.dni,
+        total_precio: savedPedido.total_precio, // Utilizo el total_precio calculado
+      };
+
+      const nuevoRemito = queryRunner.manager.create(Remito, {
+        ...remitoDto,
+        pedido: savedPedido, // Relacionar el pedido directamente con el remito
+      });
+
+      await queryRunner.manager.save(Remito, nuevoRemito);
+
+      // 5. Confirmar la transacción
       await queryRunner.commitTransaction();
 
-      return nuevoPedido;
+      return savedPedido;
     } catch (error) {
       await queryRunner.rollbackTransaction();
 
@@ -178,32 +250,94 @@ export class PedidosService {
   async update(
     id: string,
     updatePedidoDto: UpdatePedidoDto,
-  ): Promise<Partial<Pedido>> {
-    const { ...toUpdate } = updatePedidoDto;
+  ): Promise<PedidoInterface> {
+    const { detalles } = updatePedidoDto;
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      // 1. Obtener el pedido existente
       const pedido = await this.findOne(id);
 
-      // Combinar las propiedades del DTO con la entidad existente
-      this.pedidoRepository.merge(pedido, toUpdate);
+      // Validar que haya detalles en el pedido
+      if (!detalles || detalles.length === 0) {
+        throw new BadRequestException(
+          'El pedido debe contener al menos un detalle',
+        );
+      }
 
-      // Guardar el pedido con las actualizaciones
-      await queryRunner.manager.save(pedido);
+      let totalPrecio = 0;
 
-      // Confirmar la transacción si todo salió bien
+      // 2. Actualizar los detalles del pedido
+      // En este punto podrías eliminar los detalles existentes y luego recrearlos,
+      // o actualizar los detalles individuales según sea necesario.
+      // Aquí optamos por eliminar y volver a crear los detalle
+
+      // Eliminar detalles previos
+      await queryRunner.manager.delete(DetallesPedido, {
+        pedido: { pedido_id: id },
+      });
+
+      // Crear nuevos detalles de pedido
+      for (const detalleDto of updatePedidoDto.detalles) {
+        const producto = await queryRunner.manager.findOne(Producto, {
+          where: { producto_id: detalleDto.producto_id },
+        });
+
+        if (!producto) {
+          throw new InternalServerErrorException(
+            `Producto no encontrado: ${detalleDto.producto_id}`,
+          );
+        }
+
+        const nuevoDetallePedido = queryRunner.manager.create(DetallesPedido, {
+          cantidad: detalleDto.cantidad,
+          precio_unitario: detalleDto.precio_unitario,
+          total_precio: detalleDto.cantidad * detalleDto.precio_unitario,
+          producto: producto,
+          pedido: pedido, // Asociar al pedido existente
+        });
+
+        await queryRunner.manager.save(DetallesPedido, nuevoDetallePedido);
+        totalPrecio += nuevoDetallePedido.total_precio; // Sumar al total del pedido
+      }
+
+      // 3. Actualizar los campos del pedido y el precio total
+      pedido.total_precio = totalPrecio;
+      pedido.estado_pedido =
+        updatePedidoDto.estado_pedido || pedido.estado_pedido;
+      await queryRunner.manager.save(Pedido, pedido);
+
+      // 4. Si es necesario, actualizar el remito (basado en el pedido original)
+      const comprador_info = await this.usuariosService.findOne(
+        pedido.usuario.usuario_id,
+      );
+      const remitoExistente = await queryRunner.manager.findOne(Remito, {
+        where: { pedido: { pedido_id: id } },
+      });
+
+      if (remitoExistente) {
+        remitoExistente.nombre_comprador = `${comprador_info.nombre} ${comprador_info.apellido}`;
+        remitoExistente.nombre_comercio_comprador =
+          comprador_info.nombre_comercio;
+        remitoExistente.domicilio_comprador = comprador_info.dom_fiscal;
+        remitoExistente.dni_comprador = comprador_info.dni;
+        remitoExistente.total_precio = pedido.total_precio;
+
+        await queryRunner.manager.save(Remito, remitoExistente);
+      }
+
+      // 5. Confirmar la transacción
       await queryRunner.commitTransaction();
 
       return pedido;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-
       this.logger.error(error);
       throw new InternalServerErrorException(
-        `Error al actualizar el pedido con ID ${id}.`,
+        'Error al actualizar el pedido',
         error,
       );
     } finally {
