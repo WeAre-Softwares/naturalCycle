@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { Inicio } from './Pages/Inicio';
 import { Login } from './Pages/Login';
-import { CardInfoUsuario } from './Pages/CardInfoUsuario';
+// import { CardInfoUsuario } from './Pages/CardInfoUsuario';
 import { RegisterForm } from './Pages/RegisterForm';
 import { OlvideContraseña } from './Pages/OlvideContraseña';
 import { Categorias } from './Pages/Categorias';

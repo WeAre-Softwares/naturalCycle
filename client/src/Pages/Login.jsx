@@ -35,14 +35,10 @@ export const Login = () => {
 
         // Redirigir al inicio tras el login exitoso
         navigate('/Inicio');
-      } else {
-        setErrorMessage(
-          'Credenciales incorrectas. Por favor, intente nuevamente.',
-        );
       }
     } catch (error) {
       setErrorMessage(
-        'Hubo un error en el login. Intente nuevamente más tarde.',
+        'Credenciales incorrectas. Por favor, intente nuevamente.',
       );
     }
   };

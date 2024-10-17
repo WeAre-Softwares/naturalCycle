@@ -5,7 +5,8 @@ export const InputField = ({
   placeholder,
   type,
   className,
-  required,
+  register,
+  error,
 }) => {
   return (
     <div>
@@ -14,11 +15,13 @@ export const InputField = ({
       </div>
       <div className="inputForm">
         <input
+          {...register}
           placeholder={placeholder}
           className={className}
           type={type}
-          required={required}
         />
+        {/* TODO: FIX Desing error */}
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}{' '}
       </div>
     </div>
   );

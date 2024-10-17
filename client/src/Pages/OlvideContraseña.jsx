@@ -1,10 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PasswordResetSchema } from '../schemas';
 import '../Styles/Olvide Contraseña/OlvideContraseña.css';
+import { RequestResetPasswordService } from '../services/requestResetPasswordService';
 
 export const OlvideContraseña = () => {
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(PasswordResetSchema),
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      await RequestResetPasswordService(data.email);
+
+      // Verifica que la respuesta tenga un indicativo de éxito
+      // Limpia el mensaje de error
+      // setErrorMessage('');
+      toast.success(
+        'Si este correo está registrado, recibirás un enlace de recuperación.',
+        {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        },
+      );
+
+      setTimeout(() => {
+        navigate('/Inicio');
+      }, 8000);
+    } catch (error) {
+      const errorMsg = error.message || 'Error inesperado. Intenta nuevamente.';
+      setErrorMessage(errorMsg);
+    }
+  };
+
   return (
     <div className="olvide-contraseña-container">
+      <ToastContainer />
       <h3>
         Rellená el siguiente formulario y te llegará un mail para reestablecer
         tu contraseña.
@@ -14,21 +61,29 @@ export const OlvideContraseña = () => {
           Olvidé mi contraseña
         </div>
 
-        <form className="olvide-contraseña-form-pass">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="olvide-contraseña-form-pass"
+        >
           <div className="olvide-contraseña-form-group">
             <label htmlFor="email">Email</label>
             <input
+              {...register('email')}
               type="email"
-              id="email"
-              name="email"
               placeholder="Ingresa tu Email"
-              required
             />
+            {errors.email && (
+              <p style={{ color: 'red' }}>{errors.email.message}</p>
+            )}{' '}
           </div>
-
           <button className="olvide-contraseña-form-submit-btn" type="submit">
             Enviar
           </button>
+          {errorMessage && (
+            <div style={{ color: 'red' }} className="error-message">
+              {errorMessage}
+            </div>
+          )}{' '}
         </form>
 
         <p className="olvide-contraseña-signup-link">

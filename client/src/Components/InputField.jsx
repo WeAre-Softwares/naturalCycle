@@ -21,7 +21,6 @@ export const InputField = ({
         />
         {/* TODO: FIX Desing error */}
         {error && <p style={{ color: 'red' }}>{error.message}</p>}{' '}
-        {/* Mostrar el mensaje de error si existe */}
       </div>
     </div>
   );
