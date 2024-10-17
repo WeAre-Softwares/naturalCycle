@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -25,42 +25,63 @@ import { CrearProducto } from './Pages/CrearProducto';
 import { CrearFiltrado } from './Pages/CrearFiltrado';
 import { New } from './Pages/New';
 import { ScrollToTop } from './Components/ScrolltoTop';
-import { Checkout } from './Pages/Checkout';
+import { PrivateRoute } from './routes/PrivateRoute';
+import { NotFound } from './Pages/NotFound';
+// import { Checkout } from './Pages/Checkout';
 
 function App() {
-  const [carrito, setCarrito] = useState([]); // Estado del carrito
-
   return (
-    <>
-      <Router>
+    <Router>
       <ScrollToTop />
-        <Header />
-        <div>
-          <Routes>
-            <Route path="/" element={<Navigate to="/Inicio" />} />
-            <Route path="/Inicio" element={<Inicio />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/CardInfoUsuario" element={<CardInfoUsuario />} />
-            <Route path="/Register" element={<RegisterForm />} />
-            <Route path="/Password" element={<OlvideContraseña />} />
-            <Route path="/Categorias" element={<Categorias />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/checkout" element={<Checkout carrito={carrito} />} /> 
-            <Route path="/Promociones" element={<Promociones />} />
-            <Route path="/Marcas" element={<Marcas />} />
-            <Route path="/New" element={<New />} />
-            <Route path="/Panel" element={<PanelAdmin />} />
-            <Route path="/producto/:id" element={<ProductDetails />} />
-            <Route path="/panelpedidos" element={<AreaPedidos />} />
-            <Route path="/panelusuarios" element={<AreaUsuarios />} />
-            <Route path="/panelpermisos" element={<Permisos />} />
-            <Route path="/panelproducto" element={<CrearProducto />} />
-            <Route path="/panelfiltrado" element={<CrearFiltrado />} />
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </>
+      <Header />
+      <div>
+        <Routes>
+          {/* Rutas Públicas */}
+          <Route path="/" element={<Navigate to="/Inicio" />} />
+          <Route path="/Inicio" element={<Inicio />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Register" element={<RegisterForm />} />
+          <Route path="/Password" element={<OlvideContraseña />} />
+          <Route path="/Categorias" element={<Categorias />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Promociones" element={<Promociones />} />
+          <Route path="/Marcas" element={<Marcas />} />
+          <Route path="/New" element={<New />} />
+          <Route path="/producto/:id" element={<ProductDetails />} />
+          {/* <Route path="/checkout" element={<Checkout carrito={carrito} />} /> */}
+
+          {/* Rutas Privadas (Solo Admin) */}
+          <Route
+            path="/Panel"
+            element={<PrivateRoute element={PanelAdmin} />}
+          />
+          <Route
+            path="/panelpedidos"
+            element={<PrivateRoute element={AreaPedidos} />}
+          />
+          <Route
+            path="/panelusuarios"
+            element={<PrivateRoute element={AreaUsuarios} />}
+          />
+          <Route
+            path="/panelpermisos"
+            element={<PrivateRoute element={Permisos} />}
+          />
+          <Route
+            path="/panelproducto"
+            element={<PrivateRoute element={CrearProducto} />}
+          />
+          <Route
+            path="/panelfiltrado"
+            element={<PrivateRoute element={CrearFiltrado} />}
+          />
+
+          {/* Ruta para manejar 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

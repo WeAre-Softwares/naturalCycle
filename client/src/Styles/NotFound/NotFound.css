@@ -1,0 +1,36 @@
+.not-found {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 10rem;
+}
+
+h1 {
+    font-size: 5rem;
+    color: #dc3545;
+    /* Color de error */
+    margin: 0;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #343a40;
+}
+
+p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin: 20px 0;
+}
+
+.link {
+    text-decoration: none;
+    color: rgb(129, 180, 121);
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

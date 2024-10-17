@@ -1,13 +1,51 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import '../Styles/Login/Login.css';
 import { UserInfo } from '../Components/UserInfo';
 import { LoginHeader } from '../Components/LoginHeader';
 import { InputField } from '../Components/InputField';
 import { RememberMe } from '../Components/RememberMe';
+import { Loginschema } from '../schemas/login-schema';
+import { loginService } from '../services/loginService';
+import useAuthStore from '../store/use-auth-store';
 
 export const Login = () => {
   const [isOpen, setIsOpen] = useState(false); // Mover el estado aquí
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const login = useAuthStore((state) => state.login); // Acción de Zustand para loguear
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(Loginschema),
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      const { email, password } = data;
+      const response = await loginService(email, password);
+
+      if (response?.token) {
+        const { token } = response;
+        login(token); // Guardar el token en el estado global
+
+        // Redirigir al inicio tras el login exitoso
+        navigate('/Inicio');
+      } else {
+        setErrorMessage(
+          'Credenciales incorrectas. Por favor, intente nuevamente.',
+        );
+      }
+    } catch (error) {
+      setErrorMessage(
+        'Hubo un error en el login. Intente nuevamente más tarde.',
+      );
+    }
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen); // Cambiar el estado
@@ -18,7 +56,7 @@ export const Login = () => {
       <UserInfo />
       <LoginHeader />
       <div className="conteiner-login">
-        <form className="form-login">
+        <form onSubmit={handleSubmit(onSubmit)} className="form-login">
           <InputField
             label="Email"
             type="text"
@@ -35,6 +73,8 @@ export const Login = () => {
                 </g>
               </svg>
             }
+            register={register('email')}
+            error={errors.email}
           />
           <InputField
             label="Contraseña"
@@ -51,9 +91,19 @@ export const Login = () => {
                 <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"></path>
               </svg>
             }
+            register={register('password')}
+            error={errors.password}
           />
+          {errorMessage && (
+            <div style={{ color: 'red' }} className="error-message">
+              {errorMessage}
+            </div>
+          )}{' '}
+          {/* Mostrar el error si existe */}
           <RememberMe />
-          <button className="button-submit-login">Iniciar sesión</button>
+          <button type="submit" className="button-submit-login">
+            Iniciar sesión
+          </button>
           <p className="p-login">
             No tienes una cuenta?{' '}
             <span className="span-login">

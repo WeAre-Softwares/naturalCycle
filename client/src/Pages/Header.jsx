@@ -6,7 +6,6 @@ import { CartButton } from '../Components/CartButton';
 // import Categorias from './Categorias';
 import Logo from '/Imagenes/logo-header.svg';
 
-
 export const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
@@ -43,7 +42,11 @@ export const Header = () => {
           <NavLinks isOpen={isOpen} toggleMenu={toggleMenu} />
           <div className="group">
             <i className="fas fa-search icon"></i>
-            <input type="text" className="input-busca-productos" placeholder="Buscar" />
+            <input
+              type="text"
+              className="input-busca-productos"
+              placeholder="Buscar"
+            />
           </div>
         </nav>
       </header>

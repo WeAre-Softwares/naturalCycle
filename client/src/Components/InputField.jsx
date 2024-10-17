@@ -1,12 +1,27 @@
 import React from 'react';
 
-export const InputField = ({ label, type, placeholder, icon }) => {
+export const InputField = ({
+  label,
+  type,
+  placeholder,
+  icon,
+  register,
+  error,
+}) => {
   return (
     <div className="flex-column-login">
       <label>{label}</label>
       <div className="inputForm-login">
         {icon}
-        <input placeholder={placeholder} className="input-login" type={type} />
+        <input
+          {...register}
+          placeholder={placeholder}
+          className="input-login"
+          type={type}
+        />
+        {/* TODO: FIX Desing error */}
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}{' '}
+        {/* Mostrar el mensaje de error si existe */}
       </div>
     </div>
   );
