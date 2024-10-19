@@ -98,8 +98,8 @@ export const Marcas = () => {
     const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
     return carritoLocal;
   });
-
   const navigate = useNavigate();
+  const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
@@ -122,23 +122,41 @@ export const Marcas = () => {
   };
 
   const filtrarProductos = useMemo(() => {
-    let productosFiltrados;
+    let productosFiltrados = productosData;
 
-    if (marcaSeleccionada === 0) {
-      productosFiltrados = productosData;
-    } else {
-      productosFiltrados = productosData.filter((producto) => producto.marca === marcaSeleccionada);
+    // Filtrar por marca
+    if (marcaSeleccionada !== 0) {
+      productosFiltrados = productosFiltrados.filter(
+        (producto) => producto.categoria === marcaSeleccionada
+      );
     }
 
+    // Filtrar por búsqueda
+    if (busqueda) {
+      productosFiltrados = productosFiltrados.filter((producto) =>
+        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+      );
+    }
+
+    // Ordenar productos por stock
     return productosFiltrados.sort((a, b) => {
       if (a.stock === 0 && b.stock > 0) return 1;
       if (b.stock === 0 && a.stock > 0) return -1;
       return 0;
     });
-  }, [marcaSeleccionada]);
+  }, [marcaSeleccionada, busqueda]);
 
   return (
     <div className="container-general-marcas">
+      <div className="group">
+            <i className="fas fa-search icon"></i>
+            <input
+              type="text"
+              className="input-busca-productos"
+              placeholder="Buscar"
+              onChange={(e) => setBusqueda(e.target.value)}
+            />
+          </div>
       <div className="container-boton-filtrado">
         <button className="boton-marcas" onClick={() => setMenuAbierto(!menuAbierto)}>
           Filtrar <i className="fa-solid fa-bars"></i>
@@ -211,11 +229,9 @@ export const Marcas = () => {
           ))
         ) : (
           <div className="no-productos">
-            <h3>No hay productos disponibles para esta marca.</h3>
+            <h3>No se ha encontrado ningún producto.</h3>
             <p>
-              Lo sentimos, pero actualmente no tenemos productos de esta marca
-              en nuestro catálogo. Por favor, prueba con otra marca o vuelve más
-              tarde.
+              Lo sentimos, pero actualmente no tenemos un producto que coincida con lo seleccionado. Intente nuevamente o vuelva más tarde.
             </p>
           </div>
         )}

@@ -10,7 +10,7 @@ export const NotFound = () => {
       <h1>404</h1>
       <h2>Página no encontrada</h2>
       <p>Lo sentimos, la página que estás buscando no existe.</p>
-      <Link className="link" to="/Inicio">
+      <Link className="link--not-found" to="/Inicio">
         Regresar al inicio
       </Link>
     </div>

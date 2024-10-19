@@ -40,14 +40,6 @@ export const Header = () => {
             />
           </div>
           <NavLinks isOpen={isOpen} toggleMenu={toggleMenu} />
-          <div className="group">
-            <i className="fas fa-search icon"></i>
-            <input
-              type="text"
-              className="input-busca-productos"
-              placeholder="Buscar"
-            />
-          </div>
         </nav>
       </header>
     </div>

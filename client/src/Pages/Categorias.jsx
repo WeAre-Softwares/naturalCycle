@@ -103,6 +103,7 @@ export const Categorias = () => {
     return carritoLocal;
   });
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para manejar la apertura del carrito
+  const [busqueda, setBusqueda] = useState(''); // Estado para manejar la búsqueda
   const navigate = useNavigate();
 
   // Guardar el carrito en Local Storage cada vez que se actualiza
@@ -122,17 +123,24 @@ export const Categorias = () => {
           .filter((item) => item.cantidad > 0), // Filtrar items con cantidad 0
     );
   };
+// Función que filtra los productos basándose en la categoría y la búsqueda
+const filtrarProductos = () => {
+  // Filtrar por categoría
+  const productosFiltrados =
+    categoriaSeleccionada === 0 || categoriaSeleccionada === null
+      ? productosData
+      : productosData.filter(
+          (producto) => producto.categoria === categoriaSeleccionada,
+        );
 
-  const filtrarProductos = () => {
-    const productosFiltrados =
-      categoriaSeleccionada === 0 || categoriaSeleccionada === null
-        ? productosData
-        : productosData.filter(
-            (producto) => producto.categoria === categoriaSeleccionada,
-          );
+  // Filtrar por el texto ingresado en la búsqueda
+  const productosBusqueda = productosFiltrados.filter((producto) =>
+    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
-    return productosFiltrados.sort((a, b) => b.stock - a.stock);
-  };
+  // Ordenar productos por stock
+  return productosBusqueda.sort((a, b) => b.stock - a.stock);
+};
 
   const agregarAlCarrito = (producto) => {
     const nuevoCarrito = [...carrito];
@@ -192,6 +200,15 @@ export const Categorias = () => {
 
   return (
     <div className="container-general-categorias">
+      <div className="group">
+            <i className="fas fa-search icon"></i>
+            <input
+              type="text"
+              className="input-busca-productos"
+              placeholder="Buscar"
+              onChange={(e) => setBusqueda(e.target.value)} // Actualiza el estado de búsqueda
+            />
+          </div>
       <div className="container-boton-filtrado">
         <button
           className="boton-categorias"
@@ -228,8 +245,9 @@ export const Categorias = () => {
       </div>
 
       <div className="container-productos-categorias">
-        {filtrarProductos().map((producto) => (
-          <div className="card-producto" key={producto.id}>
+  {filtrarProductos().length > 0 ? (
+    filtrarProductos().map((producto) => (
+      <div className="card-producto" key={producto.id}>
             <div className="info-producto-card">
               <img
                 className="img-producto-card"
@@ -255,8 +273,15 @@ export const Categorias = () => {
               </button>
             </div>
           </div>
-        ))}
-      </div>
+    ))
+  ) : (
+<div className="no-productos">
+            <h3>No se ha encontrado ningún producto.</h3>
+            <p>
+            Lo sentimos, pero actualmente no tenemos un producto que coincida con lo seleccionado. Intente nuevamente o vuelva más tarde.
+            </p>
+          </div>  )}
+</div>
 
       {/* Botón del carrito */}
       <div className="cart-container">

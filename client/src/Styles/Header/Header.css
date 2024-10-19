@@ -161,7 +161,6 @@
     display: flex;
   }
   
-  
   /* Estilos para el menú hamburguesa */
   .links-header {
     position: fixed;
@@ -219,7 +218,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 20px;
+  padding-bottom: 10px;
   width: 100%; /* Ajusta según el diseño */
 }
 
@@ -234,6 +233,12 @@
   color: #ffffff;
   padding-left: 5px;
   font-size: 0.9rem; /* Ajustar tamaño de fuente */
+}
+
+@media (max-width:1000px) {
+  .input-busca-productos{
+    width: 60%;
+  }
 }
 
 @media (max-width: 650px) {
