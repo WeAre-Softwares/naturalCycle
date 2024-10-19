@@ -4,7 +4,7 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding-top: 230px;
+  padding-top: 170px;
   padding-bottom: 20px;
   width: 100%;
   gap: 20px;
@@ -22,7 +22,7 @@
   transform: translateX(-100%);
   transition: transform 0.5s ease; /* Transición suave */
   position: fixed;
-  top: 218px;
+  top: 148px;
   left: 0;
   bottom: 0;
   z-index: 1000;
@@ -118,9 +118,9 @@
   }
 }
 
-@media (max-width:900px) {
+@media (max-width:1000px) {
   .container-marcas-section-marcas{
-      top:195px;
+      top:125px;
   }
 }
 
@@ -137,6 +137,7 @@
 .no-productos h3 {
   font-size: 24px;
   color: #333;
+  padding: 10px;
 }
 
 .no-productos p {

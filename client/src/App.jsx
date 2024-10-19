@@ -48,6 +48,7 @@ function App() {
           <Route path="/Marcas" element={<Marcas />} />
           <Route path="/New" element={<New />} />
           <Route path="/producto/:id" element={<ProductDetails />} />
+
           {/* <Route path="/checkout" element={<Checkout carrito={carrito} />} /> */}
 
           {/* Rutas Privadas (Solo Admin) */}

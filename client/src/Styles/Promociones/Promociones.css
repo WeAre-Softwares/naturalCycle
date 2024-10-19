@@ -1,8 +1,8 @@
 .container-general-promociones {
   width: 100%;
   overflow: hidden;
-  padding-top: 230px;
-  padding-bottom: 20px;
+  padding-top: 150px;
+  padding-bottom: 90px;
   position: relative;
 }
 
@@ -48,6 +48,7 @@
     max-width: 1000px;
     text-align: center;
     font-weight: 500;
+    padding-bottom: 30px;
     letter-spacing: 1px;
 }
 
