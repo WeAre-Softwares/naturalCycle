@@ -10,4 +10,3 @@ export const ScrollToTop = () => {
 
   return null; // No renderiza nada
 };
-

@@ -1,6 +1,4 @@
-
-
-.div-general-categoria-panel{
+.div-general-categoria-panel {
   display: flex;
   padding: 50px 30px 0px 0px;
   justify-content: center;
@@ -8,14 +6,14 @@
 }
 
 @media (max-width:730px) {
-  .div-general-categoria-panel{
+  .div-general-categoria-panel {
     padding: 105px 30px 20px;
   }
 }
 
 
 @media (max-width:900px) {
-  .div-general-categoria-panel{
+  .div-general-categoria-panel {
     flex-direction: column;
   }
 }
@@ -26,66 +24,86 @@
   flex-direction: column;
   padding: 30px;
   margin-top: 179px;
-  background-color: #ffffff; /* White background for contrast */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff;
+  /* White background for contrast */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   width: 100%;
 }
 
 @media (max-width:900px) {
-  .permissions-container{
+  .permissions-container {
     margin: 0;
   }
 }
 
 /* Header styling */
 .permissions-header {
-  font-size: 28px; /* Larger font size for the header */
-  margin-bottom: 20px; /* Space below the header */
-  color: #333333; /* Darker text color for readability */
-  font-family: 'Montserrat', sans-serif; /* Professional font */
+  font-size: 28px;
+  /* Larger font size for the header */
+  margin-bottom: 20px;
+  /* Space below the header */
+  color: #333333;
+  /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif;
+  /* Professional font */
 }
 
 /* Checkbox group styling */
 .permissions-checkbox-group {
   display: flex;
-  flex-direction: column; /* Stack checkboxes vertically */
+  flex-direction: column;
+  /* Stack checkboxes vertically */
 }
 
 /* Checkbox label styling */
 .permissions-checkbox-label {
   display: flex;
-  align-items: center; /* Center align items */
-  font-size: 18px; /* Font size for checkbox label */
-  margin-bottom: 15px; /* Space between checkboxes */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: color 0.2s; /* Smooth color transition */
+  align-items: center;
+  /* Center align items */
+  font-size: 18px;
+  /* Font size for checkbox label */
+  margin-bottom: 15px;
+  /* Space between checkboxes */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: color 0.2s;
+  /* Smooth color transition */
 }
 
 /* Checkbox input styling */
 .permissions-checkbox-input {
-  margin-right: 12px; /* Space between checkbox and label */
-  accent-color: #798a3f; /* Custom accent color for checkbox */
-  transform: scale(1.2); /* Slightly larger checkbox */
+  margin-right: 12px;
+  /* Space between checkbox and label */
+  accent-color: #798a3f;
+  /* Custom accent color for checkbox */
+  transform: scale(1.2);
+  /* Slightly larger checkbox */
 }
 
 /* Change text color on hover */
 .permissions-checkbox-label:hover {
-  color: #798a3f; /* Change text color on hover */
+  color: #798a3f;
+  /* Change text color on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .permissions-container {
-    padding: 20px; /* Reduce padding on smaller screens */
+    padding: 20px;
+    /* Reduce padding on smaller screens */
   }
 
   .permissions-header {
-    font-size: 24px; /* Slightly smaller header on mobile */
+    font-size: 24px;
+    /* Slightly smaller header on mobile */
   }
 
   .permissions-checkbox-label {
-    font-size: 16px; /* Smaller font size for checkboxes */
+    font-size: 16px;
+    /* Smaller font size for checkboxes */
   }
 }
 
@@ -97,102 +115,138 @@
   justify-content: center;
   padding: 30px;
   margin-top: 179px;
-  background-color: #ffffff; /* White background for contrast */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff;
+  /* White background for contrast */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   width: 100%;
 }
 
 @media (max-width:900px) {
-  .crear-producto-container{
+  .crear-producto-container {
     margin: 0;
   }
 }
 
 /* Header styling */
 .crear-producto-header {
-  font-size: 28px; /* Larger font size for the header */
-  margin-bottom: 20px; /* Space below the header */
-  color: #333333; /* Darker text color for readability */
-  font-family: 'Montserrat', sans-serif; /* Professional font */
+  font-size: 28px;
+  /* Larger font size for the header */
+  margin-bottom: 20px;
+  /* Space below the header */
+  color: #333333;
+  /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif;
+  /* Professional font */
 }
 
 /* Input styling */
 .crear-producto-input,
 .crear-producto-textarea,
 .crear-producto-select {
-  width: 100%; /* Full width inputs */
-  padding: 10px; /* Padding inside inputs */
-  margin-bottom: 15px; /* Space between inputs */
-  border: 1px solid #dddddd; /* Light border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size for inputs */
+  width: 100%;
+  /* Full width inputs */
+  padding: 10px;
+  /* Padding inside inputs */
+  margin-bottom: 15px;
+  /* Space between inputs */
+  border: 1px solid #dddddd;
+  /* Light border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size for inputs */
   font-family: Arial, Helvetica, sans-serif;
-  transition: border-color 0.2s; /* Smooth border color transition */
+  transition: border-color 0.2s;
+  /* Smooth border color transition */
 }
 
 /* Input focus effect */
 .crear-producto-input:focus,
 .crear-producto-textarea:focus,
 .crear-producto-select:focus {
-  border-color: #798a3f; /* Change border color on focus */
-  outline: none; /* Remove default outline */
+  border-color: #798a3f;
+  /* Change border color on focus */
+  outline: none;
+  /* Remove default outline */
 }
 
 /* Textarea styling */
 .crear-producto-textarea {
-  height: 100px; /* Set height for textarea */
-  resize: vertical; /* Allow vertical resizing */
+  height: 100px;
+  /* Set height for textarea */
+  resize: vertical;
+  /* Allow vertical resizing */
 }
 
 /* Label styling */
 .crear-producto-label {
-  font-size: 18px; /* Font size for labels */
-  margin-bottom: 10px; /* Space below labels */
-  color: #333333; /* Darker text color */
+  font-size: 18px;
+  /* Font size for labels */
+  margin-bottom: 10px;
+  /* Space below labels */
+  color: #333333;
+  /* Darker text color */
 }
 
 /* Checkbox styling */
 .crear-producto-checkbox {
-  margin-right: 10px; /* Space between checkbox and label */
+  margin-right: 10px;
+  /* Space between checkbox and label */
 }
 
 /* Button styling */
 .crear-producto-button {
-  padding: 12px 20px; /* Padding for button */
-  background-color: #798a3f; /* Button color */
-  color: #ffffff; /* White text color */
+  padding: 12px 20px;
+  /* Padding for button */
+  background-color: #798a3f;
+  /* Button color */
+  color: #ffffff;
+  /* White text color */
   width: 200px;
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 17px; /* Font size for button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color transition */
+  border: none;
+  /* Remove border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 17px;
+  /* Font size for button */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth background color transition */
 }
+
 
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .crear-producto-container {
-    padding: 20px; /* Reduce padding on smaller screens */
+    padding: 20px;
+    /* Reduce padding on smaller screens */
   }
 
   .crear-producto-header {
-    font-size: 24px; /* Slightly smaller header on mobile */
+    font-size: 24px;
+    /* Slightly smaller header on mobile */
   }
 
   .crear-producto-input,
   .crear-producto-textarea,
   .crear-producto-select {
-    font-size: 14px; /* Smaller font size for inputs */
+    font-size: 14px;
+    /* Smaller font size for inputs */
   }
 
   .crear-producto-label {
-    font-size: 16px; /* Smaller font size for labels */
+    font-size: 16px;
+    /* Smaller font size for labels */
   }
 
   .crear-producto-button {
-    font-size: 14px; /* Smaller font size for button */
+    font-size: 14px;
+    /* Smaller font size for button */
   }
 }
 
@@ -203,52 +257,71 @@
   padding: 30px;
   margin-top: 209px;
   gap: 20px;
-  background-color: #ffffff; /* White background for contrast */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff;
+  /* White background for contrast */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   width: 100%;
 }
 
 @media (max-width:900px) {
-  .crear-filtrado-container{
+  .crear-filtrado-container {
     margin: 0;
   }
 }
 
 /* Header styling */
 .crear-filtrado-header {
-  font-size: 28px; /* Larger font size for the header */
-  margin-bottom: 20px; /* Space below the header */
-  color: #333333; /* Darker text color for readability */
-  font-family: 'Montserrat', sans-serif; /* Professional font */
+  font-size: 28px;
+  /* Larger font size for the header */
+  margin-bottom: 20px;
+  /* Space below the header */
+  color: #333333;
+  /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif;
+  /* Professional font */
 }
 
 /* Subheader styling */
 .crear-filtrado-subheader {
-  font-size: 24px; /* Slightly smaller font size for subheader */
-  margin-bottom: 15px; /* Space below the subheader */
-  color: #5e17eb; /* Purple color for subheader */
+  font-size: 24px;
+  /* Slightly smaller font size for subheader */
+  margin-bottom: 15px;
+  /* Space below the subheader */
+  color: #5e17eb;
+  /* Purple color for subheader */
 }
 
 /* Button styling */
 .crear-filtrado-button {
-  padding: 10px 15px; /* Padding for buttons */
-  background-color: #798a3f; /* Button color */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size for buttons */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color transition */
-  margin-right: 10px; /* Space between buttons */
+  padding: 10px 15px;
+  /* Padding for buttons */
+  background-color: #798a3f;
+  /* Button color */
+  color: #ffffff;
+  /* White text color */
+  border: none;
+  /* Remove border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size for buttons */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth background color transition */
+  margin-right: 10px;
+  /* Space between buttons */
 }
 
-.agregar-producto{
+.agregar-producto {
   width: 240px;
 }
 
 @media (max-width:640px) {
-  .tipo-filtrado{
+  .tipo-filtrado {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -257,47 +330,56 @@
 
 /* Input styling */
 .crear-filtrado-input {
-  width: 100%; /* Full width input */
-  padding: 10px; /* Padding inside input */
-  margin-bottom: 15px; /* Space below input */
-  border: 1px solid #dddddd; /* Light border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size for input */
-  transition: border-color 0.2s; /* Smooth border color transition */
+  width: 100%;
+  /* Full width input */
+  padding: 10px;
+  /* Padding inside input */
+  margin-bottom: 15px;
+  /* Space below input */
+  border: 1px solid #dddddd;
+  /* Light border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size for input */
+  transition: border-color 0.2s;
+  /* Smooth border color transition */
 }
 
 /* Input focus effect */
 .crear-filtrado-input:focus {
-  border-color: #798a3f; /* Change border color on focus */
-  outline: none; /* Remove default outline */
+  border-color: #798a3f;
+  /* Change border color on focus */
+  outline: none;
+  /* Remove default outline */
 }
 
-.crear-filtrado-form{
+.crear-filtrado-form {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   gap: 10px;
 }
 
-.crear-filtrado-form ul li{
+.crear-filtrado-form ul li {
   list-style: none;
   gap: 10px;
 }
 
-.div-ul-prod-editar ul{
+.div-ul-prod-editar ul {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.div-ul-prod-editar{
+.div-ul-prod-editar {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 
-.crear-filtrado-checkbox label{
+.crear-filtrado-checkbox label {
   display: flex;
   gap: 10px;
 }
@@ -305,20 +387,24 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .crear-filtrado-container {
-    padding: 20px; /* Reduce padding on smaller screens */
+    padding: 20px;
+    /* Reduce padding on smaller screens */
   }
 
   .crear-filtrado-header {
-    font-size: 24px; /* Slightly smaller header on mobile */
+    font-size: 24px;
+    /* Slightly smaller header on mobile */
   }
 
   .crear-filtrado-input {
-    font-size: 14px; /* Smaller font size for input */
+    font-size: 14px;
+    /* Smaller font size for input */
   }
 
   .crear-filtrado-button,
   .crear-filtrado-save-button {
-    font-size: 14px; /* Smaller font size for buttons */
+    font-size: 14px;
+    /* Smaller font size for buttons */
   }
 }
 
@@ -336,7 +422,7 @@
   gap: 20px;
 }
 
-.productos-lista-panel img{
+.productos-lista-panel img {
   width: 130px;
   height: 130px;
   margin-right: 20px;
@@ -345,7 +431,8 @@
 
 .producto-item-panel {
   display: flex;
-  align-items: center; /* Alinear verticalmente los elementos */
+  align-items: center;
+  /* Alinear verticalmente los elementos */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px;
@@ -357,53 +444,59 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.div-img-marca-panel{
+.div-img-marca-panel {
   display: flex;
   align-items: center;
 }
 
-.img-marca-panel{
+.img-marca-panel {
   padding: 20px;
   height: 100px;
   width: 100px;
 }
 
 .producto-detalles {
-  flex: 1; /* Permite que los detalles ocupen el espacio restante */
-  text-align: left; /* Alinear texto a la izquierda */
+  flex: 1;
+  /* Permite que los detalles ocupen el espacio restante */
+  text-align: left;
+  /* Alinear texto a la izquierda */
   font-size: 18px;
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.producto-detalles h3{
+.producto-detalles h3 {
   text-transform: uppercase;
 }
 
-.producto-detalles p{
+.producto-detalles p {
   text-transform: lowercase;
   position: relative;
 
 }
 
-.producto-detalles p::first-letter{
+.producto-detalles p::first-letter {
   text-transform: uppercase;
 }
 
 /* Responsive Styles */
 @media (max-width: 600px) {
   .productos-lista-panel {
-    flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+    flex-direction: column;
+    /* Cambiar a columna en pantallas pequeñas */
   }
 
   .producto-item-panel {
-    flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
-    align-items: flex-start; /* Alinear los elementos a la izquierda */
+    flex-direction: column;
+    /* Cambiar a columna en pantallas pequeñas */
+    align-items: flex-start;
+    /* Alinear los elementos a la izquierda */
   }
 
   .producto-imagen {
-    margin-bottom: 10px; /* Espacio debajo de la imagen en pantallas pequeñas */
+    margin-bottom: 10px;
+    /* Espacio debajo de la imagen en pantallas pequeñas */
   }
 }
 
@@ -418,16 +511,20 @@
 
 .div-filtrados-creados {
   padding: 10px;
-  background-color: #f9f9f9; /* Color de fondo claro */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  background-color: #f9f9f9;
+  /* Color de fondo claro */
+  border-radius: 10px;
+  /* Bordes redondeados */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra sutil */
 }
 
 .div-filtrados-creados h2 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333; /* Color del título */
+  color: #333;
+  /* Color del título */
 }
 
 .div-filtrados-creados h3 {
@@ -435,32 +532,48 @@
   font-weight: semi-bold;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: #000000; /* Color de las subtítulos */
-  border-bottom: 2px solid #798a3f; /* Línea debajo del subtítulo */
-  padding-bottom: 5px; /* Espacio debajo del subtítulo */
+  color: #000000;
+  /* Color de las subtítulos */
+  border-bottom: 2px solid #798a3f;
+  /* Línea debajo del subtítulo */
+  padding-bottom: 5px;
+  /* Espacio debajo del subtítulo */
 }
 
 .div-filtrados-creados ul {
-  list-style-type: none; /* Sin viñetas */
-  padding: 0; /* Sin padding */
-  margin: 0; /* Sin margin */
+  list-style-type: none;
+  /* Sin viñetas */
+  padding: 0;
+  /* Sin padding */
+  margin: 0;
+  /* Sin margin */
 }
 
 .div-filtrados-creados li {
-  display: flex; /* Flexbox para alinear elementos */
-  align-items: center; /* Centrar verticalmente */
-  justify-content: space-between; /* Espaciado entre los elementos */
+  display: flex;
+  /* Flexbox para alinear elementos */
+  align-items: center;
+  /* Centrar verticalmente */
+  justify-content: space-between;
+  /* Espaciado entre los elementos */
   padding: 10px;
-  margin-bottom: 10px; /* Espacio entre items */
-  background-color: #fff; /* Color de fondo blanco */
-  border: 1px solid #e0e0e0; /* Borde gris claro */
-  border-radius: 5px; /* Bordes redondeados */
-  transition: all 0.2s ease; /* Transición suave */
+  margin-bottom: 10px;
+  /* Espacio entre items */
+  background-color: #fff;
+  /* Color de fondo blanco */
+  border: 1px solid #e0e0e0;
+  /* Borde gris claro */
+  border-radius: 5px;
+  /* Bordes redondeados */
+  transition: all 0.2s ease;
+  /* Transición suave */
 }
 
 .div-filtrados-creados strong {
-  flex: 1; /* Tomar espacio restante */
-  color: #333; /* Color del texto fuerte */
+  flex: 1;
+  /* Tomar espacio restante */
+  color: #333;
+  /* Color del texto fuerte */
 }
 
 
@@ -470,103 +583,144 @@
   flex-direction: column;
   padding: 30px;
   margin-top: 179px;
-  background-color: #ffffff; /* White background for contrast */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff;
+  /* White background for contrast */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   width: 100%;
 }
 
 @media (max-width:900px) {
-  .area-usuarios-container{
+  .area-usuarios-container {
     margin: 0;
   }
 }
 
 /* Header styling */
 .area-usuarios-header {
-  font-size: 28px; /* Larger font size for the header */
-  margin-bottom: 20px; /* Space below the header */
-  color: #333333; /* Darker text color for readability */
-  font-family: 'Montserrat', sans-serif; /* Professional font */
+  font-size: 28px;
+  /* Larger font size for the header */
+  margin-bottom: 20px;
+  /* Space below the header */
+  color: #333333;
+  /* Darker text color for readability */
+  font-family: 'Montserrat', sans-serif;
+  /* Professional font */
 }
 
 /* Input styling */
 .area-usuarios-input {
-  width: 50%; /* Full width input */
-  padding: 10px; /* Padding inside input */
-  margin-bottom: 15px; /* Space below input */
-  border: 1px solid #dddddd; /* Light border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size for input */
-  transition: border-color 0.2s; /* Smooth border color transition */
+  width: 50%;
+  /* Full width input */
+  padding: 10px;
+  /* Padding inside input */
+  margin-bottom: 15px;
+  /* Space below input */
+  border: 1px solid #dddddd;
+  /* Light border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size for input */
+  transition: border-color 0.2s;
+  /* Smooth border color transition */
 }
 
 /* Input focus effect */
 .area-usuarios-input:focus {
-  border-color: #798a3f; /* Change border color on focus */
-  outline: none; /* Remove default outline */
+  border-color: #798a3f;
+  /* Change border color on focus */
+  outline: none;
+  /* Remove default outline */
 }
 
 /* Toggle button styling */
 .area-usuarios-toggle-button {
-  padding: 12px 20px; /* Padding for toggle button */
-  background-color: #798a3f; /* Button color */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 17px; /* Font size for toggle button */
+  padding: 12px 20px;
+  /* Padding for toggle button */
+  background-color: #798a3f;
+  /* Button color */
+  color: #ffffff;
+  /* White text color */
+  border: none;
+  /* Remove border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 17px;
+  /* Font size for toggle button */
   width: 50%;
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color transition */
-  margin-bottom: 20px; /* Space below toggle button */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth background color transition */
+  margin-bottom: 20px;
+  /* Space below toggle button */
 }
 
 /* Toggle button hover effect */
 .area-usuarios-toggle-button:hover {
-  background-color: #2b7643; 
+  background-color: #2b7643;
 }
 
 /* List of users */
 .area-usuarios-list {
   display: flex;
-  flex-direction: column; /* Vertical stacking of users */
+  flex-direction: column;
+  /* Vertical stacking of users */
 }
 
 /* User item styling */
 .area-usuarios-item {
   display: flex;
-  justify-content: space-between; /* Space between name and button */
-  align-items: center; /* Center vertically */
-  padding: 10px; /* Padding around user item */
-  border-bottom: 1px solid #eeeeee; /* Light border below each item */
+  justify-content: space-between;
+  /* Space between name and button */
+  align-items: center;
+  /* Center vertically */
+  padding: 10px;
+  /* Padding around user item */
+  border-bottom: 1px solid #eeeeee;
+  /* Light border below each item */
 }
 
 /* User name styling */
 .area-usuarios-name {
-  font-size: 18px; /* Font size for user name */
-  color: #333333; /* Darker color for user name */
+  font-size: 18px;
+  /* Font size for user name */
+  color: #333333;
+  /* Darker color for user name */
   cursor: pointer;
 }
 
 /* Button styling for approving */
 .area-usuarios-approve-button,
 .area-usuarios-return-button {
-  padding: 10px 15px; /* Padding for buttons */
-  background-color: #798a3f; /* Button color */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 17px; /* Font size for buttons */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color transition */
+  padding: 10px 15px;
+  /* Padding for buttons */
+  background-color: #798a3f;
+  /* Button color */
+  color: #ffffff;
+  /* White text color */
+  border: none;
+  /* Remove border */
+  border-radius: 4px;
+  /* Rounded corners */
+  font-size: 17px;
+  /* Font size for buttons */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth background color transition */
 }
 
 /* Button hover effect */
 .area-usuarios-return-button:hover {
-  background-color: #a32014; /* Darker shade on hover */
+  background-color: #a32014;
+  /* Darker shade on hover */
 }
 
-.area-usuarios-approve-button:hover{
+.area-usuarios-approve-button:hover {
   background-color: #2b7643;
 }
 
@@ -591,12 +745,15 @@
 .usuario-detalle-title {
   margin-bottom: 15px;
   font-size: 1.5rem;
-  color: #000000; /* Color del título */
-  text-align: center; /* Centrar el título */
+  color: #000000;
+  /* Color del título */
+  text-align: center;
+  /* Centrar el título */
 }
 
 .usuario-detalle-info {
-  flex-grow: 1; /* Permite que esta sección crezca */
+  flex-grow: 1;
+  /* Permite que esta sección crezca */
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -605,21 +762,26 @@
 .usuario-detalle-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0; /* Espaciado entre filas */
-  border-bottom: 1px solid #f0f0f0; /* Línea divisoria */
+  padding: 8px 0;
+  /* Espaciado entre filas */
+  border-bottom: 1px solid #f0f0f0;
+  /* Línea divisoria */
 }
 
 .usuario-detalle-row:last-child {
-  border-bottom: none; /* Eliminar línea en la última fila */
+  border-bottom: none;
+  /* Eliminar línea en la última fila */
 }
 
 .estado-aprobado {
-  color: green; /* Color para estado aprobado */
+  color: green;
+  /* Color para estado aprobado */
   font-weight: bold;
 }
 
 .estado-pendiente {
-  color: orange; /* Color para estado pendiente */
+  color: orange;
+  /* Color para estado pendiente */
   font-weight: bold;
 }
 
@@ -628,8 +790,10 @@
   margin: 0 auto;
   padding: 10px 15px;
   width: 240px;
-  background-color: #798a3f; /* Color de fondo */
-  color: rgb(255, 255, 255); /* Color del texto */
+  background-color: #798a3f;
+  /* Color de fondo */
+  color: rgb(255, 255, 255);
+  /* Color del texto */
   border: none;
   border-radius: 5px;
   font-size: 17px;
@@ -638,47 +802,58 @@
 }
 
 .usuario-detalle-close-button:hover {
-  background-color: #99af50; /* Color al pasar el mouse */
+  background-color: #99af50;
+  /* Color al pasar el mouse */
 }
 
-.close-btn{
+.close-btn {
   display: none;
 }
 
 @media (max-width:900px) {
-   /* Botón de cierre en el menú lateral */
-.close-btn {
-  background: transparent;
-  border: none;
-  display: block;
-  color: #798a3f; /* Color del texto */
-  font-size: 34px; /* Tamaño del texto */
-  cursor: pointer;
-  align-self: flex-end; /* Alinear a la derecha */
-  margin-bottom: 40px; /* Espacio debajo del botón */
-  transition: color 0.3s; /* Transición suave para el color */
-}
+
+  /* Botón de cierre en el menú lateral */
+  .close-btn {
+    background: transparent;
+    border: none;
+    display: block;
+    color: #798a3f;
+    /* Color del texto */
+    font-size: 34px;
+    /* Tamaño del texto */
+    cursor: pointer;
+    align-self: flex-end;
+    /* Alinear a la derecha */
+    margin-bottom: 40px;
+    /* Espacio debajo del botón */
+    transition: color 0.3s;
+    /* Transición suave para el color */
+  }
 }
 
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .area-usuarios-container {
-    padding: 20px; /* Reduce padding on smaller screens */
+    padding: 20px;
+    /* Reduce padding on smaller screens */
   }
 
   .area-usuarios-header {
-    font-size: 24px; /* Slightly smaller header on mobile */
+    font-size: 24px;
+    /* Slightly smaller header on mobile */
   }
 
   .area-usuarios-input {
-    font-size: 14px; /* Smaller font size for input */
+    font-size: 14px;
+    /* Smaller font size for input */
   }
 
   .area-usuarios-toggle-button,
   .area-usuarios-approve-button,
   .area-usuarios-return-button {
-    font-size: 14px; /* Smaller font size for buttons */
+    font-size: 14px;
+    /* Smaller font size for buttons */
   }
 
 }
@@ -687,36 +862,44 @@
 
 .area-pedidos {
   padding: 20px;
-  background-color: #ffffff; /* Color de fondo claro para distinguir el área */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff;
+  /* Color de fondo claro para distinguir el área */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   width: 100%;
   margin-top: 179px;
 }
 
 @media (max-width:900px) {
-  .area-pedidos{
+  .area-pedidos {
     margin: 0;
   }
 }
 
 .titulo-area {
-  font-size: 28px; /* Tamaño de fuente para el título */
-  margin-bottom: 20px; /* Margen inferior para separar el título del resto del contenido */
-  color: #333; /* Color del texto del título */
-  font-family: 'Montserrat', sans-serif; /* Professional font */
+  font-size: 28px;
+  /* Tamaño de fuente para el título */
+  margin-bottom: 20px;
+  /* Margen inferior para separar el título del resto del contenido */
+  color: #333;
+  /* Color del texto del título */
+  font-family: 'Montserrat', sans-serif;
+  /* Professional font */
 }
 
 .filtros {
-  margin-bottom: 20px; /* Espacio debajo de los filtros */
+  margin-bottom: 20px;
+  /* Espacio debajo de los filtros */
 }
 
-.filtro-select-panel{
+.filtro-select-panel {
   padding: 6px;
   border-radius: 10px;
 }
 
-.icono-accion{
+.icono-accion {
   background-color: white;
   border-radius: 10px;
   padding: 5px;
@@ -727,21 +910,21 @@
   color: #798a3f;
 }
 
-.pedido-acciones{
+.pedido-acciones {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.pedido-item-panel{
+.pedido-item-panel {
   display: flex;
   flex-wrap: wrap;
   border-radius: 10px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.accion-boton{
+.accion-boton {
   padding: 6px;
   border-radius: 10px;
   border: none;
@@ -749,12 +932,12 @@
   cursor: pointer;
 }
 
-.producto-item-panel-2{
+.producto-item-panel-2 {
   display: flex;
   align-items: center;
 }
 
-.pedido-detalles{
+.pedido-detalles {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -762,7 +945,7 @@
 }
 
 @media (max-width:1345px) {
-  .pedido-detalles{
+  .pedido-detalles {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -770,78 +953,96 @@
   }
 }
 
-.pedido-detalles p{
+.pedido-detalles p {
   color: rgb(0, 0, 0);
   font-size: 17px;
   font-weight: 800;
 }
 
 .lista-pedidos {
-  margin-top: 20px; /* Margen superior para separar la lista de pedidos del filtro */
+  margin-top: 20px;
+  /* Margen superior para separar la lista de pedidos del filtro */
 }
 
 
-.productos-pedido strong{
+.productos-pedido strong {
   font-size: 20px;
 }
 
 @media (max-width:533px) {
-  .productos-pedido strong{
+  .productos-pedido strong {
     font-size: 18px;
   }
 
-  .productos-pedido p{
+  .productos-pedido p {
     font-size: 12px;
   }
 }
 
 @media (max-width:433px) {
-  .producto-item-panel-2{
+  .producto-item-panel-2 {
     display: flex;
     flex-wrap: wrap;
   }
 }
 
 .pedido-nombre {
-  font-size: 1.2em; /* Tamaño de fuente para el nombre del producto */
-  font-weight: bold; /* Texto en negrita */
+  font-size: 1.2em;
+  /* Tamaño de fuente para el nombre del producto */
+  font-weight: bold;
+  /* Texto en negrita */
 }
 
 .pedido-cantidad {
-  font-size: 1em; /* Tamaño de fuente para la cantidad */
+  font-size: 1em;
+  /* Tamaño de fuente para la cantidad */
 }
 
 .pedido-botones {
-  margin-top: 10px; /* Espacio entre el texto y los botones */
+  margin-top: 10px;
+  /* Espacio entre el texto y los botones */
 }
 
 .cantidad-boton {
-    background-color: #cbcbcb;
-    border: none;
-    margin: 7px;
-    padding: 7px 9px;
-    cursor: pointer;
-    font-size: 18px;
-    border-radius: 10px;
+  background-color: #cbcbcb;
+  border: none;
+  margin: 7px;
+  padding: 7px 9px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 10px;
 }
 
 
-.estado-boton, .remito-boton {
-  margin-left: 5px; /* Espacio a la izquierda de estos botones */
-  padding: 5px 10px; /* Espaciado interior */
-  border: none; /* Sin borde */
-  border-radius: 4px; /* Bordes redondeados */
-  background-color: #28a745; /* Color de fondo */
-  color: white; /* Color del texto */
-  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
-  transition: background-color 0.3s; /* Transición suave al cambiar color */
+.estado-boton,
+.remito-boton {
+  margin-left: 5px;
+  /* Espacio a la izquierda de estos botones */
+  padding: 5px 10px;
+  /* Espaciado interior */
+  border: none;
+  /* Sin borde */
+  border-radius: 4px;
+  /* Bordes redondeados */
+  background-color: #28a745;
+  /* Color de fondo */
+  color: white;
+  /* Color del texto */
+  cursor: pointer;
+  /* Cursor de puntero al pasar sobre el botón */
+  transition: background-color 0.3s;
+  /* Transición suave al cambiar color */
 }
 
-.estado-boton:hover, .remito-boton:hover {
-  background-color: #218838; /* Color más oscuro al pasar el mouse */
+.estado-boton:hover,
+.remito-boton:hover {
+  background-color: #218838;
+  /* Color más oscuro al pasar el mouse */
 }
 
 .remito-boton:disabled {
-  background-color: #6c757d; /* Color de fondo para botones deshabilitados */
-  cursor: not-allowed; /* Cambia el cursor para indicar que está deshabilitado */
+  background-color: #6c757d;
+  /* Color de fondo para botones deshabilitados */
+  cursor: not-allowed;
+  /* Cambia el cursor para indicar que está deshabilitado */
 }
