@@ -164,6 +164,7 @@ export class ProductosService {
         tipo_de_precio: nuevoProducto.tipo_de_precio,
         producto_destacado: nuevoProducto.producto_destacado,
         en_promocion: nuevoProducto.en_promocion,
+        nuevo_ingreso: nuevoProducto.nuevo_ingreso,
         marca: {
           nombre: nuevoProducto.marca.nombre,
           marca_destacada: nuevoProducto.marca.marca_destacada,
@@ -287,6 +288,9 @@ export class ProductosService {
       precio: producto.precio,
       tipo_de_precio: producto.tipo_de_precio,
       disponible: producto.disponible,
+      producto_destacado: producto.producto_destacado,
+      en_promocion: producto.en_promocion,
+      nuevo_ingreso: producto.nuevo_ingreso,
       marca: {
         nombre: producto.marca.nombre,
       },
@@ -492,6 +496,7 @@ export class ProductosService {
         tipo_de_precio: producto.tipo_de_precio,
         producto_destacado: producto.producto_destacado,
         en_promocion: producto.en_promocion,
+        nuevo_ingreso: producto.nuevo_ingreso,
         marca: {
           nombre: producto.marca.nombre,
           marca_destacada: producto.marca.marca_destacada,

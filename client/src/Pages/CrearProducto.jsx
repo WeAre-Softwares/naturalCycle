@@ -37,9 +37,6 @@ export const CrearProducto = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log('Categorias seleccionadas:', data.productos_categorias);
-    console.log('Etiquetas seleccionadas:', data.productos_etiquetas);
-
     const formData = new FormData();
 
     // Agregar archivos de imagen

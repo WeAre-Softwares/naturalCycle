@@ -8,6 +8,7 @@ export interface ProductoResponse {
   tipo_de_precio: TipoPrecio;
   producto_destacado: boolean;
   en_promocion: boolean;
+  nuevo_ingreso: boolean;
   marca: {
     nombre: string;
     marca_destacada: boolean;

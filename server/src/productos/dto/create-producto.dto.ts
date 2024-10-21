@@ -80,6 +80,17 @@ export class CreateProductoDto {
   @Transform(({ value }) => (value === 'true' || value === true ? true : false)) // Conversión explícita
   en_promocion?: boolean;
 
+  @ApiProperty({
+    example: true,
+    description: 'Nuevo Ingreso SI = true; NO = false;',
+    nullable: true,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => (value === 'true' || value === true ? true : false)) // Conversión explícita
+  nuevo_ingreso?: boolean;
+
   // Propiedad para recibir el ID de la marca
   @ApiProperty({
     example: 'uuid-de-la-marca',

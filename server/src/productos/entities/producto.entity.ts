@@ -77,6 +77,13 @@ export class Producto {
   })
   en_promocion: boolean;
 
+  @Index() // índice para mejorar el rendimiento en búsquedas para productos de nuevos ingresos
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  nuevo_ingreso: boolean;
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_creacion: Date;
 
