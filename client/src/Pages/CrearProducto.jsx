@@ -37,23 +37,32 @@ export const CrearProducto = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log('Categorias seleccionadas:', data.productos_categorias);
+    console.log('Etiquetas seleccionadas:', data.productos_etiquetas);
+
     const formData = new FormData();
 
+    // Agregar archivos de imagen
     selectedFiles.forEach((file) => formData.append('imagenes', file));
+
+    // Agregar otros campos básicos
     formData.append('nombre', data.nombre);
     formData.append('descripcion', data.descripcion);
     formData.append('precio', data.precio);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
 
-    // Agregar categorías y etiquetas como arrays
-    data.productos_categorias.forEach((categoria) =>
-      formData.append('productos_categorias', categoria),
-    );
+    // Agregar categorías y etiquetas en el formato anidado esperado por el backend
+    data.productos_categorias.forEach((categoriaId, index) => {
+      formData.append(
+        `productos_categorias[${index}][categoria_id]`,
+        categoriaId,
+      );
+    });
 
-    data.productos_etiquetas.forEach((etiqueta) =>
-      formData.append('productos_etiquetas[]', etiqueta),
-    );
+    data.productos_etiquetas.forEach((etiquetaId, index) => {
+      formData.append(`productos_etiquetas[${index}][etiqueta_id]`, etiquetaId);
+    });
 
     // Convertir checkboxes a booleanos explícitamente
     formData.append('en_promocion', !!data.en_promocion);
@@ -161,15 +170,8 @@ export const CrearProducto = () => {
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Categoría</span>
         <select
           {...register('productos_categorias')}
-          className="crear-producto-select"
           multiple
-          onChange={(e) =>
-            setValue(
-              'productos_categorias',
-              [...e.target.selectedOptions].map((opt) => opt.value),
-              { shouldValidate: true },
-            )
-          }
+          className="crear-producto-select"
         >
           {categorias.map((categoria) => (
             <option key={categoria.categoria_id} value={categoria.categoria_id}>
@@ -186,15 +188,8 @@ export const CrearProducto = () => {
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Etiqueta</span>
         <select
           {...register('productos_etiquetas')}
-          className="crear-producto-select"
           multiple
-          onChange={(e) =>
-            setValue(
-              'productos_etiquetas',
-              [...e.target.selectedOptions].map((opt) => opt.value),
-              { shouldValidate: true },
-            )
-          }
+          className="crear-producto-select"
         >
           {etiquetas.map((etiqueta) => (
             <option key={etiqueta.etiqueta_id} value={etiqueta.etiqueta_id}>

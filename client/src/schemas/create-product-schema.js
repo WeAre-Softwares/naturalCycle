@@ -6,13 +6,13 @@ const imagenesSchema = yup
     yup
       .mixed()
       .test('fileSize', 'Cada archivo debe ser menor de 4MB.', (file) =>
-        file ? file.size <= 1024 * 1024 * 4 : true,
+        file instanceof File ? file.size <= 1024 * 1024 * 4 : true,
       )
       .test(
         'fileFormat',
         'Formato no soportado. Los formatos permitidos son .png, .jpeg, .jpg, .avif, .webp, .svg.',
         (file) =>
-          file
+          file instanceof File
             ? [
                 'image/png',
                 'image/jpeg',
