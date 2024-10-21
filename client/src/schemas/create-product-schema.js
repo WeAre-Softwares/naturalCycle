@@ -1,41 +1,31 @@
 import * as yup from 'yup';
 
-const imagenSchema = yup
-  .mixed()
-  .required('Debe proporcionar al menos una imagen.')
-  .test(
-    'fileSize',
-    'El archivo es demasiado grande. El tamaño máximo es 4MB.',
-    (value) => value && value.size <= 1024 * 1024 * 4,
+const imagenesSchema = yup
+  .array()
+  .of(
+    yup
+      .mixed()
+      .test('fileSize', 'Cada archivo debe ser menor de 4MB.', (file) =>
+        file ? file.size <= 1024 * 1024 * 4 : true,
+      )
+      .test(
+        'fileFormat',
+        'Formato no soportado. Los formatos permitidos son .png, .jpeg, .jpg, .avif, .webp, .svg.',
+        (file) =>
+          file
+            ? [
+                'image/png',
+                'image/jpeg',
+                'image/jpg',
+                'image/avif',
+                'image/webp',
+                'image/svg+xml',
+              ].includes(file.type)
+            : true,
+      ),
   )
-  .test(
-    'fileFormat',
-    'Formato no soportado. Los formatos permitidos son .png, .jpeg, .jpg, .avif, .webp, .svg.',
-    (value) =>
-      value &&
-      [
-        'image/png',
-        'image/jpeg',
-        'image/jpg',
-        'image/avif',
-        'image/webp',
-        'image/svg+xml',
-      ].includes(value.type),
-  );
-
-const productosEtiquetasSchema = yup.object().shape({
-  etiqueta_id: yup
-    .string()
-    .uuid('El ID de la etiqueta debe ser un UUID válido.')
-    .required('El ID de la etiqueta es obligatorio.'),
-});
-
-const productosCategoriasSchema = yup.object().shape({
-  categoria_id: yup
-    .string()
-    .uuid('El ID de la categoría debe ser un UUID válido.')
-    .required('El ID de la categoría es obligatorio.'),
-});
+  .min(1, 'Debes subir al menos una imagen.')
+  .max(2, 'Solo puedes subir un máximo de 2 imágenes.');
 
 const tipoPrecioEnum = ['por_kilo', 'por_unidad'];
 
@@ -88,20 +78,15 @@ export const createProductoSchema = yup.object().shape({
 
   productos_etiquetas: yup
     .array()
-    .of(productosEtiquetasSchema)
-    .min(1, 'Debe proporcionar al menos una etiqueta.')
-    .required('Las etiquetas del producto son obligatorias.'),
+    .of(yup.string().uuid('ID de etiqueta inválido.'))
+    .min(1, 'Debe seleccionar al menos una etiqueta.')
+    .required('Las etiquetas son obligatorias.'),
 
   productos_categorias: yup
     .array()
-    .of(productosCategoriasSchema)
-    .min(1, 'Debe proporcionar al menos una categoría.')
-    .required('Las categorías del producto son obligatorias.'),
+    .of(yup.string().uuid('ID de categoría inválido.'))
+    .min(1, 'Debe seleccionar al menos una categoría.')
+    .required('Las categorías son obligatorias.'),
 
-  imagenes: yup
-    .array()
-    .of(imagenSchema)
-    .min(1, 'Debe proporcionar al menos una imagen.')
-    .max(2, 'No puede proporcionar más de 2 imágenes.')
-    .required('Las imágenes son obligatorias.'),
+  imagenes: imagenesSchema.required('Las imágenes son obligatorias.'),
 });

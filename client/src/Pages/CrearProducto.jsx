@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createProductoSchema } from '../schemas/create-product';
+import { createProductoSchema } from '../schemas/create-product-schema';
 import { createProductService } from '../services/products-services/create-product';
 import { useProductoFormulario } from '../hooks/useProductoFormulario';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
-
+import useAuthStore from '../store/use-auth-store';
 
 export const CrearProducto = () => {
   const { categorias, error, etiquetas, loading, marcas } =
     useProductoFormulario();
+  // Extrear el JWT del localStorage usando el estado global
+  const { token } = useAuthStore();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate();
   const {
@@ -30,10 +32,6 @@ export const CrearProducto = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
 
-    if (files.length > 2) {
-      toast.error('Solo puedes subir un máximo de 2 imágenes.');
-      return;
-    }
     setSelectedFiles(files);
     setValue('imagenes', files, { shouldValidate: true });
   };
@@ -47,16 +45,29 @@ export const CrearProducto = () => {
     formData.append('precio', data.precio);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
-    formData.append('productos_etiquetas', data.productos_etiquetas);
-    formData.append('productos_categorias', data.productos_categorias);
-    console.log(formData);
+
+    // Agregar categorías y etiquetas como arrays
+    data.productos_categorias.forEach((categoria) =>
+      formData.append('productos_categorias', categoria),
+    );
+
+    data.productos_etiquetas.forEach((etiqueta) =>
+      formData.append('productos_etiquetas[]', etiqueta),
+    );
+
+    // Convertir checkboxes a booleanos explícitamente
+    formData.append('en_promocion', !!data.en_promocion);
+    formData.append('producto_destacado', !!data.producto_destacado);
+
+    console.log([...formData]);
+
     try {
-      const response = await createProductService(formData);
+      const response = await createProductService(token, formData);
 
       // Verifica que la respuesta tenga un indicativo de éxito
       if (response) {
         toast.success('Producto creado con éxito!', { autoClose: 5000 });
-        setTimeout(() => navigate('/Panel'), 6000);
+        setTimeout(() => navigate('/PanelPrincipal'), 6000);
       } else {
         toast.error('Error al crear el producto');
         throw new Error('Error al crear el producto.');
@@ -74,12 +85,15 @@ export const CrearProducto = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="crear-producto-container"
       >
-      <Link to="/panelproducto"><button className='button-volver-panel-producto'
-    >   <i class="fas fa-arrow-left"></i>
- &nbsp;&nbsp;Volver
-    </button></Link>
+        <Link to="/panelproducto">
+          <button className="button-volver-panel-producto">
+            {' '}
+            <i class="fas fa-arrow-left"></i>
+            &nbsp;&nbsp;Volver
+          </button>
+        </Link>
         <h1 className="crear-producto-header">Crear Producto</h1>
-        
+
         <input
           type="text"
           {...register('nombre')}
@@ -149,6 +163,13 @@ export const CrearProducto = () => {
           {...register('productos_categorias')}
           className="crear-producto-select"
           multiple
+          onChange={(e) =>
+            setValue(
+              'productos_categorias',
+              [...e.target.selectedOptions].map((opt) => opt.value),
+              { shouldValidate: true },
+            )
+          }
         >
           {categorias.map((categoria) => (
             <option key={categoria.categoria_id} value={categoria.categoria_id}>
@@ -167,6 +188,13 @@ export const CrearProducto = () => {
           {...register('productos_etiquetas')}
           className="crear-producto-select"
           multiple
+          onChange={(e) =>
+            setValue(
+              'productos_etiquetas',
+              [...e.target.selectedOptions].map((opt) => opt.value),
+              { shouldValidate: true },
+            )
+          }
         >
           {etiquetas.map((etiqueta) => (
             <option key={etiqueta.etiqueta_id} value={etiqueta.etiqueta_id}>
