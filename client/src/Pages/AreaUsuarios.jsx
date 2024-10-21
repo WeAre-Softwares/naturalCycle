@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PanelAdmin } from './PanelAdmin';
+import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 
 const usuariosIniciales = [
   {
@@ -81,8 +81,8 @@ export const AreaUsuarios = () => {
 
   return (
     <div className="div-general-categoria-panel">
-      <PanelAdmin/>
-      <div className="area-usuarios-container">
+        <MenuLateralPanel />
+        <div className="area-usuarios-container">
         <h1 className="area-usuarios-header">Área de Usuarios</h1>
         <input
           type="text"

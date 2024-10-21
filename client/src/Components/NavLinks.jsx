@@ -61,7 +61,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           <>
             {isAdmin && ( // Solo mostrar para administradores
               <li>
-                <Link to="/Panel" onClick={toggleMenu}>
+                <Link to="/PanelPrincipal" onClick={toggleMenu}>
                   Panel Administrador
                 </Link>
               </li>

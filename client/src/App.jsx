@@ -16,17 +16,21 @@ import { Promociones } from './Pages/Promociones';
 import { Marcas } from './Pages/Marcas';
 import { Header } from './Pages/Header';
 import { Footer } from './Pages/Footer';
-import { PanelAdmin } from './Pages/PanelAdmin';
+import { MenuLateralPanel } from './Components/MenuLateralPanel';
 import { ProductDetails } from './Pages/ProductDetail';
 import { AreaPedidos } from './Pages/AreaPedidos';
 import { AreaUsuarios } from './Pages/AreaUsuarios';
 import { Permisos } from './Pages/Permisos';
+import { PanelProducto } from './Pages/PanelProducto';
 import { CrearProducto } from './Pages/CrearProducto';
 import { CrearFiltrado } from './Pages/CrearFiltrado';
 import { New } from './Pages/New';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { NotFound } from './Pages/NotFound';
+import { PanelPrincipal } from './Pages/PanelAdminPrincipal';
+import { PanelFiltrados } from './Pages/PanelFiltrados';
+
 // import { Checkout } from './Pages/Checkout';
 
 function App() {
@@ -54,7 +58,11 @@ function App() {
           {/* Rutas Privadas (Solo Admin) */}
           <Route
             path="/Panel"
-            element={<PrivateRoute element={PanelAdmin} />}
+            element={<PrivateRoute element={MenuLateralPanel} />}
+          />
+          <Route
+            path="/PanelPrincipal"
+            element={<PrivateRoute element={PanelPrincipal} />}
           />
           <Route
             path="/panelpedidos"
@@ -69,12 +77,20 @@ function App() {
             element={<PrivateRoute element={Permisos} />}
           />
           <Route
-            path="/panelproducto"
+            path="/crearproducto"
             element={<PrivateRoute element={CrearProducto} />}
           />
           <Route
-            path="/panelfiltrado"
+            path="/panelproducto"
+            element={<PrivateRoute element={PanelProducto} />}
+          />
+          <Route
+            path="/crearfiltrado"
             element={<PrivateRoute element={CrearFiltrado} />}
+          />
+          <Route
+            path="/panelfiltrado"
+            element={<PrivateRoute element={PanelFiltrados} />}
           />
 
           {/* Ruta para manejar 404 */}
