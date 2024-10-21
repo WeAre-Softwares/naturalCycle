@@ -2,5 +2,7 @@
 /node_modules/
 /dist/
 
+/postgres
+
 # Ignorar el archivo de variables de entorno
 .env
