@@ -71,6 +71,11 @@ export const createProductoSchema = yup.object().shape({
     .optional()
     .transform((value) => value === 'true' || value === true),
 
+  nuevo_ingreso: yup
+    .boolean()
+    .optional()
+    .transform((value) => value === 'true' || value === true),
+
   marca_id: yup
     .string()
     .uuid('El ID de la marca debe ser un UUID válido.')

@@ -64,6 +64,7 @@ export const CrearProducto = () => {
     // Convertir checkboxes a booleanos explícitamente
     formData.append('en_promocion', !!data.en_promocion);
     formData.append('producto_destacado', !!data.producto_destacado);
+    formData.append('nuevo_ingreso', !!data.nuevo_ingreso);
 
     console.log([...formData]);
 
@@ -215,15 +216,15 @@ export const CrearProducto = () => {
           />
           Producto destacado
         </label>
-        {/* TODO: Agregar campo nuevo_ingreso en el backend */}
-        {/* <label className="crear-producto-label">
-            <input
-              type="checkbox"
-              {...register('nuevo_ingreso')}
-              className="crear-producto-checkbox"
-            />
-            Nuevo ingreso
-          </label> */}
+
+        <label className="crear-producto-label">
+          <input
+            type="checkbox"
+            {...register('nuevo_ingreso')}
+            className="crear-producto-checkbox"
+          />
+          Nuevo ingreso
+        </label>
         <button className="crear-producto-button">Crear Producto</button>
       </form>
     </>
