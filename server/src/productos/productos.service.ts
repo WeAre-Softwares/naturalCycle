@@ -308,7 +308,12 @@ export class ProductosService {
 
   async findAllByTerm(
     searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<ProductoPlainResponse>[]> {
+  ): Promise<{
+    productos: ProductoPlainResponse[];
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     const { limit = 10, offset = 0, term } = searchWithPaginationDto;
 
     try {
@@ -331,14 +336,19 @@ export class ProductosService {
         .take(limit)
         .skip(offset);
 
-      // Ejecutar la consulta y obtener los productos
-      const productos = await queryBuilder.getMany();
+      // Obtener los productos y el total
+      const [productos, total] = await queryBuilder.getManyAndCount();
 
       // Aplicar el formateo a los productos obtenidos
       const productosPlains = productos.map(this.plainProduct);
 
       // Devolver los productos formateados
-      return productosPlains;
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
     } catch (error) {
       this.logger.error(error);
       console.log(error);

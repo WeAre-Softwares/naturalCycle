@@ -71,7 +71,12 @@ export class ProductosController {
   })
   async findByTerm(
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<ProductoPlainResponse>[]> {
+  ): Promise<{
+    productos: ProductoPlainResponse[];
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     return this.productosService.findAllByTerm(searchWithPaginationDto);
   }
 
