@@ -1,15 +1,38 @@
+.div-gral-panel-principal{
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width:900px) {
+  .div-gral-panel-principal{
+    flex-direction: column;
+  }
+}
+
+.panel-inicio-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  gap: 20px;
+}
+
+.panel-inicio-info p{
+  font-size: 17px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+
 .div-general-categoria-panel {
   display: flex;
-  padding: 50px 30px 0px 0px;
+  padding: 30px;
   justify-content: center;
   align-items: center;
 }
 
-@media (max-width:730px) {
-  .div-general-categoria-panel {
-    padding: 105px 30px 20px;
-  }
-}
 
 
 @media (max-width:900px) {
@@ -114,7 +137,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 30px;
-  margin-top: 179px;
+  margin-top: 144px;
   background-color: #ffffff;
   /* White background for contrast */
   border-radius: 8px;
@@ -124,22 +147,27 @@
   width: 100%;
 }
 
+.button-volver-panel-producto{
+  background-color:transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 20px;
+  transition: 0.3s ease-in-out;
+}
+
 @media (max-width:900px) {
   .crear-producto-container {
-    margin: 0;
+    margin-top: 115px;
   }
 }
 
 /* Header styling */
 .crear-producto-header {
   font-size: 28px;
-  /* Larger font size for the header */
   margin-bottom: 20px;
-  /* Space below the header */
   color: #333333;
-  /* Darker text color for readability */
   font-family: 'Montserrat', sans-serif;
-  /* Professional font */
 }
 
 /* Input styling */
@@ -272,6 +300,13 @@
   }
 }
 
+.select-tipo-filtrado{
+  margin-left: 5px;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #ddd;
+}
+
 /* Header styling */
 .crear-filtrado-header {
   font-size: 28px;
@@ -297,23 +332,15 @@
 /* Button styling */
 .crear-filtrado-button {
   padding: 10px 15px;
-  /* Padding for buttons */
   background-color: #798a3f;
-  /* Button color */
   color: #ffffff;
-  /* White text color */
   border: none;
-  /* Remove border */
+  margin-top: 5px;
   border-radius: 4px;
-  /* Rounded corners */
   font-size: 16px;
-  /* Font size for buttons */
   cursor: pointer;
-  /* Pointer cursor on hover */
   transition: background-color 0.3s;
-  /* Smooth background color transition */
-  margin-right: 10px;
-  /* Space between buttons */
+  margin-left: 5px;
 }
 
 .agregar-producto {
@@ -410,7 +437,7 @@
 
 .productos-creados-container {
   padding: 20px;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -420,6 +447,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.button-abrir-crear-producto{
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: 10px;
+  border: 2px solid #798a3f;
+  cursor: pointer;
+  background-color: transparent;  
 }
 
 .productos-lista-panel img {
@@ -451,8 +487,8 @@
 
 .img-marca-panel {
   padding: 20px;
-  height: 100px;
-  width: 100px;
+  height: 70px;
+  width: 70px;
 }
 
 .producto-detalles {
@@ -468,12 +504,13 @@
 
 .producto-detalles h3 {
   text-transform: uppercase;
+  font-size: 16px;
 }
 
 .producto-detalles p {
   text-transform: lowercase;
   position: relative;
-
+  font-size: 14px;
 }
 
 .producto-detalles p::first-letter {
@@ -501,7 +538,7 @@
 }
 
 .buscar-producto-input {
-  width: 100%;
+  width: 30%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ddd;
@@ -514,6 +551,7 @@
   background-color: #f9f9f9;
   /* Color de fondo claro */
   border-radius: 10px;
+  display: flex;
   /* Bordes redondeados */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* Sombra sutil */
@@ -549,25 +587,6 @@
   /* Sin margin */
 }
 
-.div-filtrados-creados li {
-  display: flex;
-  /* Flexbox para alinear elementos */
-  align-items: center;
-  /* Centrar verticalmente */
-  justify-content: space-between;
-  /* Espaciado entre los elementos */
-  padding: 10px;
-  margin-bottom: 10px;
-  /* Espacio entre items */
-  background-color: #fff;
-  /* Color de fondo blanco */
-  border: 1px solid #e0e0e0;
-  /* Borde gris claro */
-  border-radius: 5px;
-  /* Bordes redondeados */
-  transition: all 0.2s ease;
-  /* Transición suave */
-}
 
 .div-filtrados-creados strong {
   flex: 1;
@@ -870,6 +889,12 @@
   /* Soft shadow */
   width: 100%;
   margin-top: 179px;
+}
+
+.icono-boton-eliminar{
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
 }
 
 @media (max-width:900px) {

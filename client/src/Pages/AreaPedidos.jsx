@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Panel/styles.css';
-import { PanelAdmin } from './PanelAdmin';
+import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 
 const pedidosIniciales = [
   {
@@ -33,12 +33,7 @@ const pedidosIniciales = [
   },
 ];
 
-const estadosDisponibles = [
-  'Esperando aprobación',
-  'Aprobado',
-  'Enviado',
-  'Recibido',
-];
+const estadosDisponibles = ['Esperando aprobación', 'Aprobado', 'Enviado', 'Recibido'];
 
 export const AreaPedidos = () => {
   const [estadoFiltro, setEstadoFiltro] = useState('');
@@ -66,7 +61,7 @@ export const AreaPedidos = () => {
 
   const cambiarEstado = (id, nuevoEstado) => {
     const nuevosPedidos = pedidos.map((pedido) =>
-      pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido,
+      pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido
     );
     setPedidos(nuevosPedidos);
     localStorage.setItem(`pedido-estado-${id}`, nuevoEstado);
@@ -85,6 +80,17 @@ export const AreaPedidos = () => {
         cantidadesGuardadas[pedido.productos[productoIndex].nombre] = nuevaCantidad;
         localStorage.setItem(`pedido-cantidades-${pedidoId}`, JSON.stringify(cantidadesGuardadas));
 
+        return { ...pedido, productos: nuevosProductos };
+      }
+      return pedido;
+    });
+    setPedidos(nuevosPedidos);
+  };
+
+  const eliminarProducto = (pedidoId, productoIndex) => {
+    const nuevosPedidos = pedidos.map((pedido) => {
+      if (pedido.id === pedidoId) {
+        const nuevosProductos = pedido.productos.filter((_, index) => index !== productoIndex);
         return { ...pedido, productos: nuevosProductos };
       }
       return pedido;
@@ -117,13 +123,13 @@ export const AreaPedidos = () => {
   };
 
   const calcularTotal = (productos) => {
-    return productos.reduce((total, producto) => total + (producto.cantidad * producto.precio), 0);
+    return productos.reduce((total, producto) => total + producto.cantidad * producto.precio, 0);
   };
 
   return (
     <div className="div-general-categoria-panel">
-      <PanelAdmin />
-      <div className="area-pedidos">
+        <MenuLateralPanel />
+        <div className="area-pedidos">
         <h1 className="titulo-area">Área de Pedidos</h1>
 
         {/* Filtrado con menú desplegable */}
@@ -162,9 +168,15 @@ export const AreaPedidos = () => {
                 {/* Mostrar información solo si no se está editando */}
                 {pedidoEditando !== pedido.id && (
                   <>
-                    <p><strong>Total del Pedido:</strong> ${calcularTotal(pedido.productos)}</p>
-                    <p><strong>Fecha:</strong> {pedido.fecha}</p>
-                    <p><strong>Cliente:</strong> {pedido.cliente}</p>
+                    <p>
+                      <strong>Total del Pedido:</strong> ${calcularTotal(pedido.productos)}
+                    </p>
+                    <p>
+                      <strong>Fecha:</strong> {pedido.fecha}
+                    </p>
+                    <p>
+                      <strong>Cliente:</strong> {pedido.cliente}
+                    </p>
                   </>
                 )}
                 {pedidoEditando === pedido.id && (
@@ -173,7 +185,7 @@ export const AreaPedidos = () => {
                     {pedido.productos.map((producto, index) => (
                       <div key={index} className="producto-item-panel-2">
                         <p>
-                          {producto.nombre}  X{producto.cantidad} unidades  || Precio: ${producto.precio}
+                          {producto.nombre} X{producto.cantidad} unidades || Precio: ${producto.precio}
                         </p>
                         <div className="editar-cantidad">
                           <button
@@ -184,14 +196,23 @@ export const AreaPedidos = () => {
                           </button>
                           <button
                             className="cantidad-boton"
-                            onClick={() => editarCantidadProducto(pedido.id, index, Math.max(producto.cantidad - 1, 0))}
+                            onClick={() => editarCantidadProducto(pedido.id, index, Math.max(producto.cantidad - 1, 1))}
                           >
                             -
+                          </button>
+                          <button
+                            className="icono-boton-eliminar"
+                            onClick={() => eliminarProducto(pedido.id, index)}
+                            title="Eliminar Producto"
+                          >
+                            <i className="fas fa-trash"></i>
                           </button>
                         </div>
                       </div>
                     ))}
-                    <p><strong>Total:</strong> ${calcularTotal(pedido.productos)}</p>
+                    <p>
+                      <strong>Total:</strong> ${calcularTotal(pedido.productos)}
+                    </p>
                   </div>
                 )}
               </div>

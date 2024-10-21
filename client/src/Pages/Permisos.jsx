@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PanelAdmin } from './PanelAdmin';
+import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 
 export const Permisos = () => {
   // Función para obtener permisos del localStorage o establecer valores por defecto
@@ -29,8 +29,14 @@ export const Permisos = () => {
 
   return (
     <div className="div-general-categoria-panel">
-      <PanelAdmin />
+        <MenuLateralPanel />
+
       <div className="permissions-container">
+      <input
+            type="text"
+            placeholder="Buscar usuario"
+            className="buscar-producto-input"
+          />
         <h1 className="permissions-header">Asignar Permisos</h1>
         <div className="permissions-checkbox-group">
           <label className="permissions-checkbox-label">

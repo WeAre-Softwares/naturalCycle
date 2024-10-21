@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PanelAdmin } from './PanelAdmin';
+import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 
 export const CrearFiltrado = () => {
   const [marca, setMarca] = useState('');
@@ -191,8 +192,12 @@ export const CrearFiltrado = () => {
   return (
     <div className="div-gral-prod-creados">
       <div className="div-general-categoria-panel">
-        <PanelAdmin />
+        <MenuLateralPanel />
         <div className="crear-filtrado-container">
+        <Link to="/panelfiltrado"><button className='button-volver-panel-producto'
+    >   <i class="fas fa-arrow-left"></i>
+ &nbsp;&nbsp;Volver
+    </button></Link>
           <h1 className="crear-filtrado-header">Crear Filtrado</h1>
 
           <div className="tipo-filtrado">
@@ -399,46 +404,7 @@ export const CrearFiltrado = () => {
 
         </div>
       </div>
-          <div className="div-filtrados-creados">
-            <h2>Filtrados creados:</h2>
-            <h3>Marcas:</h3>
-            <ul>
-              {marcas.map((marca, index) => (
-                <li key={index}>
-                  <strong>{marca.nombre}</strong> {marca.destacada && '(Destacada)'}
-                  {marca.imagen && (
-                    <img
-                      src={marca.imagen}
-                      alt={`Logo de ${marca.nombre}`}
-                      className="img-marca-panel"
-                    />
-                  )}
-                  <button className="crear-filtrado-button"  onClick={() => editarMarca(index)}>Editar</button>
-                  <button className="crear-filtrado-button" onClick={() => eliminarMarca(index)}>Eliminar</button>
-                </li>
-              ))}
-            </ul>
-            <h3>Etiquetas:</h3>
-            <ul>
-              {etiquetas.map((etiqueta, index) => (
-                <li key={index}>
-                  <strong>{etiqueta.nombre}</strong>
-                  <button className="crear-filtrado-button" onClick={() => editarEtiqueta(index)}>Editar</button>
-                  <button className="crear-filtrado-button" onClick={() => eliminarEtiqueta(index)}>Eliminar</button>
-                </li>
-              ))}
-            </ul>
-            <h3>Categorías:</h3>
-            <ul>
-              {categorias.map((categoria, index) => (
-                <li key={index}>
-                  <strong>{categoria.nombre}</strong>
-                  <button className="crear-filtrado-button" onClick={() => editarCategoria(index)}>Editar</button>
-                  <button className="crear-filtrado-button" onClick={() => eliminarCategoria(index)}>Eliminar</button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          
     </div>
   );
 };

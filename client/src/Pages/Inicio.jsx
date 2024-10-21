@@ -1,6 +1,6 @@
 import '../Styles/Inicio/Inicio.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react'; // Corrección: importamos useState y useEffect
+import React, { useState, useEffect } from 'react';
 
 const productosDestacados = [
   {
@@ -59,16 +59,22 @@ const productosDestacados = [
     precio: 5000,
     stock: 12,
   },
+  {
+    id: 9,
+    img: '/Imagenes/producto-banner.png',
+    nombre: 'Nombre producto 9',
+    precio: 5000,
+    stock: 15,
+  },
 ];
 
 export const Inicio = () => {
-
   const [carrito, setCarrito] = useState(() => {
     const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
     return carritoLocal;
   });
 
-  const navigate = useNavigate(); // Crea la función navigate
+  const navigate = useNavigate();
 
   const verDetallesProducto = (producto) => {
     navigate(`/producto/${producto.id}`, { state: { producto } });
@@ -92,9 +98,9 @@ export const Inicio = () => {
     setCarrito(nuevoCarrito);
   };
 
-  const productosOrdenados = [...productosDestacados].sort((a, b) => {
-    return b.stock - a.stock;
-  });
+  const productosOrdenados = [...productosDestacados]
+    .sort((a, b) => b.stock - a.stock)
+    .slice(0, 9); // Limitar a 9 productos destacados
 
   return (
     <div className="conteiner-general-inicio">
@@ -153,7 +159,7 @@ export const Inicio = () => {
         <div className="card-banner-info-inicio">
           <i className="fa-solid fa-store"></i>
           <h3>Distribuidora mayorista</h3>
-          <p>Los mejores precios los encontras acá</p>
+          <p>Los mejores precios los encontrás acá</p>
         </div>
       </div>
 
@@ -174,7 +180,7 @@ export const Inicio = () => {
                 <p>(Precio por unidad)</p>
                 <h2 className="nombre-producto-card">{producto.nombre}</h2>
                 <h2 className="precio-producto-card">${producto.precio}</h2>
-                <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
+                <p>{producto.stock > 0 ? 'Stock disponible' : 'Agotado'}</p>
               </div>
               <div className="botones-card-producto">
                 <button
@@ -235,7 +241,7 @@ export const Inicio = () => {
 
       <div className="seccion-marcas-destacadas">
         <div className="h2-marcas-destacadas">
-          <h2 className="titulo-pre-banner">MARCAS DESTACADAS</h2>
+          <h2 className="titulo-pre-banner">Marcas destacadas</h2>
         </div>
         <div className="marcas-destacadas">
           {Array.from({ length: 8 }, (_, index) => (
@@ -243,7 +249,7 @@ export const Inicio = () => {
               <img
                 name={`img-marca-card-${index + 1}`}
                 src="./Imagenes/producto-banner.png"
-                alt=""
+                alt={`Marca destacada ${index + 1}`}
               />
             </div>
           ))}

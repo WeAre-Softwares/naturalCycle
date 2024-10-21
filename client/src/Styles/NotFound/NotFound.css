@@ -1,36 +1,67 @@
-.not-found {
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
     text-align: center;
+    padding: 20px;
+  }
+  
+  .not-found-content {
+    max-width: 600px;
     background-color: #fff;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin: 10rem;
-}
-
-.not-found h1 {
-    font-size: 5rem;
-    color: #dc3545;
-    /* Color de error */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: #296726;
     margin: 0;
-}
-
-.not-found h2 {
+  }
+  
+  .error-message {
     font-size: 2rem;
-    color: #343a40;
-}
-
-.not-found p {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .error-description {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .back-home-link {
     font-size: 1rem;
-    color: #6c757d;
-    margin: 20px 0;
-}
-
-.link-not-found {
+    text-transform: uppercase;
     text-decoration: none;
-    color: rgb(129, 180, 121);
-    font-weight: bold;
-}
-
-.not-found a:hover {
-    text-decoration: underline;
-}
+    padding: 12px 30px;
+    background-color: #296726;
+    color: #fff;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-home-link:hover {
+    background-color: #235622;
+  }
+  
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 6rem;
+    }
+  
+    .error-message {
+      font-size: 1.8rem;
+    }
+  
+    .not-found-content {
+      padding: 20px;
+    }
+  }
+  
