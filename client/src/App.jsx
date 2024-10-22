@@ -30,6 +30,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { NotFound } from './Pages/NotFound';
 import { PanelPrincipal } from './Pages/PanelAdminPrincipal';
 import { PanelFiltrados } from './Pages/PanelFiltrados';
+import { EditarProducto } from './Pages/EditarProducto';
 
 // import { Checkout } from './Pages/Checkout';
 
@@ -79,6 +80,10 @@ function App() {
           <Route
             path="/crearproducto"
             element={<PrivateRoute element={CrearProducto} />}
+          />
+          <Route
+            path="/editarproducto/:producto_id"
+            element={<PrivateRoute element={EditarProducto} />}
           />
           <Route
             path="/panelproducto"

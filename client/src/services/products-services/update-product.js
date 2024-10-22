@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { API_URL } from '../constants/api-url.contant';
-import { handleAxiosError } from './errorHandler';
+import { API_URL } from '../../constants/api-url.contant';
+import { handleAxiosError } from '../errorHandler';
 
-export const updateProductService = async (token, formData) => {
+export const updateProductService = async (token, id, formData) => {
   try {
     const response = await axios.patch(`${API_URL}/productos/${id}`, formData, {
       headers: {
@@ -10,7 +10,7 @@ export const updateProductService = async (token, formData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

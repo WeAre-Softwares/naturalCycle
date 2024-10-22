@@ -105,6 +105,7 @@ export class ProductosService {
           const categoria = await this.categoriasService.findOne(
             categoriaDto.categoria_id,
           ); // Obtener cada categoría individualmente
+          console.log('obtener categoria con findone', { categoria });
 
           const nuevoProductoCategoria = queryRunner.manager.create(
             ProductosCategorias,
@@ -114,6 +115,7 @@ export class ProductosService {
             },
           );
           await queryRunner.manager.save(nuevoProductoCategoria);
+          console.log('nuevoProductoCategoria', nuevoProductoCategoria);
           savedCategorias.push(categoria);
         }
       }
@@ -124,7 +126,7 @@ export class ProductosService {
           const etiqueta = await this.etiquetasService.findOne(
             etiquetaDto.etiqueta_id,
           ); // Obtener cada etiqueta individualmente
-
+          console.log('etiquea', etiqueta);
           const nuevoProductoEtiqueta = queryRunner.manager.create(
             ProductosEtiquetas,
             {
@@ -400,7 +402,7 @@ export class ProductosService {
           const categoria = await this.categoriasService.findOne(
             categoriaDto.categoria_id,
           );
-
+          console.log('PRODUCTO', producto);
           const nuevaRelacionCategoria =
             this.productosCategoriasRepository.create({
               producto,
@@ -411,6 +413,7 @@ export class ProductosService {
         }
       }
 
+      //FIXME: DEPURAR Y CORREGIR INSERSIÓN PRODUCT_ID
       // Actualizar relaciones con Etiquetas
       if (productos_etiquetas && productos_etiquetas.length > 0) {
         // Eliminar relaciones anteriores
@@ -465,13 +468,13 @@ export class ProductosService {
       // Guardar el producto actualizado
       await queryRunner.manager.save(producto);
 
-      // Eliminar las imágenes antiguas de la base de datos
-      await this.productosImagenesRepository.delete({
-        producto: { producto_id: id },
-      });
-
-      // Guardar nuevas imágenes en la base de datos
       if (newImagesUpload.length > 0) {
+        // Eliminar las imágenes antiguas de la base de datos
+        await this.productosImagenesRepository.delete({
+          producto: { producto_id: id },
+        });
+
+        // Guardar nuevas imágenes en la base de datos
         const savedImages = await Promise.all(
           newImagesUpload.map((img) =>
             queryRunner.manager.save(

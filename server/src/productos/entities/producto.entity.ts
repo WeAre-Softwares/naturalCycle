@@ -118,9 +118,7 @@ export class Producto {
   @OneToMany(
     () => ProductosCategorias,
     (productosCategorias) => productosCategorias.producto,
-    {
-      cascade: true, // Eliminar categorías asociadas cuando se elimina el producto
-    },
+    { cascade: ['update', 'remove'] },
   )
   productosCategorias: ProductosCategorias[];
 
@@ -128,9 +126,7 @@ export class Producto {
   @OneToMany(
     () => ProductosEtiquetas,
     (productosEtiquetas) => productosEtiquetas.producto,
-    {
-      cascade: true, // Eliminar etiquetas asociadas cuando se elimina el producto
-    },
+    { cascade: ['update', 'remove'] },
   )
   productosEtiquetas: ProductosEtiquetas[];
 }

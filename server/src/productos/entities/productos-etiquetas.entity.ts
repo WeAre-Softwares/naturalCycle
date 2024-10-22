@@ -17,9 +17,7 @@ export class ProductosEtiquetas {
   esta_activo: boolean;
 
   // Relación con Producto
-  @ManyToOne(() => Producto, (producto) => producto.productosEtiquetas, {
-    onDelete: 'CASCADE', // Elimina la relación en productos_etiquetas si se elimina el producto
-  })
+  @ManyToOne(() => Producto, (producto) => producto.productosEtiquetas)
   @JoinColumn({ name: 'producto_id' })
   producto: Producto;
 

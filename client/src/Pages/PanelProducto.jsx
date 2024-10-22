@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGetAllProducts } from '../hooks/useGetAllProducts';
 import { useSearchProducts } from '../hooks/useSearchProducts';
 import { debounce } from 'lodash';
 
 export const PanelProducto = () => {
+  const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
   const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda normal
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm); // Término de búsqueda debounced
@@ -66,6 +67,10 @@ export const PanelProducto = () => {
     }
   };
 
+  const handleEdit = (producto_id) => {
+    navigate(`/editarproducto/${producto_id}`);
+  };
+
   return (
     <div className="div-gral-prod-creados">
       <div className="div-general-categoria-panel">
@@ -108,7 +113,12 @@ export const PanelProducto = () => {
                     </p>
                   </div>
                   <div className="producto-botones">
-                    <button className="crear-filtrado-button">Editar</button>
+                    <button
+                      className="crear-filtrado-button"
+                      onClick={() => handleEdit(producto.producto_id)}
+                    >
+                      Editar
+                    </button>
                     <button className="crear-filtrado-button">Eliminar</button>
                   </div>
                 </li>
