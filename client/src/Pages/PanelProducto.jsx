@@ -46,7 +46,7 @@ export const PanelProducto = () => {
   // Debounce de la búsqueda: retrasar la actualización del término de búsqueda
   const debouncedSearch = debounce((term) => {
     setDebouncedSearchTerm(term);
-  }, 1500); // 1500ms de debounce
+  }, 600); // 600ms de debounce
 
   // Actualiza el término de búsqueda con debounce
   useEffect(() => {
