@@ -32,6 +32,7 @@ export class Categoria {
   @OneToMany(
     () => ProductosCategorias,
     (productosCategorias) => productosCategorias.producto,
+    { cascade: true },
   )
   productosCategorias: ProductosCategorias[];
 }

@@ -29,6 +29,7 @@ import type {
   ProductoResponse,
 } from './interfaces';
 import { Auth } from '../auth/decorators';
+import { Producto } from './entities/producto.entity';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -110,7 +111,7 @@ export class ProductosController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductoDto: UpdateProductoDto,
     @UploadedFiles() files: Express.Multer.File[], // Manejo de archivo de imagen
-  ): Promise<ProductoResponse> {
+  ): Promise<Producto> {
     return this.productosService.update(id, updateProductoDto, files);
   }
 

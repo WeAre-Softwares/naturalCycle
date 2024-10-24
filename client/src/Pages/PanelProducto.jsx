@@ -9,7 +9,7 @@ export const PanelProducto = () => {
   const [offset, setOffset] = useState(0);
   const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda normal
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm); // Término de búsqueda debounced
-  const limit = 4; // Cantidad de productos por página
+  const limit = 3; // Cantidad de productos por página
 
   // Hook para cargar productos sin búsqueda
   const {
@@ -33,7 +33,12 @@ export const PanelProducto = () => {
   const loading = debouncedSearchTerm ? loadingSearch : loadingAllProducts;
   const error = debouncedSearchTerm ? errorSearch : errorAllProducts;
 
-  const total = productsData?.total || 0;
+  // Actualiza el total dinámicamente según si hay búsqueda o no
+  const total = debouncedSearchTerm
+    ? searchProductsData?.total || 0
+    : allProductsData?.total || 0;
+
+  // Calcula las páginas basadas en el total de productos
   const totalPages = total > 0 ? Math.ceil(total / limit) : 1;
   const currentPage = Math.floor(offset / limit) + 1;
 

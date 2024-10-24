@@ -32,6 +32,7 @@ export class Etiqueta {
   @OneToMany(
     () => ProductosEtiquetas,
     (productosEtiquetas) => productosEtiquetas.producto,
+    { cascade: true },
   )
   productosEtiquetas: ProductosEtiquetas[];
 }
