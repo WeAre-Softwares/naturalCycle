@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 import { Link, useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
+import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 import { useGetAllProducts } from '../hooks/useGetAllProducts';
 import { useSearchProducts } from '../hooks/useSearchProducts';
 
