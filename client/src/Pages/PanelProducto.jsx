@@ -3,7 +3,6 @@ import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGetAllProducts } from '../hooks/useGetAllProducts';
 import { useSearchProducts } from '../hooks/useSearchProducts';
-import { debounce } from 'lodash';
 
 export const PanelProducto = () => {
   const navigate = useNavigate();

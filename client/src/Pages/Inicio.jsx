@@ -1,6 +1,7 @@
 import '../Styles/Inicio/Inicio.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { BannerCarrusel } from '../Components/BannerCarrusel';
 
 const productosDestacados = [
   {
@@ -100,38 +101,11 @@ export const Inicio = () => {
 
   const productosOrdenados = [...productosDestacados]
     .sort((a, b) => b.stock - a.stock)
-    .slice(0, 9); // Limitar a 9 productos destacados
+    .slice(0, 8); // Limitar a 8 productos destacados
 
   return (
     <div className="conteiner-general-inicio">
-      <div
-        className="conteiner-banner-inicio"
-        style={{
-          backgroundImage: 'url(/Imagenes/BANNER.svg)',
-          backgroundPosition: 'center',
-          backgroundSize: '100% auto',
-          width: '100%',
-        }}
-      >
-        <img
-          name="img-prod-banner"
-          className="img-prod-banner"
-          src="./Imagenes/producto-banner.png"
-          alt=""
-        />
-        <img
-          name="img-prod-banner"
-          className="img-prod-banner2"
-          src="./Imagenes/producto-banner.png"
-          alt=""
-        />
-        <div className="precio-producto-banner">
-          <h2 className="texto-Banner" name="texto-Banner">
-            VEGGIE SNACKS (Sabor cebolla)
-          </h2>
-          <h2 name="precio-banner">A tan sólo $1.199</h2>
-        </div>
-      </div>
+      <BannerCarrusel></BannerCarrusel>
 
       <div className="conteiner-cards-inicio">
         <div className="card-inicio-top3 refrigerados">
@@ -240,21 +214,24 @@ export const Inicio = () => {
       </div>
 
       <div className="seccion-marcas-destacadas">
-        <div className="h2-marcas-destacadas">
-          <h2 className="titulo-pre-banner">Marcas destacadas</h2>
+  <div className="h2-marcas-destacadas">
+    <h2 className="titulo-pre-banner">Marcas destacadas</h2>
+  </div>
+  <div className="marcas-destacadas-wrapper">
+    <div className="marcas-destacadas">
+      {Array.from({ length: 15 }, (_, index) => (
+        <div className="card-marca-destacadas" key={index}>
+          <img
+            name={`img-marca-card-${index + 1}`}
+            src="./Imagenes/producto-banner.png"
+            alt={`Marca destacada ${index + 1}`}
+          />
         </div>
-        <div className="marcas-destacadas">
-          {Array.from({ length: 8 }, (_, index) => (
-            <div className="card-marca-destacadas" key={index}>
-              <img
-                name={`img-marca-card-${index + 1}`}
-                src="./Imagenes/producto-banner.png"
-                alt={`Marca destacada ${index + 1}`}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
+
 
       <div className="container-instagram-inicio">
         <h2>Estamos en</h2>

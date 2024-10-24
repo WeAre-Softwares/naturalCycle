@@ -100,7 +100,7 @@ export const Promociones = () => {
 
         <div className="productos-carrusel" ref={carruselRef}>
           {productosPaginaActual.map((producto) => (
-            <div className="card-producto" key={producto.id}>
+            <div className="card-producto card-promo" key={producto.id}>
               <img name={`img-producto-card-${producto.id}`} className="img-producto-card" src={producto.img} alt={producto.nombre} />
               <p name={`tipo-precio-producto-${producto.id}`}>Precio por unidad</p>
               <h3 className="nombre-producto-card" name={`nombre-producto-card-${producto.id}`}>{producto.nombre}</h3>

@@ -50,7 +50,7 @@ export const CrearFiltrado = () => {
   }, [categorias]);
 
   const crearMarca = () => {
-    if (marca && productosMarca.length > 0) {
+    if (marca) {
       setMarcas((prevMarcas) => [
         ...prevMarcas,
         { nombre: marca, productos: productosMarca, destacada, imagen: imagenMarca },
@@ -64,7 +64,7 @@ export const CrearFiltrado = () => {
   };
 
   const crearEtiqueta = () => {
-    if (etiqueta && productosEtiqueta.length > 0) {
+    if (etiqueta) {
       setEtiquetas((prevEtiquetas) => [
         ...prevEtiquetas,
         { nombre: etiqueta, productos: productosEtiqueta },
@@ -76,7 +76,7 @@ export const CrearFiltrado = () => {
   };
 
   const crearCategoria = () => {
-    if (categoria && productosCategoria.length > 0) {
+    if (categoria) {
       setCategorias((prevCategorias) => [
         ...prevCategorias,
         { nombre: categoria, productos: productosCategoria },
@@ -85,51 +85,6 @@ export const CrearFiltrado = () => {
       setProductosCategoria([]);
       setProductoCategoriaInput('');
     }
-  };
-
-  const agregarProductoMarca = () => {
-    if (productoMarcaInput) {
-      setProductosMarca((prevProductos) => [
-        ...prevProductos,
-        productoMarcaInput,
-      ]);
-      setProductoMarcaInput('');
-    }
-  };
-
-  const agregarProductoEtiqueta = () => {
-    if (productoEtiquetaInput) {
-      setProductosEtiqueta((prevProductos) => [
-        ...prevProductos,
-        productoEtiquetaInput,
-      ]);
-      setProductoEtiquetaInput('');
-    }
-  };
-
-  const agregarProductoCategoria = () => {
-    if (productoCategoriaInput) {
-      setProductosCategoria((prevProductos) => [
-        ...prevProductos,
-        productoCategoriaInput,
-      ]);
-      setProductoCategoriaInput('');
-    }
-  };
-
-  const eliminarProductoMarca = (index) => {
-    const nuevosProductos = productosMarca.filter((_, i) => i !== index);
-    setProductosMarca(nuevosProductos);
-  };
-
-  const eliminarProductoEtiqueta = (index) => {
-    const nuevosProductos = productosEtiqueta.filter((_, i) => i !== index);
-    setProductosEtiqueta(nuevosProductos);
-  };
-
-  const eliminarProductoCategoria = (index) => {
-    const nuevosProductos = productosCategoria.filter((_, i) => i !== index);
-    setProductosCategoria(nuevosProductos);
   };
 
   const eliminarMarca = (index) => {
@@ -229,40 +184,7 @@ export const CrearFiltrado = () => {
       onChange={(e) => setMarca(e.target.value)}
       className="crear-filtrado-input"
     />
-    <input
-      type="text"
-      placeholder="Agregar producto"
-      value={productoMarcaInput}
-      onChange={(e) => setProductoMarcaInput(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    <button
-      onClick={agregarProductoMarca}
-      className="crear-filtrado-button agregar-producto"
-    >
-      Agregar Producto
-    </button>
-    <div className='div-ul-prod-editar'>
-      <strong>Productos: </strong>
-      {productosMarca.length > 0 ? (
-        <ul>
-          {productosMarca.map((producto, index) => (
-            <li key={index}>
-            {producto} &nbsp;&nbsp;
-            <button
-              onClick={() => eliminarProductoMarca(index)}
-              className="crear-filtrado-button"
-            >
-              Eliminar
-            </button>
-          </li>
-          
-          ))}
-        </ul>
-      ) : (
-        <span>No hay productos asignados</span>
-      )}
-    </div>
+    
     <div className="crear-filtrado-checkbox">
       <label>
         <p>Marca destacada </p>
@@ -307,39 +229,7 @@ export const CrearFiltrado = () => {
       onChange={(e) => setEtiqueta(e.target.value)}
       className="crear-filtrado-input"
     />
-    <input
-      type="text"
-      placeholder="Agregar producto"
-      value={productoEtiquetaInput}
-      onChange={(e) => setProductoEtiquetaInput(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    <button
-      onClick={agregarProductoEtiqueta}
-      className="crear-filtrado-button agregar-producto"
-    >
-      Agregar Producto
-    </button>
-    <div className='div-ul-prod-editar'>
-      <strong>Productos: </strong>
-      {productosEtiqueta.length > 0 ? (
-        <ul>
-          {productosEtiqueta.map((producto, index) => (
-            <li key={index}>
-              {producto}&nbsp;&nbsp;
-              <button
-                onClick={() => eliminarProductoEtiqueta(index)}
-                className="crear-filtrado-button"
-              >
-                Eliminar
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <span>No hay productos asignados</span>
-      )}
-    </div>
+    
     <button
       onClick={crearEtiqueta}
       className="crear-filtrado-button"
@@ -358,39 +248,7 @@ export const CrearFiltrado = () => {
       onChange={(e) => setCategoria(e.target.value)}
       className="crear-filtrado-input"
     />
-    <input
-      type="text"
-      placeholder="Agregar producto"
-      value={productoCategoriaInput}
-      onChange={(e) => setProductoCategoriaInput(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    <button
-      onClick={agregarProductoCategoria}
-      className="crear-filtrado-button agregar-producto"
-    >
-      Agregar Producto
-    </button>
-    <div className='div-ul-prod-editar'>
-      <strong>Productos: </strong>
-      {productosCategoria.length > 0 ? (
-        <ul>
-          {productosCategoria.map((producto, index) => (
-            <li key={index}>
-              {producto}&nbsp;&nbsp;
-              <button
-                onClick={() => eliminarProductoCategoria(index)}
-                className="crear-filtrado-button"
-              >
-                Eliminar
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <span>No hay productos asignados</span>
-      )}
-    </div>
+    
     <button
       onClick={crearCategoria}
       className="crear-filtrado-button"

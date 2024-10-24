@@ -17,10 +17,10 @@ import { Marcas } from './Pages/Marcas';
 import { Header } from './Pages/Header';
 import { Footer } from './Pages/Footer';
 import { MenuLateralPanel } from './Components/MenuLateralPanel';
+import { BannerCarrusel } from './Components/BannerCarrusel';
 import { ProductDetails } from './Pages/ProductDetail';
 import { AreaPedidos } from './Pages/AreaPedidos';
 import { AreaUsuarios } from './Pages/AreaUsuarios';
-import { Permisos } from './Pages/Permisos';
 import { PanelProducto } from './Pages/PanelProducto';
 import { CrearProducto } from './Pages/CrearProducto';
 import { CrearFiltrado } from './Pages/CrearFiltrado';
@@ -44,6 +44,7 @@ function App() {
           {/* Rutas Públicas */}
           <Route path="/" element={<Navigate to="/Inicio" />} />
           <Route path="/Inicio" element={<Inicio />} />
+          <Route path="/Banner" element={<BannerCarrusel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Register" element={<RegisterForm />} />
           <Route path="/Password" element={<OlvideContraseña />} />
@@ -72,10 +73,6 @@ function App() {
           <Route
             path="/panelusuarios"
             element={<PrivateRoute element={AreaUsuarios} />}
-          />
-          <Route
-            path="/panelpermisos"
-            element={<PrivateRoute element={Permisos} />}
           />
           <Route
             path="/crearproducto"

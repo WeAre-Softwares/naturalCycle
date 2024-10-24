@@ -9,7 +9,7 @@ export const PanelPrincipal = () => {
         <MenuLateralPanel />
 
       <div className='panel-inicio-info'>
-        <h1>Panel de administracion</h1>
+        <h1>Panel de administración</h1>
         <p> Desde este panel puedes acceder a la administración de las ventas, de clientes, entre otros servicios.</p>
         <p>Para acceder a cada funcionalidad apriete en el nombre de cada sección.</p>
       </div>
