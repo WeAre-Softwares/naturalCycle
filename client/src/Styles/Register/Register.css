@@ -26,6 +26,12 @@ h2 {
     color: #151717;
 }
 
+@media (max-width:415px) {
+    h2{
+        font-size: 15px;
+    }
+}
+
 .flex-column > label {
     color: #151717;
     font-weight: 600;

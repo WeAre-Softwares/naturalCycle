@@ -96,20 +96,20 @@
 
 /* Estilos responsivos */
 @media (min-width: 780px) {
-  .card-producto {
+  .card-promo {
     min-width: 50%;
   }
 }
 
 @media (min-width: 1400px) {
-  .card-producto {
+  .card-promo {
     min-width: 25%;
   }
 }
 
 
 @media (max-width: 780px) {
-  .card-producto {
+  .card-promo {
     min-width: 100%; /* La card ocupará el 100% del carrusel */
   }
 }

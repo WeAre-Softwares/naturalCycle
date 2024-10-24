@@ -55,12 +55,26 @@ export const PanelFiltrados = () => {
       setTipoCreacion(e.target.value);
     };
 
-    // Función para eliminar una categoría
-    const eliminarCategoria = (index) => {
-        const nuevasCategorias = [...categorias];
-        nuevasCategorias.splice(index, 1);
-        setCategorias(nuevasCategorias);
-      };
+    // Función para eliminar una marca
+    const eliminarMarca = (index) => {
+      const nuevasMarcas = [...marcas];
+      nuevasMarcas.splice(index, 1);
+      setMarcas(nuevasMarcas);
+  };
+
+  // Función para eliminar una etiqueta
+  const eliminarEtiqueta = (index) => {
+      const nuevasEtiquetas = [...etiquetas];
+      nuevasEtiquetas.splice(index, 1);
+      setEtiquetas(nuevasEtiquetas);
+  };
+
+  // Función para eliminar una categoría (ya existente)
+  const eliminarCategoria = (index) => {
+      const nuevasCategorias = [...categorias];
+      nuevasCategorias.splice(index, 1);
+      setCategorias(nuevasCategorias);
+  };
 
     // Función para manejar el input de búsqueda
     const handleSearchChange = (e) => {
@@ -85,7 +99,7 @@ export const PanelFiltrados = () => {
         <div className="div-general-categoria-panel">
           <MenuLateralPanel/>
           <div className="productos-creados-container">
-            <h2>Lista de filtrados</h2>
+            <h2>Filtrados</h2>
             
             {/* Input de búsqueda */}
             <input
@@ -117,52 +131,70 @@ export const PanelFiltrados = () => {
             {tipoCreacion === 'marca' && (
               <>
                 <h3>Marcas:</h3>
-                <ul>
-                  {filteredMarcas.map((marca, index) => (
-                    <li key={index}>
-                      <strong>{marca.nombre}</strong> {marca.destacada && '(Destacada)'}
-                      {marca.imagen && (
+
+                <ul className="productos-lista-panel">
+                {filteredMarcas.map((marca, index) => (
+            <li className="producto-item-panel" key={index}>
+              {marca.imagen && (
                         <img
                           src={marca.imagen}
                           alt={`Logo de ${marca.nombre}`}
-                          className="img-marca-panel"
+                          className="producto-imagen"
                         />
                       )}
-                      <button className="crear-filtrado-button" onClick={() => editarMarca(index)}>Editar</button>
-                      <button className="crear-filtrado-button" onClick={() => eliminarMarca(index)}>Eliminar</button>
-                    </li>
-                  ))}
-                </ul>
+
+              <div className="producto-detalles">
+              <strong>{marca.nombre}</strong> {marca.destacada && '(Destacada)'}
+
+              </div>
+              <div className="producto-botones">
+              <button className="crear-filtrado-button" onClick={() => editarMarca(index)}>Editar</button>
+              <button className="crear-filtrado-button" onClick={() => eliminarMarca(index)}>Eliminar</button>
+              </div>
+            </li>
+             ))}
+          </ul>
               </>
             )}
 
             {tipoCreacion === 'etiqueta' && (
               <>
                 <h3>Etiquetas:</h3>
-                <ul>
+                <ul className="productos-lista-panel">
                   {filteredEtiquetas.map((etiqueta, index) => (
-                    <li key={index}>
+                    <li className="producto-item-panel" key={index}>
+                      <div className="producto-detalles">
                       <strong>{etiqueta.nombre}</strong>
+                      </div>
+                      <div className="producto-botones">
                       <button className="crear-filtrado-button" onClick={() => editarEtiqueta(index)}>Editar</button>
                       <button className="crear-filtrado-button" onClick={() => eliminarEtiqueta(index)}>Eliminar</button>
+                      </div>
                     </li>
                   ))}
                 </ul>
+
               </>
             )}
 
             {tipoCreacion === 'categoria' && (
               <>
                 <h3>Categorías:</h3>
-                <ul>
+                <ul className="productos-lista-panel">
                   {filteredCategorias.map((categoria, index) => (
-                    <li key={index}>
+                    <li className="producto-item-panel" key={index}>
+                      <div className="producto-detalles">
                       <strong>{categoria.nombre}</strong>
+                      </div>
+                      <div className="producto-botones">
                       <button className="crear-filtrado-button" onClick={() => editarCategoria(index)}>Editar</button>
                       <button className="crear-filtrado-button" onClick={() => eliminarCategoria(index)}>Eliminar</button>
+                      </div>
                     </li>
                   ))}
                 </ul>
+
+               
               </>
             )}
           </div>

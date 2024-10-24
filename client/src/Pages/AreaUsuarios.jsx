@@ -7,7 +7,7 @@ const usuariosIniciales = [
     id: 1,
     nombre: 'Juan',
     apellido: 'Pérez',
-    cuit: '20-12345678-9',
+    dni: '42333111',
     comercio: 'Comercio 1',
     domicilio: 'Domicilio 1',
     email: 'juan@example.com',
@@ -17,7 +17,7 @@ const usuariosIniciales = [
     id: 2,
     nombre: 'Ana',
     apellido: 'Gómez',
-    cuit: '20-87654321-0',
+    dni: '43222433',
     comercio: 'Comercio 2',
     domicilio: 'Domicilio 2',
     email: 'ana@example.com',
@@ -132,17 +132,14 @@ export const AreaUsuarios = () => {
             <h2 className="usuario-detalle-title">Detalles del Usuario</h2>
             <div className="usuario-detalle-info">
               <div className="usuario-detalle-row">
-                <strong>ID:</strong> <span>{usuarioSeleccionado.id}</span>
-              </div>
-              <div className="usuario-detalle-row">
                 <strong>Nombre:</strong>{' '}
                 <span>
                   {usuarioSeleccionado.nombre} {usuarioSeleccionado.apellido}
                 </span>
               </div>
               <div className="usuario-detalle-row">
-                <strong>CUIT/CUIL:</strong>{' '}
-                <span>{usuarioSeleccionado.cuit}</span>
+                <strong>DNI:</strong>{' '}
+                <span>{usuarioSeleccionado.dni}</span>
               </div>
               <div className="usuario-detalle-row">
                 <strong>Nombre del Comercio:</strong>{' '}

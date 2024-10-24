@@ -37,9 +37,6 @@ export const MenuLateralPanel = () => {
           <li>
             <Link to="/panelproducto">Crear Producto</Link>
           </li>
-          <li>
-            <Link to="/panelpermisos">Permisos</Link>
-          </li>
         </ul>
       </nav>
 
