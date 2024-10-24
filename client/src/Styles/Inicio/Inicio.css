@@ -114,7 +114,7 @@ border-radius: 10px;
 
 .div-banner-general-slide{
   width: 100%;
-  background-image: url('/Imagenes/BANNER.svg'); /*COMPLETAR IMG PARA EL FONDO DEL BANNER*/
+  background-image: url('/imagenes/BANNER.svg'); /*COMPLETAR IMG PARA EL FONDO DEL BANNER*/
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

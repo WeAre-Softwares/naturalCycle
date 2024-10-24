@@ -17,7 +17,7 @@ import { Marcas } from './Pages/Marcas';
 import { Header } from './Pages/Header';
 import { Footer } from './Pages/Footer';
 import { MenuLateralPanel } from './Components/MenuLateralPanel';
-import { BannerCarrusel } from './Components/BannerCarrusel';
+import { BannerCarrusel } from './Components/home-ui';
 import { ProductDetails } from './Pages/ProductDetail';
 import { AreaPedidos } from './Pages/AreaPedidos';
 import { AreaUsuarios } from './Pages/AreaUsuarios';

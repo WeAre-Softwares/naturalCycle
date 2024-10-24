@@ -25,7 +25,7 @@ const productosData = [
     precio: 5000,
     stock: 10,
     categoria: 1,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const productosData = [
     precio: 6000,
     stock: 0,
     categoria: 2,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   }, // Producto sin stock
   {
     id: 3,
@@ -41,7 +41,7 @@ const productosData = [
     precio: 7000,
     stock: 8,
     categoria: 3,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 7,
@@ -73,7 +73,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 8,
@@ -81,7 +81,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 2,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 9,
@@ -89,7 +89,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 1,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
 ];
 
@@ -123,24 +123,24 @@ export const Categorias = () => {
           .filter((item) => item.cantidad > 0), // Filtrar items con cantidad 0
     );
   };
-// Función que filtra los productos basándose en la categoría y la búsqueda
-const filtrarProductos = () => {
-  // Filtrar por categoría
-  const productosFiltrados =
-    categoriaSeleccionada === 0 || categoriaSeleccionada === null
-      ? productosData
-      : productosData.filter(
-          (producto) => producto.categoria === categoriaSeleccionada,
-        );
+  // Función que filtra los productos basándose en la categoría y la búsqueda
+  const filtrarProductos = () => {
+    // Filtrar por categoría
+    const productosFiltrados =
+      categoriaSeleccionada === 0 || categoriaSeleccionada === null
+        ? productosData
+        : productosData.filter(
+            (producto) => producto.categoria === categoriaSeleccionada,
+          );
 
-  // Filtrar por el texto ingresado en la búsqueda
-  const productosBusqueda = productosFiltrados.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-  );
+    // Filtrar por el texto ingresado en la búsqueda
+    const productosBusqueda = productosFiltrados.filter((producto) =>
+      producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
+    );
 
-  // Ordenar productos por stock
-  return productosBusqueda.sort((a, b) => b.stock - a.stock);
-};
+    // Ordenar productos por stock
+    return productosBusqueda.sort((a, b) => b.stock - a.stock);
+  };
 
   const agregarAlCarrito = (producto) => {
     const nuevoCarrito = [...carrito];
@@ -196,19 +196,18 @@ const filtrarProductos = () => {
       alert('El carrito está vacío');
     }
   };
-  
 
   return (
     <div className="container-general-categorias">
       <div className="group">
-            <i className="fas fa-search icon"></i>
-            <input
-              type="text"
-              className="input-busca-productos"
-              placeholder="Buscar"
-              onChange={(e) => setBusqueda(e.target.value)} // Actualiza el estado de búsqueda
-            />
-          </div>
+        <i className="fas fa-search icon"></i>
+        <input
+          type="text"
+          className="input-busca-productos"
+          placeholder="Buscar"
+          onChange={(e) => setBusqueda(e.target.value)} // Actualiza el estado de búsqueda
+        />
+      </div>
       <div className="container-boton-filtrado">
         <button
           className="boton-categorias"
@@ -245,43 +244,44 @@ const filtrarProductos = () => {
       </div>
 
       <div className="container-productos-categorias">
-  {filtrarProductos().length > 0 ? (
-    filtrarProductos().map((producto) => (
-      <div className="card-producto" key={producto.id}>
-            <div className="info-producto-card">
-              <img
-                className="img-producto-card"
-                src={producto.img}
-                alt={producto.nombre}
-              />
-              <p>Precio por unidad</p>
-              <h3 className="nombre-producto-card">{producto.nombre}</h3>
-              <h3 className="precio-producto-card">${producto.precio}</h3>
-              <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
-
+        {filtrarProductos().length > 0 ? (
+          filtrarProductos().map((producto) => (
+            <div className="card-producto" key={producto.id}>
+              <div className="info-producto-card">
+                <img
+                  className="img-producto-card"
+                  src={producto.img}
+                  alt={producto.nombre}
+                />
+                <p>Precio por unidad</p>
+                <h3 className="nombre-producto-card">{producto.nombre}</h3>
+                <h3 className="precio-producto-card">${producto.precio}</h3>
+                <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
+              </div>
+              <div className="botones-card-producto">
+                <button
+                  disabled={producto.stock === 0}
+                  onClick={() => agregarAlCarrito(producto)}
+                >
+                  {producto.stock > 0 ? 'Añadir al carrito ' : 'Agotado '}
+                  <i className="fa-solid fa-cart-shopping"></i>
+                </button>
+                <button onClick={() => verDetallesProducto(producto)}>
+                  Ver producto <i className="fa-solid fa-eye"></i>
+                </button>
+              </div>
             </div>
-            <div className="botones-card-producto">
-              <button
-                disabled={producto.stock === 0}
-                onClick={() => agregarAlCarrito(producto)}
-              >
-                {producto.stock > 0 ? 'Añadir al carrito ' : 'Agotado '}
-                <i className="fa-solid fa-cart-shopping"></i>
-              </button>
-              <button onClick={() => verDetallesProducto(producto)}>
-                Ver producto <i className="fa-solid fa-eye"></i>
-              </button>
-            </div>
-          </div>
-    ))
-  ) : (
-<div className="no-productos">
+          ))
+        ) : (
+          <div className="no-productos">
             <h3>No se ha encontrado ningún producto.</h3>
             <p>
-            Lo sentimos, pero actualmente no tenemos un producto que coincida con lo seleccionado. Intente nuevamente o vuelva más tarde.
+              Lo sentimos, pero actualmente no tenemos un producto que coincida
+              con lo seleccionado. Intente nuevamente o vuelva más tarde.
             </p>
-          </div>  )}
-</div>
+          </div>
+        )}
+      </div>
 
       {/* Botón del carrito */}
       <div className="cart-container">
@@ -308,8 +308,8 @@ const filtrarProductos = () => {
         {/* Carrito */}
         {isCartOpen && (
           <div
-            className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}>
-              
+            className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}
+          >
             <div className="header-carrito">
               <h2>Carrito de compras</h2>
               <button className="cerrar-carrito" onClick={closeCart}>
@@ -372,7 +372,7 @@ const filtrarProductos = () => {
                   <h3>Total:</h3>
                   <h3>${calcularSubtotal().toLocaleString()}</h3>
                 </div>
-                <button className='btn-iniciar-compra' onClick={iniciarCompra}>
+                <button className="btn-iniciar-compra" onClick={iniciarCompra}>
                   Iniciar compra
                 </button>
                 <Link to="/Categorias" className="link-categorias">

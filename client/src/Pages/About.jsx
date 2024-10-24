@@ -31,7 +31,7 @@ export const About = () => {
         </div>
 
         <div className="imagen-quienes-somos">
-          <img src="./Imagenes/producto-banner.png" alt="" />
+          <img src="./imagenes/producto-banner.png" alt="" />
         </div>
       </div>
     </div>

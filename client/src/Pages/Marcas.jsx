@@ -23,7 +23,7 @@ const productosData = [
     precio: 5000,
     stock: 10,
     categoria: 1,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const productosData = [
     precio: 6000,
     stock: 0,
     categoria: 2,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   }, // Producto sin stock
   {
     id: 3,
@@ -39,7 +39,7 @@ const productosData = [
     precio: 7000,
     stock: 8,
     categoria: 3,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 5,
@@ -55,7 +55,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 6,
@@ -63,7 +63,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 7,
@@ -71,7 +71,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 4,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 8,
@@ -79,7 +79,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 2,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
   {
     id: 9,
@@ -87,7 +87,7 @@ const productosData = [
     precio: 8000,
     stock: 12,
     categoria: 1,
-    img: '/Imagenes/producto-banner.png',
+    img: '/imagenes/producto-banner.png',
   },
 ];
 
@@ -107,7 +107,9 @@ export const Marcas = () => {
 
   const agregarAlCarrito = (producto) => {
     const nuevoCarrito = [...carrito];
-    const productoExistente = nuevoCarrito.find((item) => item.id === producto.id);
+    const productoExistente = nuevoCarrito.find(
+      (item) => item.id === producto.id,
+    );
 
     if (productoExistente) {
       productoExistente.cantidad += 1;
@@ -127,14 +129,14 @@ export const Marcas = () => {
     // Filtrar por marca
     if (marcaSeleccionada !== 0) {
       productosFiltrados = productosFiltrados.filter(
-        (producto) => producto.categoria === marcaSeleccionada
+        (producto) => producto.categoria === marcaSeleccionada,
       );
     }
 
     // Filtrar por búsqueda
     if (busqueda) {
       productosFiltrados = productosFiltrados.filter((producto) =>
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+        producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
       );
     }
 
@@ -149,21 +151,28 @@ export const Marcas = () => {
   return (
     <div className="container-general-marcas">
       <div className="group">
-            <i className="fas fa-search icon"></i>
-            <input
-              type="text"
-              className="input-busca-productos"
-              placeholder="Buscar"
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
-          </div>
+        <i className="fas fa-search icon"></i>
+        <input
+          type="text"
+          className="input-busca-productos"
+          placeholder="Buscar"
+          onChange={(e) => setBusqueda(e.target.value)}
+        />
+      </div>
       <div className="container-boton-filtrado">
-        <button className="boton-marcas" onClick={() => setMenuAbierto(!menuAbierto)}>
+        <button
+          className="boton-marcas"
+          onClick={() => setMenuAbierto(!menuAbierto)}
+        >
           Filtrar <i className="fa-solid fa-bars"></i>
         </button>
       </div>
 
-      <div className={`container-marcas-section-marcas ${menuAbierto ? 'menu-abierto' : ''}`}>
+      <div
+        className={`container-marcas-section-marcas ${
+          menuAbierto ? 'menu-abierto' : ''
+        }`}
+      >
         <button className="cerrar-menu" onClick={() => setMenuAbierto(false)}>
           X
         </button>
@@ -231,7 +240,8 @@ export const Marcas = () => {
           <div className="no-productos">
             <h3>No se ha encontrado ningún producto.</h3>
             <p>
-              Lo sentimos, pero actualmente no tenemos un producto que coincida con lo seleccionado. Intente nuevamente o vuelva más tarde.
+              Lo sentimos, pero actualmente no tenemos un producto que coincida
+              con lo seleccionado. Intente nuevamente o vuelva más tarde.
             </p>
           </div>
         )}

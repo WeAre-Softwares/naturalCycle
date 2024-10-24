@@ -4,7 +4,7 @@ import { HamburgerMenu } from '../Components/HamburgerMenu';
 import { NavLinks } from '../Components/NavLinks';
 import { CartButton } from '../Components/CartButton';
 // import Categorias from './Categorias';
-import Logo from '/Imagenes/logo-header.svg';
+import Logo from '/imagenes/logo-header.svg';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);

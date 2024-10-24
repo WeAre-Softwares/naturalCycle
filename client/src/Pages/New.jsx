@@ -5,81 +5,80 @@ import '../Styles/Header/Cart.css';
 import '../Styles/New/New.css';
 
 const productosData = [
-    {
-      id: 1,
-      nombre: 'Producto A',
-      precio: 5000,
-      stock: 10,
-      categoria: 1,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 2,
-      nombre: 'Producto B',
-      precio: 6000,
-      stock: 0,
-      categoria: 2,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 3,
-      nombre: 'Producto C',
-      precio: 7000,
-      stock: 5,
-      categoria: 1,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 4,
-      nombre: 'Producto D',
-      precio: 8000,
-      stock: 15,
-      categoria: 3,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 5,
-      nombre: 'Producto E',
-      precio: 4500,
-      stock: 20,
-      categoria: 2,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 6,
-      nombre: 'Producto F',
-      precio: 3000,
-      stock: 0,
-      categoria: 1,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 7,
-      nombre: 'Producto G',
-      precio: 5500,
-      stock: 8,
-      categoria: 3,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 8,
-      nombre: 'Producto H',
-      precio: 9200,
-      stock: 2,
-      categoria: 2,
-      img: '/Imagenes/producto-banner.png',
-    },
-    {
-      id: 9,
-      nombre: 'Producto I',
-      precio: 3800,
-      stock: 12,
-      categoria: 1,
-      img: '/Imagenes/producto-banner.png',
-    },
-    // Otros productos
-  ];
-  
+  {
+    id: 1,
+    nombre: 'Producto A',
+    precio: 5000,
+    stock: 10,
+    categoria: 1,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 2,
+    nombre: 'Producto B',
+    precio: 6000,
+    stock: 0,
+    categoria: 2,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 3,
+    nombre: 'Producto C',
+    precio: 7000,
+    stock: 5,
+    categoria: 1,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 4,
+    nombre: 'Producto D',
+    precio: 8000,
+    stock: 15,
+    categoria: 3,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 5,
+    nombre: 'Producto E',
+    precio: 4500,
+    stock: 20,
+    categoria: 2,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 6,
+    nombre: 'Producto F',
+    precio: 3000,
+    stock: 0,
+    categoria: 1,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 7,
+    nombre: 'Producto G',
+    precio: 5500,
+    stock: 8,
+    categoria: 3,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 8,
+    nombre: 'Producto H',
+    precio: 9200,
+    stock: 2,
+    categoria: 2,
+    img: '/imagenes/producto-banner.png',
+  },
+  {
+    id: 9,
+    nombre: 'Producto I',
+    precio: 3800,
+    stock: 12,
+    categoria: 1,
+    img: '/imagenes/producto-banner.png',
+  },
+  // Otros productos
+];
 
 export const New = () => {
   const [productos, setProductos] = useState(productosData);
@@ -96,7 +95,7 @@ export const New = () => {
   const agregarAlCarrito = (producto) => {
     const nuevoCarrito = [...carrito];
     const productoExistente = nuevoCarrito.find(
-      (item) => item.id === producto.id
+      (item) => item.id === producto.id,
     );
 
     if (productoExistente) {
@@ -115,7 +114,9 @@ export const New = () => {
     <div className="div-general-nuevos-ingresos">
       <div className="intro-nuevos-productos">
         <h2>Nuevos Productos</h2>
-        <p>Descubre nuestros últimos productos agregados. ¡No te los pierdas!</p>
+        <p>
+          Descubre nuestros últimos productos agregados. ¡No te los pierdas!
+        </p>
       </div>
 
       <div className="container-productos-categorias">
@@ -131,7 +132,6 @@ export const New = () => {
               <h3 className="nombre-producto-card">{producto.nombre}</h3>
               <h3 className="precio-producto-card">${producto.precio}</h3>
               <p>{producto.stock > 0 ? `Stock disponible` : 'Agotado'}</p>
-
             </div>
             <div className="botones-card-producto">
               <button
@@ -151,4 +151,3 @@ export const New = () => {
     </div>
   );
 };
-
