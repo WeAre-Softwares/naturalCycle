@@ -5,7 +5,7 @@ export const PasosCompra = () => {
     <div className="container-pasos-compra">
       <div className="container-titulo-pasos-compra">
         <h2 className="titulo-pre-banner">
-          ¿ Cómo comprar en nuestra distribuidora?
+          ¿Cómo comprar en nuestra distribuidora?
         </h2>
       </div>
       <div className="container-banner-compra">

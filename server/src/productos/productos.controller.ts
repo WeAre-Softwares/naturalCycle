@@ -89,6 +89,15 @@ export class ProductosController {
     return this.productosService.findAll(paginationDto);
   }
 
+  @Get('destacados')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Buscar todos los productos destacados' })
+  findAllProductosDestacados(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findAllProductosDestacados(paginationDto);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Buscar producto por id' })
   findOne(

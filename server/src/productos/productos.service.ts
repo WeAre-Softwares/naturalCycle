@@ -247,6 +247,47 @@ export class ProductosService {
     }
   }
 
+  async findAllProductosDestacados(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: {
+          esta_activo: true,
+          producto_destacado: true, // Filtrar solo productos destacados
+        },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true,
+          },
+          productosEtiquetas: {
+            etiqueta: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar los productos destacados',
+        error,
+      );
+    }
+  }
+
   async findOne(producto_id: string): Promise<Producto> {
     try {
       const producto = await this.productoRepository.findOne({

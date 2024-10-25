@@ -4,4 +4,6 @@ export { CategoriasTopTres } from './CategoriasTopTres';
 export { MarcasDestacadasGrid } from './MarcasDestacadasGrid';
 export { MarcasDestacadasItem } from './MarcasDestacadasItem';
 export { PasosCompra } from './PasosCompra';
+export { ProductosDestacadosGrid } from './ProductosDestacadosGrid';
+export { ProductosDestacadosItem } from './ProductosDestacadosItem';
 export { RedesSocialesHome } from './RedesSocialesHome';

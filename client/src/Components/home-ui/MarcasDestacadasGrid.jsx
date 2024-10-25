@@ -9,9 +9,13 @@ export const MarcasDestacadasGrid = ({ marcas }) => {
         <h2 className="titulo-pre-banner">Marcas destacadas</h2>
       </div>
       <div className="marcas-destacadas">
-        {marcas.map((marca, index) => (
-          <MarcasDestacadasItem key={index} marca={marca} />
-        ))}
+        {Array.isArray(marcas) && marcas.length > 0 ? (
+          marcas.map((marca) => (
+            <MarcasDestacadasItem key={marca.marca_id} marca={marca} />
+          ))
+        ) : (
+          <p>No hay marcas disponibles.</p>
+        )}
       </div>
     </div>
   );

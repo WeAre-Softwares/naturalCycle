@@ -109,6 +109,36 @@ export class MarcasService {
     }
   }
 
+  async findAllMarcasDestacadas(
+    paginationDto: PaginationDto,
+  ): Promise<GetMarcasResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      // Filtrar solo las marcas destacadas
+      const [marcas, total] = await this.marcaRepository.findAndCount({
+        where: {
+          esta_activo: true,
+          marca_destacada: true,
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        marcas,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las marcas destacadas',
+        error,
+      );
+    }
+  }
+
   async findOne(marca_id: string): Promise<MarcaInterface> {
     try {
       const marca = await this.marcaRepository.findOne({

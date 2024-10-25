@@ -74,10 +74,18 @@ export class MarcasController {
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las marcas' })
   findAll(@Query() paginationDto: PaginationDto): Promise<GetMarcasResponse> {
     return this.marcasService.findAll(paginationDto);
+  }
+
+  @Get('/destacadas')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Buscar todas las marcas destacadas' })
+  findAllMarcasDestacadas(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetMarcasResponse> {
+    return this.marcasService.findAllMarcasDestacadas(paginationDto);
   }
 
   @Get(':id')

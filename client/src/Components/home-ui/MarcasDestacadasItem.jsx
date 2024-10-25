@@ -1,12 +1,12 @@
 import React from 'react';
 import '../../Styles/Inicio/Inicio.css';
 
-export const MarcasDestacadasItem = ({ marca }) => {
+export const MarcasDestacadasItem = ({ marca: { imagen_url, nombre } }) => {
   return (
     <div className="card-marca-destacadas">
       <img
-        src={marca.imagen}
-        alt={`Marca destacada ${marca.nombre}`}
+        src={imagen_url}
+        alt={`Marca destacada ${nombre}`}
         className="img-marca"
       />
     </div>
