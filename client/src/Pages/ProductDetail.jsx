@@ -2,11 +2,22 @@ import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
 import { useGetProductById } from '../hooks/useGetProductById';
+import useCartStore from '../store/use-cart-store';
 
 export const ProductDetails = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const { product, error, loading } = useGetProductById(id);
+  const { addToCart, incrementQuantity, decrementQuantity, carrito } =
+    useCartStore();
+
+  const currentProductInCart = carrito.find(
+    (p) => p.producto_id === product?.producto_id,
+  );
+  const quantity = currentProductInCart?.cantidad || 1;
+
+  const agregarAlCarrito = () => {
+    if (product) addToCart({ ...product, cantidad: quantity });
+  };
 
   return (
     <div className="ver-producto-container">
@@ -71,14 +82,23 @@ export const ProductDetails = () => {
             </div>
 
             <div className="container-cantidad">
-              <button className="btn-view">-</button>
-              <span className="cantidad-view">10</span>
-              <button className="btn-view">+</button>
+              <button
+                onClick={() => decrementQuantity(product.producto_id)}
+                className="btn-view"
+              >
+                -
+              </button>
+              <span className="cantidad-view">{quantity}</span>
+              <button
+                onClick={() => incrementQuantity(product.producto_id)}
+                className="btn-view"
+              >
+                +
+              </button>
             </div>
 
             {product.disponible ? (
-              //TODO: Agregar funcionalidad de agregar al carrito
-              <button className="btn-view">
+              <button onClick={agregarAlCarrito} className="btn-view">
                 Añadir al carrito <i className="fa-solid fa-cart-shopping"></i>
               </button>
             ) : (

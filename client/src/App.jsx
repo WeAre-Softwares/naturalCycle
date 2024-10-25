@@ -1,44 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
 } from 'react-router-dom';
-import { Inicio } from './Pages/Inicio';
-import { Login } from './Pages/Login';
-// import { CardInfoUsuario } from './Pages/CardInfoUsuario';
-import { RegisterForm } from './Pages/RegisterForm';
-import { OlvideContraseña } from './Pages/OlvideContraseña';
-import { Categorias } from './Pages/Categorias';
-import { About } from './Pages/About';
-import { Promociones } from './Pages/Promociones';
-import { Marcas } from './Pages/Marcas';
-import { Header } from './Pages/Header';
-import { Footer } from './Pages/Footer';
+import {
+  About,
+  AreaPedidos,
+  AreaUsuarios,
+  CardInfoUsuario,
+  Categorias,
+  Checkout,
+  CrearFiltrado,
+  CrearProducto,
+  EditarProducto,
+  Footer,
+  Header,
+  Inicio,
+  Login,
+  Marcas,
+  New,
+  NotFound,
+  OlvideContraseña,
+  PanelFiltrados,
+  PanelPrincipal,
+  PanelProducto,
+  ProductDetails,
+  Promociones,
+  RegisterForm,
+} from './Pages';
 import { MenuLateralPanel } from './Components/MenuLateralPanel';
 import { BannerCarrusel } from './Components/home-ui';
-import { ProductDetails } from './Pages/ProductDetail';
-import { AreaPedidos } from './Pages/AreaPedidos';
-import { AreaUsuarios } from './Pages/AreaUsuarios';
-import { PanelProducto } from './Pages/PanelProducto';
-import { CrearProducto } from './Pages/CrearProducto';
-import { CrearFiltrado } from './Pages/CrearFiltrado';
-import { New } from './Pages/New';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
-import { NotFound } from './Pages/NotFound';
-import { PanelPrincipal } from './Pages/PanelAdminPrincipal';
-import { PanelFiltrados } from './Pages/PanelFiltrados';
-import { EditarProducto } from './Pages/EditarProducto';
-
-// import { Checkout } from './Pages/Checkout';
+import useCartStore from './store/use-cart-store';
 
 function App() {
+  const {
+    carrito,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    getTotalProducts,
+    getTotalPrice,
+  } = useCartStore();
+  // Estado para controlar la visibilidad del carrito
+  const [isCartVisible, setIsCartVisible] = useState(false);
+
+  // Fn para alternar la visibilidad del carrito
+  const toggleCart = () => {
+    setIsCartVisible((prev) => !prev);
+  };
+
   return (
     <Router>
       <ScrollToTop />
-      <Header />
+      <Header
+        carrito={carrito}
+        toggleCart={toggleCart}
+        cantidadTotalProductos={getTotalProducts()}
+      />
       <div>
         <Routes>
           {/* Rutas Públicas */}

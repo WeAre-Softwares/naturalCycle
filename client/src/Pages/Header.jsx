@@ -1,29 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../Styles/Header/Header.css';
 import { HamburgerMenu } from '../Components/HamburgerMenu';
 import { NavLinks } from '../Components/NavLinks';
 import { CartButton } from '../Components/CartButton';
-// import Categorias from './Categorias';
 import Logo from '/imagenes/logo-header.svg';
 
-export const Header = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const [carrito, setCarrito] = React.useState([]); // Estado para el carrito
+export const Header = ({ carrito, toggleCart, cantidadTotalProductos }) => {
+  // Estado para controlar MenuHamburguesa
+  const [isOpen, setIsOpen] = useState(false);
 
+  // Fn para alternar la visibilidad del menu hamburguesa
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
-
-  // Función para calcular el total de productos en el carrito
-  const cantidadTotalProductos = carrito.reduce(
-    (total, producto) => total + producto.cantidad,
-    0,
-  );
 
   return (
     <div className="container-header">

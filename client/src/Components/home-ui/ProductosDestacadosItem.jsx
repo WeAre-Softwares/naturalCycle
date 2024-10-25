@@ -1,11 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useCartStore from '../../store/use-cart-store';
 
 export const ProductosDestacadosItem = ({ producto }) => {
   const navigate = useNavigate();
+  const { addToCart } = useCartStore();
 
   const verDetallesProducto = () => {
     navigate(`/producto/${producto.producto_id}`);
+  };
+
+  const agregarAlCarrito = () => {
+    addToCart(producto);
   };
 
   return (
@@ -29,11 +35,7 @@ export const ProductosDestacadosItem = ({ producto }) => {
         </span>
       </div>
       <div className="botones-card-producto">
-        {/* TODO: Agregar funcionalidad */}
-        <button
-          disabled={!producto.disponible}
-          //   onClick={() => agregarAlCarrito(producto)}
-        >
+        <button disabled={!producto.disponible} onClick={agregarAlCarrito}>
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
