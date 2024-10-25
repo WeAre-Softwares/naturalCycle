@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../Styles/Inicio/Inicio.css';
 import {
   BannerCarrusel,
@@ -15,7 +14,6 @@ import { useGetAllMarcasDestacadas } from '../hooks/useGetAllMarcasDestacadas';
 import { useGetAllProductosDestacados } from '../hooks/useGetAllProductosDestacados';
 
 export const Inicio = () => {
-  const navigate = useNavigate();
   const limitMarcas = 12;
   const limitProductos = 12;
   const ofsset = 0;
@@ -31,10 +29,7 @@ export const Inicio = () => {
     error: errorProductosDestacados,
   } = useGetAllProductosDestacados(limitProductos, ofsset);
 
-  //TODO: Agregar funcionalidad de mostrar producto individual & carrito de compras
-  // const verDetallesProducto = (producto) => {
-  //   navigate(`/producto/${producto.id}`, { state: { producto } });
-  // };
+  //TODO: Agregar funcionalidad carrito de compras
 
   return (
     <div className="conteiner-general-inicio">

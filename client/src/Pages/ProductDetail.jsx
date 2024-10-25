@@ -1,87 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
+import { useGetProductById } from '../hooks/useGetProductById';
 
 export const ProductDetails = () => {
-  const { id } = useParams(); // Obtener el id desde la URL
-  const location = useLocation(); // Obtener el estado desde la navegación
-  const producto = location.state?.producto; // Intentar obtener el producto desde el estado
-  const [carrito, setCarrito] = useState(() => {
-    const carritoLocal = JSON.parse(localStorage.getItem('carrito')) || [];
-    return carritoLocal;
-  });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-  }, [carrito]);
-
-  const agregarAlCarrito = () => {
-    const nuevoCarrito = [...carrito];
-    const productoExistente = nuevoCarrito.find((item) => item.id === producto.id);
-
-    // Agregar producto con la cantidad seleccionada
-    if (productoExistente) {
-      productoExistente.cantidad += cantidad; // Incrementar la cantidad del producto existente
-    } else {
-      nuevoCarrito.push({ ...producto, cantidad }); // Añadir nuevo producto con la cantidad
-    }
-    setCarrito(nuevoCarrito);
-  };
-
-  const [cantidad, setCantidad] = useState(1); // Estado para la cantidad
-
-  // Verificar si el producto existe
-  if (!producto) {
-    return <div>Producto no encontrado</div>;
-  }
-
-  // Funciones para manejar la cantidad
-  const incrementarCantidad = () => {
-    if (producto.stock>1) {
-      setCantidad(cantidad + 1); // Incrementar solo si hay stock disponible
-    }
-  };
-
-  const decrementarCantidad = () => {
-    if (cantidad > 1) {
-      setCantidad(cantidad - 1); // Decrementar solo si la cantidad es mayor a 1
-    }
-  };
+  const { id } = useParams();
+  const { product, error, loading } = useGetProductById(id);
 
   return (
     <div className="ver-producto-container">
-      <div className="container-img-ver-producto">
-        <img src={producto.img} alt={producto.nombre} />
+      <div className="button-volver-container">
+        <Link to="/Inicio">
+          <button className="button-volver-panel-producto">
+            <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Volver
+          </button>
+        </Link>
       </div>
 
-      <div className="container-precio-nombre-ver-producto">
-        <h2 className="nombre-view">{producto.nombre}</h2>
-        <p className="precio-view">${producto.precio}</p>
+      {loading && <p>Cargando producto...</p>}
+      {error && <p>Hubo un error al cargar el producto.</p>}
+      {!loading && !error && !product && <p>Producto no encontrado</p>}
 
-        <div className="container-cantidad">
-          <button className="btn-view" onClick={decrementarCantidad}>
-            -
-          </button>
-          <span className="cantidad-view">{cantidad}</span>
-          <button className="btn-view" onClick={incrementarCantidad}>
-            +
-          </button>
-        </div>
+      {!loading && !error && product && (
+        <>
+          <div className="container-img-ver-producto">
+            <img src={product.imagenes[0]?.url} alt={product.nombre} />
+          </div>
 
-        {producto.stock > 0 ? (
-          <button className='btn-view'
-            onClick={agregarAlCarrito}
-          >
-            Añadir al carrito
-            <i className="fa-solid fa-cart-shopping"></i>
-          </button>
-        ) : (
-          <button className="btn-iniciar-compra-disabled btn-view" disabled>
-            Producto no disponible
-          </button>
-        )}
-      </div>
+          <div className="container-precio-nombre-ver-producto">
+            <h2 className="nombre-view">{product.nombre}</h2>
+            <p className="text-style">
+              <strong>Descripción:</strong> {product.descripcion}
+            </p>
+
+            <p className="text-style" style={{ marginBottom: '15px' }}>
+              <strong>Marca:</strong> {product.marca.nombre}
+            </p>
+
+            <div className="text-style" style={{ marginBottom: '15px' }}>
+              <strong>Categorías:</strong>
+              <ul className="text-list">
+                {product.categorias.map((categoria, index) => (
+                  <li key={index} className="text-list-item">
+                    {categoria.nombre}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="text-style">
+              <strong>Etiquetas:</strong>
+              <ul className="text-list">
+                {product.etiquetas.map((etiqueta, index) => (
+                  <li key={index} className="text-list-item">
+                    {etiqueta.nombre}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="price-container">
+              <p className="precio-view">${product.precio}</p>
+              <span style={{ marginLeft: '8px' }}>
+                &#8722;{' '}
+                {product.tipo_de_precio === 'por_kilo'
+                  ? 'Por Kilo'
+                  : 'Por Unidad'}
+              </span>
+            </div>
+
+            <div className="container-cantidad">
+              <button className="btn-view">-</button>
+              <span className="cantidad-view">10</span>
+              <button className="btn-view">+</button>
+            </div>
+
+            {product.disponible ? (
+              //TODO: Agregar funcionalidad de agregar al carrito
+              <button className="btn-view">
+                Añadir al carrito <i className="fa-solid fa-cart-shopping"></i>
+              </button>
+            ) : (
+              <button className="btn-iniciar-compra-disabled btn-view" disabled>
+                Producto no disponible
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
