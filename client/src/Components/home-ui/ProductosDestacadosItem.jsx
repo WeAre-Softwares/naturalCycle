@@ -22,7 +22,7 @@ export const ProductosDestacadosItem = ({ producto }) => {
         </span>
       </div>
       <div className="botones-card-producto">
-        //TODO: Agregar funcionalidad
+        {/* TODO: Agregar funcionalidad */}
         <button
           disabled={!producto.disponible}
           //   onClick={() => agregarAlCarrito(producto)}
@@ -30,7 +30,7 @@ export const ProductosDestacadosItem = ({ producto }) => {
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
-        //TODO: Agregar funcionalidad
+        {/* TODO: Agregar funcionalidad */}
         {/* <button onClick={() => verDetallesProducto(producto)}> */}
         <button>
           Ver producto <i className="fa-solid fa-eye"></i>
