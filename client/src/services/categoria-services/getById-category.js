@@ -2,9 +2,9 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const getProductByIdService = async (id) => {
+export const getCategoryByIdService = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/productos/${id}`);
+    const response = await axios.get(`${API_URL}/categorias/${id}`);
     // console.log(response.data);
 
     return response.data;

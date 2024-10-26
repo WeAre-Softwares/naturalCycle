@@ -89,6 +89,27 @@ export class ProductosController {
     return this.productosService.findAll(paginationDto);
   }
 
+  @Get('/marca/:id')
+  @ApiOperation({ summary: 'Buscar productos por marca' })
+  findByBrand(
+    @Param('id') marcaId: string,
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findProductsByBrand(marcaId, paginationDto);
+  }
+
+  @Get('/categoria/:id')
+  @ApiOperation({ summary: 'Buscar productos por categoria' })
+  findByCategory(
+    @Param('id') categoriaId: string,
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findProductsByCategory(
+      categoriaId,
+      paginationDto,
+    );
+  }
+
   @Get('destacados')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar todos los productos destacados' })

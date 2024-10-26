@@ -61,7 +61,6 @@ export class CategoriasController {
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las categorías' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -71,7 +70,6 @@ export class CategoriasController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar una categoría por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CategoriaInterface> {
     return this.categoriasService.findOne(id);

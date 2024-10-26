@@ -2,10 +2,14 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const getProductByIdService = async (id) => {
+export const getAllCategoriesService = async (limit = 10, offset = 0) => {
   try {
-    const response = await axios.get(`${API_URL}/productos/${id}`);
-    // console.log(response.data);
+    const response = await axios.get(`${API_URL}/categorias`, {
+      params: {
+        limit,
+        offset,
+      },
+    });
 
     return response.data;
   } catch (error) {

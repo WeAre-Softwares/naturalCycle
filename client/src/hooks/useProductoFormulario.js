@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllCategoriasService } from '../services/categoria-services/getAll-categorias';
+import { getAllCategoriesService } from '../services/categoria-services/getAll-categories';
 import { getAllEtiquetasService } from '../services/etiquetas-service/getAll-etiquetas';
 import { getAllMarcasService } from '../services/marca-services/getAll-marcas';
 import useAuthStore from '../store/use-auth-store';
@@ -18,7 +18,7 @@ export function useProductoFormulario() {
     const fetchData = async () => {
       try {
         const [categoriasData, etiquetasData, marcasData] = await Promise.all([
-          getAllCategoriasService(token),
+          getAllCategoriesService(token),
           getAllEtiquetasService(token),
           getAllMarcasService(token),
         ]);
