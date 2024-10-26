@@ -21,8 +21,8 @@ export const InputField = ({
           type={type}
         />
         {/* TODO: FIX Desing error */}
-        {error && <p style={{ color: 'red' }}>{error.message}</p>}{' '}
       </div>
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}{' '}
     </div>
   );
 };

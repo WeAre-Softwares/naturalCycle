@@ -81,7 +81,7 @@ export const PanelProducto = () => {
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
-          <h2>Lista de productos</h2>
+          <h2 style={{marginTop:'160px'}}>Lista de productos</h2>
           <input
             type="text"
             value={searchTerm}
@@ -100,7 +100,7 @@ export const PanelProducto = () => {
           ) : error ? (
             <p>Ocurrió un error al cargar los productos.</p>
           ) : productsData && productsData.length > 0 ? (
-            <ul className="productos-lista-panel">
+            <ul className="lista-productos-creados">
               {productsData.map((producto) => (
                 <li key={producto.producto_id} className="producto-item-panel">
                   <img

@@ -215,6 +215,11 @@
   }
 }
 
+.error-message p{
+  font-size: 17px;
+  text-align: center;
+}
+
 .input-container {
   display: flex;
   align-items: center;
@@ -226,6 +231,3 @@
 .input-container svg {
   margin-right: 10px; /* Espacio entre el ícono y el input */
 }
-
-
-

@@ -37,9 +37,12 @@ export const Login = () => {
         navigate('/Inicio');
       }
     } catch (error) {
-      setErrorMessage(
-        'Credenciales incorrectas. Por favor, intente nuevamente.',
-      );
+      setErrorMessage('Credenciales incorrectas. Por favor, intente nuevamente.');
+  
+      // Después de 5 segundos, limpiar el mensaje de error
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
     }
   };
 
@@ -72,6 +75,7 @@ export const Login = () => {
             register={register('email')}
             error={errors.email}
           />
+          
           <InputField
             label="Contraseña"
             type="password"
@@ -90,11 +94,6 @@ export const Login = () => {
             register={register('password')}
             error={errors.password}
           />
-          {errorMessage && (
-            <div style={{ color: 'red' }} className="error-message">
-              {errorMessage}
-            </div>
-          )}{' '}
           {/* Mostrar el error si existe */}
           <RememberMe />
           <button type="submit" className="button-submit-login">
@@ -111,6 +110,11 @@ export const Login = () => {
           </p>
         </form>
       </div>
+      {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      )}{' '}
     </div>
   );
 };

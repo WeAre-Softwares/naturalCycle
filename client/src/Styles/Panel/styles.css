@@ -151,6 +151,14 @@
   list-style: none; /* Remueve el estilo de lista predeterminado */}
 
 
+  .lista-productos-creados{
+    padding: 0; /* Remueve el padding para que se vea limpio */
+  list-style: none; /* Remueve el estilo de lista predeterminado */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;}
+  
+
 /* Checkbox styling */
 .crear-producto-checkbox {
   margin-right: 10px;
@@ -398,6 +406,13 @@
   border-radius: 10px;
 }
 
+.lista-productos-creados img{
+  width: 130px;
+  height: 130px;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
 .producto-item-panel {
   display: flex;
   align-items: center;
@@ -456,6 +471,10 @@
   .productos-lista-panel {
     flex-direction: column;
     /* Cambiar a columna en pantallas pequeñas */
+  }
+
+  .lista-productos-creados{
+    flex-direction: column;
   }
 
   .producto-item-panel {
