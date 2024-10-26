@@ -90,7 +90,6 @@ export class MarcasController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar marca por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<MarcaInterface> {
     return this.marcasService.findOne(id);

@@ -15,7 +15,8 @@ export function useGetAllMarcas(limit = 10, offset = 0) {
         const response = await getAllMarcasService(limit, offset);
         if (isMounted) {
           // Solo actualizamos si el componente está montado
-          setMarcas(response);
+          // console.log(response);
+          setMarcas(response.marcas);
         }
       } catch (error) {
         console.log(error);
