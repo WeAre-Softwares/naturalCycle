@@ -73,7 +73,7 @@ export const PanelProducto = () => {
   };
 
   const handleEdit = (producto_id) => {
-    navigate(`/editarproducto/${producto_id}`);
+    navigate(`/editar-producto/${producto_id}`);
   };
 
   return (
@@ -81,7 +81,7 @@ export const PanelProducto = () => {
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
-          <h2 style={{marginTop:'160px'}}>Lista de productos</h2>
+          <h2 style={{ marginTop: '160px' }}>Lista de productos</h2>
           <input
             type="text"
             value={searchTerm}
@@ -89,7 +89,7 @@ export const PanelProducto = () => {
             placeholder="Buscar por nombre"
             className="buscar-producto-input"
           />
-          <Link to="/crearproducto">
+          <Link to="/crear-producto">
             <button className="button-abrir-crear-producto">
               <i className="fas fa-plus"></i>
             </button>

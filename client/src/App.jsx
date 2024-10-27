@@ -20,8 +20,8 @@ import {
   Inicio,
   Login,
   Marcas,
-  New,
   NotFound,
+  NuevoIngreso,
   OlvideContraseña,
   PanelFiltrados,
   PanelPrincipal,
@@ -65,56 +65,56 @@ function App() {
       <div>
         <Routes>
           {/* Rutas Públicas */}
-          <Route path="/" element={<Navigate to="/Inicio" />} />
-          <Route path="/Inicio" element={<Inicio />} />
-          <Route path="/Banner" element={<BannerCarrusel />} />
+          <Route path="/" element={<Navigate to="/inicio" />} />
+          <Route path="/inicio" element={<Inicio />} />
+          <Route path="/banner" element={<BannerCarrusel />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/Register" element={<RegisterForm />} />
-          <Route path="/Password" element={<OlvideContraseña />} />
-          <Route path="/Categorias" element={<Categorias />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Promociones" element={<Promociones />} />
-          <Route path="/Marcas" element={<Marcas />} />
-          <Route path="/New" element={<New />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/password" element={<OlvideContraseña />} />
+          <Route path="/categorias" element={<Categorias />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/promociones" element={<Promociones />} />
+          <Route path="/marcas" element={<Marcas />} />
+          <Route path="/nuevos-ingresos" element={<NuevoIngreso />} />
           <Route path="/producto/:id" element={<ProductDetails />} />
 
           {/* <Route path="/checkout" element={<Checkout carrito={carrito} />} /> */}
 
           {/* Rutas Privadas (Solo Admin) */}
           <Route
-            path="/Panel"
+            path="/panel"
             element={<PrivateRoute element={MenuLateralPanel} />}
           />
           <Route
-            path="/PanelPrincipal"
+            path="/panel-principal"
             element={<PrivateRoute element={PanelPrincipal} />}
           />
           <Route
-            path="/panelpedidos"
+            path="/panel-pedidos"
             element={<PrivateRoute element={AreaPedidos} />}
           />
           <Route
-            path="/panelusuarios"
+            path="/panel-usuarios"
             element={<PrivateRoute element={AreaUsuarios} />}
           />
           <Route
-            path="/crearproducto"
+            path="/crear-producto"
             element={<PrivateRoute element={CrearProducto} />}
           />
           <Route
-            path="/editarproducto/:producto_id"
+            path="/editar-producto/:producto_id"
             element={<PrivateRoute element={EditarProducto} />}
           />
           <Route
-            path="/panelproducto"
+            path="/panel-producto"
             element={<PrivateRoute element={PanelProducto} />}
           />
           <Route
-            path="/crearfiltrado"
+            path="/crear-filtrado"
             element={<PrivateRoute element={CrearFiltrado} />}
           />
           <Route
-            path="/panelfiltrado"
+            path="/panel-filtrado"
             element={<PrivateRoute element={PanelFiltrados} />}
           />
 

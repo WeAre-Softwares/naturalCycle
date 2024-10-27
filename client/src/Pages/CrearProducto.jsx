@@ -74,7 +74,7 @@ export const CrearProducto = () => {
       // Verifica que la respuesta tenga un indicativo de éxito
       if (response) {
         toast.success('Producto creado con éxito!', { autoClose: 5000 });
-        setTimeout(() => navigate('/PanelPrincipal'), 6000);
+        setTimeout(() => navigate('/panel-principal'), 6000);
       } else {
         toast.error('Error al crear el producto');
         throw new Error('Error al crear el producto.');

@@ -10,11 +10,11 @@ export const MenuLateralPanel = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const isPanelRoute = location.pathname === "/Panel";
+  const isPanelRoute = location.pathname === '/Panel';
 
   return (
     <div className="div-superior-panel-admin">
-      <div className={isPanelRoute ? "div-superior-panel-admin2" : ""}></div>
+      <div className={isPanelRoute ? 'div-superior-panel-admin2' : ''}></div>
       <button className="menu-toggle-btn" onClick={toggleMenu}>
         Menú
       </button>
@@ -26,20 +26,19 @@ export const MenuLateralPanel = () => {
         <h2>Menú</h2>
         <ul>
           <li>
-            <Link to="/panelpedidos">Área de Pedidos</Link>
+            <Link to="/panel-pedidos">Área de Pedidos</Link>
           </li>
           <li>
-            <Link to="/panelusuarios">Área de Usuarios</Link>
+            <Link to="/panel-usuarios">Área de Usuarios</Link>
           </li>
           <li>
-            <Link to="/panelfiltrado">Crear Filtrado</Link>
+            <Link to="/panel-filtrado">Crear Filtrado</Link>
           </li>
           <li>
-            <Link to="/panelproducto">Crear Producto</Link>
+            <Link to="/panel-producto">Crear Producto</Link>
           </li>
         </ul>
       </nav>
-
     </div>
   );
 };

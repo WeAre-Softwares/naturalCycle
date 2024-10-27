@@ -379,6 +379,88 @@ export class ProductosService {
     }
   }
 
+  async findNewArrivalProducts(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: {
+          esta_activo: true,
+          nuevo_ingreso: true, // Filtrar nuevos ingresos de productos
+        },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true,
+          },
+          productosEtiquetas: {
+            etiqueta: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar nuevos ingresos de productos',
+        error,
+      );
+    }
+  }
+
+  async findPromotionalProducts(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: {
+          esta_activo: true,
+          en_promocion: true, // Filtrar productos en promoción
+        },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true,
+          },
+          productosEtiquetas: {
+            etiqueta: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar productos en promoción',
+        error,
+      );
+    }
+  }
+
   async findOne(producto_id: string): Promise<Producto> {
     try {
       const producto = await this.productoRepository.findOne({

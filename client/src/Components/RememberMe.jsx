@@ -10,7 +10,7 @@ export const RememberMe = ({ toggleMenu }) => {
         <label> Recordar</label>
       </div>
       <span className="span-login">
-        <Link to="/Password" onClick={toggleMenu}>
+        <Link to="/password" onClick={toggleMenu}>
           Olvidaste tu contraseña?
         </Link>
       </span>

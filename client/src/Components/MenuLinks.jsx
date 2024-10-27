@@ -7,7 +7,7 @@ export const MenuLinks = () => {
       <h3>Menu</h3>
       <ul>
         <li>
-          <Link to="/Inicio">Inicio</Link>
+          <Link to="/inicio">Inicio</Link>
         </li>
         <li>
           <Link to="/categorias">Categorías</Link>
@@ -19,13 +19,13 @@ export const MenuLinks = () => {
           <Link to="/promociones">Promociones</Link>
         </li>
         <li>
-          <Link to="/new">Nuevos ingresos</Link>
+          <Link to="/nuevos-ingresos">Nuevos ingresos</Link>
         </li>
         <li>
-          <Link to="/About">Sobre nosotros</Link>
+          <Link to="/about">Sobre nosotros</Link>
         </li>
         <li>
-          <Link to="/Login">Mi cuenta</Link>
+          <Link to="/login">Mi cuenta</Link>
         </li>
       </ul>
     </div>

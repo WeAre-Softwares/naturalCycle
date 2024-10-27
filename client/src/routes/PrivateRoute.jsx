@@ -14,7 +14,7 @@ export const PrivateRoute = ({ element: Element, ...rest }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/Inicio" replace />;
+    return <Navigate to="/inicio" replace />;
   }
 
   return <Element {...rest} />;

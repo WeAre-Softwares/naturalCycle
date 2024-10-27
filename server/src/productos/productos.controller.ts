@@ -89,6 +89,22 @@ export class ProductosController {
     return this.productosService.findAll(paginationDto);
   }
 
+  @Get('/nuevos-ingresos')
+  @ApiOperation({ summary: 'Buscar todos los nuevos ingresos de productos' })
+  findNewArrivalProducts(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findNewArrivalProducts(paginationDto);
+  }
+
+  @Get('/productos-promocion')
+  @ApiOperation({ summary: 'Buscar todos los productos en promoción' })
+  findPromotionalProducts(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findPromotionalProducts(paginationDto);
+  }
+
   @Get('/marca/:id')
   @ApiOperation({ summary: 'Buscar productos por marca' })
   findByBrand(

@@ -31,7 +31,10 @@ export const About = () => {
         </div>
 
         <div className="imagen-quienes-somos">
-          <img src="./imagenes/producto-banner.png" alt="" />
+          <img
+            src="https://res.cloudinary.com/djkjuzzz6/image/upload/v1729780030/naturalcycle-marcas/bpynmw09dt4lpvwbrwkr.png"
+            alt=""
+          />
         </div>
       </div>
     </div>

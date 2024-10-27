@@ -12,7 +12,7 @@ export { Header } from './Header';
 export { Inicio } from './Inicio';
 export { Login } from './Login';
 export { Marcas } from './Marcas';
-export { New } from './New';
+export { NuevoIngreso } from './NuevosIngresos';
 export { NotFound } from './NotFound';
 export { OlvideContraseña } from './OlvideContraseña';
 export { PanelFiltrados } from './PanelFiltrados';

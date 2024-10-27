@@ -23,13 +23,13 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
       </button>
       <ul className="ul-menu-hamb">
         <li>
-          <Link to="/Inicio" onClick={toggleMenu}>
+          <Link to="/inicio" onClick={toggleMenu}>
             Inicio
           </Link>
         </li>
         <li>
           <Link
-            to="/Categorias"
+            to="/categorias"
             className="link-categorias"
             onClick={toggleMenu}
           >
@@ -37,23 +37,23 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           </Link>
         </li>
         <li>
-          <Link to="/Marcas" className="link-marcas" onClick={toggleMenu}>
+          <Link to="/marcas" className="link-marcas" onClick={toggleMenu}>
             Marcas
           </Link>
         </li>
 
         <li>
-          <Link to="/Promociones" onClick={toggleMenu}>
+          <Link to="/promociones" onClick={toggleMenu}>
             Promociones
           </Link>
         </li>
         <li>
-          <Link to="/New" onClick={toggleMenu}>
+          <Link to="/nuevos-ingresos" onClick={toggleMenu}>
             Nuevos ingresos
           </Link>
         </li>
         <li>
-          <Link to="/About" onClick={toggleMenu}>
+          <Link to="/about" onClick={toggleMenu}>
             Sobre nosotros
           </Link>
         </li>
@@ -61,7 +61,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           <>
             {isAdmin && ( // Solo mostrar para administradores
               <li>
-                <Link to="/PanelPrincipal" onClick={toggleMenu}>
+                <Link to="/panel-principal" onClick={toggleMenu}>
                   Panel Administrador
                 </Link>
               </li>
@@ -72,7 +72,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           </>
         ) : (
           <li>
-            <Link to="/Login" onClick={toggleMenu}>
+            <Link to="/login" onClick={toggleMenu}>
               Iniciar sesión
             </Link>
           </li>
