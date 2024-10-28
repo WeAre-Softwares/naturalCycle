@@ -160,7 +160,12 @@ export class MarcasService {
 
   async findAllByTerm(
     SearchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<MarcaInterface>[]> {
+  ): Promise<{
+    marcas: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -183,7 +188,7 @@ export class MarcasService {
       // console.log('SQL generada:', queryBuilder.getSql());
       // console.log('Término de búsqueda aplicado:', term);
 
-      const marcas = await queryBuilder.getMany();
+      const [marcas, total] = await queryBuilder.getManyAndCount();
 
       // Aplanar los resultados
       const listaMarcasAplanadas = marcas.map((marca) => ({
@@ -193,7 +198,12 @@ export class MarcasService {
         imagen_url: marca.imagen_url,
       }));
 
-      return listaMarcasAplanadas;
+      return {
+        marcas: listaMarcasAplanadas,
+        total,
+        limit,
+        offset,
+      };
     } catch (error) {
       this.logger.error(error);
       console.log(error);

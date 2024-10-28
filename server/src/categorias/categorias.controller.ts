@@ -55,7 +55,12 @@ export class CategoriasController {
   })
   async findByTerm(
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<CategoriaInterface>[]> {
+  ): Promise<{
+    categorias: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     return this.categoriasService.findAllByTerm(searchWithPaginationDto);
   }
 

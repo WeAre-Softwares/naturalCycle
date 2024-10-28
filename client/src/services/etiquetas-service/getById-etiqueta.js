@@ -2,14 +2,10 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const getAllEtiquetasService = async (limit = 10, offset = 0) => {
+export const getEtiquetaByIdService = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/etiquetas`, {
-      params: {
-        limit,
-        offset,
-      },
-    });
+    const response = await axios.get(`${API_URL}/etiquetas/${id}`);
+    // console.log(response.data);
 
     return response.data;
   } catch (error) {

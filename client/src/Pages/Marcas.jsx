@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { debounce } from 'lodash';
+import React, { useState } from 'react';
 import '../Styles/Marcas/Marcas.css';
 import {
   Buscador,
   NoHayProductos,
   ProductCard,
 } from '../Components/categorias-ui';
+import { Pagination } from '../Components/panel-productos/Pagination';
 import { MarcasFiltro } from '../Components/marcas-ui/MarcasFiltro';
 import { useProductSearchAndPaginationBrand } from '../hooks/useProductSearchAndPaginationBrand';
 import { useGetAllMarcas } from '../hooks/useGetAllMarcas';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
+
+// Límite de productos para centralizar su valor
+const LIMIT = 9;
 
 export const Marcas = () => {
   const [marcaSeleccionada, setMarcaSeleccionada] = useState(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [busqueda, setBusqueda] = useState('');
-  const [debouncedBusqueda, setDebouncedBusqueda] = useState(busqueda);
+
+  // Debounced valor busqueda
+  const debouncedBusqueda = useDebouncedValue(busqueda, 600);
 
   const {
     marcas,
@@ -22,19 +28,14 @@ export const Marcas = () => {
     error: errorMarcas,
   } = useGetAllMarcas();
 
-  // Debounce para actualizar la búsqueda
-  const handleDebouncedSearch = debounce((term) => {
-    setDebouncedBusqueda(term);
-  }, 600); // 600 ms de retraso
-
-  useEffect(() => {
-    handleDebouncedSearch(busqueda);
-  }, [busqueda]);
-
   const { products, loading, error, handlePageChange, page, total } =
-    useProductSearchAndPaginationBrand(debouncedBusqueda, marcaSeleccionada, 9);
+    useProductSearchAndPaginationBrand(
+      debouncedBusqueda,
+      marcaSeleccionada,
+      LIMIT,
+    );
 
-  const totalPaginas = Math.ceil(total / 9);
+  const totalPaginas = Math.ceil(total / LIMIT);
 
   const handlePrevPage = () => {
     if (page > 0) {
@@ -50,8 +51,7 @@ export const Marcas = () => {
 
   return (
     <div className="container-general-categorias">
-      <Buscador setBusqueda={setBusqueda} />{' '}
-      {/* Este setea la búsqueda normal */}
+      <Buscador setBusqueda={setBusqueda} />
       <MarcasFiltro
         marcas={marcas}
         setMarcaSeleccionada={setMarcaSeleccionada}
@@ -71,27 +71,12 @@ export const Marcas = () => {
           <NoHayProductos />
         )}
       </div>
-      <div className="pagination-info">
-        <p>
-          Página {page + 1} de {totalPaginas}
-        </p>
-        <div className="botones-promocion">
-          <button
-            className="btn-carrusel"
-            onClick={handlePrevPage}
-            disabled={page === 0}
-          >
-            <i className="fa-solid fa-chevron-left"></i>
-          </button>
-          <button
-            className="btn-carrusel"
-            onClick={handleNextPage}
-            disabled={page === totalPaginas - 1}
-          >
-            <i className="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
+      <Pagination
+        currentPage={page + 1}
+        totalPages={totalPaginas}
+        onNext={() => handlePageChange(page + 1)}
+        onPrev={() => handlePageChange(page - 1)}
+      />
     </div>
   );
 };

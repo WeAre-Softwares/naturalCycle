@@ -107,7 +107,12 @@ export class CategoriasService {
 
   async findAllByTerm(
     SearchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<CategoriaInterface>[]> {
+  ): Promise<{
+    categorias: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -121,7 +126,7 @@ export class CategoriasService {
         .take(limit)
         .skip(offset);
 
-      const categorias = await queryBuilder.getMany();
+      const [categorias, total] = await queryBuilder.getManyAndCount();
 
       // Aplanar los resultados
       const listaCategoriasAplanadas = categorias.map((categoria) => ({
@@ -129,7 +134,12 @@ export class CategoriasService {
         nombre: categoria.nombre,
       }));
 
-      return listaCategoriasAplanadas;
+      return {
+        categorias: listaCategoriasAplanadas,
+        total,
+        limit,
+        offset,
+      };
     } catch (error) {
       this.logger.error(error);
       console.log(error);

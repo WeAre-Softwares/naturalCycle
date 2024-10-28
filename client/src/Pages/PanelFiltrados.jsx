@@ -1,98 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 import { Link } from 'react-router-dom';
+import { useFiltradoPaginado } from '../hooks/useFiltradoPaginado';
+import { Pagination } from '../Components/panel-productos/Pagination';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
+
+// Límite de productos para centralizar su valor
+const LIMIT = 3;
 
 export const PanelFiltrados = () => {
-  const [marca, setMarca] = useState('');
-  const [productosMarca, setProductosMarca] = useState([]);
-  const [productoMarcaInput, setProductoMarcaInput] = useState('');
-  const [destacada, setDestacada] = useState(false);
-  const [imagenMarca, setImagenMarca] = useState(null); // Nuevo estado para la imagen
-
-  const [etiqueta, setEtiqueta] = useState('');
-  const [productosEtiqueta, setProductosEtiqueta] = useState([]);
-  const [productoEtiquetaInput, setProductoEtiquetaInput] = useState('');
-
-  const [categoria, setCategoria] = useState('');
-  const [productosCategoria, setProductosCategoria] = useState([]);
-  const [productoCategoriaInput, setProductoCategoriaInput] = useState('');
-
   const [tipoCreacion, setTipoCreacion] = useState('marca');
-
-  // Estado para manejar la búsqueda
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Estados para almacenar las listas
-  const [marcas, setMarcas] = useState(() => {
-    const storedMarcas = JSON.parse(localStorage.getItem('marcas'));
-    return storedMarcas || [];
-  });
+  // Custom hook de debounce
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 600);
 
-  const [etiquetas, setEtiquetas] = useState(() => {
-    const storedEtiquetas = JSON.parse(localStorage.getItem('etiquetas'));
-    return storedEtiquetas || [];
-  });
+  // Hook personalizado para paginación y filtrado
+  const { data, currentPage, totalItems, isLoading, itemsPerPage, goToPage } =
+    useFiltradoPaginado(tipoCreacion, debouncedSearchTerm, LIMIT); // Pasarle el debouncedSearchTerm
 
-  const [categorias, setCategorias] = useState(() => {
-    const storedCategorias = JSON.parse(localStorage.getItem('categorias'));
-    return storedCategorias || [];
-  });
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Guardar listas en localStorage cada vez que cambian
-  useEffect(() => {
-    localStorage.setItem('marcas', JSON.stringify(marcas));
-  }, [marcas]);
-
-  useEffect(() => {
-    localStorage.setItem('etiquetas', JSON.stringify(etiquetas));
-  }, [etiquetas]);
-
-  useEffect(() => {
-    localStorage.setItem('categorias', JSON.stringify(categorias));
-  }, [categorias]);
-
-  const handleTipoCreacion = (e) => {
-    setTipoCreacion(e.target.value);
-  };
-
-  // Función para eliminar una marca
-  const eliminarMarca = (index) => {
-    const nuevasMarcas = [...marcas];
-    nuevasMarcas.splice(index, 1);
-    setMarcas(nuevasMarcas);
-  };
-
-  // Función para eliminar una etiqueta
-  const eliminarEtiqueta = (index) => {
-    const nuevasEtiquetas = [...etiquetas];
-    nuevasEtiquetas.splice(index, 1);
-    setEtiquetas(nuevasEtiquetas);
-  };
-
-  // Función para eliminar una categoría (ya existente)
-  const eliminarCategoria = (index) => {
-    const nuevasCategorias = [...categorias];
-    nuevasCategorias.splice(index, 1);
-    setCategorias(nuevasCategorias);
-  };
-
-  // Función para manejar el input de búsqueda
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
-  };
-
-  // Filtrar las listas basadas en el término de búsqueda
-  const filteredMarcas = marcas.filter((marca) =>
-    marca.nombre.toLowerCase().includes(searchTerm),
-  );
-
-  const filteredEtiquetas = etiquetas.filter((etiqueta) =>
-    etiqueta.nombre.toLowerCase().includes(searchTerm),
-  );
-
-  const filteredCategorias = categorias.filter((categoria) =>
-    categoria.nombre.toLowerCase().includes(searchTerm),
-  );
+  const handleTipoCreacion = (e) => setTipoCreacion(e.target.value);
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   return (
     <div className="div-gral-prod-creados">
@@ -127,101 +57,59 @@ export const PanelFiltrados = () => {
             </button>
           </Link>
 
-          {/* Renderizado condicional según la selección */}
-          {tipoCreacion === 'marca' && (
+          {/* Renderizado de lista de elementos */}
+          {isLoading ? (
+            <p>Cargando...</p>
+          ) : (
             <>
-              <h3>Marcas:</h3>
-
+              <h3>
+                {tipoCreacion.charAt(0).toUpperCase() + tipoCreacion.slice(1)}:
+              </h3>
               <ul className="productos-lista-panel">
-                {filteredMarcas.map((marca, index) => (
-                  <li className="producto-item-panel" key={index}>
-                    {marca.imagen && (
-                      <img
-                        src={marca.imagen}
-                        alt={`Logo de ${marca.nombre}`}
-                        className="producto-imagen"
-                      />
-                    )}
-
-                    <div className="producto-detalles">
-                      <strong>{marca.nombre}</strong>{' '}
-                      {marca.destacada && '(Destacada)'}
-                    </div>
-                    <div className="producto-botones">
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => editarMarca(index)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => eliminarMarca(index)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </li>
-                ))}
+                {Array.isArray(data) && data.length > 0 ? (
+                  data.map((item, index) => (
+                    <li className="producto-item-panel" key={index}>
+                      {item.imagen && (
+                        <img
+                          src={item.imagen}
+                          alt={`Imagen de ${item.nombre}`}
+                          className="producto-imagen"
+                        />
+                      )}
+                      <div className="producto-detalles">
+                        <strong>{item.nombre}</strong>
+                      </div>
+                      <div className="producto-botones">
+                        <button
+                          className="crear-filtrado-button"
+                          onClick={() =>
+                            console.log(`Editar ${tipoCreacion}`, item)
+                          }
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="crear-filtrado-button"
+                          onClick={() =>
+                            console.log(`Eliminar ${tipoCreacion}`, item)
+                          }
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <p>No se encontraron resultados.</p>
+                )}
               </ul>
-            </>
-          )}
 
-          {tipoCreacion === 'etiqueta' && (
-            <>
-              <h3>Etiquetas:</h3>
-              <ul className="productos-lista-panel">
-                {filteredEtiquetas.map((etiqueta, index) => (
-                  <li className="producto-item-panel" key={index}>
-                    <div className="producto-detalles">
-                      <strong>{etiqueta.nombre}</strong>
-                    </div>
-                    <div className="producto-botones">
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => editarEtiqueta(index)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => eliminarEtiqueta(index)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {tipoCreacion === 'categoria' && (
-            <>
-              <h3>Categorías:</h3>
-              <ul className="productos-lista-panel">
-                {filteredCategorias.map((categoria, index) => (
-                  <li className="producto-item-panel" key={index}>
-                    <div className="producto-detalles">
-                      <strong>{categoria.nombre}</strong>
-                    </div>
-                    <div className="producto-botones">
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => editarCategoria(index)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="crear-filtrado-button"
-                        onClick={() => eliminarCategoria(index)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onNext={() => goToPage(currentPage + 1)}
+                onPrev={() => goToPage(currentPage - 1)}
+              />
             </>
           )}
         </div>

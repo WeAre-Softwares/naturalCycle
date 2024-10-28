@@ -92,7 +92,7 @@ export const CrearProducto = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="crear-producto-container"
       >
-        <Link to="/panelproducto">
+        <Link to="/panel-producto">
           <button className="button-volver-panel-producto">
             {' '}
             <i class="fas fa-arrow-left"></i>

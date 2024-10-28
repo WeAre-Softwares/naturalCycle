@@ -56,13 +56,17 @@ export class EtiquetasController {
   })
   async findByTerm(
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<EtiquetaInterface>[]> {
+  ): Promise<{
+    etiquetas: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     return this.etiquetasService.findAllByTerm(searchWithPaginationDto);
   }
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar todas las etiquetas' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -72,7 +76,6 @@ export class EtiquetasController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
   @ApiOperation({ summary: 'Buscar una etiqueta por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<EtiquetaInterface> {
     return this.etiquetasService.findOne(id);

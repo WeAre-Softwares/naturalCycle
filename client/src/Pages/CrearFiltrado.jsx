@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
@@ -53,7 +52,12 @@ export const CrearFiltrado = () => {
     if (marca) {
       setMarcas((prevMarcas) => [
         ...prevMarcas,
-        { nombre: marca, productos: productosMarca, destacada, imagen: imagenMarca },
+        {
+          nombre: marca,
+          productos: productosMarca,
+          destacada,
+          imagen: imagenMarca,
+        },
       ]);
       setMarca('');
       setProductosMarca([]);
@@ -149,10 +153,13 @@ export const CrearFiltrado = () => {
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="crear-filtrado-container">
-        <Link to="/panelfiltrado"><button className='button-volver-panel-producto'
-    >   <i class="fas fa-arrow-left"></i>
- &nbsp;&nbsp;Volver
-    </button></Link>
+          <Link to="/panel-filtrado">
+            <button className="button-volver-panel-producto">
+              {' '}
+              <i class="fas fa-arrow-left"></i>
+              &nbsp;&nbsp;Volver
+            </button>
+          </Link>
           <h1 className="crear-filtrado-header">Crear Filtrado</h1>
 
           <div className="tipo-filtrado">
@@ -176,93 +183,89 @@ export const CrearFiltrado = () => {
             </button>
           </div>
           {tipoCreacion === 'marca' && (
-  <div className="crear-filtrado-form">
-    <input
-      type="text"
-      placeholder="Nombre de la marca"
-      value={marca}
-      onChange={(e) => setMarca(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    
-    <div className="crear-filtrado-checkbox">
-      <label>
-        <p>Marca destacada </p>
-        <input
-          type="checkbox"
-          checked={destacada}
-          onChange={(e) => setDestacada(e.target.checked)}
-        />
-      </label>
-    </div>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleImagenChange}
-      className="crear-filtrado-input"
-    />
-    {imagenMarca && (
-      <div className='div-img-marca-panel'>
-        <strong>Previsualización de la imagen:</strong>
-        <img
-          src={imagenMarca}
-          alt="Previsualización"
-          className='img-marca-panel'
-        />
-      </div>
-    )}
-    <button
-      onClick={crearMarca}
-      className="crear-filtrado-button"
-    >
-      {marca && productosMarca.length > 0 ? 'Actualizar Marca' : 'Crear Marca'}
-    </button>
-  </div>
-)}
+            <div className="crear-filtrado-form">
+              <input
+                type="text"
+                placeholder="Nombre de la marca"
+                value={marca}
+                onChange={(e) => setMarca(e.target.value)}
+                className="crear-filtrado-input"
+              />
 
-{tipoCreacion === 'etiqueta' && (
-  <div className="crear-filtrado-form">
-    <input
-      type="text"
-      placeholder="Nombre de la etiqueta"
-      value={etiqueta}
-      onChange={(e) => setEtiqueta(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    
-    <button
-      onClick={crearEtiqueta}
-      className="crear-filtrado-button"
-    >
-      {etiqueta && productosEtiqueta.length > 0 ? 'Actualizar Etiqueta' : 'Crear Etiqueta'}
-    </button>
-  </div>
-)}
+              <div className="crear-filtrado-checkbox">
+                <label>
+                  <p>Marca destacada </p>
+                  <input
+                    type="checkbox"
+                    checked={destacada}
+                    onChange={(e) => setDestacada(e.target.checked)}
+                  />
+                </label>
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImagenChange}
+                className="crear-filtrado-input"
+              />
+              {imagenMarca && (
+                <div className="div-img-marca-panel">
+                  <strong>Previsualización de la imagen:</strong>
+                  <img
+                    src={imagenMarca}
+                    alt="Previsualización"
+                    className="img-marca-panel"
+                  />
+                </div>
+              )}
+              <button onClick={crearMarca} className="crear-filtrado-button">
+                {marca && productosMarca.length > 0
+                  ? 'Actualizar Marca'
+                  : 'Crear Marca'}
+              </button>
+            </div>
+          )}
 
-{tipoCreacion === 'categoria' && (
-  <div className="crear-filtrado-form">
-    <input
-      type="text"
-      placeholder="Nombre de la categoría"
-      value={categoria}
-      onChange={(e) => setCategoria(e.target.value)}
-      className="crear-filtrado-input"
-    />
-    
-    <button
-      onClick={crearCategoria}
-      className="crear-filtrado-button"
-    >
-      {categoria && productosCategoria.length > 0 ? 'Actualizar Categoría' : 'Crear Categoría'}
-    </button>
-  </div>
-)}
+          {tipoCreacion === 'etiqueta' && (
+            <div className="crear-filtrado-form">
+              <input
+                type="text"
+                placeholder="Nombre de la etiqueta"
+                value={etiqueta}
+                onChange={(e) => setEtiqueta(e.target.value)}
+                className="crear-filtrado-input"
+              />
 
+              <button onClick={crearEtiqueta} className="crear-filtrado-button">
+                {etiqueta && productosEtiqueta.length > 0
+                  ? 'Actualizar Etiqueta'
+                  : 'Crear Etiqueta'}
+              </button>
+            </div>
+          )}
 
+          {tipoCreacion === 'categoria' && (
+            <div className="crear-filtrado-form">
+              <input
+                type="text"
+                placeholder="Nombre de la categoría"
+                value={categoria}
+                onChange={(e) => setCategoria(e.target.value)}
+                className="crear-filtrado-input"
+              />
 
+              <button
+                onClick={crearCategoria}
+                className="crear-filtrado-button"
+              >
+                {categoria && productosCategoria.length > 0
+                  ? 'Actualizar Categoría'
+                  : 'Crear Categoría'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
-          
     </div>
   );
 };

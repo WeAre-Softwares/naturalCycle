@@ -68,7 +68,12 @@ export class MarcasController {
   })
   async findByTerm(
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<MarcaInterface>[]> {
+  ): Promise<{
+    marcas: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     return this.marcasService.findAllByTerm(searchWithPaginationDto);
   }
 

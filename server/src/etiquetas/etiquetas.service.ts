@@ -108,7 +108,12 @@ export class EtiquetasService {
 
   async findAllByTerm(
     SearchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<EtiquetaInterface>[]> {
+  ): Promise<{
+    etiquetas: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -122,7 +127,7 @@ export class EtiquetasService {
         .take(limit)
         .skip(offset);
 
-      const etiquetas = await queryBuilder.getMany();
+      const [etiquetas, total] = await queryBuilder.getManyAndCount();
 
       // Aplanar los resultados
       const listaEtiquetasAplanadas = etiquetas.map((etiqueta) => ({
@@ -130,7 +135,12 @@ export class EtiquetasService {
         nombre: etiqueta.nombre,
       }));
 
-      return listaEtiquetasAplanadas;
+      return {
+        etiquetas: listaEtiquetasAplanadas,
+        total,
+        limit,
+        offset,
+      };
     } catch (error) {
       this.logger.error(error);
       console.log(error);
