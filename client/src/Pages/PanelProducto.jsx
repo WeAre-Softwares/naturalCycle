@@ -52,7 +52,13 @@ export const PanelProducto = () => {
           </Link>
 
           {loading ? (
-            <p>Cargando productos...</p>
+            <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </section>
           ) : error ? (
             <p>Ocurrió un error al cargar los productos.</p>
           ) : productsData && productsData.length > 0 ? (

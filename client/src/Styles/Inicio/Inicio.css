@@ -100,16 +100,22 @@ color: white;
 border-radius: 10px;
 }
 
+.fa-exclamation-circle{
+  margin-right: 5px;
+  color: orange;
+  font-size: 24px;
+}
+
 .refrigerados {
-  background-image: url('https://th.bing.com/th/id/R.cdeabf2ea272f48da46f25b93145fd06?rik=Jl9y%2fNUHgEIYOA&pid=ImgRaw&r=0');
+  background-image: url('/imagenes/Refrigerados-img-inicio.jpg');
 }
 
 .alacena {
-  background-image: url('https://th.bing.com/th/id/R.607ec18d542361224fe083420e1fdf1d?rik=tuezQtYWb9xPeg&pid=ImgRaw&r=0');
+  background-image: url('/imagenes/Alacena-img-inicio.jpg');
 }
 
 .congelados {
-  background-image: url('https://th.bing.com/th/id/OIP.q1q_5gmYcaPIdfrmOYS7TQHaD4?w=309&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7');
+  background-image: url('/imagenes/Congelados-img-inicio.jpg');
 }
 
 .div-banner-general-slide{
@@ -249,7 +255,6 @@ border-radius: 10px;
   justify-content: center;
   width: 100%;
   gap: 20px;
-  padding: 20px;
 }
 
 .card-producto{
@@ -363,17 +368,16 @@ text-transform: uppercase;
 
 /*Sección marcas destacadas*/
 
-
-
-
-
-
-
-
+.h2-marcas-destacadas{
+  padding: 20px;
+}
 
 .seccion-marcas-destacadas {
-  padding: 20px;
   width: 100%;
+}
+
+.no-marcas-destacadas{
+  margin: 0 auto;
 }
 
 .marcas-destacadas-wrapper {
@@ -382,9 +386,13 @@ text-transform: uppercase;
 }
 
 .marcas-destacadas {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 20px; /* Espacio entre las cards */
+  display: flex; 
+  overflow-x: auto;
+  scrollbar-width: thin; 
+  width: 100%;
+  gap: 20px;
+  padding: 20px;
+  -ms-overflow-style: -ms-autohiding-scrollbar; 
 }
 
 .card-marca-destacadas {
@@ -593,4 +601,57 @@ text-transform: uppercase;
 .instagram-inicio-about {
   color: #ccc;
   padding-top: 5px;
+}
+
+.dots-container-inicio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.dot-inicio {
+  height: 10px;
+  width: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #b3d4fc;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot-inicio:last-child {
+  margin-right: 0;
+}
+
+.dot-inicio:nth-child(1) {
+  animation-delay: -0.3s;
+}
+
+.dot-inicio:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+.dot-inicio:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    background-color: #b3d4fc;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #6793fb;
+    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    background-color: #b3d4fc;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
 }

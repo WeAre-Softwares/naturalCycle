@@ -107,7 +107,13 @@ export const PanelFiltrados = () => {
 
           {/* Renderizado de lista de elementos */}
           {isLoading ? (
-            <p>Cargando...</p>
+            <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </section>
           ) : (
             <>
               <h3>

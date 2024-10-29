@@ -149,7 +149,13 @@ export const EditarProducto = () => {
     }
   };
 
-  if (loading || productLoading) return <p>Cargando...</p>;
+  if (loading || productLoading) return <section class="dots-container">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</section>;
   if (error || productError) return <p>Error al cargar los datos</p>;
 
   return (

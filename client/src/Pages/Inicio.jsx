@@ -45,14 +45,25 @@ export const Inicio = () => {
 
       {/* Productos Destacados */}
       {/* Mostrar mensaje de carga */}
-      {loadingProductosDestacados && <p>Cargando productos ...</p>}
+      {loadingProductosDestacados && <section class="dots-container-inicio">
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+          </section>}
 
+
+          <ProductosDestacadosGrid productos={productos} />
+          {/* End Productos Destacados */}
+       
       {/* Mostrar mensaje de error */}
       {errorProductosDestacados && (
-        <p>Hubo un error al cargar los productos.</p>
+        <div className="no-productos">
+        <i className="fas fa-exclamation-circle"></i><p>Hubo un error al cargar los productos.</p>
+        </div>
       )}
-      <ProductosDestacadosGrid productos={productos} />
-      {/* End Productos Destacados */}
+      
 
       {/* Pasos Compras */}
       <PasosCompra />
@@ -60,11 +71,17 @@ export const Inicio = () => {
 
       {/* Marcas Destacadas */}
       {/* Mostrar mensaje de carga */}
-      {loadingMarcasDestacadas && <p>Cargando marcas ...</p>}
+      {loadingMarcasDestacadas && <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </section>}
 
       {/* Mostrar mensaje de error */}
-      {errorMarcasDestacadas && <p>Hubo un error al cargar las marcas.</p>}
       <MarcasDestacadasGrid marcas={marcas} />
+      {errorMarcasDestacadas && <div className="no-productos"><i className="fas fa-exclamation-circle"></i><p>Hubo un error al cargar las marcas.</p></div>}
       {/* End Marcas Destacadas */}
 
       {/* Redes Social */}

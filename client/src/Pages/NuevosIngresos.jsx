@@ -4,6 +4,7 @@ import { IntroNuevosProductos } from '../Components/nuevos-ingresos-ui/IntroNuev
 import { PaginationControls } from '../Components/PaginationControls';
 import { ProductosNuevosIngresosGrid } from '../Components/nuevos-ingresos-ui/ProductosNuevosIngresosGrid';
 import { useGetAllNewArrivalProducts } from '../hooks/hooks-product/useGetAllNewArrivalProducts';
+import { NewLogo } from '../Components/New-logo';
 
 export const NuevoIngreso = () => {
   const [page, setPage] = useState(1);
@@ -27,16 +28,24 @@ export const NuevoIngreso = () => {
 
   return (
     <div className="div-general-nuevos-ingresos">
+      <NewLogo></NewLogo>
+
       <IntroNuevosProductos />
 
       {/* Mostrar mensaje de carga */}
       {loading && (
-        <p className="loading-message">Cargando productos nuevos...</p>
+        <section class="dots-container-inicio">
+        <div class="dot-inicio"></div>
+        <div class="dot-inicio"></div>
+        <div class="dot-inicio"></div>
+        <div class="dot-inicio"></div>
+        <div class="dot-inicio"></div>
+      </section>
       )}
 
       {/* Mostrar mensaje de error */}
       {error && (
-        <p className="error-message">Hubo un error al cargar los productos.</p>
+        <div className="no-productos"><i className="fas fa-exclamation-circle"></i><p>Hubo un error al cargar los productos.</p></div>
       )}
 
       {/* Mostrar mensaje de "sin resultados" */}

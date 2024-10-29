@@ -29,7 +29,13 @@ export const ProductDetails = () => {
         </Link>
       </div>
 
-      {loading && <p>Cargando producto...</p>}
+      {loading && <section class="dots-container">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</section>}
       {error && <p>Hubo un error al cargar el producto.</p>}
       {!loading && !error && !product && <p>Producto no encontrado</p>}
 

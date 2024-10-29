@@ -27,9 +27,15 @@ export const Promociones = () => {
       <PromocionesStatic />
 
       {loading ? (
-        <p>Cargando productos...</p>
+        <section class="dots-container-inicio">
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+      </section>
       ) : error ? (
-        <p>{error}</p>
+        <div className="no-productos-promo"><p><i className="fas fa-exclamation-circle"></i>{error}</p></div>
       ) : (
         <>
           {/* TODO: Cambiar diseño precio tachado antes y actual con descuento */}

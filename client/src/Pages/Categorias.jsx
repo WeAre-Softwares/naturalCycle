@@ -60,7 +60,13 @@ export const Categorias = () => {
       />
       <div className="container-productos-categorias">
         {loading ? (
-          <p>Cargando productos...</p>
+          <section class="dots-container-inicio">
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+        </section>
         ) : error ? (
           <p>{error}</p>
         ) : products.length > 0 ? (

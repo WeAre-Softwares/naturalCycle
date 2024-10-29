@@ -8,12 +8,16 @@ export const ProductosDestacadosGrid = ({ productos }) => {
         <h2 className="titulo-pre-banner">Productos destacados</h2>
       </div>
       <div className="productos-destacados">
-        {productos.map((producto) => (
-          <ProductosDestacadosItem
-            key={producto.producto_id}
-            producto={producto}
-          />
-        ))}
+        {productos.length > 0 ? (
+          productos.map((producto) => (
+            <ProductosDestacadosItem
+              key={producto.producto_id}
+              producto={producto}
+            />
+          ))
+        ) : (
+          <p>No hay productos destacados.</p>
+        )}
       </div>
     </div>
   );
