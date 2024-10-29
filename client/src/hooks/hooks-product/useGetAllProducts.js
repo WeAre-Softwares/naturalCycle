@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllProductsService } from '../services/products-services/getAll-products';
+import { getAllProductsService } from '../../services/products-services/getAll-products';
 
 export function useGetAllProducts(limit, offset) {
   const [productsData, setProductsData] = useState(null);

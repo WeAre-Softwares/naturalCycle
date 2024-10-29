@@ -6,7 +6,7 @@ import {
   Pagination,
   PanelProductItem,
 } from '../Components/panel-productos';
-import { useProductSearch } from '../hooks/usePanelProductSearch';
+import { useProductSearch } from '../hooks/hooks-product/usePanelProductSearch';
 
 // Límite de productos para centralizar su valor
 const LIMIT = 3;

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UpdateProductoSchema } from '../schemas/';
-import { updateProductService } from '../services/products-services/update-product';
-import { useProductoFormulario } from '../hooks/useProductoFormulario';
-import { useGetProductById } from '../hooks/useGetProductById';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import { UpdateProductoSchema } from '../schemas/';
+import { updateProductService } from '../services/products-services/update-product';
+import { useProductoFormulario } from '../hooks/hooks-product/useProductoFormulario';
+import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useAuthStore from '../store/use-auth-store';
 
 export const EditarProducto = () => {

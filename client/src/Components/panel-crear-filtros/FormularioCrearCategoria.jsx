@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createCategorySchema } from '../../schemas/create-category-schema';
-import { useCreateCategory } from '../../hooks/useCreateCategory';
+import { useCreateCategory } from '../../hooks/hooks-category/useCreateCategory';
 
 export const FormularioCrearCategoria = () => {
   const { createCategory, loading } = useCreateCategory();

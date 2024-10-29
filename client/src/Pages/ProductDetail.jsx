@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
-import { useGetProductById } from '../hooks/useGetProductById';
+import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useCartStore from '../store/use-cart-store';
 
 export const ProductDetails = () => {

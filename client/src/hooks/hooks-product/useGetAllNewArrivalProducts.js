@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getAllProductsPromotionalService } from '../services/products-services/getAll-productsPromotional';
+import { getAllNewArrivalProductsService } from '../../services/products-services/getAll-newArrivalProducts';
 
-export function useGetAllProductsPromotional(limit = 10, page = 1) {
+export function useGetAllNewArrivalProducts(limit = 10, page = 1) {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,15 +14,16 @@ export function useGetAllProductsPromotional(limit = 10, page = 1) {
     const fetchData = async () => {
       try {
         const offset = (page - 1) * limit;
-        const response = await getAllProductsPromotionalService(limit, offset);
+        const response = await getAllNewArrivalProductsService(limit, offset);
 
         if (isMounted) {
+          // console.log(response.productos);
           setProductos(response.productos || []);
           setTotal(response.total || 0); // Total de productos, necesario para calcular páginas
         }
       } catch (error) {
         console.log(error);
-        setError('Error al obtener todos los productos con promociones');
+        setError('Error al obtener todos los nuevos ingresos de productos');
       } finally {
         setLoading(false);
       }

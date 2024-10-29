@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getAllCategoriesService } from '../services/categoria-services/getAll-categories';
-import { getAllEtiquetasService } from '../services/etiquetas-service/getAll-etiquetas';
-import { getAllMarcasService } from '../services/marca-services/getAll-marcas';
-import useAuthStore from '../store/use-auth-store';
+import { getAllCategoriesService } from '../../services/categoria-services/getAll-categories';
+import { getAllEtiquetasService } from '../../services/etiquetas-service/getAll-etiquetas';
+import { getAllMarcasService } from '../../services/marca-services/getAll-marcas';
+import useAuthStore from '../../store/use-auth-store';
 
 export function useProductoFormulario() {
   const [marcas, setMarcas] = useState([]);

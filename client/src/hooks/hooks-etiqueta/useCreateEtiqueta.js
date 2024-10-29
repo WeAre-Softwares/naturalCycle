@@ -1,30 +1,30 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { createBrandService } from '../services/marca-services/create-brand';
-import useAuthStore from '../store/use-auth-store';
+import { createEtiquetaService } from '../../services/etiquetas-service/create-etiqueta';
+import useAuthStore from '../../store/use-auth-store';
 
-export const useCreateBrand = () => {
+export const useCreateEtiqueta = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Extrear el JWT del localStorage usando el estado global
   const { token } = useAuthStore();
 
-  const createBrand = async (formData) => {
+  const createEtiqueta = async (data) => {
     setLoading(true);
     try {
-      await createBrandService(token, formData);
-      toast.success('Marca creada con éxito!');
+      await createEtiquetaService(token, data);
+      toast.success('Categoría creada con éxito!');
       setTimeout(() => {
         navigate('/panel-principal');
       }, 3000);
     } catch (error) {
-      toast.error('Error al crear la marca');
+      toast.error('Error al crear la categoría');
     } finally {
       setLoading(false);
     }
   };
 
-  return { createBrand, loading };
+  return { createEtiqueta, loading };
 };

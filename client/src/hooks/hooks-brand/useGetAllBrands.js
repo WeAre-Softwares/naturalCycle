@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getAllProductsByCategoryService } from '../services/categoria-services/getAll-productsByCategory';
+import { getAllMarcasService } from '../../services/marca-services/getAll-marcas';
 
-export function useGetAllProductsByCategory(
-  categoriaId,
-  limit = 10,
-  offset = 0,
-) {
-  const [productos, setProductos] = useState([]);
+export function useGetAllBrands(limit = 10, offset = 0) {
+  const [marcas, setMarcas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,19 +12,15 @@ export function useGetAllProductsByCategory(
 
     const fetchData = async () => {
       try {
-        const response = await getAllProductsByCategoryService(
-          categoriaId,
-          limit,
-          offset,
-        );
-
+        const response = await getAllMarcasService(limit, offset);
         if (isMounted) {
           // Solo actualizamos si el componente está montado
-          setProductos(response.productos || []);
+          // console.log(response);
+          setMarcas(response.marcas);
         }
       } catch (error) {
         console.log(error);
-        setError('Error al obtener todos los productos por categoria');
+        setError('Error al obtener todos los productos');
       } finally {
         setLoading(false);
       }
@@ -41,5 +33,5 @@ export function useGetAllProductsByCategory(
     };
   }, [limit, offset]); // Dependencias
 
-  return { productos, loading, error };
+  return { marcas, loading, error };
 }

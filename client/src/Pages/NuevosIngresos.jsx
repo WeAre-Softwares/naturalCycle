@@ -3,7 +3,7 @@ import '../Styles/New/New.css';
 import { IntroNuevosProductos } from '../Components/nuevos-ingresos-ui/IntroNuevosProductos';
 import { PaginationControls } from '../Components/PaginationControls';
 import { ProductosNuevosIngresosGrid } from '../Components/nuevos-ingresos-ui/ProductosNuevosIngresosGrid';
-import { useGetAllNewArrivalProducts } from '../hooks/useGetAllNewArrivalProducts';
+import { useGetAllNewArrivalProducts } from '../hooks/hooks-product/useGetAllNewArrivalProducts';
 
 export const NuevoIngreso = () => {
   const [page, setPage] = useState(1);

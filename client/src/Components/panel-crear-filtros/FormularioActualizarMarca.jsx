@@ -5,8 +5,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateBrandSchema } from '../../schemas/update-brand-schema';
-import { useUpdateBrand } from '../../hooks/useUpdateBrand';
-import { useGetBrandById } from '../../hooks/useGetBrandById';
+import { useUpdateBrand } from '../../hooks/hooks-brand/useUpdateBrand';
+import { useGetBrandById } from '../../hooks/hooks-brand/useGetBrandById';
 
 export const FormularioActualizarMarca = () => {
   const { marca_id } = useParams();
@@ -28,13 +28,11 @@ export const FormularioActualizarMarca = () => {
       setValue('marca_destacada', marca.marca_destacada);
     }
   }, [marca, setValue]);
-  //TODO: FIXME
+
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append('nombre', data.nombre);
-    if (data.marca_destacada) {
-      formData.append('marca_destacada', 'true'); // Envíalo solo si está marcado
-    }
+    formData.append('marca_destacada', data.marca_destacada);
     if (data.imagen?.[0]) {
       formData.append('imagen', data.imagen[0]);
     }

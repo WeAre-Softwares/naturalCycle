@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllCategoriesService } from '../services/categoria-services/getAll-categories';
+import { getAllCategoriesService } from '../../services/categoria-services/getAll-categories';
 
 export function useGetAllCategories(limit = 10, offset = 0) {
   const [categorias, setCategorias] = useState([]);

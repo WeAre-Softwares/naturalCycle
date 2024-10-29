@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getEtiquetaByIdService } from '../services/etiquetas-service/getById-etiqueta';
+import { getEtiquetaByIdService } from '../../services/etiquetas-service/getById-etiqueta';
 
 export function useGetEtiquetaById(etiqueta_id) {
   const [etiqueta, setEtiqueta] = useState(null);

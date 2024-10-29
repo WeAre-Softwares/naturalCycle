@@ -2,12 +2,11 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const updateBrandService = async (token, id, formData) => {
+export const deactivateBrandService = async (marca_id, token) => {
   try {
-    const response = await axios.patch(`${API_URL}/marcas/${id}`, formData, {
+    const response = await axios.delete(`${API_URL}/marcas/${marca_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
       },
     });
     // console.log(response.data);

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createBrandSchema } from '../../schemas/create-brand-schema';
-import { useCreateBrand } from '../../hooks/useCreatedBrand';
+import { useCreateBrand } from '../../hooks/hooks-brand/useCreatedBrand';
 
 export const FormularioCrearMarca = () => {
   const { createBrand, loading } = useCreateBrand();

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { getAllProductsService } from '../services/products-services/getAll-products';
-import { searchProductsService } from '../services/products-services/search-products';
-import { getAllProductsByCategoryService } from '../services/categoria-services/getAll-productsByCategory';
+import { getAllProductsService } from '../../services/products-services/getAll-products';
+import { searchProductsService } from '../../services/products-services/search-products';
+import { getAllProductsByBrandService } from '../../services/marca-services/getAll-productsByBrand';
 
-export function useProductSearchAndPaginationCategories(
+export function useProductSearchAndPaginationBrand(
   term = '',
-  categoriaId = '',
+  marcaId = '',
   limit = 9,
 ) {
   const [page, setPage] = useState(0);
@@ -22,7 +22,7 @@ export function useProductSearchAndPaginationCategories(
   // Reinicia la paginación al cambiar la búsqueda o la categoría
   useEffect(() => {
     setPage(0);
-  }, [term, categoriaId]);
+  }, [term, marcaId]);
 
   // Determina y ejecuta la lógica de búsqueda
   useEffect(() => {
@@ -33,13 +33,9 @@ export function useProductSearchAndPaginationCategories(
         if (term) {
           // Caso de búsqueda
           response = await searchProductsService(term, limit, offset);
-        } else if (categoriaId) {
-          // Caso de filtrado por categoría
-          response = await getAllProductsByCategoryService(
-            categoriaId,
-            limit,
-            offset,
-          );
+        } else if (marcaId) {
+          // Caso de filtrado por marca
+          response = await getAllProductsByBrandService(marcaId, limit, offset);
         } else {
           // Caso de productos generales
           response = await getAllProductsService(limit, offset);
@@ -53,7 +49,7 @@ export function useProductSearchAndPaginationCategories(
     };
 
     fetchData();
-  }, [term, categoriaId, limit, offset]);
+  }, [term, marcaId, limit, offset]);
 
   const handlePageChange = (newPage) => setPage(newPage);
 

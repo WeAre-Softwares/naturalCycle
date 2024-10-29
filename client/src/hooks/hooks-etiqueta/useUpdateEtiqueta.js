@@ -1,30 +1,30 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { createEtiquetaService } from '../services/etiquetas-service/create-etiqueta';
-import useAuthStore from '../store/use-auth-store';
+import useAuthStore from '../../store/use-auth-store';
+import { updateEtiquetaService } from '../../services/etiquetas-service/update-etiqueta';
 
-export const useCreateEtiqueta = () => {
+export const useUpdateEtiqueta = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Extrear el JWT del localStorage usando el estado global
   const { token } = useAuthStore();
 
-  const createEtiqueta = async (data) => {
+  const UpdateEtiqueta = async (etiqueta_id, data) => {
     setLoading(true);
     try {
-      await createEtiquetaService(token, data);
-      toast.success('Categoría creada con éxito!');
+      await updateEtiquetaService(token, etiqueta_id, data);
+      toast.success('Etiqueta actualizada con éxito!');
       setTimeout(() => {
         navigate('/panel-principal');
       }, 3000);
     } catch (error) {
-      toast.error('Error al crear la categoría');
+      toast.error('Error al actualizar la etiqueta');
     } finally {
       setLoading(false);
     }
   };
 
-  return { createEtiqueta, loading };
+  return { UpdateEtiqueta, loading };
 };

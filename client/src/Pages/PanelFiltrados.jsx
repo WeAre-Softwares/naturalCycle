@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useFiltradoPaginado } from '../hooks/useFiltradoPaginado';
 import { Pagination } from '../Components/panel-productos/Pagination';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import { useDeactivateCategory } from '../hooks/hooks-category/useDeactivateCategory';
+import { useDeactivateEtiqueta } from '../hooks/hooks-etiqueta/useDeactivateEtiqueta';
+import { useDeactivateBrand } from '../hooks/hooks-brand/useDeactivateBrand';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Límite de productos para centralizar su valor
 const LIMIT = 3;
@@ -25,6 +30,11 @@ export const PanelFiltrados = () => {
   const handleTipoCreacion = (e) => setTipoCreacion(e.target.value);
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  // Custom hooks para desactivar
+  const { deactivateCategory } = useDeactivateCategory();
+  const { deactivateBrand } = useDeactivateBrand();
+  const { deactivateEtiqueta } = useDeactivateEtiqueta();
+
   const handleRedirect = () => {
     if (tipoCreacion === 'marca') navigate('/crear-marca');
     else if (tipoCreacion === 'categoria') navigate('/crear-categoria');
@@ -40,8 +50,28 @@ export const PanelFiltrados = () => {
       navigate(`/actualizar-etiqueta/${item.etiqueta_id}`);
   };
 
+  const handleDeactivate = async (item) => {
+    let success = false;
+    if (tipoCreacion === 'marca') {
+      success = await deactivateBrand(item.marca_id);
+    } else if (tipoCreacion === 'categoria') {
+      success = await deactivateCategory(item.categoria_id);
+    } else if (tipoCreacion === 'etiqueta') {
+      success = await deactivateEtiqueta(item.etiqueta_id);
+    }
+
+    if (success) {
+      setTimeout(() => {
+        // navigate('/panel-principal');
+        // Resetear a la primera página
+        goToPage(1);
+      }, 1500);
+    }
+  };
+
   return (
     <div className="div-gral-prod-creados">
+      <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
@@ -106,9 +136,7 @@ export const PanelFiltrados = () => {
                         </button>
                         <button
                           className="crear-filtrado-button"
-                          onClick={() =>
-                            console.log(`Eliminar ${tipoCreacion}`, item)
-                          }
+                          onClick={() => handleDeactivate(item)}
                         >
                           Eliminar
                         </button>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGetAllProducts } from './useGetAllProducts';
 import { useSearchProducts } from './useSearchProducts';
-import { useDebouncedValue } from './useDebouncedValue';
+import { useDebouncedValue } from '../useDebouncedValue';
 
 export const useProductSearch = (limit) => {
   const [offset, setOffset] = useState(0);

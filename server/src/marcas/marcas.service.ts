@@ -215,7 +215,7 @@ export class MarcasService {
   }
 
   async update(
-    marca_id: string,
+    id: string,
     updateMarcaDto: UpdateMarcaDto,
     file: Express.Multer.File | undefined,
   ): Promise<MarcaInterface> {
@@ -228,7 +228,7 @@ export class MarcasService {
     let imageUpload: CloudinaryResponse | null = null;
 
     try {
-      const marca = await this.findOne(marca_id);
+      const marca = await this.findOne(id);
 
       // Guardar el public_id anterior antes de sobreescribirlo
       const previousPublicId = marca.public_id;
@@ -283,7 +283,7 @@ export class MarcasService {
 
       this.logger.error(error);
       throw new InternalServerErrorException(
-        `Error al actualizar la marca con ID ${marca_id}.`,
+        `Error al actualizar la marca con ID ${id}.`,
         error,
       );
     } finally {

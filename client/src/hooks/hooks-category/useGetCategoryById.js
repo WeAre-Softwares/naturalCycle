@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCategoryByIdService } from '../services/categoria-services/getById-category';
+import { getCategoryByIdService } from '../../services/categoria-services/getById-category';
 
 export function useGetCategoryById(categoria_id) {
   const [categoria, setCategoria] = useState(null);

@@ -5,8 +5,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createEtiquetaSchema } from '../../schemas/create-etiqueta-schema';
-import { useUpdateEtiqueta } from '../../hooks/useUpdateEtiqueta';
-import { useGetEtiquetaById } from '../../hooks/useGetEtiquetaById';
+import { useUpdateEtiqueta } from '../../hooks/hooks-etiqueta/useUpdateEtiqueta';
+import { useGetEtiquetaById } from '../../hooks/hooks-etiqueta/useGetEtiquetaById';
 
 export const FormularioActualizarEtiqueta = () => {
   const { etiqueta_id } = useParams();

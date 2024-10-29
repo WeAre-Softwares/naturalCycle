@@ -3,7 +3,7 @@ import '../Styles/Promociones/Promociones.css';
 import { PromocionesStatic } from '../Components/promociones-ui/PromocionesStatic';
 import { CarruselProductosPromociones } from '../Components/promociones-ui/CarruselProductosPromociones';
 import { PaginationControls } from '../Components/PaginationControls';
-import { useGetAllProductsPromotional } from '../hooks/useGetAllProductsPromotional';
+import { useGetAllProductsPromotional } from '../hooks/hooks-product/useGetAllProductsPromotional';
 
 export const Promociones = () => {
   const [page, setPage] = useState(1);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMarcaByIdService } from '../services/marca-services/getById-marca';
+import { getMarcaByIdService } from '../../services/marca-services/getById-marca';
 
 export function useGetBrandById(marca_id) {
   const [marca, setMarca] = useState(null);

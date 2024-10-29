@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { searchProductsService } from '../services/products-services/search-products';
+import { searchProductsService } from '../../services/products-services/search-products';
 
-export function useSearchCategories(term, limit, offset) {
-  const [categoriesData, setCategoriesData] = useState(null);
+export function useSearchProducts(term, limit, offset) {
+  const [productsData, setProductsData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,9 +12,9 @@ export function useSearchCategories(term, limit, offset) {
       try {
         const response = await searchProductsService(term, limit, offset);
         // console.log('Search results:', response);
-        setCategoriesData(response);
+        setProductsData(response);
       } catch (error) {
-        setError('Error al buscar categorias');
+        setError('Error al buscar productos');
       } finally {
         setLoading(false);
       }
@@ -25,5 +25,5 @@ export function useSearchCategories(term, limit, offset) {
     }
   }, [term, limit, offset]); // Dependencias cuando term, limit o offset cambien
 
-  return { categoriesData, loading, error };
+  return { productsData, loading, error };
 }

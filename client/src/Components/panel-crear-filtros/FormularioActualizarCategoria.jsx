@@ -5,8 +5,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createCategorySchema } from '../../schemas/create-category-schema';
-import { useUpdateCategory } from '../../hooks/useUpdateCategory';
-import { useGetCategoryById } from '../../hooks/useGetCategoryById';
+import { useUpdateCategory } from '../../hooks/hooks-category/useUpdateCategory';
+import { useGetCategoryById } from '../../hooks/hooks-category/useGetCategoryById';
 
 export const FormularioActualizarCategoria = () => {
   const { categoria_id } = useParams();

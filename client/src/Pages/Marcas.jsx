@@ -7,8 +7,8 @@ import {
 } from '../Components/categorias-ui';
 import { Pagination } from '../Components/panel-productos/Pagination';
 import { MarcasFiltro } from '../Components/marcas-ui/MarcasFiltro';
-import { useProductSearchAndPaginationBrand } from '../hooks/useProductSearchAndPaginationBrand';
-import { useGetAllMarcas } from '../hooks/useGetAllMarcas';
+import { useProductSearchAndPaginationBrand } from '../hooks/hooks-brand/useProductSearchAndPaginationBrand';
+import { useGetAllBrands } from '../hooks/hooks-brand/useGetAllBrands';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
 // Límite de productos para centralizar su valor
@@ -26,7 +26,7 @@ export const Marcas = () => {
     marcas,
     loading: loadingMarcas,
     error: errorMarcas,
-  } = useGetAllMarcas();
+  } = useGetAllBrands();
 
   const { products, loading, error, handlePageChange, page, total } =
     useProductSearchAndPaginationBrand(

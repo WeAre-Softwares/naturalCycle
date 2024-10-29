@@ -10,8 +10,8 @@ import {
   RedesSocialesHome,
 } from '../Components/home-ui';
 // import { marcasDestacadasMockData, productosDestacadosMockData } from '../mock';
-import { useGetAllMarcasDestacadas } from '../hooks/useGetAllMarcasDestacadas';
-import { useGetAllProductosDestacados } from '../hooks/useGetAllProductosDestacados';
+import { useGetAllMarcasDestacadas } from '../hooks/hooks-brand/useGetAllMarcasDestacadas';
+import { useGetAllProductosDestacados } from '../hooks/hooks-product/useGetAllProductosDestacados';
 
 export const Inicio = () => {
   const limitMarcas = 12;

@@ -7,8 +7,8 @@ import {
   ProductCard,
 } from '../Components/categorias-ui';
 import { Pagination } from '../Components/panel-productos/Pagination';
-import { useProductSearchAndPaginationCategories } from '../hooks/useProductSearchAndPaginationCategories';
-import { useGetAllCategories } from '../hooks/useGetAllCategories';
+import { useProductSearchAndPaginationCategories } from '../hooks/hooks-category/useProductSearchAndPaginationCategories';
+import { useGetAllCategories } from '../hooks/hooks-category/useGetAllCategories';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
 // Límite de productos para centralizar su valor

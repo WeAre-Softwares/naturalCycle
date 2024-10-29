@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getAllProductosDestacadosService } from '../services/products-services/getAll-productosDestacados';
+import { getAllMarcasDestacadasService } from '../../services/marca-services/getAll-marcasDestacadas';
 
-export function useGetAllProductosDestacados(limit = 10, offset = 0) {
-  const [productos, setProductos] = useState([]);
+export function useGetAllMarcasDestacadas(limit = 10, offset = 0) {
+  const [marcas, setMarcas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,15 +12,14 @@ export function useGetAllProductosDestacados(limit = 10, offset = 0) {
 
     const fetchData = async () => {
       try {
-        const response = await getAllProductosDestacadosService(limit, offset);
-
+        const response = await getAllMarcasDestacadasService(limit, offset);
         if (isMounted) {
           // Solo actualizamos si el componente está montado
-          setProductos(response.productos || []);
+          setMarcas(response.marcas || []);
         }
       } catch (error) {
         console.log(error);
-        setError('Error al obtener todos los productos destacados');
+        setError('Error al obtener todos los productos');
       } finally {
         setLoading(false);
       }
@@ -33,5 +32,5 @@ export function useGetAllProductosDestacados(limit = 10, offset = 0) {
     };
   }, [limit, offset]); // Dependencias
 
-  return { productos, loading, error };
+  return { marcas, loading, error };
 }
