@@ -4,7 +4,6 @@ export { AreaUsuarios } from './AreaUsuarios';
 export { CardInfoUsuario } from './CardInfoUsuario';
 export { Categorias } from './Categorias';
 export { Checkout } from './Checkout';
-export { CrearFiltrado } from './CrearFiltrado';
 export { CrearProducto } from './CrearProducto';
 export { EditarProducto } from './EditarProducto';
 export { Footer } from './Footer';

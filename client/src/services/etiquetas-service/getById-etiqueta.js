@@ -2,9 +2,9 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const getEtiquetaByIdService = async (id) => {
+export const getEtiquetaByIdService = async (etiqueta_id) => {
   try {
-    const response = await axios.get(`${API_URL}/etiquetas/${id}`);
+    const response = await axios.get(`${API_URL}/etiquetas/${etiqueta_id}`);
     // console.log(response.data);
 
     return response.data;

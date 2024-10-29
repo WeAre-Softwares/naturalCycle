@@ -41,7 +41,7 @@ export class MarcasController {
     description: 'Datos para crear una nueva marca junto con la imagen',
     type: CreateMarcaDto,
   })
-  @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
+  @UseInterceptors(FileInterceptor('imagen')) // Se acepta solo una imagen
   create(
     @Body() createMarcaDto: CreateMarcaDto,
     @UploadedFile() file: Express.Multer.File, // Manejo de archivo de imagen
@@ -109,7 +109,7 @@ export class MarcasController {
     description: 'Datos para actualizar una marca junto con la imagen',
     type: CreateMarcaDto,
   })
-  @UseInterceptors(FileInterceptor('image')) // Se acepta solo una imagen
+  @UseInterceptors(FileInterceptor('imagen')) // Se acepta solo una imagen
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMarcaDto: UpdateMarcaDto,

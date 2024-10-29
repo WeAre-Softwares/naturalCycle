@@ -214,11 +214,10 @@ export class MarcasService {
     }
   }
 
-  // FIXME:
   async update(
     marca_id: string,
     updateMarcaDto: UpdateMarcaDto,
-    file: Express.Multer.File,
+    file: Express.Multer.File | undefined,
   ): Promise<MarcaInterface> {
     const { ...toUpdate } = updateMarcaDto;
 
@@ -243,33 +242,30 @@ export class MarcasService {
           file,
           CLOUDINARY_CARPETAS.MARCAS,
         );
-      }
 
-      // Verificar que la imagen se subió correctamente
-      if ('secure_url' in imageUpload && 'public_id' in imageUpload) {
-        // Asignar la URL y publicId de la imagen
-        marca.imagen_url = imageUpload.secure_url;
-        marca.public_id = imageUpload.public_id;
-      } else {
-        // Si falla la subida de la imagen nueva, lanzar error
-        throw new Error(
-          'Error al subir la imagen a Cloudinary: ' +
-            JSON.stringify(imageUpload),
-        );
+        // Verificar que la imagen se subió correctamente
+        if ('secure_url' in imageUpload && 'public_id' in imageUpload) {
+          // Asignar la URL y publicId de la imagen
+          marca.imagen_url = imageUpload.secure_url;
+          marca.public_id = imageUpload.public_id;
+        } else {
+          throw new Error(
+            'Error al subir la imagen a Cloudinary: ' +
+              JSON.stringify(imageUpload),
+          );
+        }
       }
 
       // Guardar la marca con las actualizaciones y la URL de la imagen si aplica
       await queryRunner.manager.save(marca);
 
-      // Confirmar la transacción si todo salió bien
       await queryRunner.commitTransaction();
 
-      // Intentar eliminar la imagen anterior fuera de la transacción
-      if (previousPublicId && previousPublicId !== marca.public_id) {
+      // Intentar eliminar la imagen anterior solo si se subió una nueva y es diferente
+      if (file && previousPublicId && previousPublicId !== marca.public_id) {
         try {
           await this.cloudinaryService.deleteImage(previousPublicId);
         } catch (error) {
-          // Manejar el error de eliminación de la imagen anterior sin detener la operación
           this.logger.error(
             `Error al eliminar la imagen anterior con public_id ${previousPublicId}: ${error.message}`,
           );

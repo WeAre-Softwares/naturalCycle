@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFiltradoPaginado } from '../hooks/useFiltradoPaginado';
 import { Pagination } from '../Components/panel-productos/Pagination';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
@@ -9,6 +9,7 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 const LIMIT = 3;
 
 export const PanelFiltrados = () => {
+  const navigate = useNavigate();
   const [tipoCreacion, setTipoCreacion] = useState('marca');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -23,6 +24,21 @@ export const PanelFiltrados = () => {
 
   const handleTipoCreacion = (e) => setTipoCreacion(e.target.value);
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  const handleRedirect = () => {
+    if (tipoCreacion === 'marca') navigate('/crear-marca');
+    else if (tipoCreacion === 'categoria') navigate('/crear-categoria');
+    else if (tipoCreacion === 'etiqueta') navigate('/crear-etiqueta');
+  };
+
+  const handleEdit = (item) => {
+    if (tipoCreacion === 'marca')
+      navigate(`/actualizar-marca/${item.marca_id}`);
+    else if (tipoCreacion === 'categoria')
+      navigate(`/actualizar-categoria/${item.categoria_id}`);
+    else if (tipoCreacion === 'etiqueta')
+      navigate(`/actualizar-etiqueta/${item.etiqueta_id}`);
+  };
 
   return (
     <div className="div-gral-prod-creados">
@@ -51,11 +67,13 @@ export const PanelFiltrados = () => {
             <option value="etiqueta">Etiqueta</option>
           </select>
 
-          <Link to="/crear-filtrado">
-            <button className="button-abrir-crear-producto">
-              <i className="fas fa-plus"></i>
-            </button>
-          </Link>
+          {/* Redirije al formulario para crear el registro de la entidad seleccionada */}
+          <button
+            onClick={handleRedirect}
+            className="button-abrir-crear-producto"
+          >
+            <i className="fas fa-plus"></i>
+          </button>
 
           {/* Renderizado de lista de elementos */}
           {isLoading ? (
@@ -82,9 +100,7 @@ export const PanelFiltrados = () => {
                       <div className="producto-botones">
                         <button
                           className="crear-filtrado-button"
-                          onClick={() =>
-                            console.log(`Editar ${tipoCreacion}`, item)
-                          }
+                          onClick={() => handleEdit(item)}
                         >
                           Editar
                         </button>

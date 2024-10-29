@@ -12,7 +12,6 @@ import {
   CardInfoUsuario,
   Categorias,
   Checkout,
-  CrearFiltrado,
   CrearProducto,
   EditarProducto,
   Footer,
@@ -35,6 +34,14 @@ import { BannerCarrusel } from './Components/home-ui';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
 import useCartStore from './store/use-cart-store';
+import {
+  FormularioActualizarCategoria,
+  FormularioActualizarEtiqueta,
+  FormularioActualizarMarca,
+  FormularioCrearCategoria,
+  FormularioCrearEtiqueta,
+  FormularioCrearMarca,
+} from './Components/panel-crear-filtros';
 
 function App() {
   const {
@@ -110,12 +117,34 @@ function App() {
             element={<PrivateRoute element={PanelProducto} />}
           />
           <Route
-            path="/crear-filtrado"
-            element={<PrivateRoute element={CrearFiltrado} />}
-          />
-          <Route
             path="/panel-filtrado"
             element={<PrivateRoute element={PanelFiltrados} />}
+          />
+          <Route path="/" element={<PanelFiltrados />} />
+          <Route path="/crear-marca" element={<FormularioCrearMarca />} />
+          <Route
+            path="/crear-categoria"
+            element={<FormularioCrearCategoria />}
+          />
+          <Route path="/crear-etiqueta" element={<FormularioCrearEtiqueta />} />
+          <Route
+            path="/crear-categoria"
+            element={<FormularioCrearCategoria />}
+          />
+
+          <Route
+            path="/actualizar-marca/:marca_id"
+            element={<FormularioActualizarMarca />}
+          />
+
+          <Route
+            path="/actualizar-etiqueta/:etiqueta_id"
+            element={<FormularioActualizarEtiqueta />}
+          />
+
+          <Route
+            path="/actualizar-categoria/:categoria_id"
+            element={<FormularioActualizarCategoria />}
           />
 
           {/* Ruta para manejar 404 */}

@@ -41,7 +41,7 @@ export class CreateMarcaDto {
     format: 'binary',
     description: 'Imagen de la marca',
   })
-  image: any; // Campo para la imagen
+  imagen: any; // Campo para la imagen
 
   @IsString()
   @IsOptional() // Controlado desde el controlador
