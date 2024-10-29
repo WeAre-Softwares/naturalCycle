@@ -109,6 +109,32 @@ export class MarcasService {
     }
   }
 
+  async findAllInactive(
+    paginationDto: PaginationDto,
+  ): Promise<GetMarcasResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [marcas, total] = await this.marcaRepository.findAndCount({
+        where: { esta_activo: false },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        marcas,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las marcas inactivas',
+        error,
+      );
+    }
+  }
+
   async findAllMarcasDestacadas(
     paginationDto: PaginationDto,
   ): Promise<GetMarcasResponse> {

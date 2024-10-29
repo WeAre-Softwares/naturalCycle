@@ -81,6 +81,32 @@ export class EtiquetasService {
     }
   }
 
+  async findAllInactive(
+    paginationDto: PaginationDto,
+  ): Promise<GetEtiquetasResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [etiquetas, total] = await this.etiquetaRepository.findAndCount({
+        where: { esta_activo: false },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        etiquetas,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las etiquetas inactivas',
+        error,
+      );
+    }
+  }
+
   async findOne(id: string): Promise<EtiquetaInterface> {
     try {
       const etiqueta = await this.etiquetaRepository.findOne({

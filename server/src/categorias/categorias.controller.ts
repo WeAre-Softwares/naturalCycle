@@ -73,6 +73,16 @@ export class CategoriasController {
     return this.categoriasService.findAll(paginationDto);
   }
 
+  @Get('/inactivos')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Buscar todas las categorías inactivas' })
+  findAllInactive(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetCategoriasResponse> {
+    return this.categoriasService.findAllInactive(paginationDto);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar una categoría por id' })

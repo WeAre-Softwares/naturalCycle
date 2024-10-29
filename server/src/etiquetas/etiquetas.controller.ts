@@ -74,6 +74,16 @@ export class EtiquetasController {
     return this.etiquetasService.findAll(paginationDto);
   }
 
+  @Get('/inactivos')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Buscar todas las etiquetas inactivas' })
+  findAllInactive(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetEtiquetasResponse> {
+    return this.etiquetasService.findAllInactive(paginationDto);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar una etiqueta por id' })

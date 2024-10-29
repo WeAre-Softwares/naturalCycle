@@ -7,33 +7,38 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useDeactivateCategory } from '../hooks/hooks-category/useDeactivateCategory';
 import { useDeactivateEtiqueta } from '../hooks/hooks-etiqueta/useDeactivateEtiqueta';
 import { useDeactivateBrand } from '../hooks/hooks-brand/useDeactivateBrand';
+import { useActivateCategory } from '../hooks/hooks-category/useActivateCategory';
+import { useActivateEtiqueta } from '../hooks/hooks-etiqueta/useActivateEtiqueta';
+import { useActivateBrand } from '../hooks/hooks-brand/useActivateBrand';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Límite de productos para centralizar su valor
 const LIMIT = 3;
 
 export const PanelFiltrados = () => {
   const navigate = useNavigate();
   const [tipoCreacion, setTipoCreacion] = useState('marca');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isInactive, setIsInactive] = useState(false);
 
-  // Custom hook de debounce
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 600);
 
   // Hook personalizado para paginación y filtrado
   const { data, currentPage, totalItems, isLoading, itemsPerPage, goToPage } =
-    useFiltradoPaginado(tipoCreacion, debouncedSearchTerm, LIMIT); // Pasarle el debouncedSearchTerm
+    useFiltradoPaginado(tipoCreacion, debouncedSearchTerm, LIMIT, isInactive);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleTipoCreacion = (e) => setTipoCreacion(e.target.value);
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const toggleInactiveFilter = () => setIsInactive((prev) => !prev);
 
-  // Custom hooks para desactivar
   const { deactivateCategory } = useDeactivateCategory();
   const { deactivateBrand } = useDeactivateBrand();
   const { deactivateEtiqueta } = useDeactivateEtiqueta();
+  const { activateCategory } = useActivateCategory();
+  const { activateBrand } = useActivateBrand();
+  const { activateEtiqueta } = useActivateEtiqueta();
 
   const handleRedirect = () => {
     if (tipoCreacion === 'marca') navigate('/crear-marca');
@@ -50,22 +55,44 @@ export const PanelFiltrados = () => {
       navigate(`/actualizar-etiqueta/${item.etiqueta_id}`);
   };
 
-  const handleDeactivate = async (item) => {
+  const handleDeactivateOrActivate = async (item) => {
+    if (!item) {
+      console.error('El item no está definido');
+      return;
+    }
+
+    let success = false;
+    if (item.esta_activo) {
+      if (tipoCreacion === 'marca') {
+        success = await deactivateBrand(item.marca_id);
+      } else if (tipoCreacion === 'categoria') {
+        success = await deactivateCategory(item.categoria_id);
+      } else if (tipoCreacion === 'etiqueta') {
+        success = await deactivateEtiqueta(item.etiqueta_id);
+      }
+    } else {
+      success = await activateItem(item, tipoCreacion);
+    }
+
+    if (success) {
+      goToPage(1);
+    }
+  };
+
+  const activateItem = async (item, tipoCreacion) => {
     let success = false;
     if (tipoCreacion === 'marca') {
-      success = await deactivateBrand(item.marca_id);
+      success = await activateBrand(item.marca_id);
     } else if (tipoCreacion === 'categoria') {
-      success = await deactivateCategory(item.categoria_id);
+      success = await activateCategory(item.categoria_id);
     } else if (tipoCreacion === 'etiqueta') {
-      success = await deactivateEtiqueta(item.etiqueta_id);
+      success = await activateEtiqueta(item.etiqueta_id);
     }
 
     if (success) {
       setTimeout(() => {
-        // navigate('/panel-principal');
-        // Resetear a la primera página
-        goToPage(1);
-      }, 1500);
+        navigate('/panel-principal');
+      }, 1800);
     }
   };
 
@@ -77,7 +104,6 @@ export const PanelFiltrados = () => {
         <div className="productos-creados-container">
           <h2>Filtrados</h2>
 
-          {/* Input de búsqueda */}
           <input
             type="text"
             placeholder={`Buscar por ${tipoCreacion}`}
@@ -86,7 +112,6 @@ export const PanelFiltrados = () => {
             onChange={handleSearchChange}
           />
 
-          {/* Select para elegir entre marca, categoría y etiqueta */}
           <select
             value={tipoCreacion}
             onChange={handleTipoCreacion}
@@ -97,7 +122,6 @@ export const PanelFiltrados = () => {
             <option value="etiqueta">Etiqueta</option>
           </select>
 
-          {/* Redirije al formulario para crear el registro de la entidad seleccionada */}
           <button
             onClick={handleRedirect}
             className="button-abrir-crear-producto"
@@ -105,7 +129,16 @@ export const PanelFiltrados = () => {
             <i className="fas fa-plus"></i>
           </button>
 
-          {/* Renderizado de lista de elementos */}
+          <label style={{ margin: '1rem' }}>
+            Mostrar inactivos
+            <input
+              style={{ margin: '0.5rem' }}
+              type="checkbox"
+              checked={isInactive}
+              onChange={toggleInactiveFilter}
+            />
+          </label>
+
           {isLoading ? (
             <section class="dots-container">
             <div class="dot"></div>
@@ -142,9 +175,9 @@ export const PanelFiltrados = () => {
                         </button>
                         <button
                           className="crear-filtrado-button"
-                          onClick={() => handleDeactivate(item)}
+                          onClick={() => handleDeactivateOrActivate(item)}
                         >
-                          Eliminar
+                          {item.esta_activo ? 'Eliminar' : 'Activar'}
                         </button>
                       </div>
                     </li>

@@ -84,6 +84,16 @@ export class MarcasController {
     return this.marcasService.findAll(paginationDto);
   }
 
+  @Get('/inactivos')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Buscar todas las marcas inactivas' })
+  findAllInactive(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetMarcasResponse> {
+    return this.marcasService.findAllInactive(paginationDto);
+  }
+
   @Get('/destacadas')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar todas las marcas destacadas' })

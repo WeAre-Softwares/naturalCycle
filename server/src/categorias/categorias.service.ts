@@ -80,6 +80,32 @@ export class CategoriasService {
     }
   }
 
+  async findAllInactive(
+    paginationDto: PaginationDto,
+  ): Promise<GetCategoriasResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [categorias, total] = await this.categoriaRepository.findAndCount({
+        where: { esta_activo: false },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        categorias,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las categorías inactivas',
+        error,
+      );
+    }
+  }
+
   async findOne(id: string): Promise<CategoriaInterface> {
     try {
       const categoria = await this.categoriaRepository.findOne({
