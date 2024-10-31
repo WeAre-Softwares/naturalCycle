@@ -83,7 +83,7 @@ export class Usuario {
 
   @Column({
     type: 'boolean',
-    default: true,
+    default: false,
     select: false, // Este campo no se seleccionará por defecto
   })
   esta_activo: boolean;

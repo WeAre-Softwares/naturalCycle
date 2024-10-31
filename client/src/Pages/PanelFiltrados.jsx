@@ -141,12 +141,12 @@ export const PanelFiltrados = () => {
 
           {isLoading ? (
             <section class="dots-container">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </section>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </section>
           ) : (
             <>
               <h3>
@@ -170,6 +170,7 @@ export const PanelFiltrados = () => {
                         <button
                           className="crear-filtrado-button"
                           onClick={() => handleEdit(item)}
+                          disabled={item.esta_activo !== true}
                         >
                           Editar
                         </button>

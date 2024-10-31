@@ -60,7 +60,12 @@ export class UsuariosController {
   })
   async findByTerm(
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<Usuario>[]> {
+  ): Promise<{
+    usuarios: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     return this.usuariosService.findAllByTerm(searchWithPaginationDto);
   }
 
@@ -72,6 +77,16 @@ export class UsuariosController {
     @Query() paginationDto: PaginationDto,
   ): Promise<FindAllUsersResponse> {
     return this.usuariosService.findAll(paginationDto);
+  }
+
+  @Get('/inactivos')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Buscar todas los usuarios inactivos' })
+  findAllInactive(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<FindAllUsersResponse> {
+    return this.usuariosService.findAllInactive(paginationDto);
   }
 
   @Get(':id')
@@ -109,6 +124,30 @@ export class UsuariosController {
     @Body() updateBasicUserDto: UpdateBasicUserDto,
   ): Promise<Partial<Usuario>> {
     return this.usuariosService.updateBasicUser(id, updateBasicUserDto);
+  }
+
+  @Patch('alta/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({
+    summary: 'Dar de alta a un usuario.',
+  })
+  async darDeAltaUsuario(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Partial<Usuario>> {
+    return this.usuariosService.darDeAltaUsuario(id);
+  }
+
+  @Patch('baja/:id')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({
+    summary: 'Dar de baja a un usuario.',
+  })
+  async darDeBajaUsuario(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Partial<Usuario>> {
+    return this.usuariosService.darDeBajaUsuario(id);
   }
 
   @Delete(':id')

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -19,6 +20,7 @@ import { AuthService } from '../auth/auth.service';
 import { MailsService } from '../mails/mails.service';
 import type { CreateUserResponse, FindAllUsersResponse } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
+import { RolesUsuario } from './types/roles.enum';
 
 @Injectable()
 export class UsuariosService {
@@ -80,6 +82,18 @@ export class UsuariosService {
     try {
       const [usuarios, total] = await this.usuarioRepository.findAndCount({
         where: { esta_activo: true },
+        select: {
+          usuario_id: true,
+          nombre: true,
+          apellido: true,
+          dni: true,
+          nombre_comercio: true,
+          dom_fiscal: true,
+          email: true,
+          esta_activo: true,
+          roles: true,
+          dado_de_alta: true,
+        },
         take: limit,
         skip: offset,
       });
@@ -94,6 +108,44 @@ export class UsuariosService {
       this.logger.error(error);
       throw new InternalServerErrorException(
         'Error al buscar los usuarios',
+        error,
+      );
+    }
+  }
+
+  async findAllInactive(
+    paginationDto: PaginationDto,
+  ): Promise<FindAllUsersResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [usuarios, total] = await this.usuarioRepository.findAndCount({
+        where: { esta_activo: false },
+        select: {
+          usuario_id: true,
+          nombre: true,
+          apellido: true,
+          dni: true,
+          nombre_comercio: true,
+          dom_fiscal: true,
+          email: true,
+          esta_activo: true,
+          roles: true,
+          dado_de_alta: true,
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        usuarios,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar los usuarios inactivos',
         error,
       );
     }
@@ -199,7 +251,12 @@ export class UsuariosService {
 
   async findAllByTerm(
     SearchWithPaginationDto: SearchWithPaginationDto,
-  ): Promise<Partial<Usuario>[]> {
+  ): Promise<{
+    usuarios: any;
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
     const { limit = 10, offset = 0, term } = SearchWithPaginationDto;
 
     try {
@@ -214,8 +271,11 @@ export class UsuariosService {
           'usuarios.dom_fiscal',
           'usuarios.email',
           'usuarios.telefono',
+          'usuarios.esta_activo',
+          'usuarios.roles',
+          'usuarios.dado_de_alta',
         ])
-        .andWhere(
+        .where(
           '(LOWER(usuarios.nombre) LIKE LOWER(:term) OR LOWER(usuarios.apellido) LIKE LOWER(:term) OR CAST(usuarios.dni AS TEXT) LIKE :term)',
           {
             term: `%${term}%`,
@@ -224,11 +284,7 @@ export class UsuariosService {
         .take(limit)
         .skip(offset);
 
-      // Verificar la consulta generada
-      // console.log('SQL generada:', queryBuilder.getSql());
-      // console.log('Término de búsqueda aplicado:', term);
-
-      const usuarios = await queryBuilder.getMany();
+      const [usuarios, total] = await queryBuilder.getManyAndCount();
 
       // Aplanar los resultados
       const listaUsuariosAplanados = usuarios.map((usuario) => ({
@@ -240,9 +296,17 @@ export class UsuariosService {
         dom_fiscal: usuario.dom_fiscal,
         email: usuario.email,
         telefono: usuario.telefono,
+        esta_activo: usuario.esta_activo,
+        roles: usuario.roles,
+        dado_de_alta: usuario.dado_de_alta,
       }));
 
-      return listaUsuariosAplanados;
+      return {
+        usuarios: listaUsuariosAplanados,
+        total,
+        limit,
+        offset,
+      };
     } catch (error) {
       this.logger.error(error);
       console.log(error);
@@ -438,6 +502,94 @@ export class UsuariosService {
       );
     } finally {
       // Liberar el queryRunner
+      await queryRunner.release();
+    }
+  }
+
+  async darDeAltaUsuario(id: string): Promise<Partial<Usuario>> {
+    const usuario = await this.findOne(id, false);
+
+    // Si el usuario ya está dado de alta, no hace nada
+    if (usuario.dado_de_alta === true) {
+      throw new BadRequestException('El usuario ya está dado de alta.');
+    }
+
+    // Actualizar el estado de activación
+    usuario.esta_activo = true;
+    usuario.dado_de_alta = true;
+    usuario.roles = [RolesUsuario.usuario];
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save(usuario);
+
+      // Enviar correo de notificación de activación
+      this.logger.debug(`Enviando correo a: ${usuario.email}`);
+      await this.MailsService.sendAccountActivatedEmail(usuario);
+
+      await queryRunner.commitTransaction();
+
+      return {
+        usuario_id: usuario.usuario_id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        esta_activo: usuario.esta_activo,
+        dado_de_alta: usuario.dado_de_alta,
+        roles: usuario.roles,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        `Error al dar de alta al usuario con ID ${usuario.usuario_id}.`,
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async darDeBajaUsuario(id: string): Promise<Partial<Usuario>> {
+    const usuario = await this.findOne(id, false);
+
+    // Si el usuario ya está inactivo, no hace nada
+    if (usuario.esta_activo === false) {
+      throw new BadRequestException('El usuario ya está dado de baja.');
+    }
+
+    usuario.esta_activo = false;
+    usuario.dado_de_alta = false;
+    usuario.roles = []; // Dejar sin roles con array vacio
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save(usuario);
+      await queryRunner.commitTransaction();
+
+      return {
+        usuario_id: usuario.usuario_id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        esta_activo: usuario.esta_activo,
+        dado_de_alta: usuario.dado_de_alta,
+        roles: usuario.roles,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        `Error al dar de baja al usuario con ID ${usuario.usuario_id}.`,
+        error,
+      );
+    } finally {
       await queryRunner.release();
     }
   }
