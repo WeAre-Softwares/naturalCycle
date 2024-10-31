@@ -580,12 +580,11 @@ export class ProductosService {
     }
   }
 
-  //FIXME: Debuguear por falso positivo en actualización de tablas intermedias
   async update(
     id: string,
     updateProductoDto: UpdateProductoDto,
     files: Express.Multer.File[],
-  ): Promise<Producto> {
+  ): Promise<Partial<Producto>> {
     const { marca_id, productos_categorias, productos_etiquetas, ...toUpdate } =
       updateProductoDto;
 
@@ -597,98 +596,62 @@ export class ProductosService {
     let previousPublicIds: string[] = [];
 
     try {
-      // Buscar el producto existente
+      // 1. Buscar y obtener el producto existente
       const producto = await this.findOne(id);
 
-      // Guardar los public_id de las imágenes actuales
+      // 2. Guardar los public_id de las imágenes actuales
       previousPublicIds = producto.imagenes.map((img) => img.public_id);
 
-      // Actualizar la marca si se proporciona una nueva
+      // 3. Actualizar la marca si se proporciona una nueva
       if (marca_id) {
         const marca = await this.marcasService.findOne(marca_id);
         producto.marca = marca;
       }
 
-      // Actualizar relaciones con Categorías
+      // 4. Actualizar el producto directamente usando `save`
+      const productoActualizado = await queryRunner.manager.save(
+        this.productoRepository.create({ ...producto, ...toUpdate }),
+      );
+
+      // 5. Asegurar que productoActualizado tenga `producto_id`
+      const productoId = productoActualizado.producto_id;
+
+      // 6. Crear relaciones en tablas intermedias
       if (productos_categorias && productos_categorias.length > 0) {
-        const categoriasActuales =
-          await this.productosCategoriasRepository.find({
-            where: { producto: { producto_id: id } },
-            relations: ['categoria'],
-          });
-
-        const categoriasAEliminar = categoriasActuales.filter(
-          (relacionActual) =>
-            !productos_categorias.some(
-              (categoriaDto) =>
-                categoriaDto.categoria_id ===
-                relacionActual.categoria.categoria_id,
-            ),
-        );
-
-        if (categoriasAEliminar.length > 0) {
-          await this.productosCategoriasRepository.remove(categoriasAEliminar);
-        }
-
-        for (const categoriaDto of productos_categorias) {
-          const existeRelacion = categoriasActuales.some(
-            (relacionActual) =>
-              relacionActual.categoria.categoria_id ===
-              categoriaDto.categoria_id,
-          );
-
-          if (!existeRelacion) {
-            const categoria = await this.categoriasService.findOne(
-              categoriaDto.categoria_id,
-            );
-            const nuevaRelacionCategoria = queryRunner.manager.create(
-              ProductosCategorias,
-              { producto, categoria },
-            );
-            await queryRunner.manager.save(nuevaRelacionCategoria);
-          }
-        }
-      }
-
-      // Actualizar relaciones con Etiquetas
-      if (productos_etiquetas && productos_etiquetas.length > 0) {
-        const etiquetasActuales = await this.productosEtiquetasRepository.find({
-          where: { producto: { producto_id: id } },
-          relations: ['etiqueta'],
+        await this.productosCategoriasRepository.delete({
+          producto: { producto_id: productoId },
         });
-
-        const etiquetasAEliminar = etiquetasActuales.filter(
-          (relacionActual) =>
-            !productos_etiquetas.some(
-              (etiquetaDto) =>
-                etiquetaDto.etiqueta_id === relacionActual.etiqueta.etiqueta_id,
-            ),
-        );
-
-        if (etiquetasAEliminar.length > 0) {
-          await this.productosEtiquetasRepository.remove(etiquetasAEliminar);
-        }
-
-        for (const etiquetaDto of productos_etiquetas) {
-          const existeRelacion = etiquetasActuales.some(
-            (relacionActual) =>
-              relacionActual.etiqueta.etiqueta_id === etiquetaDto.etiqueta_id,
+        for (const categoriaDto of productos_categorias) {
+          const categoria = await this.categoriasService.findOne(
+            categoriaDto.categoria_id,
           );
-
-          if (!existeRelacion) {
-            const etiqueta = await this.etiquetasService.findOne(
-              etiquetaDto.etiqueta_id,
-            );
-            const nuevaRelacionEtiqueta = queryRunner.manager.create(
-              ProductosEtiquetas,
-              { producto, etiqueta },
-            );
-            await queryRunner.manager.save(nuevaRelacionEtiqueta);
-          }
+          const nuevaRelacionCategoria =
+            this.productosCategoriasRepository.create({
+              producto: { producto_id: productoId }, // Asignación explícita de producto_id
+              categoria,
+            });
+          await queryRunner.manager.save(nuevaRelacionCategoria);
         }
       }
 
-      // Subir nuevas imágenes a Cloudinary si las hay
+      if (productos_etiquetas && productos_etiquetas.length > 0) {
+        await this.productosEtiquetasRepository.delete({
+          producto: { producto_id: productoId },
+        });
+        for (const etiquetaDto of productos_etiquetas) {
+          const etiqueta = await this.etiquetasService.findOne(
+            etiquetaDto.etiqueta_id,
+          );
+          const nuevaRelacionEtiqueta =
+            this.productosEtiquetasRepository.create({
+              producto: { producto_id: productoId }, // Asignación explícita de producto_id
+              etiqueta,
+            });
+          await queryRunner.manager.save(nuevaRelacionEtiqueta);
+        }
+      }
+
+      // 7. Subir nuevas imágenes a Cloudinary si las hay
       if (files && files.length > 0) {
         newImagesUpload = await Promise.all(
           files.map(async (file) => {
@@ -709,20 +672,10 @@ export class ProductosService {
             };
           }),
         );
-      }
 
-      // Actualizar el producto con los nuevos datos
-      this.productoRepository.merge(producto, {
-        ...toUpdate,
-        marca: producto.marca,
-      });
-
-      await queryRunner.manager.save(producto);
-
-      // Actualizar imágenes si se subieron nuevas
-      if (newImagesUpload.length > 0) {
+        // Guardar nuevas imágenes en la base de datos
         await this.productosImagenesRepository.delete({
-          producto: { producto_id: id },
+          producto: { producto_id: productoId },
         });
 
         const savedImages = await Promise.all(
@@ -731,33 +684,18 @@ export class ProductosService {
               this.productosImagenesRepository.create({
                 url: img.secure_url,
                 public_id: img.public_id,
-                producto,
+                producto: { producto_id: productoId },
               }),
             ),
           ),
         );
-        producto.imagenes = savedImages;
+        productoActualizado.imagenes = savedImages;
       }
 
-      // Consulta el producto con las relaciones actualizadas
-      const productoActualizado = await this.productoRepository.findOne({
-        where: { producto_id: id, esta_activo: true },
-        relations: {
-          marca: true,
-          imagenes: true,
-          productosCategorias: {
-            categoria: true, // Cargar la relación con la tabla `Categoria`
-          },
-          productosEtiquetas: {
-            etiqueta: true, // Cargar la relación con la tabla `Etiqueta`
-          },
-        },
-      });
-
-      // Confirmar la transacción
+      // 8. Confirmar la transacción
       await queryRunner.commitTransaction();
 
-      // Eliminar las imágenes antiguas de Cloudinary si se subieron nuevas
+      // 9. Eliminar las imágenes antiguas de Cloudinary si se subieron nuevas
       if (previousPublicIds.length > 0 && newImagesUpload.length > 0) {
         await Promise.all(
           previousPublicIds.map((public_id) =>
@@ -766,13 +704,19 @@ export class ProductosService {
         );
       }
 
-      // Devuelve los datos directamente de la DB
-      return productoActualizado;
+      // 10. Consultar el producto con relaciones actualizadas y retornarlo
+      return await this.productoRepository.findOne({
+        where: { producto_id: productoId, esta_activo: true },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: { categoria: true },
+          productosEtiquetas: { etiqueta: true },
+        },
+      });
     } catch (error) {
-      // Revertir la transacción en caso de error
+      // Revertir transacción y eliminar nuevas imágenes en caso de error
       await queryRunner.rollbackTransaction();
-
-      // Eliminar imágenes subidas en caso de error
       if (newImagesUpload.length > 0) {
         await Promise.all(
           newImagesUpload.map((img) =>
@@ -780,14 +724,12 @@ export class ProductosService {
           ),
         );
       }
-
       this.logger.error(error);
       throw new InternalServerErrorException(
         'Error al actualizar el producto',
         error,
       );
     } finally {
-      // Liberar el query runner
       await queryRunner.release();
     }
   }

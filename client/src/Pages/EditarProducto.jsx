@@ -39,19 +39,6 @@ export const EditarProducto = () => {
     },
   });
 
-  useEffect(() => {
-    if (product) {
-      setValue(
-        'productos_categorias',
-        product.categorias.map((c) => c.categoria_id),
-      );
-      setValue(
-        'productos_etiquetas',
-        product.etiquetas.map((e) => e.etiqueta_id),
-      );
-    }
-  }, [product, setValue]);
-
   // Cargar los datos del producto en el formulario
   useEffect(() => {
     if (product) {
@@ -61,7 +48,7 @@ export const EditarProducto = () => {
       setValue('tipo_de_precio', product.tipo_de_precio);
       setValue('marca_id', product.marca.marca_id);
 
-      // Establecer categorías y etiquetas seleccionadas
+      // Establece las categorías y etiquetas seleccionadas usando IDs
       setValue(
         'productos_categorias',
         product.categorias.map((c) => c.categoria_id),
@@ -71,7 +58,7 @@ export const EditarProducto = () => {
         product.etiquetas.map((e) => e.etiqueta_id),
       );
 
-      // Establece las imágenes actuales en el estado
+      // Establece imágenes actuales
       setSelectedFiles(product.imagenes || []);
       setValue('imagenes', product.imagenes || []);
 
@@ -79,7 +66,7 @@ export const EditarProducto = () => {
       setValue('producto_destacado', product.producto_destacado);
       setValue('nuevo_ingreso', product.nuevo_ingreso);
     }
-  }, [product, setValue]);
+  }, [product, setValue, watch]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);

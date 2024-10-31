@@ -17,12 +17,16 @@ export class ProductosEtiquetas {
   esta_activo: boolean;
 
   // Relación con Producto
-  @ManyToOne(() => Producto, (producto) => producto.productosEtiquetas)
+  @ManyToOne(() => Producto, (producto) => producto.productosEtiquetas, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'producto_id' })
   producto: Producto;
 
   // Relación con Etiquetas
-  @ManyToOne(() => Etiqueta, (etiquetas) => etiquetas.productosEtiquetas)
+  @ManyToOne(() => Etiqueta, (etiquetas) => etiquetas.productosEtiquetas, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'etiqueta_id' })
   etiqueta: Etiqueta;
 }

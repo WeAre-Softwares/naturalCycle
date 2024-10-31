@@ -157,7 +157,7 @@ export class ProductosController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductoDto: UpdateProductoDto,
     @UploadedFiles() files: Express.Multer.File[], // Manejo de archivo de imagen
-  ): Promise<Producto> {
+  ): Promise<Partial<Producto>> {
     return this.productosService.update(id, updateProductoDto, files);
   }
 
