@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getAllMarcasService } from '../../services/marca-services/getAll-marcas';
 
-export function useGetAllBrands(limit = 10, offset = 0) {
+// !El limit al no darle un valor trae todos los registros de marcas por defecto.
+export function useGetAllBrands(limit, offset = 0) {
   const [marcas, setMarcas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

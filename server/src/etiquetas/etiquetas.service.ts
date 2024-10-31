@@ -56,20 +56,20 @@ export class EtiquetasService {
   }
 
   async findAll(paginationDto: PaginationDto): Promise<GetEtiquetasResponse> {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit, offset = 0 } = paginationDto;
     try {
       const [etiquetas, total] = await this.etiquetaRepository.findAndCount({
         where: {
           esta_activo: true,
         },
-        take: limit,
+        ...(limit ? { take: limit } : {}), // Solo agregar 'take' si 'limit' está definido y es distinto de 0
         skip: offset,
       });
 
       return {
         etiquetas,
         total,
-        limit,
+        limit: limit ?? total, // Establece 'limit' al total si es indefinido o 0
         offset,
       };
     } catch (error) {

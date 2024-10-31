@@ -55,20 +55,20 @@ export class CategoriasService {
   }
 
   async findAll(paginationDto: PaginationDto): Promise<GetCategoriasResponse> {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit, offset = 0 } = paginationDto;
     try {
       const [categorias, total] = await this.categoriaRepository.findAndCount({
         where: {
           esta_activo: true,
         },
-        take: limit,
         skip: offset,
+        ...(limit ? { take: limit } : {}), // Solo agregar 'take' si 'limit' está definido y es distinto de 0
       });
 
       return {
         categorias,
         total,
-        limit,
+        limit: limit ?? total, // Establece 'limit' al total si es indefinido o 0
         offset,
       };
     } catch (error) {

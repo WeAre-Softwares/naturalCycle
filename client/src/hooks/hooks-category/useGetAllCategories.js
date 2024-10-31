@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getAllCategoriesService } from '../../services/categoria-services/getAll-categories';
 
-export function useGetAllCategories(limit = 10, offset = 0) {
+// !El limit al no darle un valor trae todos los registros de categorías por defecto.
+export function useGetAllCategories(limit, offset = 0) {
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

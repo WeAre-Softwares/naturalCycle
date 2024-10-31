@@ -84,20 +84,20 @@ export class MarcasService {
   }
 
   async findAll(paginationDto: PaginationDto): Promise<GetMarcasResponse> {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit, offset = 0 } = paginationDto;
     try {
       const [marcas, total] = await this.marcaRepository.findAndCount({
         where: {
           esta_activo: true,
         },
-        take: limit,
+        ...(limit ? { take: limit } : {}), // Solo agregar 'take' si 'limit' está definido y es distinto de 0
         skip: offset,
       });
 
       return {
         marcas,
         total,
-        limit,
+        limit: limit ?? total, // Establece 'limit' al total si es indefinido o 0
         offset,
       };
     } catch (error) {
