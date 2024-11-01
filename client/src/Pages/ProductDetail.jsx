@@ -3,12 +3,22 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
 import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useCartStore from '../store/use-cart-store';
+import useAuthStore from '../store/use-auth-store';
+import { allowedRoles } from '../constants/allowed-roles';
 
 export const ProductDetails = () => {
   const { id } = useParams();
   const { product, error, loading } = useGetProductById(id);
   const { addToCart, incrementQuantity, decrementQuantity, carrito } =
     useCartStore();
+  const { isAuthenticated, getRoles } = useAuthStore();
+
+  // Definir roles permitidos para ver el precio y añadir al carrito
+  const isUserLoggedIn = isAuthenticated();
+  const userRoles = getRoles();
+
+  // Verificar si el usuario tiene al menos uno de los roles permitidos
+  const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
   const currentProductInCart = carrito.find(
     (p) => p.producto_id === product?.producto_id,
@@ -29,13 +39,15 @@ export const ProductDetails = () => {
         </Link>
       </div>
 
-      {loading && <section class="dots-container">
-  <div class="dot"></div>
-  <div class="dot"></div>
-  <div class="dot"></div>
-  <div class="dot"></div>
-  <div class="dot"></div>
-</section>}
+      {loading && (
+        <section class="dots-container">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </section>
+      )}
       {error && <p>Hubo un error al cargar el producto.</p>}
       {!loading && !error && !product && <p>Producto no encontrado</p>}
 
@@ -77,15 +89,18 @@ export const ProductDetails = () => {
               </ul>
             </div>
 
-            <div className="price-container">
-              <p className="precio-view">${product.precio}</p>
-              <span style={{ marginLeft: '8px' }}>
-                &#8722;{' '}
-                {product.tipo_de_precio === 'por_kilo'
-                  ? 'Por Kilo'
-                  : 'Por Unidad'}
-              </span>
-            </div>
+            {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
+            {isUserLoggedIn && hasAccessRole && (
+              <div className="price-container">
+                <p className="precio-view">${product.precio}</p>
+                <span style={{ marginLeft: '8px' }}>
+                  &#8722;{' '}
+                  {product.tipo_de_precio === 'por_kilo'
+                    ? 'Por Kilo'
+                    : 'Por Unidad'}
+                </span>
+              </div>
+            )}
 
             <div className="container-cantidad">
               <button
@@ -103,8 +118,13 @@ export const ProductDetails = () => {
               </button>
             </div>
 
+            {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
             {product.disponible ? (
-              <button onClick={agregarAlCarrito} className="btn-view">
+              <button
+                onClick={agregarAlCarrito}
+                className="btn-view"
+                disabled={!isUserLoggedIn && !hasAccessRole}
+              >
                 Añadir al carrito <i className="fa-solid fa-cart-shopping"></i>
               </button>
             ) : (

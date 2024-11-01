@@ -1,10 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/use-cart-store';
+import useAuthStore from '../../store/use-auth-store';
+import { allowedRoles } from '../../constants/allowed-roles';
 
 export const ProductCard = ({ producto }) => {
   const navigate = useNavigate();
   const { addToCart } = useCartStore();
+  const { isAuthenticated, getRoles } = useAuthStore();
+
+  // Definir roles permitidos para ver el precio y añadir al carrito
+  const isUserLoggedIn = isAuthenticated();
+  const userRoles = getRoles();
+
+  // Verificar si el usuario tiene al menos uno de los roles permitidos
+  const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
   const verDetallesProducto = () => {
     navigate(`/producto/${producto.producto_id}`);
@@ -25,17 +35,30 @@ export const ProductCard = ({ producto }) => {
         />
 
         <h2 className="nombre-producto-card">{producto.nombre}</h2>
-        <span className="nombre-producto-card">
-          {producto.tipo_de_precio === 'por_kilo' ? 'Por Kilo' : 'Por Unidad'}
-        </span>
-        <br />
-        <h2 className="precio-producto-card">${producto.precio}</h2>
+
+        {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
+        {isUserLoggedIn && hasAccessRole && (
+          <>
+            <span className="nombre-producto-card">
+              {producto.tipo_de_precio === 'por_kilo'
+                ? 'Por Kilo'
+                : 'Por Unidad'}
+            </span>
+            <br />
+            <h2 className="precio-producto-card">${producto.precio}</h2>
+          </>
+        )}
+
         <span>
           {producto.disponible === true ? 'Stock disponible' : 'Agotado'}
         </span>
       </div>
       <div className="botones-card-producto">
-        <button disabled={!producto.disponible} onClick={agregarAlCarrito}>
+        {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
+        <button
+          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
+          onClick={agregarAlCarrito}
+        >
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
           <i className="fa-solid fa-cart-shopping"></i>
         </button>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getAllProductosDestacadosService } from '../../services/products-services/getAll-productosDestacados';
 
-export function useGetAllProductosDestacados(limit = 10, offset = 0) {
+export function useGetAllProductosDestacados(limit = 10, page = 1) {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [total, setTotal] = useState(0); // Total de productos
 
   useEffect(() => {
     let isMounted = true;
@@ -12,11 +13,12 @@ export function useGetAllProductosDestacados(limit = 10, offset = 0) {
 
     const fetchData = async () => {
       try {
+        const offset = (page - 1) * limit; // Calcula el offset basado en la página actual
         const response = await getAllProductosDestacadosService(limit, offset);
 
         if (isMounted) {
-          // Solo actualizamos si el componente está montado
           setProductos(response.productos || []);
+          setTotal(response.total || 0); // Total de productos para calcular totalPages
         }
       } catch (error) {
         console.log(error);
@@ -29,9 +31,11 @@ export function useGetAllProductosDestacados(limit = 10, offset = 0) {
     fetchData();
 
     return () => {
-      isMounted = false; // Al desmontar, evitamos futuros cambios de estado
+      isMounted = false; // Evita actualizaciones si el componente se desmonta
     };
-  }, [limit, offset]); // Dependencias
+  }, [limit, page]);
 
-  return { productos, loading, error };
+  const totalPages = Math.ceil(total / limit); // Calcula el total de páginas
+
+  return { productos, loading, error, totalPages };
 }
