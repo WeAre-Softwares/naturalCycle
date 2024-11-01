@@ -248,6 +248,45 @@ export class ProductosService {
     }
   }
 
+  async findAllInactive(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: { esta_activo: false },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true, // Cargar la relación con la tabla `Categoria`
+          },
+          productosEtiquetas: {
+            etiqueta: true, // Cargar la relación con la tabla `Etiqueta`
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      // Aplano los productos en una estructura más simple
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar las etiquetas inactivas',
+        error,
+      );
+    }
+  }
+
   async findProductsByBrand(
     marcaId: string,
     paginationDto: PaginationDto,
@@ -512,6 +551,7 @@ export class ProductosService {
       producto_destacado: producto.producto_destacado,
       en_promocion: producto.en_promocion,
       nuevo_ingreso: producto.nuevo_ingreso,
+      esta_activo: producto.esta_activo,
       marca: {
         marca_id: producto.marca.marca_id,
         nombre: producto.marca.nombre,
@@ -791,6 +831,7 @@ export class ProductosService {
       };
     } catch (error) {
       this.logger.error(error);
+      console.log(error);
       throw new InternalServerErrorException(
         `Error al marcar como activo el producto con ID ${id}.`,
         error,

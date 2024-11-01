@@ -2,13 +2,16 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
 import {
-  SearchBar,
-  Pagination,
   PanelProductItem,
+  Pagination,
+  SearchBar,
 } from '../Components/panel-productos';
 import { useProductSearch } from '../hooks/hooks-product/usePanelProductSearch';
+import { useActivateProduct } from '../hooks/hooks-product/useActivateProduct';
+import { useDeactivateProduct } from '../hooks/hooks-product/useDeactivateProduct';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Límite de productos para centralizar su valor
 const LIMIT = 3;
 
 export const PanelProducto = () => {
@@ -23,7 +26,12 @@ export const PanelProducto = () => {
     totalPages,
     handleNextPage,
     handlePrevPage,
+    showInactive,
+    toggleInactiveFilter,
   } = useProductSearch(LIMIT);
+
+  const { activateProduct, isLoading: activating } = useActivateProduct();
+  const { deactivateProduct, isLoading: deactivating } = useDeactivateProduct();
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -31,12 +39,24 @@ export const PanelProducto = () => {
     navigate(`/editar-producto/${producto_id}`);
   };
 
-  const handleDelete = (producto_id) => {
-    // Aquí va la lógica para eliminar el producto
+  const handleToggleActive = async (producto_id, isActive) => {
+    const result = isActive
+      ? await deactivateProduct(producto_id)
+      : await activateProduct(producto_id);
+
+    // Si se realiza correctamente, recargar los productos según el filtro actual
+    if (result) {
+      setTimeout(() => {
+        navigate(`/panel-principal`);
+      }, 2200);
+      toggleInactiveFilter(); // Al cambiar el filtro se actualiza la lista
+      toggleInactiveFilter();
+    }
   };
 
   return (
     <div className="div-gral-prod-creados">
+      <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
@@ -51,13 +71,23 @@ export const PanelProducto = () => {
             </button>
           </Link>
 
+          <label style={{ margin: '1rem' }}>
+            Mostrar inactivos
+            <input
+              style={{ margin: '0.5rem' }}
+              type="checkbox"
+              checked={showInactive}
+              onChange={toggleInactiveFilter}
+            />
+          </label>
+
           {loading ? (
-            <section class="dots-container">
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
+            <section className="dots-container">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
             </section>
           ) : error ? (
             <p>Ocurrió un error al cargar los productos.</p>
@@ -68,7 +98,8 @@ export const PanelProducto = () => {
                   key={producto.producto_id}
                   producto={producto}
                   onEdit={handleEdit}
-                  onDelete={handleDelete}
+                  onToggleActive={handleToggleActive}
+                  isProcessing={activating || deactivating}
                 />
               ))}
             </ul>

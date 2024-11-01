@@ -10,6 +10,7 @@ export interface ProductoPlainResponse {
   producto_destacado: boolean;
   en_promocion: boolean;
   nuevo_ingreso: boolean;
+  esta_activo: boolean;
   marca: {
     marca_id: string;
     nombre: string;

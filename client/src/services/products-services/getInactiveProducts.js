@@ -2,9 +2,17 @@ import axios from 'axios';
 import { API_URL } from '../../constants/api-url.contant';
 import { handleAxiosError } from '../errorHandler';
 
-export const deactivateProductService = async (producto_id, token) => {
+export const getInactiveProductsService = async (
+  limit = 10,
+  offset = 0,
+  token,
+) => {
   try {
-    const response = await axios.delete(`${API_URL}/productos/${producto_id}`, {
+    const response = await axios.get(`${API_URL}/productos/inactivos`, {
+      params: {
+        limit,
+        offset,
+      },
       headers: {
         Authorization: `Bearer ${token}`,
       },

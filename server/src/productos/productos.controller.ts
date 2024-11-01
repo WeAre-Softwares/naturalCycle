@@ -89,6 +89,16 @@ export class ProductosController {
     return this.productosService.findAll(paginationDto);
   }
 
+  @Get('/inactivos')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Buscar todas los productos inactivos' })
+  findAllInactive(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findAllInactive(paginationDto);
+  }
+
   @Get('/nuevos-ingresos')
   @ApiOperation({ summary: 'Buscar todos los nuevos ingresos de productos' })
   findNewArrivalProducts(
