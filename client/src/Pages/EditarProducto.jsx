@@ -47,8 +47,6 @@ export const EditarProducto = () => {
       setValue('precio', product.precio);
       setValue('tipo_de_precio', product.tipo_de_precio);
       setValue('marca_id', product.marca.marca_id);
-
-      // Establece las categorías y etiquetas seleccionadas usando IDs
       setValue(
         'productos_categorias',
         product.categorias.map((c) => c.categoria_id),
@@ -57,16 +55,13 @@ export const EditarProducto = () => {
         'productos_etiquetas',
         product.etiquetas.map((e) => e.etiqueta_id),
       );
-
-      // Establece imágenes actuales
       setSelectedFiles(product.imagenes || []);
       setValue('imagenes', product.imagenes || []);
-
       setValue('en_promocion', product.en_promocion);
       setValue('producto_destacado', product.producto_destacado);
       setValue('nuevo_ingreso', product.nuevo_ingreso);
     }
-  }, [product, setValue, watch]);
+  }, [product, setValue]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -75,23 +70,16 @@ export const EditarProducto = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log('Datos enviados:', data);
-    console.log('Selected Files:', selectedFiles);
-
     const formData = new FormData();
-
-    // Manejo de imágenes: Si no se selecciona nada, usa las existentes
     if (selectedFiles.length > 0) {
       selectedFiles.forEach((file) => formData.append('imagenes', file));
     } else {
       product.imagenes.forEach((url) => formData.append('imagenes', url));
     }
 
-    // Manejo de categorías: Si no hay cambios, usa las categorías previas
     const categorias = data.productos_categorias.length
       ? data.productos_categorias
       : product.categorias.map((cat) => cat.categoria_id);
-
     categorias.forEach((categoriaId, index) =>
       formData.append(
         `productos_categorias[${index}][categoria_id]`,
@@ -99,30 +87,24 @@ export const EditarProducto = () => {
       ),
     );
 
-    // Manejo de etiquetas: Si no hay cambios, usa las etiquetas previas
     const etiquetas = data.productos_etiquetas.length
       ? data.productos_etiquetas
       : product.etiquetas.map((et) => et.etiqueta_id);
-
     etiquetas.forEach((etiquetaId, index) =>
       formData.append(`productos_etiquetas[${index}][etiqueta_id]`, etiquetaId),
     );
 
-    // Agregar otros campos básicos
     formData.append('nombre', data.nombre);
     formData.append('descripcion', data.descripcion);
     formData.append('precio', data.precio);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
-
-    // Convertir checkboxes a booleanos explícitamente
     formData.append('en_promocion', !!data.en_promocion);
     formData.append('producto_destacado', !!data.producto_destacado);
     formData.append('nuevo_ingreso', !!data.nuevo_ingreso);
 
     try {
       const response = await updateProductService(token, producto_id, formData);
-
       if (response) {
         toast.success('Producto actualizado con éxito!', { autoClose: 3000 });
         setTimeout(() => navigate('/panel-principal'), 3000);
@@ -138,12 +120,12 @@ export const EditarProducto = () => {
 
   if (loading || productLoading)
     return (
-      <section class="dots-container">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+      <section className="dots-container">
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
       </section>
     );
   if (error || productError) return <p>Error al cargar los datos</p>;
@@ -281,26 +263,30 @@ export const EditarProducto = () => {
             {...register('en_promocion')}
             className="crear-producto-checkbox"
           />
-          Producto en promoción
+          En Promoción
         </label>
+
         <label className="crear-producto-label">
           <input
             type="checkbox"
             {...register('producto_destacado')}
             className="crear-producto-checkbox"
           />
-          Producto destacado
+          Producto Destacado
         </label>
+
         <label className="crear-producto-label">
           <input
             type="checkbox"
             {...register('nuevo_ingreso')}
             className="crear-producto-checkbox"
           />
-          Nuevo ingreso
+          Nuevo Ingreso
         </label>
 
-        <button className="crear-producto-button">Actualizar Producto</button>
+        <button type="submit" className="crear-producto-button">
+          Actualizar Producto
+        </button>
       </form>
     </>
   );

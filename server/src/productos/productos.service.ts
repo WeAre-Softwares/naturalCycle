@@ -513,15 +513,18 @@ export class ProductosService {
       en_promocion: producto.en_promocion,
       nuevo_ingreso: producto.nuevo_ingreso,
       marca: {
+        marca_id: producto.marca.marca_id,
         nombre: producto.marca.nombre,
       },
       imagenes: producto.imagenes.map((imagen) => ({
         url: imagen.url,
       })),
       categorias: producto.productosCategorias.map((pc) => ({
+        categoria_id: pc.categoria.categoria_id,
         nombre: pc.categoria.nombre,
       })),
       etiquetas: producto.productosEtiquetas.map((pe) => ({
+        etiqueta_id: pe.etiqueta.etiqueta_id,
         nombre: pe.etiqueta.nombre,
       })),
     };
