@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCartStore from '../store/use-cart-store';
+import useAuthStore from '../store/use-auth-store';
 import '../Styles/Header/Cart.css';
+import { crearPedido } from '../services/pedidos-service/crear-pedido';
 
 export const CartButton = () => {
+  const { user } = useAuthStore(); // Obtén el usuario desde el estado global
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
   const {
     carrito,
     removeFromCart,
+    updateQuantity,
     incrementQuantity,
     decrementQuantity,
     getTotalPrice,
@@ -21,6 +25,26 @@ export const CartButton = () => {
 
   const closeCart = () => {
     setIsCartOpen(false);
+  };
+
+  const handleIniciarCompra = async () => {
+    const usuarioId = user?.id;
+    const detalles = carrito.map((item) => ({
+      producto_id: item.producto_id,
+      cantidad: Number(item.cantidad),
+      precio_unitario: Number(item.precio),
+    }));
+
+    try {
+      const pedido = await crearPedido(detalles, usuarioId);
+      console.log('Pedido creado con éxito:', pedido);
+      // Navega o muestra un mensaje de confirmación
+      closeCart();
+      //TODO: Crear otra seccón o mostrar alerta
+      // navigate('/pedido-exito');
+    } catch (error) {
+      console.error('Error al crear el pedido:', error);
+    }
   };
 
   return (
@@ -72,15 +96,39 @@ export const CartButton = () => {
                     <p>{item.nombre}</p>
                     <p>
                       {item.cantidad}{' '}
-                      {item.unidadMedida === 'kg' ? 'kg' : 'unidades'}
+                      {item.tipo_de_precio === 'por_unidad'
+                        ? item.cantidad > 1
+                          ? 'unidades x'
+                          : 'unidad x'
+                        : item.cantidad > 1
+                        ? 'kilos x'
+                        : 'kilo x'}
                     </p>
+                    <p>${item.precio.toLocaleString()} </p>
                     <div className="cantidad-controles">
                       <button
                         onClick={() => decrementQuantity(item.producto_id)}
                       >
                         -
                       </button>
-                      <span>{item.cantidad}</span>
+
+                      <input
+                        type="number"
+                        value={item.cantidad}
+                        min="1"
+                        max="1000"
+                        onChange={(e) => {
+                          const nuevaCantidad = parseInt(e.target.value, 10);
+                          if (
+                            !isNaN(nuevaCantidad) &&
+                            nuevaCantidad >= 1 &&
+                            nuevaCantidad <= 1000
+                          ) {
+                            updateQuantity(item.producto_id, nuevaCantidad);
+                          }
+                        }}
+                      />
+
                       <button
                         onClick={() => incrementQuantity(item.producto_id)}
                       >
@@ -90,8 +138,8 @@ export const CartButton = () => {
                   </div>
                   <div className="precio-producto">
                     <p>
-                      ${(item.precio * item.cantidad).toLocaleString()}{' '}
-                      {item.unidadMedida === 'kg' ? '/kg' : ''}
+                      Subtotal: $
+                      {(item.precio * item.cantidad).toLocaleString()}
                     </p>
                   </div>
                   <button
@@ -104,19 +152,25 @@ export const CartButton = () => {
               ))
             )}
           </div>
+
           {carrito.length > 0 && (
             <>
               <div className="total">
                 <h3>Total:</h3>
                 <h3>${getTotalPrice().toLocaleString()}</h3>
               </div>
-              {/* TODO: IMPLEMENTAR LÓGICA */}
-              <button className="btn-iniciar-compra">Iniciar Compra</button>
+
+              <button
+                className="btn-iniciar-compra"
+                onClick={handleIniciarCompra}
+              >
+                Iniciar Compra
+              </button>
               <button
                 className="btn-ver-productos"
                 onClick={() => {
                   closeCart();
-                  navigate('/Categorias');
+                  navigate('/categorias');
                 }}
               >
                 Ver más productos

@@ -12,10 +12,10 @@ const useAuthStore = create(
       // Acción para iniciar sesión
       login: (token) => {
         const decodedToken = jwtDecode(token);
-        const { email, roles, exp } = decodedToken; // Extraemos los campos necesarios
+        const { sub, email, roles, exp } = decodedToken; // Extraemos los campos necesarios; `sub` es el campo de ID de usuario
 
         const user = { email, roles };
-        set({ token, user, exp }); // Guardamos el estado global con token, user y exp
+        set({ id: sub, token, user, exp }); // Guardamos el estado global con token, user y exp. Guardamos el ID en `user`
       },
 
       // Acción para cerrar sesión

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { cantidadSchema } from '../schemas/cantidad-carrito-schema';
 
 const useCartStore = create(
   persist(
@@ -50,18 +51,39 @@ const useCartStore = create(
       },
 
       // Funciones para incrementar o disminuir la cantidad
-      //TODO: Chequear capacidad Máxima
-      incrementQuantity: (productId, max = 500) => {
-        const producto = get().carrito.find((p) => p.producto_id === productId);
-        if (producto && producto.cantidad < max) {
+      updateQuantity: async (productId, cantidad) => {
+        try {
+          await cantidadSchema.validate(cantidad);
           set({
-            carrito: get().carrito.map((p) =>
-              p.producto_id === productId
-                ? { ...p, cantidad: p.cantidad + 1 }
-                : p,
+            carrito: get().carrito.map((producto) =>
+              producto.producto_id === productId
+                ? { ...producto, cantidad }
+                : producto,
             ),
           });
+        } catch (error) {
+          console.error(error.message);
         }
+      },
+
+      incrementQuantity: (productId) => {
+        set((state) => {
+          const producto = state.carrito.find(
+            (p) => p.producto_id === productId,
+          );
+
+          // Verificar si la cantidad es menor a 1000 antes de incrementar
+          if (producto && producto.cantidad < 1000) {
+            return {
+              carrito: state.carrito.map((p) =>
+                p.producto_id === productId
+                  ? { ...p, cantidad: p.cantidad + 1 }
+                  : p,
+              ),
+            };
+          }
+          return state; // Si la cantidad es 1000 o más, no hacer cambios
+        });
       },
 
       decrementQuantity: (productId, min = 1) => {
