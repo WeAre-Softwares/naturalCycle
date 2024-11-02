@@ -1,11 +1,15 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../Styles/Inicio/Inicio.css';
+import { useGetAllProductosDestacados } from '../../hooks/hooks-product/useGetAllProductosDestacados';
 
 export const BannerCarrusel = () => {
+  const limit = 15; // Límite de productos destacados para mostrar
+  const { error, loading, productos } = useGetAllProductosDestacados(limit);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -17,41 +21,37 @@ export const BannerCarrusel = () => {
     arrows: true,
   };
 
+  if (loading) return <div>Cargando productos destacados...</div>;
+  if (error) return <div>Error al cargar productos</div>;
+
   return (
     <div className="div-banner-general-slide">
       <Link to="/direcciondelprod">
         <Slider className="slide-container-banner" {...settings}>
-          <div className="conteiner-banner-info-inicio">
-            <div className="div-img-banner">
-              <img
-                name="img-prod-banner"
-                className="img-prod-banner"
-                src="/imagenes/producto-banner.png"
-              />
+          {productos.map((producto, index) => (
+            <div
+              className="conteiner-banner-info-inicio"
+              key={`${producto.producto_id}-${index}`}
+            >
+              <div className="div-img-banner">
+                <img
+                  name="img-prod-banner"
+                  className="img-prod-banner"
+                  src={producto.imagenes[0].url}
+                  alt={producto.nombre}
+                />
+              </div>
+              <div className="precio-producto-banner">
+                <h2 className="texto-Banner" name="texto-Banner">
+                  {producto.nombre}
+                </h2>
+                <h2 name="precio-banner">
+                  A tan sólo ${Math.round(Number(producto.precio))}
+                </h2>
+                {/* Redondea el precio */}
+              </div>
             </div>
-            <div className="precio-producto-banner">
-              <h2 className="texto-Banner" name="texto-Banner">
-                VEGGIE SNACKS (Sabor cebolla)
-              </h2>
-              <h2 name="precio-banner">A tan sólo $1.199</h2>
-            </div>
-          </div>
-
-          <div className="conteiner-banner-info-inicio">
-            <div className="div-img-banner">
-              <img
-                name="img-prod-banner"
-                className="img-prod-banner"
-                src="/imagenes/producto-banner.png"
-              />
-            </div>
-            <div className="precio-producto-banner">
-              <h2 className="texto-Banner" name="texto-Banner">
-                VEGGIE SNACKS (Sabor tomate)
-              </h2>
-              <h2 name="precio-banner">A tan sólo $1.499</h2>
-            </div>
-          </div>
+          ))}
         </Slider>
       </Link>
     </div>

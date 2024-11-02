@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../Styles/Categorías/Categorias.css';
 import {
   Buscador,
@@ -15,10 +16,13 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 const LIMIT = 9;
 
 export const Categorias = () => {
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const { categoriaNombre } = useParams();
+  const navigate = useNavigate();
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
+    categoriaNombre || null,
+  ); // categoriaNombre para inicializar el estado
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [busqueda, setBusqueda] = useState('');
-
   // Debounced valor de busqueda
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
 
@@ -37,6 +41,18 @@ export const Categorias = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
+  useEffect(() => {
+    if (categoriaNombre && categorias.length > 0) {
+      const categoriaMatch = categorias.find(
+        (categoria) =>
+          categoria.nombre.toLowerCase() === categoriaNombre.toLowerCase(),
+      );
+      setCategoriaSeleccionada(
+        categoriaMatch ? categoriaMatch.categoria_id : null,
+      );
+    }
+  }, [categoriaNombre, categorias]);
+
   const handlePrevPage = () => {
     if (page > 0) {
       handlePageChange(page - 1);
@@ -54,19 +70,27 @@ export const Categorias = () => {
       <Buscador setBusqueda={setBusqueda} />
       <CategoriaFiltro
         categorias={categorias}
-        setCategoriaSeleccionada={setCategoriaSeleccionada}
+        setCategoriaSeleccionada={(id) => {
+          setCategoriaSeleccionada(id);
+          const categoriaUrl = categorias
+            .find((cat) => cat.categoria_id === id)
+            ?.nombre.toLowerCase()
+            .replace(/\s+/g, '-');
+          if (categoriaUrl) navigate(`/categorias/${categoriaUrl}`);
+          setMenuAbierto(false);
+        }}
         menuAbierto={menuAbierto}
         setMenuAbierto={setMenuAbierto}
       />
       <div className="container-productos-categorias">
         {loading ? (
           <section class="dots-container-inicio">
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-        </section>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+            <div class="dot-inicio"></div>
+          </section>
         ) : error ? (
           <p>{error}</p>
         ) : products.length > 0 ? (

@@ -45,8 +45,6 @@ export const Inicio = () => {
     }
   };
 
-  //TODO: Agregar funcionalidad carrito de compras
-
   return (
     <div className="conteiner-general-inicio">
       {/* Banner Carrusel */}

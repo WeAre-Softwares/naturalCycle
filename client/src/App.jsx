@@ -79,9 +79,11 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/password" element={<OlvideContraseña />} />
           <Route path="/categorias" element={<Categorias />} />
+          <Route path="/categorias/:categoriaNombre" element={<Categorias />} />
           <Route path="/about" element={<About />} />
           <Route path="/promociones" element={<Promociones />} />
           <Route path="/marcas" element={<Marcas />} />
+          <Route path="/marcas/:marcaNombre" element={<Marcas />} />
           <Route path="/nuevos-ingresos" element={<NuevoIngreso />} />
           <Route path="/producto/:id" element={<ProductDetails />} />
           {/* 
