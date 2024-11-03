@@ -9,14 +9,17 @@
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   z-index: 1000;
-  transform: translateX(100%); /* Oculto inicialmente fuera de la pantalla */
-  transition: transform 0.5s ease-in-out; /* Transición más suave */
+  transform: translateX(100%);
+  /* Oculto inicialmente fuera de la pantalla */
+  transition: transform 0.5s ease-in-out;
+  /* Transición más suave */
   display: flex;
   flex-direction: column;
 }
 
 .carrito-open {
-  transform: translateX(0); /* Aparece desde la derecha */
+  transform: translateX(0);
+  /* Aparece desde la derecha */
 }
 
 .header-carrito {
@@ -93,7 +96,8 @@
 }
 
 .btn-iniciar-compra {
-  background-color: #4CAF50; /* Color verde más vibrante */
+  background-color: #4CAF50;
+  /* Color verde más vibrante */
   color: white;
   width: 100%;
   padding: 15px;
@@ -103,21 +107,22 @@
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 10px;
-  border: none; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  transition: background-color 0.3s, transform 0.2s; 
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 
 .btn-iniciar-compra:hover {
-  background-color: #45a049; 
-  transform: translateY(-2px); 
+  background-color: #45a049;
+  transform: translateY(-2px);
 }
 
 /* Efecto al hacer clic */
 .btn-iniciar-compra:active {
-  transform: translateY(0); /* Regresa a la posición original */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  transform: translateY(0);
+  /* Regresa a la posición original */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btn-ver-productos {
@@ -135,11 +140,13 @@
 @media (max-width: 768px) {
   .carrito-container {
     width: 100%;
-    right: -100%; /* Oculto fuera de la pantalla completamente */
+    right: -100%;
+    /* Oculto fuera de la pantalla completamente */
   }
 
   .carrito-open {
-    right: 0; /* Se despliega en móviles cubriendo toda la pantalla */
+    right: 0;
+    /* Se despliega en móviles cubriendo toda la pantalla */
   }
 
   .img-producto-carrito {
@@ -169,7 +176,8 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .carrito-container {
     width: 350px;
-    right: -350px; /* Oculto fuera de la pantalla */
+    right: -350px;
+    /* Oculto fuera de la pantalla */
   }
 
   .carrito-open {
@@ -222,4 +230,52 @@
   padding: 20px;
   font-size: 1.2em;
   color: #666;
+}
+
+
+/* SWEETALERT2 */
+/* Estilos del contenedor */
+.custom-alert-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  /* Añade un espacio entre los elementos internos */
+}
+
+.swal2-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  /* Espacio entre los botones */
+}
+
+/* Estilos del botón de confirmación */
+.custom-confirm-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Estilos del botón de cancelación */
+.custom-cancel-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Efecto hover */
+.custom-confirm-button:hover,
+.custom-cancel-button:hover {
+  opacity: 0.9;
 }

@@ -51,7 +51,7 @@ export const UsuarioDetalleCard = ({
                 : 'estado-inactivo'
             }
           >
-            {usuarioSeleccionado.esta_activo === true ? 'Activo' : 'Inactivo'}
+            {usuarioSeleccionado.esta_activo === true ? 'Si' : 'No'}
           </span>
         </div>
         <div className="usuario-detalle-row">

@@ -44,7 +44,7 @@ export const ProductosDestacadosItem = ({ producto }) => {
             </span>
             <br />
             <h2 className="precio-producto-card">
-              $ {Number(producto.precio).toLocaleString()}
+              ${Number(producto.precio).toLocaleString()}
             </h2>
           </>
         )}

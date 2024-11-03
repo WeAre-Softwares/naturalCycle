@@ -6,6 +6,7 @@ import '../Styles/Header/Cart.css';
 import { crearPedido } from '../services/pedidos-service/crear-pedido';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 export const CartButton = () => {
   const { user } = useAuthStore(); // Obtén el usuario desde el estado global
@@ -19,6 +20,7 @@ export const CartButton = () => {
     decrementQuantity,
     getTotalPrice,
     getTotalProducts,
+    clearCart,
   } = useCartStore();
 
   const toggleCart = () => {
@@ -37,32 +39,62 @@ export const CartButton = () => {
       precio_unitario: Number(item.precio),
     }));
 
-    try {
-      const pedido = await crearPedido(detalles, usuarioId);
-      console.log('Pedido creado con éxito:', pedido);
-      // Navega o muestra un mensaje de confirmación
-      toast.success(
-        '¡Pedido confirmado! Te contactaremos pronto para coordinar el pago y finalizar tu compra. Revisa tu correo para más detalles.',
-        {
-          position: 'top-center',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        },
-      );
+    // Configuración de SweetAlert para la confirmación
+    const customAlert = Swal.mixin({
+      customClass: {
+        confirmButton: 'custom-confirm-button',
+        cancelButton: 'custom-cancel-button',
+        popup: 'custom-alert-container',
+      },
+      buttonsStyling: false,
+    });
 
-      //TODO: Crear otra seccón o mostrar alerta
-      setTimeout(() => {
-        closeCart();
-        navigate('/inicio');
-      }, 3000);
-    } catch (error) {
-      console.error('Error al crear el pedido:', error);
-    }
+    customAlert
+      .fire({
+        title: '¿Estás seguro?',
+        text: 'Confirma tu pedido para continuar.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, confirmar',
+        cancelButtonText: 'No, cancelar',
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await crearPedido(detalles, usuarioId);
+
+            toast.success(
+              '¡Pedido confirmado! Te contactaremos pronto para coordinar el pago y finalizar tu compra. Revisa tu correo para más detalles.',
+              {
+                position: 'top-center',
+                autoClose: 10000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+              },
+            );
+
+            clearCart(); // Vaciar el carrito después de confirmar el pedido
+
+            setTimeout(() => {
+              closeCart();
+              navigate('/inicio');
+            }, 3000);
+          } catch (error) {
+            console.error('Error al crear el pedido:', error);
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          customAlert.fire({
+            title: 'Cancelado',
+            text: 'Tu pedido no ha sido confirmado.',
+            icon: 'error',
+          });
+        }
+      });
   };
 
   return (
@@ -183,7 +215,7 @@ export const CartButton = () => {
                 className="btn-iniciar-compra"
                 onClick={handleIniciarCompra}
               >
-                Iniciar Compra
+                Realizar pedido
               </button>
               <button
                 className="btn-ver-productos"
