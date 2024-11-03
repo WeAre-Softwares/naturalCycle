@@ -4,6 +4,8 @@ import useCartStore from '../store/use-cart-store';
 import useAuthStore from '../store/use-auth-store';
 import '../Styles/Header/Cart.css';
 import { crearPedido } from '../services/pedidos-service/crear-pedido';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const CartButton = () => {
   const { user } = useAuthStore(); // Obtén el usuario desde el estado global
@@ -39,9 +41,25 @@ export const CartButton = () => {
       const pedido = await crearPedido(detalles, usuarioId);
       console.log('Pedido creado con éxito:', pedido);
       // Navega o muestra un mensaje de confirmación
-      closeCart();
+      toast.success(
+        '¡Pedido confirmado! Te contactaremos pronto para coordinar el pago y finalizar tu compra. Revisa tu correo para más detalles.',
+        {
+          position: 'top-center',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        },
+      );
+
       //TODO: Crear otra seccón o mostrar alerta
-      // navigate('/pedido-exito');
+      setTimeout(() => {
+        closeCart();
+        navigate('/inicio');
+      }, 3000);
     } catch (error) {
       console.error('Error al crear el pedido:', error);
     }
@@ -49,6 +67,7 @@ export const CartButton = () => {
 
   return (
     <div className="cart-container">
+      <ToastContainer />
       <button
         data-quantity={getTotalProducts()}
         className="btn-cart"

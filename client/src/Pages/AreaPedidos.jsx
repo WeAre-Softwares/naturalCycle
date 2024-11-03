@@ -1,135 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import '../Styles/Panel/styles.css';
 import { MenuLateralPanel } from '../Components/MenuLateralPanel';
+import { useGetAllPedidosWithPagination } from '../hooks/hooks-pedido/useGetAllPedidosWithPagination';
+import { Pagination } from '../Components/panel-productos/Pagination';
+import { PedidoItem } from '../Components/pedidos-ui/PedidoItem';
 
-const pedidosIniciales = [
-  {
-    id: 1,
-    estado: 'Esperando aprobación',
-    fecha: '2024-10-01',
-    cliente: 'Juan Pérez',
-    productos: [
-      { nombre: 'Producto A', cantidad: 1, precio: 150 },
-      { nombre: 'Producto B', cantidad: 2, precio: 300 },
-    ],
-  },
-  {
-    id: 2,
-    estado: 'Esperando aprobación',
-    fecha: '2024-10-02',
-    cliente: 'Ana López',
-    productos: [{ nombre: 'Producto C', cantidad: 1, precio: 200 }],
-  },
-  {
-    id: 3,
-    estado: 'Esperando aprobación',
-    fecha: '2024-10-03',
-    cliente: 'Carlos García',
-    productos: [
-      { nombre: 'Producto D', cantidad: 1, precio: 250 },
-      { nombre: 'Producto E', cantidad: 3, precio: 450 },
-    ],
-  },
-];
-
-const estadosDisponibles = ['Esperando aprobación', 'Aprobado', 'Enviado', 'Recibido'];
+const colorEstado = {
+  esperando_aprobacion: '#D6A900',
+  aprobado: 'rgb(111, 148, 89)',
+  enviado: '#2A6A29',
+  recibido: '#00ff51',
+};
 
 export const AreaPedidos = () => {
+  const limit = 3;
   const [estadoFiltro, setEstadoFiltro] = useState('');
-  const [pedidos, setPedidos] = useState(pedidosIniciales);
-  const [pedidoEditando, setPedidoEditando] = useState(null);
-
-  useEffect(() => {
-    const pedidosGuardados = pedidos.map((pedido) => {
-      const estadoGuardado = localStorage.getItem(`pedido-estado-${pedido.id}`);
-      const cantidadesGuardadas = JSON.parse(localStorage.getItem(`pedido-cantidades-${pedido.id}`)) || {};
-
-      const productosConCantidadGuardada = pedido.productos.map((producto) => ({
-        ...producto,
-        cantidad: cantidadesGuardadas[producto.nombre] || producto.cantidad,
-      }));
-
-      return {
-        ...pedido,
-        estado: estadoGuardado || 'Esperando aprobación',
-        productos: productosConCantidadGuardada,
-      };
-    });
-    setPedidos(pedidosGuardados);
-  }, []);
-
-  const cambiarEstado = (id, nuevoEstado) => {
-    const nuevosPedidos = pedidos.map((pedido) =>
-      pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido
-    );
-    setPedidos(nuevosPedidos);
-    localStorage.setItem(`pedido-estado-${id}`, nuevoEstado);
-  };
-
-  const editarCantidadProducto = (pedidoId, productoIndex, nuevaCantidad) => {
-    const nuevosPedidos = pedidos.map((pedido) => {
-      if (pedido.id === pedidoId) {
-        const nuevosProductos = pedido.productos.map((producto, index) => {
-          if (index === productoIndex) {
-            return { ...producto, cantidad: nuevaCantidad };
-          }
-          return producto;
-        });
-        const cantidadesGuardadas = JSON.parse(localStorage.getItem(`pedido-cantidades-${pedidoId}`)) || {};
-        cantidadesGuardadas[pedido.productos[productoIndex].nombre] = nuevaCantidad;
-        localStorage.setItem(`pedido-cantidades-${pedidoId}`, JSON.stringify(cantidadesGuardadas));
-
-        return { ...pedido, productos: nuevosProductos };
-      }
-      return pedido;
-    });
-    setPedidos(nuevosPedidos);
-  };
-
-  const eliminarProducto = (pedidoId, productoIndex) => {
-    const nuevosPedidos = pedidos.map((pedido) => {
-      if (pedido.id === pedidoId) {
-        const nuevosProductos = pedido.productos.filter((_, index) => index !== productoIndex);
-        return { ...pedido, productos: nuevosProductos };
-      }
-      return pedido;
-    });
-    setPedidos(nuevosPedidos);
-  };
+  const {
+    pedidos,
+    loading,
+    error,
+    currentPage,
+    nextPage,
+    prevPage,
+    totalPages,
+  } = useGetAllPedidosWithPagination(limit);
 
   const filtrarPedidos = () => {
     if (!estadoFiltro) return pedidos;
-    return pedidos.filter((pedido) => pedido.estado === estadoFiltro);
+    return pedidos.filter((pedido) => pedido.estado_pedido === estadoFiltro);
   };
 
-  const imprimirRemito = (id) => {
-    console.log(`Imprimiendo remito para el pedido ${id}`);
+  const cambiarEstado = (id, nuevoEstado) => {
+    console.log(`Cambiando estado del pedido ${id} a ${nuevoEstado}`);
+    // Aquí puedes implementar el servicio para cambiar el estado en el futuro
   };
 
-  const colorEstado = {
-    'Esperando aprobación': '#D6A900',
-    Aprobado: 'rgb(111, 148, 89)',
-    Enviado: '#2A6A29',
-    Recibido: '#00ff51',
-  };
-
-  const habilitarEdicion = (id) => {
-    setPedidoEditando(id);
-  };
-
-  const guardarEdicion = () => {
-    setPedidoEditando(null);
-  };
-
-  const calcularTotal = (productos) => {
-    return productos.reduce((total, producto) => total + producto.cantidad * producto.precio, 0);
-  };
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="div-general-categoria-panel">
-        <MenuLateralPanel />
-        <div className="area-pedidos">
+      <MenuLateralPanel />
+      <div className="area-pedidos">
         <h1 className="titulo-area">Área de Pedidos</h1>
 
         {/* Filtrado con menú desplegable */}
@@ -142,109 +54,34 @@ export const AreaPedidos = () => {
             className="filtro-select-panel"
           >
             <option value="">Todos los pedidos</option>
-            {estadosDisponibles.map((estado) => (
-              <option key={estado} value={estado}>
-                {estado}
-              </option>
-            ))}
+            {['esperando_aprobacion', 'aprobado', 'enviado', 'recibido'].map(
+              (estado) => (
+                <option key={estado} value={estado}>
+                  {estado.replace('_', ' ').toUpperCase()}
+                </option>
+              ),
+            )}
           </select>
         </div>
 
         <div className="lista-pedidos">
           {filtrarPedidos().map((pedido) => (
-            <div
-              key={pedido.id}
-              className="pedido-item-panel"
-              style={{
-                backgroundColor: colorEstado[pedido.estado],
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '10px',
-                alignItems: 'center',
-                marginBottom: '10px',
-              }}
-            >
-              <div className="pedido-detalles">
-                {/* Mostrar información solo si no se está editando */}
-                {pedidoEditando !== pedido.id && (
-                  <>
-                    <p>
-                      <strong>Total del Pedido:</strong> ${calcularTotal(pedido.productos)}
-                    </p>
-                    <p>
-                      <strong>Fecha:</strong> {pedido.fecha}
-                    </p>
-                    <p>
-                      <strong>Cliente:</strong> {pedido.cliente}
-                    </p>
-                  </>
-                )}
-                {pedidoEditando === pedido.id && (
-                  <div className="productos-pedido">
-                    <strong>Productos:</strong>
-                    {pedido.productos.map((producto, index) => (
-                      <div key={index} className="producto-item-panel-2">
-                        <p>
-                          {producto.nombre} X{producto.cantidad} unidades || Precio: ${producto.precio}
-                        </p>
-                        <div className="editar-cantidad">
-                          <button
-                            className="cantidad-boton"
-                            onClick={() => editarCantidadProducto(pedido.id, index, producto.cantidad + 1)}
-                          >
-                            +
-                          </button>
-                          <button
-                            className="cantidad-boton"
-                            onClick={() => editarCantidadProducto(pedido.id, index, Math.max(producto.cantidad - 1, 1))}
-                          >
-                            -
-                          </button>
-                          <button
-                            className="icono-boton-eliminar"
-                            onClick={() => eliminarProducto(pedido.id, index)}
-                            title="Eliminar Producto"
-                          >
-                            <i className="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                    <p>
-                      <strong>Total:</strong> ${calcularTotal(pedido.productos)}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="pedido-acciones">
-                {pedidoEditando === pedido.id ? (
-                  <button className="accion-boton" onClick={guardarEdicion}>
-                    Guardar
-                  </button>
-                ) : (
-                  <button className="icono-accion btn-editar-prod-panel" onClick={() => habilitarEdicion(pedido.id)}>
-                    <i className="fas fa-edit" title="Editar Cantidad"></i>
-                  </button>
-                )}
-                <button className="icono-accion" onClick={() => imprimirRemito(pedido.id)}>
-                  <i className="fas fa-print" title="Imprimir Remito"></i>
-                </button>
-                <select
-                  className="filtro-select-panel"
-                  value={pedido.estado}
-                  onChange={(e) => cambiarEstado(pedido.id, e.target.value)}
-                >
-                  {estadosDisponibles.map((estado) => (
-                    <option key={estado} value={estado}>
-                      {estado}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div key={pedido.pedido_id}>
+              <PedidoItem
+                pedido={pedido}
+                colorEstado={colorEstado[pedido.estado_pedido]} // Asigna el color basado en el estado
+                cambiarEstado={cambiarEstado}
+              />
             </div>
           ))}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNext={nextPage}
+          onPrev={prevPage}
+        />
       </div>
     </div>
   );

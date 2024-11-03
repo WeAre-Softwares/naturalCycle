@@ -46,7 +46,7 @@ export const BannerCarrusel = () => {
                   {producto.nombre}
                 </h2>
                 <h2 name="precio-banner">
-                  A tan sólo ${Math.round(Number(producto.precio))}
+                  A tan sólo ${Number(producto.precio).toLocaleString()}
                 </h2>
                 {/* Redondea el precio */}
               </div>

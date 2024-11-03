@@ -43,7 +43,9 @@ export const ProductosDestacadosItem = ({ producto }) => {
                 : 'Por Unidad'}
             </span>
             <br />
-            <h2 className="precio-producto-card">${producto.precio}</h2>
+            <h2 className="precio-producto-card">
+              $ {Number(producto.precio).toLocaleString()}
+            </h2>
           </>
         )}
 

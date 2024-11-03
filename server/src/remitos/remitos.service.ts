@@ -33,7 +33,11 @@ export class RemitosService {
     const pedido = await this.pedidoService.findOne(pedidoId);
 
     // 2. Verificar si el estado del pedido permite generar un remito
-    const estadosValidos = [EstadoPedido.aprobado, EstadoPedido.enviado];
+    const estadosValidos = [
+      EstadoPedido.aprobado,
+      EstadoPedido.enviado,
+      EstadoPedido.recibido,
+    ];
     if (!estadosValidos.includes(pedido.estado_pedido)) {
       throw new BadRequestException(
         `El pedido con ID ${pedidoId} no tiene un estado válido para generar un remito. Estado actual: ${pedido.estado_pedido}`,
