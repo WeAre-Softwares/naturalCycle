@@ -1,12 +1,12 @@
 import React from 'react';
-import { ProductosDestacadosItem } from '../home-ui/ProductosDestacadosItem';
+import { ProductosNuevosIngresosItem } from './ProductosNuevosIngresosItem';
 
 export const ProductosNuevosIngresosGrid = ({ productos }) => {
   return (
     <div className="seccion-prod-destacados">
       <div className="productos-destacados">
         {productos.map((producto) => (
-          <ProductosDestacadosItem
+          <ProductosNuevosIngresosItem
             key={producto.producto_id}
             producto={producto}
           />

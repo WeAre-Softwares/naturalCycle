@@ -1,12 +1,12 @@
 import React from 'react';
-import { ProductosDestacadosItem } from '../home-ui';
+import { ProductosPromocionesItem } from './ProductosPromocionesItem';
 
 export const CarruselProductosPromociones = ({ productos }) => {
   return (
     <div className="carrusel-promociones">
       <div className="productos-carrusel">
         {productos.map((producto) => (
-          <ProductosDestacadosItem
+          <ProductosPromocionesItem
             key={producto.producto_id}
             producto={producto}
           />
