@@ -34,7 +34,7 @@ export class CloudinaryController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
   @Post('upload')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Subir una imagen a una carpeta específica' })
   @ApiConsumes('multipart/form-data')
   @ApiQuery({
@@ -75,7 +75,7 @@ export class CloudinaryController {
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({
     summary: 'Obtener un archivo por su ID y carpeta específica',
   })
@@ -99,7 +99,7 @@ export class CloudinaryController {
   }
 
   @Delete(':id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Eliminar una imagen por su ID' })
   @ApiParam({
     name: 'id',

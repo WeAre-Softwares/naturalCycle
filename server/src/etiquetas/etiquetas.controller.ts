@@ -29,7 +29,7 @@ export class EtiquetasController {
 
   @Post()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Crear una nueva etiqueta' })
   create(
     @Body() createCategoriaDto: CreateEtiquetaDto,
@@ -76,7 +76,7 @@ export class EtiquetasController {
 
   @Get('/inactivos')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todas las etiquetas inactivas' })
   findAllInactive(
     @Query() paginationDto: PaginationDto,
@@ -93,7 +93,7 @@ export class EtiquetasController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Actualizar una etiqueta' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -104,7 +104,7 @@ export class EtiquetasController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar una etiqueta' })
   deactivate(
     @Param('id', ParseUUIDPipe) id: string,
@@ -114,7 +114,7 @@ export class EtiquetasController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar una etiqueta' })
   activate(
     @Param('id', ParseUUIDPipe) id: string,

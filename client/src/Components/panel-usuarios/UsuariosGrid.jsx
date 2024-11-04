@@ -6,6 +6,7 @@ export const UsuariosGrid = ({
   mostrarDetallesUsuario,
   darDeAltaUsuario,
   darDeBajaUsuario,
+  darRangoEmpleadoUsuario,
 }) => {
   if (usuarios.length === 0) {
     return <p>No se encontraron usuarios para los criterios seleccionados.</p>;
@@ -20,6 +21,7 @@ export const UsuariosGrid = ({
           mostrarDetallesUsuario={mostrarDetallesUsuario}
           darDeAltaUsuario={darDeAltaUsuario}
           darDeBajaUsuario={darDeBajaUsuario}
+          darRangoEmpleadoUsuario={darRangoEmpleadoUsuario}
         />
       ))}
     </div>

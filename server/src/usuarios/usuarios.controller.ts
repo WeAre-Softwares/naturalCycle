@@ -39,7 +39,7 @@ export class UsuariosController {
 
   @Get('search')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({
     summary: 'Buscar usuarios por término(nombre, apellido y dni)',
   })
@@ -71,7 +71,7 @@ export class UsuariosController {
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todos los usuarios' })
   async findAll(
     @Query() paginationDto: PaginationDto,
@@ -81,7 +81,7 @@ export class UsuariosController {
 
   @Get('/inactivos')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todas los usuarios inactivos' })
   findAllInactive(
     @Query() paginationDto: PaginationDto,
@@ -91,7 +91,7 @@ export class UsuariosController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar un usuario por id' })
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(id);
@@ -99,7 +99,7 @@ export class UsuariosController {
 
   @Patch('admin/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({
     summary: 'El administrador actualiza datos relevante al usuario',
   })
@@ -128,7 +128,7 @@ export class UsuariosController {
 
   @Patch('alta/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({
     summary: 'Dar de alta a un usuario.',
   })
@@ -140,7 +140,7 @@ export class UsuariosController {
 
   @Patch('baja/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({
     summary: 'Dar de baja a un usuario.',
   })
@@ -150,9 +150,22 @@ export class UsuariosController {
     return this.usuariosService.darDeBajaUsuario(id);
   }
 
-  @Delete(':id')
+  // !Solo el admin puede ejecutar este servicio
+  @Patch('rol-empleado/:id')
   @ApiBearerAuth()
   @Auth('admin')
+  @ApiOperation({
+    summary: 'Dar rol de empleado a un usuario.',
+  })
+  async darRolEmpleado(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Partial<Usuario>> {
+    return this.usuariosService.darRolEmpleado(id);
+  }
+
+  @Delete(':id')
+  @ApiBearerAuth()
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar un usuario' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -162,7 +175,7 @@ export class UsuariosController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar un usuario' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

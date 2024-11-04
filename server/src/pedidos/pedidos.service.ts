@@ -161,6 +161,43 @@ export class PedidosService {
     }
   }
 
+  async findPedidosByEstado(
+    estado_pedido: EstadoPedido,
+    paginationDto: PaginationDto,
+  ) {
+    const { limit = 10, offset = 0 } = paginationDto;
+
+    try {
+      const [pedidos, total] = await this.pedidoRepository.findAndCount({
+        where: { esta_activo: true, estado_pedido },
+        relations: {
+          usuario: true,
+        },
+        select: {
+          usuario: {
+            nombre: true,
+            apellido: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      return {
+        pedidos,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al filtrar los pedidos',
+        error,
+      );
+    }
+  }
+
   async findOne(id: string): Promise<Pedido> {
     try {
       const pedido = await this.pedidoRepository.findOne({
@@ -338,6 +375,47 @@ export class PedidosService {
       this.logger.error(error);
       throw new InternalServerErrorException(
         'Error al actualizar el pedido',
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updateEstado(
+    id: string,
+    nuevoEstado: EstadoPedido,
+  ): Promise<PedidoInterface> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 1. Obtener el pedido existente
+      const pedido = await this.findOne(id);
+
+      if (!pedido) {
+        throw new NotFoundException(`Pedido con ID ${id} no encontrado`);
+      }
+
+      // 2. Validar el nuevo estado
+      if (!Object.values(EstadoPedido).includes(nuevoEstado)) {
+        throw new BadRequestException(`Estado ${nuevoEstado} no es válido`);
+      }
+
+      // 3. Actualizar el estado del pedido
+      pedido.estado_pedido = nuevoEstado;
+      await queryRunner.manager.save(Pedido, pedido);
+
+      // 4. Confirmar la transacción
+      await queryRunner.commitTransaction();
+
+      return pedido;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al actualizar el estado del pedido',
         error,
       );
     } finally {

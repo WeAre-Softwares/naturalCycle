@@ -8,7 +8,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Not, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Usuario } from './entities/usuario.entity';
 import {
@@ -80,23 +80,30 @@ export class UsuariosService {
   async findAll(paginationDto: PaginationDto): Promise<FindAllUsersResponse> {
     const { limit = 5, offset = 0 } = paginationDto;
     try {
-      const [usuarios, total] = await this.usuarioRepository.findAndCount({
-        where: { esta_activo: true },
-        select: {
-          usuario_id: true,
-          nombre: true,
-          apellido: true,
-          dni: true,
-          nombre_comercio: true,
-          dom_fiscal: true,
-          email: true,
-          esta_activo: true,
-          roles: true,
-          dado_de_alta: true,
-        },
-        take: limit,
-        skip: offset,
-      });
+      const queryBuilder = this.usuarioRepository.createQueryBuilder('usuario');
+      // se excluyen los usuarios con el rol admin en el resultado de la consulta
+      queryBuilder
+        .where('usuario.esta_activo = :estaActivo', { estaActivo: true })
+        .andWhere(':adminRole != ANY(usuario.roles)', {
+          adminRole: RolesUsuario.admin,
+        })
+        .select([
+          'usuario.usuario_id',
+          'usuario.nombre',
+          'usuario.apellido',
+          'usuario.dni',
+          'usuario.telefono',
+          'usuario.nombre_comercio',
+          'usuario.dom_fiscal',
+          'usuario.email',
+          'usuario.esta_activo',
+          'usuario.roles',
+          'usuario.dado_de_alta',
+        ])
+        .take(limit)
+        .skip(offset);
+
+      const [usuarios, total] = await queryBuilder.getManyAndCount();
 
       return {
         usuarios,
@@ -587,6 +594,42 @@ export class UsuariosService {
       this.logger.error(error);
       throw new InternalServerErrorException(
         `Error al dar de baja al usuario con ID ${usuario.usuario_id}.`,
+        error,
+      );
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async darRolEmpleado(id: string): Promise<Partial<Usuario>> {
+    const usuario = await this.findOne(id, false);
+
+    usuario.esta_activo = true;
+    usuario.dado_de_alta = true;
+    usuario.roles = [RolesUsuario.empleado];
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save(usuario);
+      await queryRunner.commitTransaction();
+
+      return {
+        usuario_id: usuario.usuario_id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        esta_activo: usuario.esta_activo,
+        dado_de_alta: usuario.dado_de_alta,
+        roles: usuario.roles,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        `Error al darle rol empleado al usuario con ID ${usuario.usuario_id}.`,
         error,
       );
     } finally {

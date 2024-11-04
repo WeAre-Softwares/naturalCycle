@@ -38,7 +38,7 @@ export class ProductosController {
 
   @Post()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Crear un nuevo producto' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -91,7 +91,7 @@ export class ProductosController {
 
   @Get('/inactivos')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todas los productos inactivos' })
   findAllInactive(
     @Query() paginationDto: PaginationDto,
@@ -155,7 +155,7 @@ export class ProductosController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Actualizar un producto' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -173,7 +173,7 @@ export class ProductosController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar un producto' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -183,7 +183,7 @@ export class ProductosController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar un producto' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

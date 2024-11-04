@@ -22,7 +22,7 @@ export class RemitosController {
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todos los remitos' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -32,7 +32,7 @@ export class RemitosController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar un remito por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Remito> {
     return this.remitosService.findOne(id);
@@ -40,7 +40,7 @@ export class RemitosController {
 
   @Get('pdf/download')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   async downloadPDF(
     @Query('pedidoId') pedidoId: string,
     @Res() res: Response,

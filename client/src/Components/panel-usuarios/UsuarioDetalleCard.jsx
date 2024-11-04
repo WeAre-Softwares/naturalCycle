@@ -9,13 +9,16 @@ export const UsuarioDetalleCard = ({
       <h2 className="usuario-detalle-title">Detalles del Usuario</h2>
       <div className="usuario-detalle-info">
         <div className="usuario-detalle-row">
-          <strong>Nombre:</strong>{' '}
+          <strong>Nombre Completo:</strong>{' '}
           <span>
             {usuarioSeleccionado.nombre} {usuarioSeleccionado.apellido}
           </span>
         </div>
         <div className="usuario-detalle-row">
           <strong>DNI:</strong> <span>{usuarioSeleccionado.dni}</span>
+        </div>
+        <div className="usuario-detalle-row">
+          <strong>Teléfono:</strong> <span>{usuarioSeleccionado.telefono}</span>
         </div>
         <div className="usuario-detalle-row">
           <strong>Nombre del Comercio:</strong>{' '}

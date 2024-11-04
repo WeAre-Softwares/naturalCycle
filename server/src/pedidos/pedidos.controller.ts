@@ -22,6 +22,7 @@ import { Auth, GetUser } from '../auth/decorators';
 import { CreatePedidoDto, UpdatePedidoDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { PedidoInterface, GetPedidosResponse } from './interfaces';
+import type { EstadoPedido } from './types/estado-pedido.enum';
 
 @ApiTags('Pedidos')
 @ApiBearerAuth()
@@ -31,7 +32,7 @@ export class PedidosController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un pedido' })
-  @Auth() // Para crear un pedido tiene que esta autenticado
+  @Auth() // Para crear un pedido tiene que estar autenticado
   create(
     @Body() createPedidoDto: CreatePedidoDto,
     @GetUser() usuario: Usuario,
@@ -40,7 +41,7 @@ export class PedidosController {
   }
 
   @Get('search')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar pedidos por término' })
   @ApiQuery({
     name: 'term',
@@ -63,22 +64,31 @@ export class PedidosController {
     return this.pedidosService.findAllByTerm(searchWithPaginationDto);
   }
 
+  @Get(':estado')
+  @Auth('admin', 'empleado')
+  async findPedidosByEstado(
+    @Param('estado') estado: EstadoPedido,
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetPedidosResponse> {
+    return this.pedidosService.findPedidosByEstado(estado, paginationDto);
+  }
+
   @Get()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todos los pedidos' })
   findAll(@Query() paginationDto: PaginationDto): Promise<GetPedidosResponse> {
     return this.pedidosService.findAll(paginationDto);
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<PedidoInterface> {
     return this.pedidosService.findOne(id);
   }
 
   @Patch(':id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Actualizar un pedido' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -87,8 +97,17 @@ export class PedidosController {
     return this.pedidosService.update(id, updatePedidoDto);
   }
 
+  @Patch(':id/estado')
+  @Auth('admin', 'empleado')
+  async updateEstadoPedido(
+    @Param('id') id: string,
+    @Body() estadoDto: { estado_pedido: EstadoPedido },
+  ): Promise<PedidoInterface> {
+    return this.pedidosService.updateEstado(id, estadoDto.estado_pedido);
+  }
+
   @Delete(':id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar un pedido' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -97,7 +116,7 @@ export class PedidosController {
   }
 
   @Patch('activate/:id')
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar un pedido' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

@@ -34,7 +34,7 @@ export class MarcasController {
 
   @Post()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Crear una nueva marca' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -86,7 +86,7 @@ export class MarcasController {
 
   @Get('/inactivos')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todas las marcas inactivas' })
   findAllInactive(
     @Query() paginationDto: PaginationDto,
@@ -112,7 +112,7 @@ export class MarcasController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Actualizar una marca' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -130,7 +130,7 @@ export class MarcasController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar una marca' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -140,7 +140,7 @@ export class MarcasController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar una marca' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

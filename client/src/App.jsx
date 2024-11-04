@@ -122,31 +122,37 @@ function App() {
             path="/panel-filtrado"
             element={<PrivateRoute element={PanelFiltrados} />}
           />
-          <Route path="/" element={<PanelFiltrados />} />
-          <Route path="/crear-marca" element={<FormularioCrearMarca />} />
+          <Route path="/" element={<PrivateRoute element={PanelFiltrados} />} />
           <Route
-            path="/crear-categoria"
-            element={<FormularioCrearCategoria />}
+            path="/crear-marca"
+            element={<PrivateRoute element={FormularioCrearMarca} />}
           />
-          <Route path="/crear-etiqueta" element={<FormularioCrearEtiqueta />} />
           <Route
             path="/crear-categoria"
-            element={<FormularioCrearCategoria />}
+            element={<PrivateRoute element={FormularioCrearCategoria} />}
+          />
+          <Route
+            path="/crear-etiqueta"
+            element={<PrivateRoute element={FormularioCrearEtiqueta} />}
+          />
+          <Route
+            path="/crear-categoria"
+            element={<PrivateRoute element={FormularioCrearCategoria} />}
           />
 
           <Route
             path="/actualizar-marca/:marca_id"
-            element={<FormularioActualizarMarca />}
+            element={<PrivateRoute element={FormularioActualizarMarca} />}
           />
 
           <Route
             path="/actualizar-etiqueta/:etiqueta_id"
-            element={<FormularioActualizarEtiqueta />}
+            element={<PrivateRoute element={FormularioActualizarEtiqueta} />}
           />
 
           <Route
             path="/actualizar-categoria/:categoria_id"
-            element={<FormularioActualizarCategoria />}
+            element={<PrivateRoute element={FormularioActualizarCategoria} />}
           />
 
           {/* Ruta para manejar 404 */}

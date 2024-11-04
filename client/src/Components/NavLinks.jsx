@@ -8,12 +8,14 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
   const getRoles = useAuthStore((state) => state.getRoles);
   const navigate = useNavigate();
 
-  // Verificar si el usuario tiene el rol 'admin'
-  const isAdmin = getRoles().includes('admin');
+  // Verificar si el usuario tiene el rol 'admin' o 'empleado'
+  const hasAccess =
+    isAuthenticated() &&
+    (getRoles().includes('admin') || getRoles().includes('empleado'));
 
   const handleLogout = () => {
     logout();
-    navigate('/Inicio');
+    navigate('/inicio');
   };
 
   return (
@@ -59,7 +61,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
         </li>
         {isAuthenticated() ? (
           <>
-            {isAdmin && ( // Solo mostrar para administradores
+            {hasAccess && ( // Solo mostrar para administradores
               <li>
                 <Link to="/panel-principal" onClick={toggleMenu}>
                   Panel Administrador

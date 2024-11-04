@@ -23,7 +23,7 @@ export class DetallesPedidosController {
 
   @Get()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todos los detalles pedidos' })
   findAll(
     @Query() paginationDto: PaginationDto,
@@ -33,7 +33,7 @@ export class DetallesPedidosController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar detalle pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido> {
     return this.detallesPedidosService.findOne(id);
@@ -41,7 +41,7 @@ export class DetallesPedidosController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar un detalle pedido' })
   deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;
@@ -51,7 +51,7 @@ export class DetallesPedidosController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar un detalle pedido' })
   activate(@Param('id', ParseUUIDPipe) id: string): Promise<{
     mensaje: string;

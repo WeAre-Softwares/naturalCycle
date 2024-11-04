@@ -28,7 +28,7 @@ export class CategoriasController {
 
   @Post()
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Crear una nueva categoría' })
   create(
     @Body() createCategoriaDto: CreateCategoriaDto,
@@ -75,7 +75,7 @@ export class CategoriasController {
 
   @Get('/inactivos')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar todas las categorías inactivas' })
   findAllInactive(
     @Query() paginationDto: PaginationDto,
@@ -92,7 +92,7 @@ export class CategoriasController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Actualizar una categoría' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -103,7 +103,7 @@ export class CategoriasController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Desactivar una categoría' })
   deactivate(
     @Param('id', ParseUUIDPipe) id: string,
@@ -113,7 +113,7 @@ export class CategoriasController {
 
   @Patch('activate/:id')
   @ApiBearerAuth()
-  @Auth('admin')
+  @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Activar una categoría' })
   activate(
     @Param('id', ParseUUIDPipe) id: string,

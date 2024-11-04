@@ -8,6 +8,7 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { UsuarioDetalleCard } from '../Components/panel-usuarios/UsuarioDetalleCard';
 import { useDarDeAltaUsuario } from '../hooks/hooks-users/useDarDeAltaUsuario';
 import { useDarDeBajaUsuario } from '../hooks/hooks-users/useDarDeBajaUsuario';
+import { useDarRangoEmpleadoUsuario } from '../hooks/hooks-users/useDarRangoEmpleadoUsuario';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,6 +23,8 @@ export const AreaUsuarios = () => {
   const { darDeAltaUsuario, loading: loadingAlta } = useDarDeAltaUsuario();
   // Hook para desactivar usuarios
   const { darDeBajaUsuario, loading: loadingBaja } = useDarDeBajaUsuario();
+  const { darRangoEmpleadoUsuario, loading: loadingEmpleado } =
+    useDarRangoEmpleadoUsuario();
 
   // Aplica debounce al searchTerm con un retraso de 600 ms
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 600);
@@ -79,6 +82,7 @@ export const AreaUsuarios = () => {
               mostrarDetallesUsuario={handleUsuarioClick}
               darDeAltaUsuario={darDeAltaUsuario}
               darDeBajaUsuario={darDeBajaUsuario}
+              darRangoEmpleadoUsuario={darRangoEmpleadoUsuario}
             />
 
             {usuarioSeleccionado && (
