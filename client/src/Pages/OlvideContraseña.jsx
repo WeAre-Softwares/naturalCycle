@@ -79,11 +79,6 @@ export const OlvideContraseña = () => {
           <button className="olvide-contraseña-form-submit-btn" type="submit">
             Enviar
           </button>
-          {errorMessage && (
-            <div style={{ color: 'red' }} className="error-message">
-              {errorMessage}
-            </div>
-          )}{' '}
         </form>
 
         <p className="olvide-contraseña-signup-link">
@@ -91,12 +86,17 @@ export const OlvideContraseña = () => {
           <Link
             to="/register"
             className="olvide-contraseña-signup-link olvide-contraseña-link"
-          >
+            >
             {' '}
             Registrarme
           </Link>
         </p>
       </div>
+      {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      )}{' '}
     </div>
   );
 };

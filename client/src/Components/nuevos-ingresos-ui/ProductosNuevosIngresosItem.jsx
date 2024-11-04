@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/use-cart-store';
 import useAuthStore from '../../store/use-auth-store';
 import { allowedRoles } from '../../constants/allowed-roles';
+import { NewLogo } from '../New-logo';
 
 export const ProductosNuevosIngresosItem = ({ producto }) => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
 
   return (
     <div className="card-producto">
+
+      <NewLogo></NewLogo>
       <div className="info-producto-card">
         <img
           name={`img-producto-card-${producto.producto_id}`}

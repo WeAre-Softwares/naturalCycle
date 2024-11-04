@@ -66,6 +66,9 @@ export const RegisterForm = () => {
         'Hubo un error en al registrarse. Intente nuevamente más tarde.',
       );
     }
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 5000);
   };
 
   return (
@@ -146,14 +149,14 @@ export const RegisterForm = () => {
           required
         />
         <FormButton buttonText="Enviar solicitud" />
-        {errorMessage && (
-          <div style={{ color: 'red' }} className="error-message">
-            {errorMessage}
-          </div>
-        )}{' '}
-        {/* Mostrar el error si existe */}
         <RegisterLink />
       </form>
+        {/* Mostrar el error si existe */}
+        {errorMessage && (
+          <div className="error-message">
+            <p>{errorMessage}</p>
+          </div>
+        )}{' '}
     </RegisterFormContainer>
   );
 };

@@ -4,7 +4,6 @@ import { IntroNuevosProductos } from '../Components/nuevos-ingresos-ui/IntroNuev
 import { PaginationControls } from '../Components/PaginationControls';
 import { ProductosNuevosIngresosGrid } from '../Components/nuevos-ingresos-ui/ProductosNuevosIngresosGrid';
 import { useGetAllNewArrivalProducts } from '../hooks/hooks-product/useGetAllNewArrivalProducts';
-import { NewLogo } from '../Components/New-logo';
 
 export const NuevoIngreso = () => {
   const [page, setPage] = useState(1);
@@ -28,7 +27,6 @@ export const NuevoIngreso = () => {
 
   return (
     <div className="div-general-nuevos-ingresos">
-      <NewLogo></NewLogo>
 
       <IntroNuevosProductos />
 

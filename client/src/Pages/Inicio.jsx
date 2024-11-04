@@ -13,6 +13,7 @@ import {
 import { useGetAllMarcasDestacadas } from '../hooks/hooks-brand/useGetAllMarcasDestacadas';
 import { useGetAllProductosDestacados } from '../hooks/hooks-product/useGetAllProductosDestacados';
 import { Pagination } from '../Components/panel-productos/Pagination';
+import { NewLogo } from '../Components/New-logo';
 
 export const Inicio = () => {
   const limitMarcas = 12;

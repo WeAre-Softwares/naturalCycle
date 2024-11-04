@@ -43,9 +43,11 @@ export const ProductosPromocionesItem = ({ producto }) => {
                 : 'Por Unidad'}
             </span>
             <br />
+            <div className="precios-promo">
+            <h2 className=' precio-producto-card precio-viejo-promo'>$2500</h2> {/*Precio viejo estático */}
             <h2 className="precio-producto-card">
               ${Number(producto.precio).toLocaleString()}
-            </h2>
+            </h2></div>
           </>
         )}
 
