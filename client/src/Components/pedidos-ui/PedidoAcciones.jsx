@@ -11,9 +11,9 @@ export const PedidoAcciones = ({
 
   return (
     <div className="pedido-acciones">
-      <Link to={`/editar-pedido/${pedido.pedido_id}`} className="icono-accion">
+      {/* <Link to={`/editar-pedido/${pedido.pedido_id}`} className="icono-accion">
         <i className="fas fa-edit" title="Editar Pedido"></i>
-      </Link>
+      </Link> */}
       <button
         className="icono-accion"
         onClick={() => downloadRemito(pedido.pedido_id)}

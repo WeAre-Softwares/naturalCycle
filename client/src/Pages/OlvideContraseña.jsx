@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PasswordResetSchema } from '../schemas';
 import '../Styles/Olvide Contraseña/OlvideContraseña.css';
-import { RequestResetPasswordService } from '../services/requestResetPasswordService';
+import { requestResetPasswordService } from '../services/requestResetPasswordService';
 
 export const OlvideContraseña = () => {
   const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
@@ -21,11 +21,11 @@ export const OlvideContraseña = () => {
 
   const onSubmit = async (data) => {
     try {
-      await RequestResetPasswordService(data.email);
+      await requestResetPasswordService(data.email);
 
       // Verifica que la respuesta tenga un indicativo de éxito
       // Limpia el mensaje de error
-      // setErrorMessage('');
+      setErrorMessage('');
       toast.success(
         'Si este correo está registrado, recibirás un enlace de recuperación.',
         {
@@ -41,8 +41,8 @@ export const OlvideContraseña = () => {
       );
 
       setTimeout(() => {
-        navigate('/Inicio');
-      }, 8000);
+        navigate('/inicio');
+      }, 7000);
     } catch (error) {
       const errorMsg = error.message || 'Error inesperado. Intenta nuevamente.';
       setErrorMessage(errorMsg);
@@ -86,7 +86,7 @@ export const OlvideContraseña = () => {
           <Link
             to="/register"
             className="olvide-contraseña-signup-link olvide-contraseña-link"
-            >
+          >
             {' '}
             Registrarme
           </Link>

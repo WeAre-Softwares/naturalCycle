@@ -11,8 +11,8 @@ export class MailsService {
     usuario: Partial<Usuario>,
     token: string,
   ): Promise<void> {
-    // const recoveryUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-    const url = `${process.env.BACKEND_URL}/auth/reset-password?token=${token}`;
+    // const url = `${process.env.BACKEND_URL}/auth/reset-password?token=${token}`;
+    const url = `${process.env.FRONTEND_URL}restablecer-password?token=${token}`;
 
     await this.mailerService.sendMail({
       to: usuario.email,

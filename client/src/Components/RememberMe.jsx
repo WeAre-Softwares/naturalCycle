@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Importar Link desde react-router-dom
+import { Link } from 'react-router-dom';
 
 export const RememberMe = ({ toggleMenu }) => {
-  // Asegúrate de recibir toggleMenu como prop si es necesario
   return (
     <div className="flex-row-login">
       <div>
@@ -10,7 +9,7 @@ export const RememberMe = ({ toggleMenu }) => {
         <label> Recordar</label>
       </div>
       <span className="span-login">
-        <Link to="/password" onClick={toggleMenu}>
+        <Link to="/olvide-password" onClick={toggleMenu}>
           Olvidaste tu contraseña?
         </Link>
       </span>

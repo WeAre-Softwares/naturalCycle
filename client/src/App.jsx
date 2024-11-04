@@ -28,6 +28,7 @@ import {
   ProductDetails,
   Promociones,
   RegisterForm,
+  RestablecerPassword,
 } from './Pages';
 import { MenuLateralPanel } from './Components/MenuLateralPanel';
 import { BannerCarrusel } from './Components/home-ui';
@@ -77,7 +78,11 @@ function App() {
           <Route path="/banner" element={<BannerCarrusel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/password" element={<OlvideContraseña />} />
+          <Route path="/olvide-password" element={<OlvideContraseña />} />
+          <Route
+            path="/restablecer-password"
+            element={<RestablecerPassword />}
+          />
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/categorias/:categoriaNombre" element={<Categorias />} />
           <Route path="/about" element={<About />} />
