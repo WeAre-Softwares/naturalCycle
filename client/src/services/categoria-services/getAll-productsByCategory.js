@@ -4,7 +4,7 @@ import { handleAxiosError } from '../errorHandler';
 
 export const getAllProductsByCategoryService = async (
   filter,
-  limit = 10,
+  limit = 9,
   offset = 0,
 ) => {
   try {

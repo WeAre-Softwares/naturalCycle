@@ -67,7 +67,7 @@ export const CrearProducto = () => {
     formData.append('producto_destacado', !!data.producto_destacado);
     formData.append('nuevo_ingreso', !!data.nuevo_ingreso);
 
-    console.log([...formData]);
+    // console.log([...formData]);
 
     try {
       const response = await createProductService(token, formData);

@@ -55,6 +55,11 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           </Link>
         </li>
         <li>
+          <Link to="/productos-por-bulto-cerrado" onClick={toggleMenu}>
+            Bulto cerrado
+          </Link>
+        </li>
+        <li>
           <Link to="/about" onClick={toggleMenu}>
             Sobre nosotros
           </Link>

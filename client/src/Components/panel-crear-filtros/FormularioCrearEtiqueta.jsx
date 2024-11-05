@@ -20,7 +20,6 @@ export const FormularioCrearEtiqueta = () => {
 
   const onSubmit = async (data) => {
     await createEtiqueta(data);
-    console.log('Etiqueta creada:', data);
   };
 
   return (

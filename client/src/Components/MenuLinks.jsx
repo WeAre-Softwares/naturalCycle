@@ -22,11 +22,14 @@ export const MenuLinks = () => {
           <Link to="/nuevos-ingresos">Nuevos ingresos</Link>
         </li>
         <li>
-          <Link to="/about">Sobre nosotros</Link>
+          <Link to="/productos-por-bulto-cerrado">Bulto cerrado</Link>
         </li>
         <li>
-          <Link to="/login">Mi cuenta</Link>
+          <Link to="/about">Sobre nosotros</Link>
         </li>
+        {/* <li>
+          <Link to="/login">Mi cuenta</Link>
+        </li> */}
       </ul>
     </div>
   );

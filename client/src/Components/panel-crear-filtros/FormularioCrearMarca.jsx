@@ -22,7 +22,6 @@ export const FormularioCrearMarca = () => {
     formData.append('nombre', data.nombre);
     formData.append('marca_destacada', data.marca_destacada);
     formData.append('imagen', data.imagen[0]); // Adjunta la imagen seleccionada
-    console.log(formData);
 
     await createBrand(formData);
   };

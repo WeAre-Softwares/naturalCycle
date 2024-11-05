@@ -72,8 +72,6 @@ export const AreaPedidos = () => {
               draggable: true,
               theme: 'light',
             });
-            // Aquí puedes actualizar el estado local si es necesario
-            console.log('Pedido actualizado:', updatedPedido);
           } catch (error) {
             console.error('Error al cambiar el estado del pedido:', error);
             toast.error('Error al actualizar el estado del pedido.', {

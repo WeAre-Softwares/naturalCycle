@@ -8,7 +8,7 @@ export const resetPasswordService = async (token, newPassword) => {
       token,
       newPassword,
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

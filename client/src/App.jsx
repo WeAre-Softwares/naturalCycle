@@ -18,12 +18,13 @@ import {
   Login,
   Marcas,
   NotFound,
-  NuevoIngreso,
+  NuevosIngresos,
   OlvideContraseña,
   PanelFiltrados,
   PanelPrincipal,
   PanelProducto,
   ProductDetails,
+  ProductosPorBultoCerrado,
   Promociones,
   RegisterForm,
   RestablecerPassword,
@@ -84,7 +85,11 @@ function App() {
           <Route path="/promociones" element={<Promociones />} />
           <Route path="/marcas" element={<Marcas />} />
           <Route path="/marcas/:marcaNombre" element={<Marcas />} />
-          <Route path="/nuevos-ingresos" element={<NuevoIngreso />} />
+          <Route path="/nuevos-ingresos" element={<NuevosIngresos />} />
+          <Route
+            path="/productos-por-bulto-cerrado"
+            element={<ProductosPorBultoCerrado />}
+          />
           <Route path="/producto/:id" element={<ProductDetails />} />
 
           {/* Rutas Privadas (Solo Admin) */}

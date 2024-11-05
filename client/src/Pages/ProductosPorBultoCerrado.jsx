@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import '../Styles/New/New.css';
-import { IntroNuevosProductos } from '../Components/nuevos-ingresos-ui/IntroNuevosProductos';
+import {
+  IntroProductosBultoCerrado,
+  ProductosBultoCerradoGrid,
+} from '../Components/productos-bulto-cerrado-ui/';
 import { PaginationControls } from '../Components/PaginationControls';
-import { ProductosNuevosIngresosGrid } from '../Components/nuevos-ingresos-ui/ProductosNuevosIngresosGrid';
-import { useGetAllNewArrivalProducts } from '../hooks/hooks-product/useGetAllNewArrivalProducts';
+import { useGetBultoCerradoProducts } from '../hooks/hooks-product/useGetBultoCerradoProducts';
 
-export const NuevosIngresos = () => {
+export const ProductosPorBultoCerrado = () => {
   const [page, setPage] = useState(1);
-  const { productos, loading, error, totalPages } = useGetAllNewArrivalProducts(
-    5,
+  const { productos, loading, error, totalPages } = useGetBultoCerradoProducts(
+    9,
     page,
   );
 
@@ -27,7 +29,7 @@ export const NuevosIngresos = () => {
 
   return (
     <div className="div-general-nuevos-ingresos">
-      <IntroNuevosProductos />
+      <IntroProductosBultoCerrado />
 
       {/* Mostrar mensaje de carga */}
       {loading && (
@@ -50,14 +52,12 @@ export const NuevosIngresos = () => {
 
       {/* Mostrar mensaje de "sin resultados" */}
       {!loading && !error && productos.length === 0 && (
-        <p className="no-results-message">
-          No hay productos nuevos disponibles.
-        </p>
+        <p className="no-results-message">No hay productos disponibles.</p>
       )}
 
       {/* Mostrar grid de productos solo si hay resultados */}
       {!loading && !error && productos.length > 0 && (
-        <ProductosNuevosIngresosGrid productos={productos} />
+        <ProductosBultoCerradoGrid productos={productos} />
       )}
 
       <PaginationControls

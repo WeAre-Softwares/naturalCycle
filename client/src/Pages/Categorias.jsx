@@ -19,11 +19,10 @@ export const Categorias = () => {
   const { categoriaNombre } = useParams();
   const navigate = useNavigate();
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
-    categoriaNombre || null,
-  ); // categoriaNombre para inicializar el estado
+    categoriaNombre || '',
+  );
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [busqueda, setBusqueda] = useState('');
-  // Debounced valor de busqueda
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
 
   const {
@@ -41,6 +40,7 @@ export const Categorias = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
+  // Sincroniza el estado con la URL inicial
   useEffect(() => {
     if (categoriaNombre && categorias.length > 0) {
       const categoriaMatch = categorias.find(
@@ -49,24 +49,26 @@ export const Categorias = () => {
           categoria.categoria_id === categoriaNombre,
       );
 
-      if (categoriaMatch) {
-        setCategoriaSeleccionada(categoriaMatch.categoria_id);
-      } else {
-        setCategoriaSeleccionada(null);
-      }
+      setCategoriaSeleccionada(
+        categoriaMatch ? categoriaMatch.categoria_id : '',
+      );
+    } else {
+      setCategoriaSeleccionada('');
     }
   }, [categoriaNombre, categorias]);
 
-  const handlePrevPage = () => {
-    if (page > 0) {
-      handlePageChange(page - 1);
-    }
-  };
+  // Efecto para sincronizar URL cada vez que cambia la categoría seleccionada
+  useEffect(() => {
+    const categoriaUrl = categorias
+      .find((cat) => cat.categoria_id === categoriaSeleccionada)
+      ?.nombre.toLowerCase()
+      .replace(/\s+/g, '-');
+    if (categoriaUrl) navigate(`/categorias/${categoriaUrl}`);
+  }, [categoriaSeleccionada, categorias, navigate]);
 
-  const handleNextPage = () => {
-    if (page < totalPaginas - 1) {
-      handlePageChange(page + 1);
-    }
+  const handleCategoriaChange = (id) => {
+    setCategoriaSeleccionada(id);
+    setMenuAbierto(false);
   };
 
   return (
@@ -74,26 +76,18 @@ export const Categorias = () => {
       <Buscador setBusqueda={setBusqueda} />
       <CategoriaFiltro
         categorias={categorias}
-        setCategoriaSeleccionada={(id) => {
-          setCategoriaSeleccionada(id);
-          const categoriaUrl = categorias
-            .find((cat) => cat.categoria_id === id)
-            ?.nombre.toLowerCase()
-            .replace(/\s+/g, '-');
-          if (categoriaUrl) navigate(`/categorias/${categoriaUrl}`);
-          setMenuAbierto(false);
-        }}
+        setCategoriaSeleccionada={handleCategoriaChange}
         menuAbierto={menuAbierto}
         setMenuAbierto={setMenuAbierto}
       />
       <div className="container-productos-categorias">
         {loading ? (
-          <section class="dots-container-inicio">
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
+          <section className="dots-container-inicio">
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
           </section>
         ) : error ? (
           <p>{error}</p>
