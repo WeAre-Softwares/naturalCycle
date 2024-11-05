@@ -45,6 +45,14 @@ export class Producto {
   precio: number; // 99,999,999.99 (8 dígitos en la parte entera, 2 dígitos decimales)
 
   @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+  })
+  precio_antes_oferta?: number | null;
+
+  @Column({
     type: 'enum',
     enum: TipoPrecio,
   })

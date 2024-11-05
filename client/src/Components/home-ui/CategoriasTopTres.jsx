@@ -19,7 +19,7 @@ export const CategoriasTopTres = () => {
           categoria.nombre &&
           nombresCategoriasCliente.includes(categoria.nombre.toLowerCase()),
       );
-      console.log(categoriasFiltradas);
+
       setCategoriasCliente(categoriasFiltradas);
     }
   }, [categorias]);

@@ -24,6 +24,7 @@ export const CrearProducto = () => {
   } = useForm({
     resolver: yupResolver(createProductoSchema),
     defaultValues: {
+      precio_antes_oferta: null,
       imagenes: [],
     },
   });
@@ -45,6 +46,7 @@ export const CrearProducto = () => {
     formData.append('nombre', data.nombre);
     formData.append('descripcion', data.descripcion);
     formData.append('precio', data.precio);
+    formData.append('precio_antes_oferta', data.precio_antes_oferta);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
 
@@ -137,6 +139,7 @@ export const CrearProducto = () => {
         >
           <option value="por_unidad">Por unidad</option>
           <option value="por_kilo">Por kilogramo</option>
+          <option value="por_bulto_cerrado">Por bulto cerrado</option>
         </select>
         {errors.tipo_de_precio && (
           <p style={{ color: 'red' }}>{errors.tipo_de_precio.message}</p>
@@ -149,6 +152,16 @@ export const CrearProducto = () => {
         />
         {errors.precio && (
           <p style={{ color: 'red' }}>{errors.precio.message}</p>
+        )}
+
+        <input
+          {...register('precio_antes_oferta')}
+          type="number"
+          placeholder="Precio antes de la oferta"
+          className="crear-producto-input"
+        />
+        {errors.precio_antes_oferta && (
+          <p style={{ color: 'red' }}>{errors.precio_antes_oferta.message}</p>
         )}
         {/* Marca */}
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Marca</span>

@@ -45,6 +45,7 @@ export const EditarProducto = () => {
       setValue('nombre', product.nombre);
       setValue('descripcion', product.descripcion);
       setValue('precio', product.precio);
+      setValue('precio_antes_oferta', product.precio_antes_oferta);
       setValue('tipo_de_precio', product.tipo_de_precio);
       setValue('marca_id', product.marca.marca_id);
       setValue(
@@ -97,6 +98,7 @@ export const EditarProducto = () => {
     formData.append('nombre', data.nombre);
     formData.append('descripcion', data.descripcion);
     formData.append('precio', data.precio);
+    formData.append('precio_antes_oferta', data.precio_antes_oferta);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
     formData.append('en_promocion', !!data.en_promocion);
@@ -182,6 +184,7 @@ export const EditarProducto = () => {
         >
           <option value="por_unidad">Por unidad</option>
           <option value="por_kilo">Por kilogramo</option>
+          <option value="por_bulto_cerrado">Por bulto cerrado</option>
         </select>
         {errors.tipo_de_precio && (
           <p style={{ color: 'red' }}>{errors.tipo_de_precio.message}</p>
@@ -195,6 +198,16 @@ export const EditarProducto = () => {
         />
         {errors.precio && (
           <p style={{ color: 'red' }}>{errors.precio.message}</p>
+        )}
+
+        <input
+          {...register('precio_antes_oferta')}
+          type="number"
+          placeholder="Precio antes de la oferta"
+          className="crear-producto-input"
+        />
+        {errors.precio_antes_oferta && (
+          <p style={{ color: 'red' }}>{errors.precio_antes_oferta.message}</p>
         )}
 
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Marca</span>

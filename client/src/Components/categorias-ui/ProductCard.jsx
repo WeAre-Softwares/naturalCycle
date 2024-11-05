@@ -40,9 +40,7 @@ export const ProductCard = ({ producto }) => {
         {isUserLoggedIn && hasAccessRole && (
           <>
             <span className="nombre-producto-card">
-              {producto.tipo_de_precio === 'por_kilo'
-                ? 'Por Kilo'
-                : 'Por Unidad'}
+              {producto.tipo_de_precio.replace(/_/g, ' ')}
             </span>
             <br />
             <h2 className="precio-producto-card">

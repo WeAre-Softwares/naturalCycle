@@ -5,6 +5,7 @@ export interface ProductoPlainResponse {
   nombre: string;
   descripcion: string;
   precio: number;
+  precio_antes_oferta: number;
   tipo_de_precio: TipoPrecio;
   disponible: boolean;
   producto_destacado: boolean;

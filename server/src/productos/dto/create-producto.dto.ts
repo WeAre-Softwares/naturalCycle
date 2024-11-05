@@ -16,6 +16,7 @@ import {
 import { TipoPrecio } from '../types/tipo-precio.enum';
 import { CreateProductosCategoriasDto } from './create-productos-categorias.dto';
 import { CreateProductosEtiquetasDto } from './create-productos-etiquetas.dto';
+import { IsNull } from 'typeorm';
 
 export class CreateProductoDto {
   @ApiProperty({
@@ -50,6 +51,14 @@ export class CreateProductoDto {
   @IsNotEmpty()
   @Type(() => Number) // Este decorador convierte el string a número
   precio: number;
+
+  @ApiProperty({
+    example: 1500,
+    nullable: false,
+  })
+  @IsOptional() // Permite que el valor sea nulo u omitido
+  @Type(() => Number) // Este decorador convierte el string a número
+  precio_antes_oferta?: number | null;
 
   @ApiProperty({
     enum: TipoPrecio,

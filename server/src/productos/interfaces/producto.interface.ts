@@ -4,6 +4,7 @@ export interface ProductoInterface {
   nombre: string;
   descripcion: string;
   precio: number;
+  precio_antes_oferta: number;
   tipo_de_precio: TipoPrecio;
   disponible: boolean;
   esta_activo: boolean;

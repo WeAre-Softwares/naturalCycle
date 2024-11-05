@@ -26,7 +26,6 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
 
   return (
     <div className="card-producto">
-
       <NewLogo></NewLogo>
       <div className="info-producto-card">
         <img
@@ -41,9 +40,7 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
         {isUserLoggedIn && hasAccessRole && (
           <>
             <span className="nombre-producto-card">
-              {producto.tipo_de_precio === 'por_kilo'
-                ? 'Por Kilo'
-                : 'Por Unidad'}
+              {producto.tipo_de_precio.replace(/_/g, ' ')}
             </span>
             <br />
             <h2 className="precio-producto-card">

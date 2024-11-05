@@ -28,17 +28,21 @@ export const Promociones = () => {
 
       {loading ? (
         <section class="dots-container-inicio">
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-      </section>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+          <div class="dot-inicio"></div>
+        </section>
       ) : error ? (
-        <div className="no-productos-promo"><p><i className="fas fa-exclamation-circle"></i>{error}</p></div>
+        <div className="no-productos-promo">
+          <p>
+            <i className="fas fa-exclamation-circle"></i>
+            {error}
+          </p>
+        </div>
       ) : (
         <>
-          {/* TODO: Cambiar diseño precio tachado antes y actual con descuento */}
           <CarruselProductosPromociones productos={productos} />
           <PaginationControls
             page={page}

@@ -92,12 +92,11 @@ export const ProductDetails = () => {
             {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
             {isUserLoggedIn && hasAccessRole && (
               <div className="price-container">
-                <p className="precio-view">${product.precio}</p>
+                <p className="precio-view">
+                  ${Number(product.precio).toLocaleString()}
+                </p>
                 <span style={{ marginLeft: '8px' }}>
-                  &#8722;{' '}
-                  {product.tipo_de_precio === 'por_kilo'
-                    ? 'Por Kilo'
-                    : 'Por Unidad'}
+                  &#8722; {product.tipo_de_precio.replace(/_/g, ' ')}
                 </span>
               </div>
             )}

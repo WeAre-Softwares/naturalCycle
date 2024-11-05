@@ -38,16 +38,17 @@ export const ProductosPromocionesItem = ({ producto }) => {
         {isUserLoggedIn && hasAccessRole && (
           <>
             <span className="nombre-producto-card">
-              {producto.tipo_de_precio === 'por_kilo'
-                ? 'Por Kilo'
-                : 'Por Unidad'}
+              {producto.tipo_de_precio.replace(/_/g, ' ')}
             </span>
             <br />
             <div className="precios-promo">
-            <h2 className=' precio-producto-card precio-viejo-promo'>$2500</h2> {/*Precio viejo estático */}
-            <h2 className="precio-producto-card">
-              ${Number(producto.precio).toLocaleString()}
-            </h2></div>
+              <h2 className=" precio-producto-card precio-viejo-promo">
+                ${producto.precio_antes_oferta}
+              </h2>
+              <h2 className="precio-producto-card">
+                ${Number(producto.precio).toLocaleString()}
+              </h2>
+            </div>
           </>
         )}
 

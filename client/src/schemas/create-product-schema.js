@@ -27,7 +27,7 @@ const imagenesSchema = yup
   .min(1, 'Debes subir al menos una imagen.')
   .max(2, 'Solo puedes subir un máximo de 2 imágenes.');
 
-const tipoPrecioEnum = ['por_kilo', 'por_unidad'];
+const tipoPrecioEnum = ['por_kilo', 'por_unidad', 'por_bulto_cerrado'];
 
 export const createProductoSchema = yup.object().shape({
   nombre: yup
@@ -50,6 +50,15 @@ export const createProductoSchema = yup.object().shape({
     .max(999999.99, 'El precio no puede superar 999999.99.')
     .required('El precio es obligatorio.')
     .typeError('El precio debe ser un número válido con hasta 2 decimales.'),
+
+  precio_antes_oferta: yup
+    .number()
+    .nullable()
+    .transform((value) => (isNaN(value) ? null : value))
+    .min(0, 'El precio no puede ser negativo.')
+    .max(999999.99, 'El precio no puede superar 999999.99.')
+    .typeError('El precio debe ser un número válido con hasta 2 decimales.')
+    .optional(),
 
   tipo_de_precio: yup
     .mixed()
