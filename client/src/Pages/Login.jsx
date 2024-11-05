@@ -34,11 +34,13 @@ export const Login = () => {
         login(token); // Guardar el token en el estado global
 
         // Redirigir al inicio tras el login exitoso
-        navigate('/Inicio');
+        navigate('/inicio');
       }
     } catch (error) {
-      setErrorMessage('Credenciales incorrectas. Por favor, intente nuevamente.');
-  
+      setErrorMessage(
+        'Credenciales incorrectas. Por favor, intente nuevamente.',
+      );
+
       // Después de 5 segundos, limpiar el mensaje de error
       setTimeout(() => {
         setErrorMessage('');
@@ -75,7 +77,7 @@ export const Login = () => {
             register={register('email')}
             error={errors.email}
           />
-          
+
           <InputField
             label="Contraseña"
             type="password"
@@ -102,7 +104,7 @@ export const Login = () => {
           <p className="p-login">
             No tienes una cuenta?{' '}
             <span className="span-login">
-              <Link to="/Register" onClick={toggleMenu}>
+              <Link to="/register" onClick={toggleMenu}>
                 {' '}
                 Registrarme
               </Link>

@@ -21,7 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ProductosService } from './productos.service';
-import { CreateProductoDto, UpdateProductoDto } from './dto';
+import { CreateProductoDto, UpdateProductoDto, CategoryFilterDto } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import type {
   GetProductosResponse,
@@ -30,11 +30,22 @@ import type {
 } from './interfaces';
 import { Auth } from '../auth/decorators';
 import { Producto } from './entities/producto.entity';
+import { validate as isUUID } from 'uuid';
 
 @ApiTags('Productos')
 @Controller('productos')
 export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
+
+  private createFilterDto(filter: string): CategoryFilterDto {
+    const filterDto = new CategoryFilterDto();
+    if (isUUID(filter)) {
+      filterDto.id = filter;
+    } else {
+      filterDto.nombre = filter;
+    }
+    return filterDto;
+  }
 
   @Post()
   @ApiBearerAuth()
@@ -124,14 +135,17 @@ export class ProductosController {
     return this.productosService.findProductsByBrand(marcaId, paginationDto);
   }
 
-  @Get('/categoria/:id')
+  @Get('/categoria/:filter')
   @ApiOperation({ summary: 'Buscar productos por categoria' })
   findByCategory(
-    @Param('id') categoriaId: string,
+    @Param('filter') filter: string,
     @Query() paginationDto: PaginationDto,
   ): Promise<GetProductosResponse> {
+    // Determina si el filtro es un UUID o un nombre de categoría
+    const filterDto = this.createFilterDto(filter);
+
     return this.productosService.findProductsByCategory(
-      categoriaId,
+      filterDto,
       paginationDto,
     );
   }

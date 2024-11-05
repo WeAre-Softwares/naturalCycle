@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { getAllProductsService } from '../../services/products-services/getAll-products';
 import { searchProductsService } from '../../services/products-services/search-products';
 import { getAllProductsByCategoryService } from '../../services/categoria-services/getAll-productsByCategory';
+import { getAllProductsService } from '../../services/products-services/getAll-products';
 
 export function useProductSearchAndPaginationCategories(
   term = '',
-  categoriaId = '',
+  categoriaNombre = '',
   limit = 9,
 ) {
   const [page, setPage] = useState(0);
@@ -14,36 +14,39 @@ export function useProductSearchAndPaginationCategories(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Actualiza offset cuando cambia la página
+  // Actualiza el offset cada vez que cambia la página
   useEffect(() => {
     setOffset(page * limit);
   }, [page, limit]);
 
-  // Reinicia la paginación al cambiar la búsqueda o la categoría
+  // Reinicia la paginación cuando cambia la búsqueda o la categoría
   useEffect(() => {
     setPage(0);
-  }, [term, categoriaId]);
+  }, [term, categoriaNombre]);
 
-  // Determina y ejecuta la lógica de búsqueda
+  // Fetch de productos basado en el escenario de búsqueda/filtrado
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
+
       try {
         let response;
         if (term) {
-          // Caso de búsqueda
+          // Caso de búsqueda por término
           response = await searchProductsService(term, limit, offset);
-        } else if (categoriaId) {
-          // Caso de filtrado por categoría
+        } else if (categoriaNombre) {
+          // Caso de búsqueda por categoría
           response = await getAllProductsByCategoryService(
-            categoriaId,
+            categoriaNombre,
             limit,
             offset,
           );
         } else {
-          // Caso de productos generales
+          // Caso de obtener todos los productos
           response = await getAllProductsService(limit, offset);
         }
+
         setData(response);
       } catch (error) {
         setError('Error al obtener productos.');
@@ -53,8 +56,9 @@ export function useProductSearchAndPaginationCategories(
     };
 
     fetchData();
-  }, [term, categoriaId, limit, offset]);
+  }, [term, categoriaNombre, limit, offset]);
 
+  // Función para cambiar de página
   const handlePageChange = (newPage) => setPage(newPage);
 
   return {

@@ -5,10 +5,19 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../Styles/Inicio/Inicio.css';
 import { useGetAllProductosDestacados } from '../../hooks/hooks-product/useGetAllProductosDestacados';
+import useAuthStore from '../../store/use-auth-store';
+import { allowedRoles } from '../../constants/allowed-roles';
 
 export const BannerCarrusel = () => {
   const limit = 15; // Límite de productos destacados para mostrar
   const { error, loading, productos } = useGetAllProductosDestacados(limit);
+  const { isAuthenticated, getRoles } = useAuthStore();
+
+  // Verificar si el usuario está autenticado y tiene rol de usuario
+  const isUserLoggedIn = isAuthenticated();
+  const userRoles = getRoles();
+  // Verificar si el usuario tiene al menos uno de los roles permitidos
+  const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
   const settings = {
     dots: true,
@@ -45,10 +54,12 @@ export const BannerCarrusel = () => {
                 <h2 className="texto-Banner" name="texto-Banner">
                   {producto.nombre}
                 </h2>
-                <h2 name="precio-banner">
-                  A tan sólo ${Number(producto.precio).toLocaleString()}
-                </h2>
-                {/* Redondea el precio */}
+                {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
+                {isUserLoggedIn && hasAccessRole && (
+                  <h2 name="precio-banner">
+                    A tan sólo ${Number(producto.precio).toLocaleString()}
+                  </h2>
+                )}
               </div>
             </div>
           ))}

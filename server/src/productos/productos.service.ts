@@ -9,6 +9,7 @@ import { DataSource, In, Repository } from 'typeorm';
 import {
   CreateProductoDto,
   UpdateProductoDto,
+  type CategoryFilterDto,
   type CreateProductosCategoriasDto,
   type CreateProductosEtiquetasDto,
 } from './dto';
@@ -331,18 +332,17 @@ export class ProductosService {
   }
 
   async findProductsByCategory(
-    categoryId: string,
+    filterDto: CategoryFilterDto,
     paginationDto: PaginationDto,
   ): Promise<GetProductosResponse> {
+    const { id, nombre } = filterDto;
     const { limit = 10, offset = 0 } = paginationDto;
     try {
       const [productos, total] = await this.productoRepository.findAndCount({
         where: {
           esta_activo: true,
           productosCategorias: {
-            categoria: {
-              categoria_id: categoryId,
-            },
+            categoria: id ? { categoria_id: id } : { nombre },
           },
         },
         relations: {

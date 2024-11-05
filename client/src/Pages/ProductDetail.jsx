@@ -32,7 +32,7 @@ export const ProductDetails = () => {
   return (
     <div className="ver-producto-container">
       <div className="button-volver-container">
-        <Link to="/Inicio">
+        <Link to="/inicio">
           <button className="button-volver-panel-producto">
             <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Volver
           </button>

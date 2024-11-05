@@ -11,7 +11,7 @@ export const NotFound = () => {
         <p className="error-description">
           Lo sentimos, la página que estás buscando no existe o ha sido movida.
         </p>
-        <Link className="back-home-link" to="/Inicio">
+        <Link className="back-home-link" to="/inicio">
           Regresar al inicio
         </Link>
       </div>

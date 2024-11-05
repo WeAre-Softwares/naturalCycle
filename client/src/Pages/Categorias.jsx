@@ -45,11 +45,15 @@ export const Categorias = () => {
     if (categoriaNombre && categorias.length > 0) {
       const categoriaMatch = categorias.find(
         (categoria) =>
-          categoria.nombre.toLowerCase() === categoriaNombre.toLowerCase(),
+          categoria.nombre.toLowerCase() === categoriaNombre.toLowerCase() ||
+          categoria.categoria_id === categoriaNombre,
       );
-      setCategoriaSeleccionada(
-        categoriaMatch ? categoriaMatch.categoria_id : null,
-      );
+
+      if (categoriaMatch) {
+        setCategoriaSeleccionada(categoriaMatch.categoria_id);
+      } else {
+        setCategoriaSeleccionada(null);
+      }
     }
   }, [categoriaNombre, categorias]);
 

@@ -9,9 +9,7 @@ import {
   About,
   AreaPedidos,
   AreaUsuarios,
-  CardInfoUsuario,
   Categorias,
-  Checkout,
   CrearProducto,
   EditarProducto,
   Footer,
@@ -30,8 +28,6 @@ import {
   RegisterForm,
   RestablecerPassword,
 } from './Pages';
-import { MenuLateralPanel } from './Components/MenuLateralPanel';
-import { BannerCarrusel } from './Components/home-ui';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
 import useCartStore from './store/use-cart-store';
@@ -75,7 +71,6 @@ function App() {
           {/* Rutas Públicas */}
           <Route path="/" element={<Navigate to="/inicio" />} />
           <Route path="/inicio" element={<Inicio />} />
-          <Route path="/banner" element={<BannerCarrusel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/olvide-password" element={<OlvideContraseña />} />
@@ -91,14 +86,8 @@ function App() {
           <Route path="/marcas/:marcaNombre" element={<Marcas />} />
           <Route path="/nuevos-ingresos" element={<NuevoIngreso />} />
           <Route path="/producto/:id" element={<ProductDetails />} />
-          {/* 
-          <Route path="/checkout" element={<Checkout />} /> */}
 
           {/* Rutas Privadas (Solo Admin) */}
-          <Route
-            path="/panel"
-            element={<PrivateRoute element={MenuLateralPanel} />}
-          />
           <Route
             path="/panel-principal"
             element={<PrivateRoute element={PanelPrincipal} />}
@@ -139,10 +128,6 @@ function App() {
           <Route
             path="/crear-etiqueta"
             element={<PrivateRoute element={FormularioCrearEtiqueta} />}
-          />
-          <Route
-            path="/crear-categoria"
-            element={<PrivateRoute element={FormularioCrearCategoria} />}
           />
 
           <Route

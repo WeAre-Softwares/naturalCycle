@@ -56,7 +56,7 @@ export const RegisterForm = () => {
         );
 
         setTimeout(() => {
-          navigate('/Inicio');
+          navigate('/inicio');
         }, 8000);
       } else {
         throw new Error('Error al registrarse. Por favor, intenta nuevamente.');
@@ -151,12 +151,12 @@ export const RegisterForm = () => {
         <FormButton buttonText="Enviar solicitud" />
         <RegisterLink />
       </form>
-        {/* Mostrar el error si existe */}
-        {errorMessage && (
-          <div className="error-message">
-            <p>{errorMessage}</p>
-          </div>
-        )}{' '}
+      {/* Mostrar el error si existe */}
+      {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      )}{' '}
     </RegisterFormContainer>
   );
 };
