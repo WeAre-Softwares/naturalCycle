@@ -28,6 +28,7 @@ export const Header = ({ carrito, toggleCart, cantidadTotalProductos }) => {
               cantidadTotal={cantidadTotalProductos}
             />
           </div>
+
           <NavLinks isOpen={isOpen} toggleMenu={toggleMenu} />
         </nav>
       </header>

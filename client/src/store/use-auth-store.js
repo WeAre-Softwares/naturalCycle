@@ -41,6 +41,20 @@ const useAuthStore = create(
         const { roles } = jwtDecode(token);
         return roles || [];
       },
+
+      // Obtener el ID de usuario desde el token
+      getUserId: () => {
+        const token = get().token;
+        if (!token) return null;
+
+        try {
+          const { id } = jwtDecode(token);
+          return id;
+        } catch (error) {
+          console.error('Error decoding token:', error);
+          return null;
+        }
+      },
     }),
     {
       name: 'auth', // nombre del storage

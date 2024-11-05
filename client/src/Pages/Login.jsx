@@ -54,7 +54,6 @@ export const Login = () => {
 
   return (
     <div className="conteiner-general-login">
-      <UserInfo />
       <LoginHeader />
       <div className="conteiner-login">
         <form onSubmit={handleSubmit(onSubmit)} className="form-login">

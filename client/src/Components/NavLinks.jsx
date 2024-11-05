@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/use-auth-store';
 
 export const NavLinks = ({ isOpen, toggleMenu }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated); // Obtener el usuario desde el estado global
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const logout = useAuthStore((state) => state.logout);
   const getRoles = useAuthStore((state) => state.getRoles);
   const navigate = useNavigate();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   // Verificar si el usuario tiene el rol 'admin' o 'empleado'
   const hasAccess =
@@ -15,8 +16,15 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/inicio');
+    setShouldRedirect(true); // Activar la redirección solo después de hacer logout
   };
+
+  useEffect(() => {
+    if (shouldRedirect && !isAuthenticated()) {
+      navigate('/login');
+      setShouldRedirect(false); // Resetear para evitar redirección continua
+    }
+  }, [shouldRedirect, isAuthenticated, navigate]);
 
   return (
     <div className={`links-header ${isOpen ? 'open' : ''}`}>
@@ -43,7 +51,6 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
             Marcas
           </Link>
         </li>
-
         <li>
           <Link to="/promociones" onClick={toggleMenu}>
             Promociones
@@ -66,7 +73,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
         </li>
         {isAuthenticated() ? (
           <>
-            {hasAccess && ( // Solo mostrar para administradores
+            {hasAccess && (
               <li>
                 <Link to="/panel-principal" onClick={toggleMenu}>
                   Panel Administrador
