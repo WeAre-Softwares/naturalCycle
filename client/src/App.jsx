@@ -31,6 +31,7 @@ import {
 } from './Pages';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
+import ProtectedRoute from './routes/ProtectedRoute';
 import useCartStore from './store/use-cart-store';
 import {
   FormularioActualizarCategoria,
@@ -72,13 +73,21 @@ function App() {
           {/* Rutas Públicas */}
           <Route path="/" element={<Navigate to="/inicio" />} />
           <Route path="/inicio" element={<Inicio />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/olvide-password" element={<OlvideContraseña />} />
+          {/* ProtectedRoute  */}
+          <Route path="/login" element={<ProtectedRoute element={Login} />} />
+          <Route
+            path="/register"
+            element={<ProtectedRoute element={RegisterForm} />}
+          />
+          <Route
+            path="/olvide-password"
+            element={<ProtectedRoute element={OlvideContraseña} />}
+          />
           <Route
             path="/restablecer-password"
-            element={<RestablecerPassword />}
+            element={<ProtectedRoute element={RestablecerPassword} />}
           />
+          {/* End  ProtectedRoute */}
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/categorias/:categoriaNombre" element={<Categorias />} />
           <Route path="/about" element={<About />} />
@@ -91,7 +100,6 @@ function App() {
             element={<ProductosPorBultoCerrado />}
           />
           <Route path="/producto/:id" element={<ProductDetails />} />
-
           {/* Rutas Privadas (Solo Admin) */}
           <Route
             path="/panel-principal"
@@ -134,22 +142,18 @@ function App() {
             path="/crear-etiqueta"
             element={<PrivateRoute element={FormularioCrearEtiqueta} />}
           />
-
           <Route
             path="/actualizar-marca/:marca_id"
             element={<PrivateRoute element={FormularioActualizarMarca} />}
           />
-
           <Route
             path="/actualizar-etiqueta/:etiqueta_id"
             element={<PrivateRoute element={FormularioActualizarEtiqueta} />}
           />
-
           <Route
             path="/actualizar-categoria/:categoria_id"
             element={<PrivateRoute element={FormularioActualizarCategoria} />}
           />
-
           {/* Ruta para manejar 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
