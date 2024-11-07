@@ -109,7 +109,7 @@ export const UsuarioCard = ({
         className="area-usuarios-name"
         onClick={() => mostrarDetallesUsuario(usuario)} // Mostrar detalles al hacer clic
       >
-        {usuario.nombre} {usuario.apellido}
+        {usuario.nombre} {usuario.apellido} <i class="fa-solid fa-circle-info"></i>
       </p>
       <div
         style={{

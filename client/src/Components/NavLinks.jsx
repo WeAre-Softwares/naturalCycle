@@ -81,8 +81,14 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
               </li>
             )}
             <li>
-              <Link onClick={handleLogout}>Cerrar sesión</Link>
-            </li>
+              <Link onClick={handleLogout}>Cerrar sesión</Link> {/*cambiar este link por el comentado de abajo y este ponerlo EN LA PÁGINA 
+              CardInfoUsuario (ahi en la pagina está comentado donde agregarlo) */}
+            </li> 
+
+            {/*<Link to="/CardInfoUsuario">
+        <p name="nombre-usuario-login">Mi cuenta</p>
+      </Link>*/}
+
           </>
         ) : (
           <li>

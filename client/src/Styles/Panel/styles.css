@@ -1085,3 +1085,50 @@
   cursor: not-allowed;
   /* Cambia el cursor para indicar que está deshabilitado */
 }
+
+/* PedidoCard.css */
+
+.pag-pedido-card{
+  display: flex;
+  padding-top: 140px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.div-pedido-card {
+  max-width: 1000px;
+  max-height: 600px;
+  overflow-y: auto;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.h2-pedido-card {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.h3-pedido-card {
+  font-size: 18px;
+  color: #2a6424;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+
+.div-section-pedido-card {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.p-pedido-card {
+  margin: 5px 0;
+}

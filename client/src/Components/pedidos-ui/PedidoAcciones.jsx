@@ -14,6 +14,9 @@ export const PedidoAcciones = ({
       {/* <Link to={`/editar-pedido/${pedido.pedido_id}`} className="icono-accion">
         <i className="fas fa-edit" title="Editar Pedido"></i>
       </Link> */}
+      <button className='icono-accion'>
+      <i class="fa-solid fa-circle-info" title='Detalles del pedido'></i> {/*ESTE BOTON DEBE DIRIGIR A LA PAGINA CardPedido*/}
+      </button>
       <button
         className="icono-accion"
         onClick={() => downloadRemito(pedido.pedido_id)}

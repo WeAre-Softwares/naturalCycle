@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import '../Styles/Login/Login.css';
-import { UserInfo } from '../Components/UserInfo';
 import { LoginHeader } from '../Components/LoginHeader';
 import { InputField } from '../Components/InputField';
 import { RememberMe } from '../Components/RememberMe';
