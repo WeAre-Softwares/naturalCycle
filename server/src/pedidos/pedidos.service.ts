@@ -142,6 +142,9 @@ export class PedidosService {
             apellido: true,
           },
         },
+        order: {
+          fecha_pedido: 'DESC',
+        },
         take: limit,
         skip: offset,
       });
@@ -178,6 +181,9 @@ export class PedidosService {
             nombre: true,
             apellido: true,
           },
+        },
+        order: {
+          fecha_pedido: 'DESC',
         },
         take: limit,
         skip: offset,

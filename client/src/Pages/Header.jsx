@@ -4,6 +4,7 @@ import { HamburgerMenu } from '../Components/HamburgerMenu';
 import { NavLinks } from '../Components/NavLinks';
 import { CartButton } from '../Components/CartButton';
 import Logo from '/imagenes/logo-header.svg';
+import { Link } from 'react-router-dom';
 
 export const Header = ({ carrito, toggleCart, cantidadTotalProductos }) => {
   // Estado para controlar MenuHamburguesa
@@ -20,7 +21,9 @@ export const Header = ({ carrito, toggleCart, cantidadTotalProductos }) => {
         <nav className="nav">
           <div className="logo-header">
             <HamburgerMenu isOpen={isOpen} toggleMenu={toggleMenu} />
-            <img className="imagen-logo" src={Logo} alt="Logo" />
+            <Link to={'/about'}>
+              <img className="imagen-logo" src={Logo} alt="Logo" />
+            </Link>
             {/* Llamada a CartButton con las props necesarias */}
             <CartButton
               carrito={carrito}

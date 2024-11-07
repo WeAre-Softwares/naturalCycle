@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { cantidadSchema } from '../schemas/cantidad-carrito-schema';
+import { toast } from 'react-toastify';
 
 const useCartStore = create(
   persist(
@@ -23,9 +24,18 @@ const useCartStore = create(
             ),
           });
         } else {
-          // Si no está, lo agregamos al carrito con la estructura completa
+          // Si no está, lo agregamos al carrito con la estructura completa y agregamos una notificación en la UI
           set({
             carrito: [...get().carrito, { ...producto, cantidad: 1 }],
+          });
+          toast.success('Producto agregado al carrito!', {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: 'dark',
           });
         }
       },

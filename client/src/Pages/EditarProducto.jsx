@@ -193,7 +193,7 @@ export const EditarProducto = () => {
         <input
           {...register('precio')}
           type="number"
-          placeholder="Precio"
+          placeholder="Precio final oferta"
           className="crear-producto-input"
         />
         {errors.precio && (
@@ -203,7 +203,7 @@ export const EditarProducto = () => {
         <input
           {...register('precio_antes_oferta')}
           type="number"
-          placeholder="Precio antes de la oferta"
+          placeholder="Precio antiguo"
           className="crear-producto-input"
         />
         {errors.precio_antes_oferta && (

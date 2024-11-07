@@ -97,6 +97,23 @@ export const CartButton = () => {
       });
   };
 
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+    toast.warn('Producto eliminado del carrito!', {
+      position: 'top-center',
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: 'dark',
+    });
+  };
+
+  const handleAddToCart = (productId) => {
+    incrementQuantity(productId);
+  };
+
   return (
     <div className="cart-container">
       <ToastContainer />
@@ -105,6 +122,11 @@ export const CartButton = () => {
         className="btn-cart"
         onClick={toggleCart}
       >
+        {getTotalProducts() > 0 ? (
+          <span className="cart-quantity-badge">{getTotalProducts()}</span>
+        ) : (
+          ''
+        )}
         <svg
           className="icon-cart"
           viewBox="0 0 24.38 30.52"
@@ -180,9 +202,7 @@ export const CartButton = () => {
                         }}
                       />
 
-                      <button
-                        onClick={() => incrementQuantity(item.producto_id)}
-                      >
+                      <button onClick={() => handleAddToCart(item.producto_id)}>
                         +
                       </button>
                     </div>
@@ -195,7 +215,7 @@ export const CartButton = () => {
                   </div>
                   <button
                     className="eliminar-producto"
-                    onClick={() => removeFromCart(item.producto_id)}
+                    onClick={() => handleRemoveFromCart(item.producto_id)}
                   >
                     <i className="fa-solid fa-trash"></i>
                   </button>
