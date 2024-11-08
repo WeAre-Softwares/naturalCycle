@@ -2,28 +2,32 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/CardUsuario/CardInfoUsuario.css';
 import useAuthStore from '../store/use-auth-store';
+import { useGetUserById } from '../hooks/hooks-users/useGetUserById';
 
 export const CardInfoUsuario = () => {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
+  const { user, error, loading } = useGetUserById();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div className="container-card-info-usuario">
       <h2 className="h2-card-info-usuario">Datos de usuario</h2>
       <div className="container-datos-usuario-card">
         <i className="fa-solid fa-user"></i>
-        <p>ID Usuario: 12</p>
-        <p>Nombre: Julian</p>
-        <p>Apellido: Sanchez</p>
-        <p>DNI: 45.888.222</p>
-        <p>Nombre del comercio: Dietetica Sanchez</p>
-        <p>Teléfono: 213123121231</p>
-        <p>Email: julian@gmail.com</p>
+        <p>Nombre: {user?.nombre}</p>
+        <p>Apellido: {user?.apellido}</p>
+        <p>DNI: {user?.dni}</p>
+        <p>Nombre del comercio: {user?.nombre_comercio}</p>
+        <p>Teléfono: {user?.telefono}</p>
+        <p>Email: {user?.email}</p>
       </div>
       <button className="Btn-cerrar-sesion" onClick={handleLogout}>
         <div className="sign-cerrar-sesion">

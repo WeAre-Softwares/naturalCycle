@@ -6,6 +6,8 @@ import {
   Delete,
   Query,
   ParseUUIDPipe,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DetallesPedidosService } from './detalles_pedidos.service';
@@ -37,6 +39,32 @@ export class DetallesPedidosController {
   @ApiOperation({ summary: 'Buscar detalle pedido por id' })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<DetallesPedido> {
     return this.detallesPedidosService.findOne(id);
+  }
+
+  @Get('pedido/:pedidoId')
+  @ApiBearerAuth()
+  @Auth('admin', 'empleado')
+  @ApiOperation({ summary: 'Buscar detalles del pedido por ID de pedido' })
+  async getDetallesByPedidoId(
+    @Param('pedidoId', ParseUUIDPipe) pedidoId: string,
+  ): Promise<DetallesPedido[]> {
+    try {
+      const detallesPedido =
+        await this.detallesPedidosService.findByPedidoId(pedidoId);
+
+      if (!detallesPedido.length) {
+        throw new NotFoundException(
+          `No se encontraron detalles para el pedido con ID: ${pedidoId}`,
+        );
+      }
+
+      return detallesPedido;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error al buscar los detalles del pedido',
+        error,
+      );
+    }
   }
 
   @Delete(':id')

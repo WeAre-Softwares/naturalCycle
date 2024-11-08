@@ -12,8 +12,7 @@ export const PedidoAcciones = ({
   return (
     <div className="pedido-acciones">
       <button className="icono-accion">
-        {/* TODO: AGREGAR FUNCIONALIDAD */}
-        <Link to={'/pedido/:pedido_id'}>
+        <Link to={`/pedido/${pedido.pedido_id}`}>
           <i class="fa-solid fa-circle-info" title="Detalles del pedido"></i>
         </Link>
       </button>

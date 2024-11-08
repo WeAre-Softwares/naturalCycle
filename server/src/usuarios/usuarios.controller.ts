@@ -91,7 +91,7 @@ export class UsuariosController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Auth('admin', 'empleado')
+  @Auth() // Requiere que el usuario este autenticado
   @ApiOperation({ summary: 'Buscar un usuario por id' })
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(id);

@@ -105,7 +105,22 @@ export class DetallesPedidosService {
     try {
       return this.detallePedidoRepository.find({
         where: { pedido: { pedido_id: pedidoId }, esta_activo: true },
-        relations: { producto: true },
+        relations: {
+          producto: true,
+          pedido: true,
+        },
+        select: {
+          producto: {
+            nombre: true,
+            descripcion: true,
+            precio: true,
+          },
+          pedido: {
+            estado_pedido: true,
+            fecha_pedido: true,
+            total_precio: true,
+          },
+        },
       });
     } catch (error) {
       this.logger.error(error);
