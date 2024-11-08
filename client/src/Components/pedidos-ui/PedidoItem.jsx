@@ -7,6 +7,7 @@ export const PedidoItem = ({ pedido, colorEstado, cambiarEstado }) => {
     'aprobado',
     'enviado',
     'recibido',
+    'cancelado',
   ];
 
   return (

@@ -13,13 +13,19 @@ export const PedidoAcciones = ({
     <div className="pedido-acciones">
       <button className="icono-accion">
         <Link to={`/pedido/${pedido.pedido_id}`}>
-          <i class="fa-solid fa-circle-info" title="Detalles del pedido"></i>
+          <i
+            className="fa-solid fa-circle-info"
+            title="Detalles del pedido"
+          ></i>
         </Link>
       </button>
       <button
         className="icono-accion"
         onClick={() => downloadRemito(pedido.pedido_id)}
-        disabled={pedido.estado_pedido === 'esperando_aprobacion'}
+        disabled={
+          pedido.estado_pedido === 'esperando_aprobacion' ||
+          pedido.estado_pedido === 'cancelado'
+        }
       >
         <i className="fas fa-print" title="Imprimir Remito"></i>
       </button>

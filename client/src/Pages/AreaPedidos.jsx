@@ -8,17 +8,20 @@ import { useActualizarEstadoPedido } from '../hooks/hooks-pedido/useActualizarEs
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const colorEstado = {
   esperando_aprobacion: '#D6A900',
   aprobado: 'rgb(111, 148, 89)',
   enviado: '#2A6A29',
   recibido: '#00ff51',
+  cancelado: '#C70039',
 };
 
 export const AreaPedidos = () => {
   const limit = 4;
   const [estadoFiltro, setEstadoFiltro] = useState('');
+  const navigate = useNavigate();
 
   // Pasamos `estadoFiltro` al hook para que filtre directamente en la petición
   const {
@@ -62,7 +65,7 @@ export const AreaPedidos = () => {
       .then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const updatedPedido = await cambiarEstadoPedido(id, nuevoEstado);
+            await cambiarEstadoPedido(id, nuevoEstado);
             toast.success('Estado del pedido actualizado correctamente.', {
               position: 'top-center',
               autoClose: 5000,
@@ -72,6 +75,10 @@ export const AreaPedidos = () => {
               draggable: true,
               theme: 'light',
             });
+
+            setTimeout(() => {
+              navigate('/panel-principal');
+            }, 2000);
           } catch (error) {
             console.error('Error al cambiar el estado del pedido:', error);
             toast.error('Error al actualizar el estado del pedido.', {
@@ -113,13 +120,17 @@ export const AreaPedidos = () => {
             className="filtro-select-panel"
           >
             <option value="">Todos los pedidos</option>
-            {['esperando_aprobacion', 'aprobado', 'enviado', 'recibido'].map(
-              (estado) => (
-                <option key={estado} value={estado}>
-                  {estado}
-                </option>
-              ),
-            )}
+            {[
+              'esperando_aprobacion',
+              'aprobado',
+              'enviado',
+              'recibido',
+              'cancelado',
+            ].map((estado) => (
+              <option key={estado} value={estado}>
+                {estado}
+              </option>
+            ))}
           </select>
         </div>
 
