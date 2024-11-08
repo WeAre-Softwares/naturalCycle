@@ -9,6 +9,8 @@ import {
   About,
   AreaPedidos,
   AreaUsuarios,
+  CardInfoUsuario,
+  CardPedido,
   Categorias,
   CrearProducto,
   EditarProducto,
@@ -73,7 +75,7 @@ function App() {
           {/* Rutas Públicas */}
           <Route path="/" element={<Navigate to="/inicio" />} />
           <Route path="/inicio" element={<Inicio />} />
-          {/* ProtectedRoute  */}
+          {/* Rutas protegidas para usuarios autenticados */}
           <Route path="/login" element={<ProtectedRoute element={Login} />} />
           <Route
             path="/register"
@@ -100,6 +102,7 @@ function App() {
             element={<ProductosPorBultoCerrado />}
           />
           <Route path="/producto/:id" element={<ProductDetails />} />
+          <Route path="/usuario-info" element={<CardInfoUsuario />} />
           {/* Rutas Privadas (Solo Admin) */}
           <Route
             path="/panel-principal"
@@ -108,6 +111,10 @@ function App() {
           <Route
             path="/panel-pedidos"
             element={<PrivateRoute element={AreaPedidos} />}
+          />
+          <Route
+            path="/pedido/:pedido_id"
+            element={<PrivateRoute element={CardPedido} />}
           />
           <Route
             path="/panel-usuarios"

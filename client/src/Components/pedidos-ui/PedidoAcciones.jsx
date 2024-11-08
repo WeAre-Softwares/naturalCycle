@@ -11,11 +11,11 @@ export const PedidoAcciones = ({
 
   return (
     <div className="pedido-acciones">
-      {/* <Link to={`/editar-pedido/${pedido.pedido_id}`} className="icono-accion">
-        <i className="fas fa-edit" title="Editar Pedido"></i>
-      </Link> */}
-      <button className='icono-accion'>
-      <i class="fa-solid fa-circle-info" title='Detalles del pedido'></i> {/*ESTE BOTON DEBE DIRIGIR A LA PAGINA CardPedido*/}
+      <button className="icono-accion">
+        {/* TODO: AGREGAR FUNCIONALIDAD */}
+        <Link to={'/pedido/:pedido_id'}>
+          <i class="fa-solid fa-circle-info" title="Detalles del pedido"></i>
+        </Link>
       </button>
       <button
         className="icono-accion"

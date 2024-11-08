@@ -2,6 +2,7 @@ export { About } from './About';
 export { AreaPedidos } from './AreaPedidos';
 export { AreaUsuarios } from './AreaUsuarios';
 export { CardInfoUsuario } from './CardInfoUsuario';
+export { CardPedido } from './CardPedido';
 export { Categorias } from './Categorias';
 export { Checkout } from './Checkout';
 export { CrearProducto } from './CrearProducto';

@@ -11,7 +11,6 @@ export const UsuarioCard = ({
 }) => {
   const { isAuthenticated, getRoles } = useAuthStore();
 
-  // Definir roles permitidos para ver el precio y añadir al carrito
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
   const isAdmin = userRoles.includes('admin');
@@ -109,7 +108,8 @@ export const UsuarioCard = ({
         className="area-usuarios-name"
         onClick={() => mostrarDetallesUsuario(usuario)} // Mostrar detalles al hacer clic
       >
-        {usuario.nombre} {usuario.apellido} <i class="fa-solid fa-circle-info"></i>
+        {usuario.nombre} {usuario.apellido}{' '}
+        <i class="fa-solid fa-circle-info"></i>
       </p>
       <div
         style={{

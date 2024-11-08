@@ -107,7 +107,6 @@ export const Inicio = () => {
 
       {/* Redes Social */}
       <RedesSocialesHome />
-
     </div>
   );
 };

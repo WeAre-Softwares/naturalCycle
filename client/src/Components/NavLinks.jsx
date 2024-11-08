@@ -4,7 +4,6 @@ import useAuthStore from '../store/use-auth-store';
 
 export const NavLinks = ({ isOpen, toggleMenu }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const logout = useAuthStore((state) => state.logout);
   const getRoles = useAuthStore((state) => state.getRoles);
   const navigate = useNavigate();
   const [shouldRedirect, setShouldRedirect] = useState(false);
@@ -13,11 +12,6 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
   const hasAccess =
     isAuthenticated() &&
     (getRoles().includes('admin') || getRoles().includes('empleado'));
-
-  const handleLogout = () => {
-    logout();
-    setShouldRedirect(true); // Activar la redirección solo después de hacer logout
-  };
 
   useEffect(() => {
     if (shouldRedirect && !isAuthenticated()) {
@@ -81,14 +75,10 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
               </li>
             )}
             <li>
-              <Link onClick={handleLogout}>Cerrar sesión</Link> {/*cambiar este link por el comentado de abajo y este ponerlo EN LA PÁGINA 
-              CardInfoUsuario (ahi en la pagina está comentado donde agregarlo) */}
-            </li> 
-
-            {/*<Link to="/CardInfoUsuario">
-        <p name="nombre-usuario-login">Mi cuenta</p>
-      </Link>*/}
-
+              <Link to="/usuario-info" onClick={toggleMenu}>
+                <p name="nombre-usuario-login">Mi cuenta</p>
+              </Link>
+            </li>
           </>
         ) : (
           <li>
