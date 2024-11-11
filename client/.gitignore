@@ -3,3 +3,4 @@
 
 # Ignorar el archivo de variables de entorno
 .env
+.env.production
