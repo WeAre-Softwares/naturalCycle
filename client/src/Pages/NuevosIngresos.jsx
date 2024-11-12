@@ -4,6 +4,7 @@ import { IntroNuevosProductos } from '../Components/nuevos-ingresos-ui/IntroNuev
 import { PaginationControls } from '../Components/PaginationControls';
 import { ProductosNuevosIngresosGrid } from '../Components/nuevos-ingresos-ui/ProductosNuevosIngresosGrid';
 import { useGetAllNewArrivalProducts } from '../hooks/hooks-product/useGetAllNewArrivalProducts';
+import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
 
 export const NuevosIngresos = () => {
   const [page, setPage] = useState(1);
@@ -44,15 +45,13 @@ export const NuevosIngresos = () => {
       {error && (
         <div className="no-productos">
           <i className="fas fa-exclamation-circle"></i>
-          <p>Hubo un error al cargar los productos.</p>
+          <p>Error al obtener productos.</p>
         </div>
       )}
 
       {/* Mostrar mensaje de "sin resultados" */}
       {!loading && !error && productos.length === 0 && (
-        <p className="no-results-message">
-          No hay productos nuevos disponibles.
-        </p>
+        <NoHayProductos></NoHayProductos>
       )}
 
       {/* Mostrar grid de productos solo si hay resultados */}

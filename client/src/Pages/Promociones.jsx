@@ -4,6 +4,7 @@ import { PromocionesStatic } from '../Components/promociones-ui/PromocionesStati
 import { CarruselProductosPromociones } from '../Components/promociones-ui/CarruselProductosPromociones';
 import { PaginationControls } from '../Components/PaginationControls';
 import { useGetAllProductsPromotional } from '../hooks/hooks-product/useGetAllProductsPromotional';
+import { NoHayProductos } from '../Components/categorias-ui';
 
 export const Promociones = () => {
   const [page, setPage] = useState(1);
@@ -34,14 +35,18 @@ export const Promociones = () => {
           <div class="dot-inicio"></div>
           <div class="dot-inicio"></div>
         </section>
+        
       ) : error ? (
         <div className="no-productos-promo">
           <p>
             <i className="fas fa-exclamation-circle"></i>
-            {error}
+            {'Error al obtener productos'}
           </p>
         </div>
-      ) : (
+      )  : productos.length === 0 ? (
+        <NoHayProductos></NoHayProductos>
+      ): (
+        
         <>
           <CarruselProductosPromociones productos={productos} />
           <PaginationControls

@@ -6,6 +6,7 @@ import {
 } from '../Components/productos-bulto-cerrado-ui/';
 import { PaginationControls } from '../Components/PaginationControls';
 import { useGetBultoCerradoProducts } from '../hooks/hooks-product/useGetBultoCerradoProducts';
+import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
 
 export const ProductosPorBultoCerrado = () => {
   const [page, setPage] = useState(1);
@@ -46,13 +47,13 @@ export const ProductosPorBultoCerrado = () => {
       {error && (
         <div className="no-productos">
           <i className="fas fa-exclamation-circle"></i>
-          <p>Hubo un error al cargar los productos.</p>
+          <p>Error al obtener los productos.</p>
         </div>
       )}
 
       {/* Mostrar mensaje de "sin resultados" */}
       {!loading && !error && productos.length === 0 && (
-        <p className="no-results-message">No hay productos disponibles.</p>
+        <NoHayProductos></NoHayProductos>
       )}
 
       {/* Mostrar grid de productos solo si hay resultados */}
