@@ -69,6 +69,11 @@ export const UpdateProductoSchema = yup.object().shape({
     )
     .optional(),
 
+  disponible: yup
+    .boolean()
+    .optional()
+    .transform((value) => value === 'true' || value === true),
+
   producto_destacado: yup
     .boolean()
     .optional()

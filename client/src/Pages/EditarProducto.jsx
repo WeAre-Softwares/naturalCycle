@@ -46,6 +46,7 @@ export const EditarProducto = () => {
       setValue('nombre', product.nombre);
       setValue('descripcion', product.descripcion);
       setValue('precio', product.precio);
+      setValue('disponible', product.disponible);
       setValue('precio_antes_oferta', product.precio_antes_oferta);
       setValue('tipo_de_precio', product.tipo_de_precio);
       setValue('marca_id', product.marca.marca_id);
@@ -103,6 +104,7 @@ export const EditarProducto = () => {
     if (data.en_promocion)
       formData.append('precio_antes_oferta', data.precio_antes_oferta);
     formData.append('tipo_de_precio', data.tipo_de_precio);
+    formData.append('disponible', !!data.disponible);
     formData.append('marca_id', data.marca_id);
     formData.append('en_promocion', !!data.en_promocion);
     formData.append('producto_destacado', !!data.producto_destacado);
@@ -275,6 +277,15 @@ export const EditarProducto = () => {
         {errors.productos_etiquetas && (
           <p style={{ color: 'red' }}>{errors.productos_etiquetas.message}</p>
         )}
+
+        <label className="crear-producto-label">
+          <input
+            type="checkbox"
+            {...register('disponible')}
+            className="crear-producto-checkbox"
+          />
+          Stock
+        </label>
 
         <label className="crear-producto-label">
           <input

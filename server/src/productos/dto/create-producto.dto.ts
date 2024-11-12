@@ -69,6 +69,17 @@ export class CreateProductoDto {
 
   @ApiProperty({
     example: true,
+    description: 'Stock SI = true; NO = false;',
+    nullable: true,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => (value === 'true' || value === true ? true : false)) // Conversión explícita
+  disponible?: boolean;
+
+  @ApiProperty({
+    example: true,
     description: 'Producto destacado SI = true; NO = false;',
     nullable: true,
     required: false,
