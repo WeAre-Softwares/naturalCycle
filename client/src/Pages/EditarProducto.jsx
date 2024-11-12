@@ -25,6 +25,7 @@ export const EditarProducto = () => {
   // Extraer el JWT del localStorage usando el estado global
   const { token } = useAuthStore();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -71,6 +72,7 @@ export const EditarProducto = () => {
   };
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true); // Desactivar el botón
     const formData = new FormData();
     if (selectedFiles.length > 0) {
       selectedFiles.forEach((file) => formData.append('imagenes', file));
@@ -98,7 +100,8 @@ export const EditarProducto = () => {
     formData.append('nombre', data.nombre);
     formData.append('descripcion', data.descripcion);
     formData.append('precio', data.precio);
-    formData.append('precio_antes_oferta', data.precio_antes_oferta);
+    if (data.en_promocion)
+      formData.append('precio_antes_oferta', data.precio_antes_oferta);
     formData.append('tipo_de_precio', data.tipo_de_precio);
     formData.append('marca_id', data.marca_id);
     formData.append('en_promocion', !!data.en_promocion);
@@ -117,6 +120,8 @@ export const EditarProducto = () => {
     } catch (error) {
       console.error(error);
       toast.error('Error al procesar la solicitud.');
+    } finally {
+      setIsSubmitting(false); // Reactivar el botón
     }
   };
 
@@ -205,6 +210,7 @@ export const EditarProducto = () => {
           type="number"
           placeholder="Precio antiguo"
           className="crear-producto-input"
+          style={{ display: watch('en_promocion') ? 'block' : 'none' }}
         />
         {errors.precio_antes_oferta && (
           <p style={{ color: 'red' }}>{errors.precio_antes_oferta.message}</p>
@@ -297,8 +303,12 @@ export const EditarProducto = () => {
           Nuevo Ingreso
         </label>
 
-        <button type="submit" className="crear-producto-button">
-          Actualizar Producto
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          className="crear-producto-button"
+        >
+          {isSubmitting ? 'Actualizando...' : 'Actualizar Producto'}
         </button>
       </form>
     </>

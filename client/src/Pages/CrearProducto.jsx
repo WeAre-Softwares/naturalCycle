@@ -15,11 +15,14 @@ export const CrearProducto = () => {
   // Extrear el JWT del localStorage usando el estado global
   const { token } = useAuthStore();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPromo, setIsPromo] = useState(false);
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(createProductoSchema),
@@ -29,6 +32,9 @@ export const CrearProducto = () => {
     },
   });
 
+  // Verificar si el checkbox "en_promocion" está activo
+  const enPromocion = watch('en_promocion');
+
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
 
@@ -37,6 +43,7 @@ export const CrearProducto = () => {
   };
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true); // Desactivar el botón
     const formData = new FormData();
 
     // Agregar archivos de imagen
@@ -83,6 +90,8 @@ export const CrearProducto = () => {
     } catch (error) {
       console.error(error);
       toast.error('Error al procesar la solicitud.');
+    } finally {
+      setIsSubmitting(false); // Reactivar el botón
     }
   };
 
@@ -154,12 +163,15 @@ export const CrearProducto = () => {
           <p style={{ color: 'red' }}>{errors.precio.message}</p>
         )}
 
-        <input
-          {...register('precio_antes_oferta')}
-          type="number"
-          placeholder="Precio antiguo"
-          className="crear-producto-input"
-        />
+        {/* Mostrar campo "precio_antes_oferta" solo si "en_promocion" es true */}
+        {enPromocion && (
+          <input
+            {...register('precio_antes_oferta')}
+            type="number"
+            placeholder="Precio antiguo"
+            className="crear-producto-input"
+          />
+        )}
         {errors.precio_antes_oferta && (
           <p style={{ color: 'red' }}>{errors.precio_antes_oferta.message}</p>
         )}
@@ -237,7 +249,9 @@ export const CrearProducto = () => {
           />
           Nuevo ingreso
         </label>
-        <button className="crear-producto-button">Crear Producto</button>
+        <button disabled={isSubmitting} className="crear-producto-button">
+          {isSubmitting ? 'Creando...' : 'Crear Producto'}
+        </button>
       </form>
     </>
   );

@@ -42,7 +42,7 @@ export const ProductosPromocionesItem = ({ producto }) => {
             </span>
             <br />
             <div className="precios-promo">
-              <h2 className=" precio-producto-card precio-viejo-promo">
+              <h2 className="precio-producto-card precio-viejo-promo">
                 ${producto.precio_antes_oferta}
               </h2>
               <h2 className="precio-producto-card">

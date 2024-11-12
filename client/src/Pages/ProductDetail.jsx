@@ -92,6 +92,12 @@ export const ProductDetails = () => {
             {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
             {isUserLoggedIn && hasAccessRole && (
               <div className="price-container">
+                {/* Mostrar solo si tiene precio de oferta */}
+                {product.precio_antes_oferta && (
+                  <h3 className="precio-producto-card precio-viejo-promo">
+                    ${product.precio_antes_oferta}
+                  </h3>
+                )}
                 <p className="precio-view">
                   ${Number(product.precio).toLocaleString()}
                 </p>
