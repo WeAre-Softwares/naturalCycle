@@ -83,6 +83,7 @@ export const OlvideContraseña = () => {
 
         <p className="olvide-contraseña-signup-link">
           ¿Aún no tienes una cuenta?
+        </p>
           <Link
             to="/register"
             className="olvide-contraseña-signup-link olvide-contraseña-link"
@@ -90,7 +91,6 @@ export const OlvideContraseña = () => {
             {' '}
             Registrarme
           </Link>
-        </p>
       </div>
       {errorMessage && (
         <div className="error-message">

@@ -67,6 +67,24 @@
   align-items: center;
 }
 
+.precio-producto-banner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  height: 70px;
+  width: 300px;
+  align-items: center;
+}
+
+.precio-producto-banner h2{
+  background-color: #ccc;
+  width: 300px;
+  border-radius: 4px;
+  padding: 3px 0px;
+  text-align: center;
+}
+
 
 /*cards tipos de productos*/
 
@@ -127,13 +145,6 @@ border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.div-banner-general-slide h2{
-  background-color: #ccc;
-  border-radius: 4px;
-  padding: 3px 0px;
-  text-align: center;
 }
 
 

@@ -22,6 +22,28 @@
     border-radius: 15px; /* Reduce el radio para una apariencia más alargada */
 }
 
+@media (max-width:1000px) {
+    .conteiner-register{
+        margin-top: 150px;
+    }
+}
+
+@media (max-width:700px) {
+    .form-register{
+        width: 400px;
+    }
+}
+
+@media (max-width:470px) {
+    .form-register{
+        width: 350px;
+    }
+
+    .conteiner-register{
+        margin-top: 130px;
+    }
+}
+
 h2 {
     text-align: center;
     margin-bottom: 15px;
@@ -30,7 +52,7 @@ h2 {
 
 @media (max-width:415px) {
     h2{
-        font-size: 15px;
+        font-size: 18px;
     }
 }
 

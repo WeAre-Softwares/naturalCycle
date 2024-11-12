@@ -4,7 +4,7 @@ export const SocialLinks = () => {
   return (
     <div className="section-footer">
       <h3>Ayuda</h3>
-      <a href="#">
+      <a href="https://www.instagram.com/naturalcycle21?igsh=MXBzeWhyNHcxenVuNg==">
         <i className="fa-brands fa-instagram"></i> Instagram
       </a>
       <a href="#">

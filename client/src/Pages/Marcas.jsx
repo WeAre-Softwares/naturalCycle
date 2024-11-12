@@ -96,7 +96,10 @@ export const Marcas = () => {
             <div class="dot-inicio"></div>
           </section>
         ) : error ? (
+          <div className="no-productos">
+          <i className="fas fa-exclamation-circle"></i>
           <p>{error}</p>
+        </div>
         ) : products.length > 0 ? (
           products.map((producto) => (
             <ProductCard key={producto.producto_id} producto={producto} />
