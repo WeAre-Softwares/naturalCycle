@@ -45,9 +45,22 @@ export const Marcas = () => {
       const marcaMatch = marcas.find(
         (marca) => marca.nombre.toLowerCase() === marcaNombre.toLowerCase(),
       );
-      setMarcaSeleccionada(marcaMatch ? marcaMatch.marca_id : null);
+      if (marcaMatch) {
+        setMarcaSeleccionada(marcaMatch.marca_id);
+      }
     }
   }, [marcaNombre, marcas]);
+
+  const handleMarcaSeleccionada = (id) => {
+    setMarcaSeleccionada(id);
+    const marcaUrl = marcas
+      .find((mar) => mar.marca_id === id)
+      ?.nombre.toLowerCase()
+      .replace(/\s+/g, '-');
+    if (marcaUrl) {
+      navigate(`/marcas/${marcaUrl}`);
+    }
+  };
 
   const handlePrevPage = () => {
     if (page > 0) {
@@ -67,12 +80,7 @@ export const Marcas = () => {
       <MarcasFiltro
         marcas={marcas}
         setMarcaSeleccionada={(id) => {
-          setMarcaSeleccionada(id);
-          const marcaUrl = marcas
-            .find((mar) => mar.marca_id === id)
-            ?.nombre.toLowerCase()
-            .replace(/\s+/g, '-');
-          if (marcaUrl) navigate(`/marcas/${marcaUrl}`);
+          handleMarcaSeleccionada(id);
           setMenuAbierto(false);
         }}
         menuAbierto={menuAbierto}

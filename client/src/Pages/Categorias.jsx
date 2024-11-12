@@ -40,7 +40,7 @@ export const Categorias = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
-  // Sincroniza el estado con la URL inicial
+  // Sincronización inicial de estado solo en la primera carga
   useEffect(() => {
     if (categoriaNombre && categorias.length > 0) {
       const categoriaMatch = categorias.find(
@@ -55,16 +55,17 @@ export const Categorias = () => {
     } else {
       setCategoriaSeleccionada('');
     }
-  }, [categoriaNombre, categorias]);
+  }, [categorias]);
 
-  // Efecto para sincronizar URL cada vez que cambia la categoría seleccionada
+  // Actualiza la URL cuando cambia la categoría seleccionada
   useEffect(() => {
+    if (!categoriaSeleccionada) return;
     const categoriaUrl = categorias
       .find((cat) => cat.categoria_id === categoriaSeleccionada)
       ?.nombre.toLowerCase()
       .replace(/\s+/g, '-');
     if (categoriaUrl) navigate(`/categorias/${categoriaUrl}`);
-  }, [categoriaSeleccionada, categorias, navigate]);
+  }, [categoriaSeleccionada, navigate]);
 
   const handleCategoriaChange = (id) => {
     setCategoriaSeleccionada(id);
