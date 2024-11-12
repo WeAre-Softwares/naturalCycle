@@ -46,14 +46,18 @@ export const ProductCard = ({ producto }) => {
             {/* Mostrar solo si tiene precio de oferta */}
             <div
               className={`${
-                producto.precio_antes_oferta ? 'precios-promo' : ''
+                producto.precio_antes_oferta != null &&
+                !isNaN(Number(producto.precio_antes_oferta))
+                  ? 'precios-promo'
+                  : ''
               }`}
             >
-              {producto.precio_antes_oferta && (
-                <h2 className="precio-producto-card precio-viejo-promo">
-                  ${producto.precio_antes_oferta}
-                </h2>
-              )}
+              {producto.precio_antes_oferta != null &&
+                !isNaN(Number(producto.precio_antes_oferta)) && (
+                  <h2 className="precio-producto-card precio-viejo-promo">
+                    ${Number(producto.precio_antes_oferta).toLocaleString()}
+                  </h2>
+                )}
               <h2 className="precio-producto-card">
                 ${Number(producto.precio).toLocaleString()}
               </h2>

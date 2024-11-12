@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createEtiquetaSchema } from '../../schemas/create-etiqueta-schema';
 import { useCreateEtiqueta } from '../../hooks/hooks-etiqueta/useCreateEtiqueta';

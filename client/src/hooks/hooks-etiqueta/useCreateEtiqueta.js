@@ -15,12 +15,12 @@ export const useCreateEtiqueta = () => {
     setLoading(true);
     try {
       await createEtiquetaService(token, data);
-      toast.success('Categoría creada con éxito!');
+      toast.success('Etiqueta creada con éxito!');
       setTimeout(() => {
         navigate('/panel-principal');
-      }, 3000);
+      }, 2000);
     } catch (error) {
-      toast.error('Error al crear la categoría');
+      toast.error('Error al crear la etiqueta');
     } finally {
       setLoading(false);
     }

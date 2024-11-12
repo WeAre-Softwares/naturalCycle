@@ -16,7 +16,6 @@ export const CrearProducto = () => {
   const { token } = useAuthStore();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPromo, setIsPromo] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -82,7 +81,7 @@ export const CrearProducto = () => {
       // Verifica que la respuesta tenga un indicativo de éxito
       if (response) {
         toast.success('Producto creado con éxito!', { autoClose: 5000 });
-        setTimeout(() => navigate('/panel-principal'), 6000);
+        setTimeout(() => navigate('/panel-principal'), 3000);
       } else {
         toast.error('Error al crear el producto');
         throw new Error('Error al crear el producto.');

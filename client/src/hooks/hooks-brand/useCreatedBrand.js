@@ -18,7 +18,7 @@ export const useCreateBrand = () => {
       toast.success('Marca creada con éxito!');
       setTimeout(() => {
         navigate('/panel-principal');
-      }, 3000);
+      }, 2000);
     } catch (error) {
       toast.error('Error al crear la marca');
     } finally {

@@ -36,6 +36,7 @@ export const FormularioActualizarMarca = () => {
     if (data.imagen?.[0]) {
       formData.append('imagen', data.imagen[0]);
     }
+
     await updateBrand(marca_id, formData); // Pasar `marca_id` aquí
   };
 
