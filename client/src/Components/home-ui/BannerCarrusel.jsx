@@ -31,7 +31,10 @@ export const BannerCarrusel = () => {
   };
 
   if (loading) return <div>Cargando productos destacados...</div>;
-  if (error) return <div>Error al cargar productos</div>;
+  if (error) return <div className="no-productos">
+  <i className="fas fa-exclamation-circle"></i>
+  <p>Hubo un error al cargar el banner.</p>
+</div>;
 
   return (
     <div className="div-banner-general-slide">
@@ -56,7 +59,7 @@ export const BannerCarrusel = () => {
                 </h2>
                 {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
                 {isUserLoggedIn && hasAccessRole && (
-                  <h2 name="precio-banner">
+                  <h2 className='precio-banner' name="precio-banner">
                     A tan sólo ${Number(producto.precio).toLocaleString()}
                   </h2>
                 )}

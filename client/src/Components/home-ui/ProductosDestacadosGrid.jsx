@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProductosDestacadosItem } from './ProductosDestacadosItem';
+import { NoHayProductos } from '../categorias-ui';
 
 export const ProductosDestacadosGrid = ({ productos }) => {
   return (
@@ -16,7 +17,7 @@ export const ProductosDestacadosGrid = ({ productos }) => {
             />
           ))
         ) : (
-          <p>No hay productos destacados.</p>
+          <NoHayProductos></NoHayProductos>
         )}
       </div>
     </div>

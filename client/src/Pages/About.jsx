@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Styles/Sobre nosotros/About.css';
+import ImgAbout from '/imagenes/img-about.png';
 
 export const About = () => {
   return (
@@ -12,7 +13,7 @@ export const About = () => {
         <div className="texto-quienes-somos">
           <p>
             Natural Cycle es una distribuidora mayorista de alimentos naturales
-            que está en el mercado desde 2010, comprometida con ofrecer
+            que está en el mercado desde 2021, comprometida con ofrecer
             productos de alta calidad y frescura. Nos especializamos en la
             distribución de una amplia gama de alimentos saludables, incluyendo
             granos, semillas, frutos secos, superalimentos y productos
@@ -32,7 +33,7 @@ export const About = () => {
 
         <div className="imagen-quienes-somos">
           <img
-            src="https://res.cloudinary.com/djkjuzzz6/image/upload/v1729780030/naturalcycle-marcas/bpynmw09dt4lpvwbrwkr.png"
+            src={ImgAbout}
             alt=""
           />
         </div>

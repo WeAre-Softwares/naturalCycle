@@ -15,7 +15,12 @@ export const MarcasDestacadasGrid = ({ marcas }) => {
             <MarcasDestacadasItem key={marca.marca_id} marca={marca} />
           ))
         ) : (
-          <p className='no-marcas-destacadas'>No hay marcas destacadas.</p>
+          <div className="marcas-dest-alerta"> <div className="no-productos-marc-cat">
+      <h3>No se ha encontrado ninguna marca destacada.</h3>
+      <p>
+        Lo sentimos, pero actualmente no tenemos una marca en esta sección.
+      </p>
+    </div></div>
         )}
       </div>
     </div>

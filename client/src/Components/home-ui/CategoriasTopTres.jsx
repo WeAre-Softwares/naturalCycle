@@ -36,7 +36,10 @@ export const CategoriasTopTres = () => {
   }
 
   if (error) {
-    return <p>Error al cargar categorías</p>;
+    return <div className="no-productos">
+    <i className="fas fa-exclamation-circle"></i>
+    <p>Hubo un error al cargar las categorías.</p>
+  </div>;
   }
 
   return (

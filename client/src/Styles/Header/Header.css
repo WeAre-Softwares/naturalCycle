@@ -61,25 +61,7 @@
   position: relative;
 }
 
-.btn-cart::after {
-  content: attr(data-quantity);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: red;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: absolute;
-  top: -5px;
-  right: -15px;
-  font-size: 12px;
-  color: white;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  opacity: 0;
-  visibility: hidden;
-  transition: .2s linear;
-}
+
 
 .btn-cart:hover::after {
   visibility: visible;
@@ -155,7 +137,7 @@
 
 
 /* Media query para pantallas menores a 660px */
-@media (max-width: 1000px) {  
+@media (max-width: 1080px) {  
   
   /* Mostrar el icono de la hamburguesa */
   .hamburger {
