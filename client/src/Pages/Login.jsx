@@ -13,6 +13,7 @@ import useAuthStore from '../store/use-auth-store';
 export const Login = () => {
   const [isOpen, setIsOpen] = useState(false); // Mover el estado aquí
   const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para deshabilitar el botón
   const login = useAuthStore((state) => state.login); // Acción de Zustand para loguear
   const navigate = useNavigate();
   const {
@@ -24,6 +25,7 @@ export const Login = () => {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true); // Deshabilitar botón al enviar
     try {
       const { email, password } = data;
       const response = await loginService(email, password);
@@ -44,6 +46,8 @@ export const Login = () => {
       setTimeout(() => {
         setErrorMessage('');
       }, 5000);
+    } finally {
+      setIsSubmitting(false); // Habilitar el botón nuevamente
     }
   };
 
@@ -96,7 +100,11 @@ export const Login = () => {
           />
           {/* Mostrar el error si existe */}
           <RememberMe />
-          <button type="submit" className="button-submit-login">
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="button-submit-login"
+          >
             Iniciar sesión
           </button>
           <p className="p-login">

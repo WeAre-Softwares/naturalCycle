@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,6 +25,7 @@ export const RegisterForm = () => {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true); // Deshabilitar botón al enviar
     try {
       const response = await registerService(
         data.nombre,
@@ -57,7 +59,7 @@ export const RegisterForm = () => {
 
         setTimeout(() => {
           navigate('/inicio');
-        }, 8000);
+        }, 5000);
       } else {
         throw new Error('Error al registrarse. Por favor, intenta nuevamente.');
       }
@@ -65,6 +67,8 @@ export const RegisterForm = () => {
       setErrorMessage(
         'Hubo un error en al registrarse. Intente nuevamente más tarde.',
       );
+    } finally {
+      setIsSubmitting(false); // Habilitar el botón nuevamente
     }
     setTimeout(() => {
       setErrorMessage('');
@@ -148,7 +152,7 @@ export const RegisterForm = () => {
           error={errors.password}
           required
         />
-        <FormButton buttonText="Enviar solicitud" />
+        <FormButton disabled={isSubmitting} buttonText="Enviar solicitud" />
         <RegisterLink />
       </form>
       {/* Mostrar el error si existe */}

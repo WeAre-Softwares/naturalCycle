@@ -10,6 +10,7 @@ import { requestResetPasswordService } from '../services/requestResetPasswordSer
 
 export const OlvideContraseña = () => {
   const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -20,11 +21,10 @@ export const OlvideContraseña = () => {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true); // Deshabilitar botón al enviar
     try {
       await requestResetPasswordService(data.email);
 
-      // Verifica que la respuesta tenga un indicativo de éxito
-      // Limpia el mensaje de error
       setErrorMessage('');
       toast.success(
         'Si este correo está registrado, recibirás un enlace de recuperación.',
@@ -42,13 +42,47 @@ export const OlvideContraseña = () => {
 
       setTimeout(() => {
         navigate('/inicio');
-      }, 7000);
+      }, 5000);
     } catch (error) {
+      // Verifica si el mensaje de error contiene el texto específico
       const errorMsg = error.message || 'Error inesperado. Intenta nuevamente.';
+
+      if (errorMsg.includes('Ya has solicitado restablecer tu contraseña')) {
+        toast.warning(
+          'Ya has solicitado restablecer tu contraseña. Inténtalo más tarde.',
+          {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          },
+        );
+      } else {
+        // Mostrar mensaje genérico en caso de otro error
+        toast.success(errorMsg, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
+      setTimeout(() => {
+        navigate('/inicio');
+      }, 5000);
+      // Almacenar el mensaje de error en el estado para posibles mensajes en pantalla
       setErrorMessage(errorMsg);
+    } finally {
+      setIsSubmitting(false); // Habilitar el botón nuevamente
     }
   };
-
   return (
     <div className="olvide-contraseña-container">
       <ToastContainer />
@@ -74,9 +108,13 @@ export const OlvideContraseña = () => {
             />
             {errors.email && (
               <p style={{ color: 'red' }}>{errors.email.message}</p>
-            )}{' '}
+            )}
           </div>
-          <button className="olvide-contraseña-form-submit-btn" type="submit">
+          <button
+            disabled={isSubmitting}
+            className="olvide-contraseña-form-submit-btn"
+            type="submit"
+          >
             Enviar
           </button>
         </form>
@@ -84,19 +122,18 @@ export const OlvideContraseña = () => {
         <p className="olvide-contraseña-signup-link">
           ¿Aún no tienes una cuenta?
         </p>
-          <Link
-            to="/register"
-            className="olvide-contraseña-signup-link olvide-contraseña-link"
-          >
-            {' '}
-            Registrarme
-          </Link>
+        <Link
+          to="/register"
+          className="olvide-contraseña-signup-link olvide-contraseña-link"
+        >
+          Registrarme
+        </Link>
       </div>
       {errorMessage && (
         <div className="error-message">
           <p>{errorMessage}</p>
         </div>
-      )}{' '}
+      )}
     </div>
   );
 };
