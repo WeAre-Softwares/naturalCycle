@@ -61,12 +61,15 @@ export const ProductosPorBultoCerrado = () => {
         <ProductosBultoCerradoGrid productos={productos} />
       )}
 
-      <PaginationControls
-        page={page}
-        totalPages={totalPages}
-        onPrevPage={handlePrevPage}
-        onNextPage={handleNextPage}
-      />
+      {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+      {totalPages > 0 && (
+        <PaginationControls
+          page={page}
+          totalPages={totalPages}
+          onPrevPage={handlePrevPage}
+          onNextPage={handleNextPage}
+        />
+      )}
     </div>
   );
 };

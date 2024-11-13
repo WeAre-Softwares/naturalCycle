@@ -13,7 +13,6 @@ import {
 import { useGetAllMarcasDestacadas } from '../hooks/hooks-brand/useGetAllMarcasDestacadas';
 import { useGetAllProductosDestacados } from '../hooks/hooks-product/useGetAllProductosDestacados';
 import { Pagination } from '../Components/panel-productos/Pagination';
-import { NewLogo } from '../Components/New-logo';
 
 export const Inicio = () => {
   const limitMarcas = 12;
@@ -67,12 +66,15 @@ export const Inicio = () => {
       ) : (
         <>
           <ProductosDestacadosGrid productos={productos} />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onNext={handleNextPage}
-            onPrev={handlePrevPage}
-          />
+          {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+          {totalPages > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onNext={handleNextPage}
+              onPrev={handlePrevPage}
+            />
+          )}
         </>
       )}
 

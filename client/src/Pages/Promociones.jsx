@@ -35,7 +35,6 @@ export const Promociones = () => {
           <div class="dot-inicio"></div>
           <div class="dot-inicio"></div>
         </section>
-        
       ) : error ? (
         <div className="no-productos-promo">
           <p>
@@ -43,10 +42,9 @@ export const Promociones = () => {
             {'Error al obtener productos'}
           </p>
         </div>
-      )  : productos.length === 0 ? (
+      ) : productos.length === 0 ? (
         <NoHayProductos></NoHayProductos>
-      ): (
-        
+      ) : (
         <>
           <CarruselProductosPromociones productos={productos} />
           <PaginationControls

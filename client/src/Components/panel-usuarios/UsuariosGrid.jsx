@@ -1,5 +1,6 @@
 import React from 'react';
 import { UsuarioCard } from './UsuarioCard';
+import { NoHayResultados } from '../NoHayResultados';
 
 export const UsuariosGrid = ({
   usuarios,
@@ -9,7 +10,7 @@ export const UsuariosGrid = ({
   darRangoEmpleadoUsuario,
 }) => {
   if (usuarios.length === 0) {
-    return <p>No se encontraron usuarios para los criterios seleccionados.</p>;
+    return <NoHayResultados entidad={'usuarios'} />;
   }
 
   return (

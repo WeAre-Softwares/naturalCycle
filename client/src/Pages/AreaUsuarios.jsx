@@ -92,12 +92,15 @@ export const AreaUsuarios = () => {
               />
             )}
 
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(totalItems / itemsPerPage)}
-              onNext={() => goToPage(currentPage + 1)}
-              onPrev={() => goToPage(currentPage - 1)}
-            />
+            {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+            {totalItems > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(totalItems / itemsPerPage)}
+                onNext={() => goToPage(currentPage + 1)}
+                onPrev={() => goToPage(currentPage - 1)}
+              />
+            )}
           </>
         )}
       </div>

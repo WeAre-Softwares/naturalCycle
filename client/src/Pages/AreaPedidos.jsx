@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { NoHayResultados } from '../Components/NoHayResultados';
 
 const colorEstado = {
   esperando_aprobacion: '#D6A900',
@@ -101,13 +102,11 @@ export const AreaPedidos = () => {
       });
   };
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>;
-
   return (
     <div className="div-general-categoria-panel">
       <ToastContainer />
       <MenuLateralPanel />
+
       <div className="area-pedidos">
         <h1 className="titulo-area">Área de Pedidos</h1>
         {/* Filtrado con menú desplegable */}
@@ -135,8 +134,16 @@ export const AreaPedidos = () => {
         </div>
 
         <div className="lista-pedidos">
-          {pedidos.length === 0 && !loading ? (
-            <p>No se encontraron pedidos con el estado seleccionado.</p>
+          {(pedidos.length === 0 && !loading) || error ? (
+            <NoHayResultados entidad={'pedidos'} />
+          ) : loading ? (
+            <section className="dots-container-inicio">
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+            </section>
           ) : (
             pedidos.map((pedido) => (
               <div key={pedido.pedido_id}>
@@ -149,12 +156,15 @@ export const AreaPedidos = () => {
             ))
           )}
         </div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNext={nextPage}
-          onPrev={prevPage}
-        />
+        {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+        {totalPages > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onNext={nextPage}
+            onPrev={prevPage}
+          />
+        )}
       </div>
     </div>
   );

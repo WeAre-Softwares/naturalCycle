@@ -11,6 +11,7 @@ import { useActivateProduct } from '../hooks/hooks-product/useActivateProduct';
 import { useDeactivateProduct } from '../hooks/hooks-product/useDeactivateProduct';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NoHayResultados } from '../Components/NoHayResultados';
 
 const LIMIT = 3;
 
@@ -90,7 +91,7 @@ export const PanelProducto = () => {
               <div className="dot"></div>
             </section>
           ) : error ? (
-            <p>Ocurrió un error al cargar los productos.</p>
+            <NoHayResultados entidad={'productos'} />
           ) : productsData && productsData.length > 0 ? (
             <ul className="lista-productos-creados">
               {productsData.map((producto) => (
@@ -104,15 +105,18 @@ export const PanelProducto = () => {
               ))}
             </ul>
           ) : (
-            <p>No se encontraron productos.</p>
+            <NoHayResultados entidad={'productos'} />
           )}
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onNext={handleNextPage}
-            onPrev={handlePrevPage}
-          />
+          {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+          {totalPages > 0 && productsData && productsData.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onNext={handleNextPage}
+              onPrev={handlePrevPage}
+            />
+          )}
         </div>
       </div>
     </div>

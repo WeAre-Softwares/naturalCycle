@@ -12,6 +12,7 @@ import { useActivateEtiqueta } from '../hooks/hooks-etiqueta/useActivateEtiqueta
 import { useActivateBrand } from '../hooks/hooks-brand/useActivateBrand';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NoHayResultados } from '../Components/NoHayResultados';
 
 const LIMIT = 3;
 
@@ -184,16 +185,19 @@ export const PanelFiltrados = () => {
                     </li>
                   ))
                 ) : (
-                  <p>No se encontraron resultados.</p>
+                  <NoHayResultados entidad={'resultados'} />
                 )}
               </ul>
 
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onNext={() => goToPage(currentPage + 1)}
-                onPrev={() => goToPage(currentPage - 1)}
-              />
+              {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+              {totalItems > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onNext={() => goToPage(currentPage + 1)}
+                  onPrev={() => goToPage(currentPage - 1)}
+                />
+              )}
             </>
           )}
         </div>

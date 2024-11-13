@@ -92,9 +92,9 @@ export const Categorias = () => {
           </section>
         ) : error ? (
           <div className="no-productos">
-          <i className="fas fa-exclamation-circle"></i>
-          <p>{error}</p>
-        </div>
+            <i className="fas fa-exclamation-circle"></i>
+            <p>{error}</p>
+          </div>
         ) : products.length > 0 ? (
           products.map((producto) => (
             <ProductCard key={producto.producto_id} producto={producto} />
@@ -103,12 +103,15 @@ export const Categorias = () => {
           <NoHayProductos />
         )}
       </div>
-      <Pagination
-        currentPage={page + 1}
-        totalPages={totalPaginas}
-        onNext={() => handlePageChange(page + 1)}
-        onPrev={() => handlePageChange(page - 1)}
-      />
+      {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+      {totalPaginas > 0 && (
+        <Pagination
+          currentPage={page + 1}
+          totalPages={totalPaginas}
+          onNext={() => handlePageChange(page + 1)}
+          onPrev={() => handlePageChange(page - 1)}
+        />
+      )}
     </div>
   );
 };
