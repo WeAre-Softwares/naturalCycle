@@ -59,7 +59,7 @@ export const ProductDetails = () => {
 
           <div className="container-precio-nombre-ver-producto">
             <h2 className="nombre-view">{product.nombre}</h2>
-            <p className="text-style">
+            <p className="text-style description-view-prod">
               <strong>Descripción:</strong> {product.descripcion}
             </p>
 

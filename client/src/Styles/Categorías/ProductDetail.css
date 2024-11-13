@@ -8,6 +8,10 @@
   gap: 50px;
 }
 
+.description-view-prod{
+  max-width: 500px;
+}
+
 .container-img-ver-producto {
   display: flex;
 }
