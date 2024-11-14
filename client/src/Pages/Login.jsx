@@ -62,7 +62,7 @@ export const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="form-login">
           <InputField
             label="Email"
-            type="text"
+            type="email"
             placeholder=" Ingresa tu Email"
             icon={
               <svg
@@ -78,6 +78,7 @@ export const Login = () => {
             }
             register={register('email')}
             error={errors.email}
+            autoComplete="username"
           />
 
           <InputField
@@ -97,6 +98,7 @@ export const Login = () => {
             }
             register={register('password')}
             error={errors.password}
+            autoComplete="current-password"
           />
           {/* Mostrar el error si existe */}
           <RememberMe />

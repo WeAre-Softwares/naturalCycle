@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 export const RememberMe = ({ toggleMenu }) => {
   return (
     <div className="flex-row-login">
-      <div>
+      {/* <div>
         <input type="checkbox" />
         <label> Recordar</label>
-      </div>
+      </div> */}
       <span className="span-login">
         <Link to="/olvide-password" onClick={toggleMenu}>
           Olvidaste tu contraseña?
