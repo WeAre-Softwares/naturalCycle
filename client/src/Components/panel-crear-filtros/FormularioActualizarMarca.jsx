@@ -45,7 +45,7 @@ export const FormularioActualizarMarca = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="crear-producto-container"
+        className="crear-producto-container panel-margin-necesario"
       >
         <Link to="/panel-filtrado">
           <button className="button-volver-panel-producto">

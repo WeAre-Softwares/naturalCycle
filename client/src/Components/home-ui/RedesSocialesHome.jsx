@@ -19,7 +19,7 @@ export const RedesSocialesHome = () => {
           </div>
         </div>
         <div className="instagram-inicio-text">
-          <a className="instagram-inicio-icon" href="https://www.instagram.com/naturalcycle21?igsh=MXBzeWhyNHcxenVuNg==">
+          <a className="instagram-inicio-icon" target='blank' href="https://www.instagram.com/naturalcycle21?igsh=MXBzeWhyNHcxenVuNg==">
             <div className="instagram-inicio-layer">
               <span></span>
               <span></span>

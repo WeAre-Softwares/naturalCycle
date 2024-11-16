@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+.div-banner-inicio-vacio{
+  margin-top: -60px;
+  margin-bottom: -120px;
+}
+
+.div-banner-inicio-vacio img{
+  width: 100%;
+  height: 360px;
+}
 
 .conteiner-general-inicio{
   display: flex;

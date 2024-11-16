@@ -69,12 +69,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow-x: auto;
+
 }
 
 .productos-carrusel {
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
   scroll-behavior: smooth;
   gap: 5px;
 

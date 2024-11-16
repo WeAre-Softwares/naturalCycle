@@ -43,7 +43,7 @@ export const Promociones = () => {
           </p>
         </div>
       ) : productos.length === 0 ? (
-        <NoHayProductos></NoHayProductos>
+        <div className="no-productos-promo"> <NoHayProductos></NoHayProductos></div>
       ) : (
         <>
           <CarruselProductosPromociones productos={productos} />
