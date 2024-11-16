@@ -193,6 +193,12 @@ export class RemitosService {
   }
 
   private agregarEncabezado(doc: PDFKit.PDFDocument, remito: Remito) {
+    const fechaFormateada = new Date().toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+
     // Ajuste del encabezado NATURAL CYCLE y MAYORISTA
     doc
       .font('Helvetica-Bold')
@@ -208,7 +214,7 @@ export class RemitosService {
     doc
       .moveDown(0.5)
       .fontSize(11)
-      .text(`Fecha: ${new Date().toLocaleDateString()}`, { align: 'left' });
+      .text(`Fecha: ${fechaFormateada}`, { align: 'left' });
 
     // Ajuste del título REMITO
     doc

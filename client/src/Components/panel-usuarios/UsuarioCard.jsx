@@ -15,8 +15,8 @@ export const UsuarioCard = ({
   const userRoles = getRoles();
   const isAdmin = userRoles.includes('admin');
 
-  const handleDarDeAlta = () => {
-    Swal.fire({
+  const handleDarDeAlta = async () => {
+    const result = await Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Quieres dar de alta a este usuario?',
       icon: 'warning',
@@ -24,26 +24,35 @@ export const UsuarioCard = ({
       confirmButtonText: 'Sí, confirmar',
       cancelButtonText: 'No, cancelar',
       reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        darDeAltaUsuario(usuario.usuario_id);
-        Swal.fire({
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await darDeAltaUsuario(usuario.usuario_id); // Espera a que se complete la operación
+        await Swal.fire({
           title: 'Usuario dado de alta',
           text: 'El usuario ha sido activado exitosamente.',
           icon: 'success',
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          title: 'Cancelado',
-          text: 'El usuario no ha sido dado de alta.',
+      } catch (error) {
+        // Manejo de errores
+        await Swal.fire({
+          title: 'Error',
+          text: 'Hubo un problema al intentar dar de alta al usuario.',
           icon: 'error',
         });
       }
-    });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      await Swal.fire({
+        title: 'Cancelado',
+        text: 'El usuario no ha sido dado de alta.',
+        icon: 'error',
+      });
+    }
   };
 
-  const handleDarDeBaja = () => {
-    Swal.fire({
+  const handleDarDeBaja = async () => {
+    const result = await Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Quieres dar de baja a este usuario?',
       icon: 'warning',
@@ -51,26 +60,34 @@ export const UsuarioCard = ({
       confirmButtonText: 'Sí, confirmar',
       cancelButtonText: 'No, cancelar',
       reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        darDeBajaUsuario(usuario.usuario_id);
-        Swal.fire({
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await darDeBajaUsuario(usuario.usuario_id);
+        await Swal.fire({
           title: 'Usuario dado de baja',
           text: 'El usuario ha sido desactivado exitosamente.',
           icon: 'success',
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          title: 'Cancelado',
-          text: 'El usuario no ha sido dado de baja.',
+      } catch (error) {
+        await Swal.fire({
+          title: 'Error',
+          text: 'Hubo un problema al intentar dar de baja al usuario.',
           icon: 'error',
         });
       }
-    });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      await Swal.fire({
+        title: 'Cancelado',
+        text: 'El usuario no ha sido dado de baja.',
+        icon: 'error',
+      });
+    }
   };
 
-  const handleAsignarRolEmpleado = () => {
-    Swal.fire({
+  const handleAsignarRolEmpleado = async () => {
+    const result = await Swal.fire({
       title: '¿Asignar rol de empleado?',
       text: 'Confirma si deseas asignar el rol de empleado a este usuario.',
       icon: 'warning',
@@ -84,22 +101,30 @@ export const UsuarioCard = ({
         popup: 'custom-alert-container',
       },
       buttonsStyling: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        darRangoEmpleadoUsuario(usuario.usuario_id);
-        Swal.fire({
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await darRangoEmpleadoUsuario(usuario.usuario_id);
+        await Swal.fire({
           title: 'Rol Asignado',
           text: 'El rol de empleado ha sido asignado con éxito.',
           icon: 'success',
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          title: 'Operación cancelada',
-          text: 'El rol no ha sido asignado.',
+      } catch (error) {
+        await Swal.fire({
+          title: 'Error',
+          text: 'Hubo un problema al intentar asignarle el rol de empleado al usuario.',
           icon: 'error',
         });
       }
-    });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      await Swal.fire({
+        title: 'Operación cancelada',
+        text: 'El rol no ha sido asignado.',
+        icon: 'error',
+      });
+    }
   };
 
   return (

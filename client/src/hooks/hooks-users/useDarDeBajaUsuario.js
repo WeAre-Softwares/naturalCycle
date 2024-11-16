@@ -20,7 +20,7 @@ export const useDarDeBajaUsuario = () => {
       toast.success('Usuario dado de baja con éxito!');
       setTimeout(() => {
         navigate('/panel-principal');
-      }, 3000);
+      }, 2500);
     } catch (err) {
       toast.error('Error al dar de baja al usuario');
       setError(err.message || 'Error al dar de baja al usuario.');

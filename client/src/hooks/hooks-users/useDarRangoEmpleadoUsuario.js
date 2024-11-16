@@ -20,7 +20,7 @@ export const useDarRangoEmpleadoUsuario = () => {
       toast.success('Se le asigno correctamente el rol de: Empleado!');
       setTimeout(() => {
         navigate('/panel-principal');
-      }, 3000);
+      }, 2500);
     } catch (err) {
       toast.error('Error al darle rol de empleado al usuario');
       setError(err.message || 'Error al darle rol empleado al usuario.');

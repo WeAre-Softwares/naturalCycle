@@ -58,13 +58,6 @@ export class Usuario {
   email: string;
 
   @Column({
-    type: 'boolean',
-    default: false,
-    select: false, // Este campo no se seleccionará por defecto
-  })
-  email_verificado: boolean;
-
-  @Column({
     type: 'varchar',
     length: 255,
     nullable: false,

@@ -52,7 +52,6 @@ export class UsuariosService {
 
       // Eliminar campos sensibles del objeto: Usuario directamente
       delete usuario.email;
-      delete usuario.email_verificado;
       delete usuario.usuario_id;
       delete usuario.esta_activo;
       delete usuario.password;
@@ -202,7 +201,6 @@ export class UsuariosService {
           'email',
           'roles',
           'esta_activo',
-          'email_verificado',
         ],
       });
 

@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const LIMIT = 5;
 
 export const AreaUsuarios = () => {
-  const [isInactive, setIsInactive] = useState(false);
+  const [isInactive, setIsInactive] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
