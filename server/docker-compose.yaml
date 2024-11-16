@@ -10,6 +10,24 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    container_name: naturalcyle
+    container_name: naturalcycle
     volumes:
       - ./postgres:/var/lib/postgresql/data
+
+  db_backup:
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    container_name: db_backup
+    depends_on:
+      - db
+    volumes:
+      - ./backups:/backups
+    entrypoint:
+      [
+        'sh',
+        '-c',
+        'while true; do pg_dump -U ${POSTGRES_USER} -h db ${POSTGRES_DB} > /backups/backup_$(date +"%Y%m%d%H%M").sql; sleep 604800; done',
+      ]
