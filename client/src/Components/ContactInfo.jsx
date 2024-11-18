@@ -8,7 +8,7 @@ export const ContactInfo = () => {
         <i className="fa-solid fa-phone"></i> +549 123456789
       </p>
       <p>
-        <i className="fa-solid fa-envelope"></i> contacto@naturalcycle.com
+        <i className="fa-solid fa-envelope"></i> contacto@naturalcycle.com.ar
       </p>
       <p>
         <i class="fa-solid fa-location-dot"></i> Pergamino, Buenos Aires.
