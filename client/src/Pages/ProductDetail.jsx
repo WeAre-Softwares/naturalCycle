@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import '../Styles/Categorías/ProductDetail.css';
 import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useCartStore from '../store/use-cart-store';
@@ -9,24 +9,34 @@ import { allowedRoles } from '../constants/allowed-roles';
 export const ProductDetails = () => {
   const { id } = useParams();
   const { product, error, loading } = useGetProductById(id);
-  const { addToCart, incrementQuantity, decrementQuantity, carrito } =
-    useCartStore();
+  const { addToCart } = useCartStore();
   const { isAuthenticated, getRoles } = useAuthStore();
 
-  // Definir roles permitidos para ver el precio y añadir al carrito
+  // Roles y autenticación
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
-
-  // Verificar si el usuario tiene al menos uno de los roles permitidos
   const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
-  const currentProductInCart = carrito.find(
-    (p) => p.producto_id === product?.producto_id,
-  );
-  const quantity = currentProductInCart?.cantidad || 1;
+  // Estado para manejar la cantidad seleccionada
+  const [quantity, setQuantity] = useState(1);
 
+  // Incrementar la cantidad seleccionada
+  const incrementarCantidad = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  // Decrementar la cantidad seleccionada
+  const decrementarCantidad = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
+  };
+
+  // Agregar la cantidad seleccionada al carrito
   const agregarAlCarrito = () => {
-    if (product) addToCart({ ...product, cantidad: quantity });
+    if (product) {
+      for (let i = 0; i < quantity; i++) {
+        addToCart({ ...product, cantidad: 1 }); // Se agrega cada producto individualmente
+      }
+    }
   };
 
   return (
@@ -40,12 +50,12 @@ export const ProductDetails = () => {
       </div>
 
       {loading && (
-        <section class="dots-container">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
+        <section className="dots-container">
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
         </section>
       )}
       {error && <p>Hubo un error al cargar el producto.</p>}
@@ -92,7 +102,6 @@ export const ProductDetails = () => {
             {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
             {isUserLoggedIn && hasAccessRole && (
               <div className="price-container">
-                {/* Mostrar solo si tiene precio de oferta */}
                 {product.precio_antes_oferta != null &&
                   !isNaN(Number(product.precio_antes_oferta)) && (
                     <h3 className="precio-producto-card precio-viejo-promo">
@@ -109,22 +118,16 @@ export const ProductDetails = () => {
             )}
 
             <div className="container-cantidad">
-              <button
-                onClick={() => decrementQuantity(product.producto_id)}
-                className="btn-view"
-              >
+              <button onClick={decrementarCantidad} className="btn-view">
                 -
               </button>
               <span className="cantidad-view">{quantity}</span>
-              <button
-                onClick={() => incrementQuantity(product.producto_id)}
-                className="btn-view"
-              >
+              <button onClick={incrementarCantidad} className="btn-view">
                 +
               </button>
             </div>
 
-            {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
+            {/* Botón "Añadir al carrito" */}
             {product.disponible ? (
               <button
                 onClick={agregarAlCarrito}

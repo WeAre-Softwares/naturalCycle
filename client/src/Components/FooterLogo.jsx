@@ -5,7 +5,7 @@ import FooterLogoImagen from '/imagenes/logo-footer.png';
 export const FooterLogo = () => {
   return (
     <div className="img-frase-footer">
-      <Link to={'/about'}>
+      <Link to={'/inicio'}>
         <img className="imagen-logo" src={FooterLogoImagen} alt="Logo" />
       </Link>
 

@@ -21,7 +21,7 @@ export const Header = ({ carrito, toggleCart, cantidadTotalProductos }) => {
         <nav className="nav">
           <div className="logo-header">
             <HamburgerMenu isOpen={isOpen} toggleMenu={toggleMenu} />
-            <Link to={'/about'}>
+            <Link to={'/inicio'}>
               <img className="imagen-logo" src={Logo} alt="Logo" />
             </Link>
             {/* Llamada a CartButton con las props necesarias */}
