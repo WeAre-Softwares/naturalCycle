@@ -61,6 +61,9 @@ export class CategoriasService {
         where: {
           esta_activo: true,
         },
+        order: {
+          nombre: 'ASC',
+        },
         skip: offset,
         ...(limit ? { take: limit } : {}), // Solo agregar 'take' si 'limit' está definido y es distinto de 0
       });

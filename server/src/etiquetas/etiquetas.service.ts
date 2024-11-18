@@ -62,6 +62,9 @@ export class EtiquetasService {
         where: {
           esta_activo: true,
         },
+        order: {
+          nombre: 'ASC',
+        },
         ...(limit ? { take: limit } : {}), // Solo agregar 'take' si 'limit' está definido y es distinto de 0
         skip: offset,
       });
