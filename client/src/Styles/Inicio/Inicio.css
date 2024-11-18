@@ -34,6 +34,7 @@
 .img-prod-banner {
   width: 300px; /* Ajusta el tamaño de la imagen a un 50% del contenedor */
   height: 300px;
+  border-radius: 10px;
 }
 
 /* Texto y precio del producto en el banner */
@@ -312,6 +313,7 @@ border-radius: 10px;
 .img-producto-card{
   height: 150px;
   width: 150px;
+  border-radius: 4px;
 }
 
 .botones-card-producto{

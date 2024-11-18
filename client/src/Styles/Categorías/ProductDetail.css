@@ -19,6 +19,7 @@
 .container-img-ver-producto img {
   height: 400px;
   width: 400px;
+  border-radius: 10px;
 }
 
 .container-precio-nombre-ver-producto {
