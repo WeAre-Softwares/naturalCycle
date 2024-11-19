@@ -1,6 +1,6 @@
 export const EnvConfiguration = () => ({
-  environment: process.env.NODE_ENV || 'dev',
-  port: +process.env.PORT || 3007,
+  environment: process.env.NODE_ENV,
+  port: +process.env.PORT,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiry: process.env.JWT_EXPIRY,
   postgresUser: process.env.POSTGRES_USER,

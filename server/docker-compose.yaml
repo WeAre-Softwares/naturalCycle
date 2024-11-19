@@ -29,5 +29,5 @@ services:
       [
         'sh',
         '-c',
-        'while true; do pg_dump -U ${POSTGRES_USER} -h db ${POSTGRES_DB} > /backups/backup_$(date +"%Y%m%d%H%M").sql; sleep 604800; done',
+        'echo "*:*:*:$POSTGRES_USER:$POSTGRES_PASSWORD" > ~/.pgpass && chmod 600 ~/.pgpass && while true; do pg_dump -U "$POSTGRES_USER" -h db "$POSTGRES_DB" > /backups/backup_$(date +"%Y%m%d%H%M").sql; sleep 900; done',
       ]

@@ -43,7 +43,10 @@ export const JoiSchemaValidation = Joi.object({
   EMAIL_PORT: Joi.string().required().messages({
     'any.required': 'Please provide environment variable {#key}',
   }),
-  PORT: Joi.number().default(3007),
-  DB_HOST: Joi.string().default('localhost'),
-  NODE_ENV: Joi.string().default('dev'),
+  PORT: Joi.number(),
+  DB_HOST: Joi.string(),
+  NODE_ENV: Joi.string().valid('dev', 'prod', 'test').required().messages({
+    'any.required': 'Please provide environment variable {#key}',
+    'any.only': 'NODE_ENV must be one of [dev, prod, test]',
+  }),
 });
