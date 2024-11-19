@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../Styles/Inicio/Inicio.css';
@@ -10,6 +10,7 @@ import { allowedRoles } from '../../constants/allowed-roles';
 import ImgAbout from '/imagenes/logo-sin-fondo.png';
 
 export const BannerCarrusel = () => {
+  const navigate = useNavigate();
   const limit = 15; // Límite de productos destacados para mostrar
   const { error, loading, productos } = useGetAllProductosDestacados(limit);
   const { isAuthenticated, getRoles } = useAuthStore();
@@ -31,8 +32,12 @@ export const BannerCarrusel = () => {
     arrows: true,
   };
 
+  const verDetallesProducto = (productoId) => {
+    navigate(`/producto/${productoId}`);
+  };
+
   if (loading) return <div>Cargando productos destacados...</div>;
-  if (error) 
+  if (error)
     return (
       <div className="no-productos">
         <i className="fas fa-exclamation-circle"></i>
@@ -41,51 +46,54 @@ export const BannerCarrusel = () => {
     );
 
   // Si no hay productos, mostrar un nuevo div con la imagen predeterminada
-if (productos.length ==0) {
-  return (
-    <div className="div-banner-inicio-vacio">
-      <img
-        className="img-placeholder"
-        src={ImgAbout} 
-        alt="Sin productos destacados"
-      />
-    </div>
-  );
-}
-
+  if (productos.length === 0) {
+    return (
+      <div className="div-banner-inicio-vacio">
+        <img
+          className="img-placeholder"
+          src={ImgAbout}
+          alt="Sin productos destacados"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="div-banner-general-slide">
-      <Link to="/direcciondelprod">
-        <Slider className="slide-container-banner" {...settings}>
-          {productos.map((producto, index) => (
+      <Slider className="slide-container-banner" {...settings}>
+        {productos.map((producto, index) => (
+          <div
+            className="conteiner-banner-info-inicio"
+            key={`${producto.producto_id}-${index}`}
+          >
             <div
-              className="conteiner-banner-info-inicio"
-              key={`${producto.producto_id}-${index}`}
+              className="div-img-banner"
+              onClick={() => verDetallesProducto(producto.producto_id)}
             >
-              <div className="div-img-banner">
-                <img
-                  name="img-prod-banner"
-                  className="img-prod-banner"
-                  src={producto.imagenes[0].url}
-                  alt={producto.nombre}
-                />
-              </div>
-              <div className="precio-producto-banner">
-                <h2 className="texto-Banner" name="texto-Banner">
-                  {producto.nombre}
-                </h2>
-                {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
-                {isUserLoggedIn && hasAccessRole && (
-                  <h2 className="precio-banner" name="precio-banner">
-                    A tan sólo ${Number(producto.precio).toLocaleString()}
-                  </h2>
-                )}
-              </div>
+              <img
+                name="img-prod-banner"
+                className="img-prod-banner"
+                src={producto.imagenes[0].url}
+                alt={producto.nombre}
+              />
             </div>
-          ))}
-        </Slider>
-      </Link>
+            <div className="precio-producto-banner"
+              onClick={() => verDetallesProducto(producto.producto_id)}
+            >
+              <h2 className="texto-Banner" name="texto-Banner">
+                {producto.nombre}
+              </h2>
+              {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
+              {isUserLoggedIn && hasAccessRole && (
+                <h2 className="precio-banner" name="precio-banner">
+                  A tan sólo ${Number(producto.precio).toLocaleString()}
+                </h2>
+              )}
+            </div>
+            
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };

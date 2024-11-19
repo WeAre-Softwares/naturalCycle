@@ -66,6 +66,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   margin-top: 10px;
 }
 
@@ -73,6 +74,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
   height: 70px;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -81,7 +83,9 @@
 }
 
 .texto-Banner{
-  background-color: #cce3ff;
+  background-color: rgba(0, 0, 0, 0.8); /* Negro con transparencia */
+  color: white;
+  padding: 5px;
   width: 300px;
   border-radius: 4px;
   text-align: center;
@@ -90,14 +94,15 @@
 .precio-banner {
   font-weight: 900;
   text-transform: uppercase;
-  background-color: w;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.30);
   transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
   padding: 10px;
-  background-color: #cce3ff;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8); /* Negro con transparencia */
   border-radius: 4px;
   width: 292px;
 }
+
 
 .precio-banner:hover {
   transform: translateY(-5px) scale(1.03); /* Desplazamiento y zoom sutil en hover */
@@ -159,7 +164,7 @@ border-radius: 10px;
 
 .div-banner-general-slide{
   width: 100%;
-  background-image: url('/imagenes/BANNER.svg'); /*COMPLETAR IMG PARA EL FONDO DEL BANNER*/
+  background-image: url('/imagenes/img-fondo.png'); /*COMPLETAR IMG PARA EL FONDO DEL BANNER*/
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
