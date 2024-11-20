@@ -50,7 +50,7 @@ export const Inicio = () => {
       {/* Banner Carrusel */}
       <BannerCarrusel />
       {/* Categorias Top tres */}
-      <CategoriasTopTres />
+      {/* <CategoriasTopTres /> */}
       {/* Banner Info Inicio */}
       <BannerInfoInicio />
 

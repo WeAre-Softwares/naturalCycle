@@ -249,6 +249,12 @@
   color: #666;
 }
 
+.mensaje-minimo-compra {
+  color: red;
+  font-size: 14px;
+  margin: 10px 0;
+  text-align: center;
+}
 
 /* SWEETALERT2 */
 /* Estilos del contenedor */

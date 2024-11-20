@@ -21,7 +21,7 @@ export const PasosCompra = () => {
             <i className="fa-solid fa-dice-two"></i>
           </h3>
           <h3>Armá tu carrito</h3>
-          <p>SELECCIONÁ LOS PRODUCTOS (PEDIDO MIN. $25.000ARS)</p>
+          <p>SELECCIONÁ LOS PRODUCTOS (PEDIDO MIN. $50.000ARS)</p>
         </div>
         <div className="card-banner-compra">
           <h3>

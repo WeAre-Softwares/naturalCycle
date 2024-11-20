@@ -23,6 +23,8 @@ export const CartButton = () => {
     clearCart,
   } = useCartStore();
 
+  const esTotalMenorAlMinimo = getTotalPrice() < 50000;
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -231,9 +233,16 @@ export const CartButton = () => {
                 <h3>${getTotalPrice().toLocaleString()}</h3>
               </div>
 
+              {getTotalPrice() < 50000 && (
+                <p className="mensaje-minimo-compra">
+                  El monto mínimo para realizar un pedido es de $50.000
+                </p>
+              )}
+
               <button
                 className="btn-iniciar-compra"
                 onClick={handleIniciarCompra}
+                disabled={esTotalMenorAlMinimo}
               >
                 Realizar pedido
               </button>
