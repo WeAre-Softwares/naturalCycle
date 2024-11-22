@@ -3,8 +3,8 @@ import { ProductosPromocionesItem } from './ProductosPromocionesItem';
 
 export const CarruselProductosPromociones = ({ productos }) => {
   return (
-    <div className="carrusel-promociones">
-      <div className="productos-carrusel">
+    <div className="seccion-prod-destacados">
+      <div className="productos-destacados">
         {productos.map((producto) => (
           <ProductosPromocionesItem
             key={producto.producto_id}

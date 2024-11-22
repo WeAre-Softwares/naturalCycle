@@ -83,11 +83,10 @@
 }
 
 .texto-Banner{
-  background-color: rgba(0, 0, 0, 0.8); /* Negro con transparencia */
+  background-color: rgb(159, 159, 159); /* Negro con transparencia */
   color: white;
   padding: 5px;
   width: 300px;
-  border-radius: 4px;
   text-align: center;
 }
 

@@ -13,7 +13,7 @@ export const RedesSocialesHome = () => {
                 <div className="instagram-inicio-name">
                   <h5>Natural Cycle</h5>
                 </div>
-                <div className="instagram-inicio-username">@naturalcycle</div>
+                <div className="instagram-inicio-username">@naturalcycle21</div>
               </div>
             </div>
           </div>
