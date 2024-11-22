@@ -29,6 +29,7 @@ import { CategoriasService } from '../categorias/categorias.service';
 import { ProductosCategorias, ProductosEtiquetas } from './entities';
 import { Marca } from '../marcas/entities/marca.entity';
 import { Categoria } from '../categorias/entities/categoria.entity';
+import { TipoPrecio } from './types/tipo-precio.enum';
 
 @Injectable()
 export class ProductosService {
@@ -327,6 +328,48 @@ export class ProductosService {
       this.logger.error(error);
       throw new InternalServerErrorException(
         'Error al buscar los productos por marca',
+        error,
+      );
+    }
+  }
+
+  async findBultoCerradoProducts(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: {
+          esta_activo: true,
+          tipo_de_precio: TipoPrecio.por_bulto_cerrado,
+        },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true,
+          },
+          productosEtiquetas: {
+            etiqueta: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      // Aplano los productos en una estructura más simple
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar los productos por bulto cerrado',
         error,
       );
     }

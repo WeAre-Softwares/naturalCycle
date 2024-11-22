@@ -16,14 +16,16 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Natural Cycle RESTFul API')
-    .setDescription('API description endpoints')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  if (process.env.NODE_ENV !== 'prod') {
+    const config = new DocumentBuilder()
+      .addBearerAuth()
+      .setTitle('Natural Cycle RESTFul API')
+      .setDescription('API description endpoints')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+  }
 
   //TODO: Controllar Dominios
   app.enableCors({});

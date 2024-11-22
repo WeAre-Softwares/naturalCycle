@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllProductsByCategoryService } from '../../services/categoria-services/getAll-productsByCategory';
+import { getAllProductsByBultoCerrado } from '../../services/products-services/getBultoCerradoProducts';
 
 export function useGetBultoCerradoProducts(limit = 10, page = 1) {
   const [productos, setProductos] = useState([]);
@@ -14,11 +14,7 @@ export function useGetBultoCerradoProducts(limit = 10, page = 1) {
     const fetchData = async () => {
       try {
         const offset = (page - 1) * limit;
-        const response = await getAllProductsByCategoryService(
-          'Por bulto cerrado', // Término de busqueda
-          limit,
-          offset,
-        );
+        const response = await getAllProductsByBultoCerrado(limit, offset);
 
         if (isMounted) {
           setProductos(response.productos || []);

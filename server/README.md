@@ -43,5 +43,8 @@ $ npm run test:cov
 4. Clona el archivo `.env.template` y renómbralo como `.env`
 5. Actualiza las variables de entorno en el archivo `.env`
 6. Inicia la aplicación: `npm run start:dev`
-7. Accede a la documentación de Swagger en: `http://localhost:3000/api`
+7. Documentación de Swagger:
+   Swagger está disponible únicamente en los entornos de desarrollo (start:dev) o test (test:e2e).
+   Accede a la documentación en: `http://localhost:3000/api` cuando ejecutes la aplicación en modo desarrollo o test.
+   **En producción, Swagger estará deshabilitado por seguridad.**
 8. Crear registros de las tablas para poder hacer las pruebas con el front.

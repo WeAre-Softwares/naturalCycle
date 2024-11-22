@@ -159,6 +159,15 @@ export class ProductosController {
     return this.productosService.findAllProductosDestacados(paginationDto);
   }
 
+  @Get('bultocerrado')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Buscar todos los productos por bulto cerrado' })
+  findBultoCerradoProducts(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findBultoCerradoProducts(paginationDto);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Buscar producto por id' })
   findOne(
