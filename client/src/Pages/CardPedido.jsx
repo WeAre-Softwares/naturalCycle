@@ -53,10 +53,7 @@ export const CardPedido = () => {
                   <p className="p-pedido-card">
                     <strong>Nombre:</strong> {detalle.producto?.nombre || 'N/A'}
                   </p>
-                  <p className="p-pedido-card">
-                    <strong>Descripción:</strong>{' '}
-                    {detalle.producto?.descripcion || 'N/A'}
-                  </p>
+
                   <p className="p-pedido-card">
                     <strong>Cantidad:</strong> {detalle.cantidad || 'N/A'}
                   </p>
