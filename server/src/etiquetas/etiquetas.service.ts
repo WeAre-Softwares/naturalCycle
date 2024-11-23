@@ -110,13 +110,16 @@ export class EtiquetasService {
     }
   }
 
-  async findOne(id: string): Promise<EtiquetaInterface> {
+  async findOne(id: string, esta_activo?: boolean): Promise<EtiquetaInterface> {
     try {
+      // Construcción dinámica del filtro `where`
+      const where: Record<string, any> = { etiqueta_id: id };
+      if (esta_activo !== undefined) {
+        where.esta_activo = esta_activo;
+      }
+
       const etiqueta = await this.etiquetaRepository.findOne({
-        where: {
-          etiqueta_id: id,
-          esta_activo: true,
-        },
+        where,
       });
 
       if (!etiqueta) {

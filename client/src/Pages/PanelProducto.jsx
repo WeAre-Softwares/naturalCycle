@@ -17,6 +17,8 @@ const LIMIT = 3;
 
 export const PanelProducto = () => {
   const navigate = useNavigate();
+
+  // Hook personalizado para la búsqueda y filtrado de productos
   const {
     productsData,
     loading,
@@ -28,32 +30,34 @@ export const PanelProducto = () => {
     handleNextPage,
     handlePrevPage,
     showInactive,
-    setShowInactive,
+    toggleInactiveFilter,
     showNoStock,
-    setShowNoStock,
+    toggleNoStockFilter,
   } = useProductSearch(LIMIT);
 
+  // Hooks para activar/desactivar productos
   const { activateProduct, isLoading: activating } = useActivateProduct();
   const { deactivateProduct, isLoading: deactivating } = useDeactivateProduct();
 
+  // Manejar cambios en el input de búsqueda
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  // Navegar a la edición de producto
   const handleEdit = (producto_id) => {
     navigate(`/editar-producto/${producto_id}`);
   };
 
+  // Activar/Desactivar productos según el estado actual
   const handleToggleActive = async (producto_id, isActive) => {
     const result = isActive
       ? await deactivateProduct(producto_id)
       : await activateProduct(producto_id);
 
-    // Si se realiza correctamente, recargar los productos según el filtro actual
     if (result) {
-      setTimeout(() => {
-        navigate(`/panel-principal`);
-      }, 2200);
-      toggleInactiveFilter(); // Al cambiar el filtro se actualiza la lista
-      toggleInactiveFilter();
+      // Recargar los productos según el filtro activo
+      if (showInactive) toggleInactiveFilter();
+      else if (showNoStock) toggleNoStockFilter();
+      else navigate(`/panel-principal`);
     }
   };
 
@@ -80,7 +84,7 @@ export const PanelProducto = () => {
               style={{ margin: '0.5rem' }}
               type="checkbox"
               checked={showInactive}
-              onChange={() => setShowInactive((prev) => !prev)}
+              onChange={toggleInactiveFilter}
             />
           </label>
           <label style={{ margin: '1rem' }}>
@@ -89,7 +93,7 @@ export const PanelProducto = () => {
               style={{ margin: '0.5rem' }}
               type="checkbox"
               checked={showNoStock}
-              onChange={() => setShowNoStock((prev) => !prev)}
+              onChange={toggleNoStockFilter}
             />
           </label>
 
@@ -119,7 +123,6 @@ export const PanelProducto = () => {
             <NoHayResultados entidad={'productos'} />
           )}
 
-          {/* Mostrar paginación sólo si hay al menos una página de resultados */}
           {totalPages > 0 && productsData && productsData.length > 0 && (
             <Pagination
               currentPage={currentPage}

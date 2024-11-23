@@ -154,43 +154,41 @@ export const PanelFiltrados = () => {
                 {tipoCreacion.charAt(0).toUpperCase() + tipoCreacion.slice(1)}:
               </h3>
               <ul className="productos-lista-panel">
-  {Array.isArray(data) && data.length > 0 ? (
-    [...data] 
-      .sort((a, b) => a.nombre.localeCompare(b.nombre)) 
-      .map((item, index) => (
-        <li className="producto-item-panel" key={index}>
-          {item.imagen && (
-            <img
-              src={item.imagen}
-              alt={`Imagen de ${item.nombre}`}
-              className="producto-imagen"
-            />
-          )}
-          <div className="producto-detalles">
-            <strong>{item.nombre}</strong>
-          </div>
-          <div className="producto-botones">
-            <button
-              className="crear-filtrado-button"
-              onClick={() => handleEdit(item)}
-              disabled={item.esta_activo !== true}
-            >
-              Editar
-            </button>
-            <button
-              className="crear-filtrado-button"
-              onClick={() => handleDeactivateOrActivate(item)}
-            >
-              {item.esta_activo ? 'Eliminar' : 'Activar'}
-            </button>
-          </div>
-        </li>
-      ))
-  ) : (
-    <NoHayResultados entidad={'resultados'} />
-  )}
-</ul>
-
+                {Array.isArray(data) && data.length > 0 ? (
+                  [...data]
+                    .sort((a, b) => a.nombre.localeCompare(b.nombre))
+                    .map((item, index) => (
+                      <li className="producto-item-panel" key={index}>
+                        {item.imagen && (
+                          <img
+                            src={item.imagen}
+                            alt={`Imagen de ${item.nombre}`}
+                            className="producto-imagen"
+                          />
+                        )}
+                        <div className="producto-detalles">
+                          <strong>{item.nombre}</strong>
+                        </div>
+                        <div className="producto-botones">
+                          <button
+                            className="crear-filtrado-button"
+                            onClick={() => handleEdit(item)}
+                          >
+                            Editar
+                          </button>
+                          <button
+                            className="crear-filtrado-button"
+                            onClick={() => handleDeactivateOrActivate(item)}
+                          >
+                            {item.esta_activo ? 'Eliminar' : 'Activar'}
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                ) : (
+                  <NoHayResultados entidad={'resultados'} />
+                )}
+              </ul>
 
               {/* Mostrar paginación sólo si hay al menos una página de resultados */}
               {totalItems > 0 && (

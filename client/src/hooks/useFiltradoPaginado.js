@@ -29,6 +29,11 @@ export const useFiltradoPaginado = (
   }, [tipo, isInactive]);
 
   useEffect(() => {
+    // Resetea a la página 1 cuando cambia el término de búsqueda
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       const offset = (currentPage - 1) * itemsPerPage;

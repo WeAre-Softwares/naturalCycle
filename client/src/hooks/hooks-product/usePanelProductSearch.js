@@ -15,7 +15,6 @@ export const useProductSearch = (limit) => {
 
   const { token } = useAuthStore();
 
-  // Obtener productos activos
   const {
     productsData: allProductsData,
     loading: loadingAllProducts,
@@ -23,20 +22,17 @@ export const useProductSearch = (limit) => {
     refetch: refetchActiveProducts,
   } = useGetAllProducts(limit, offset);
 
-  // Obtener productos según la búsqueda
   const {
     productsData: searchProductsData,
     loading: loadingSearch,
     error: errorSearch,
   } = useSearchProducts(debouncedSearchTerm, limit, offset);
 
-  // Productos inactivos
   const [inactiveProductsData, setInactiveProductsData] = useState([]);
   const [loadingInactive, setLoadingInactive] = useState(false);
   const [errorInactive, setErrorInactive] = useState(null);
   const [totalInactive, setTotalInactive] = useState(0);
 
-  // Cargar productos inactivos
   const loadInactiveProducts = async () => {
     setLoadingInactive(true);
     try {
@@ -48,13 +44,12 @@ export const useProductSearch = (limit) => {
       setInactiveProductsData(productos);
       setTotalInactive(total);
     } catch (error) {
-      setErrorInactive(error);
+      setErrorInactive('Error al cargar productos inactivos');
     } finally {
       setLoadingInactive(false);
     }
   };
 
-  // Productos sin stock
   const [noStockProductsData, setNoStockProductsData] = useState([]);
   const [loadingNoStock, setLoadingNoStock] = useState(false);
   const [errorNoStock, setErrorNoStock] = useState(null);
@@ -63,88 +58,91 @@ export const useProductSearch = (limit) => {
   const loadNoStockProducts = async () => {
     setLoadingNoStock(true);
     try {
-      const offsetValue = offset || 0;
-      const { productos, total } = await getAllProductsSinStock(
-        limit,
-        offsetValue,
-      );
+      const { productos, total } = await getAllProductsSinStock(limit, offset);
       setNoStockProductsData(productos);
       setTotalNoStock(total);
     } catch (error) {
-      setErrorNoStock(error);
+      setErrorNoStock('Error al cargar productos sin stock');
     } finally {
       setLoadingNoStock(false);
     }
   };
 
-  // Cargar inactivos o sin stock según el filtro activado
   useEffect(() => {
     if (showInactive) {
       loadInactiveProducts();
     } else if (showNoStock) {
       loadNoStockProducts();
+    } else if (debouncedSearchTerm) {
+      refetchActiveProducts();
     }
-  }, [showInactive, showNoStock, offset]);
+  }, [showInactive, showNoStock, debouncedSearchTerm, offset]);
 
-  // Determinar datos y estado según el filtro
-  const productsData = showInactive
-    ? inactiveProductsData
-    : showNoStock
-    ? noStockProductsData
-    : debouncedSearchTerm
-    ? searchProductsData?.productos
-    : allProductsData?.productos;
+  // Reinicia la paginación cuando cambia el término de búsqueda
+  useEffect(() => {
+    setOffset(0);
+  }, [debouncedSearchTerm]);
 
-  const loading = showInactive
-    ? loadingInactive
-    : showNoStock
-    ? loadingNoStock
-    : debouncedSearchTerm
-    ? loadingSearch
-    : loadingAllProducts;
+  const getCurrentState = () => {
+    if (showInactive) {
+      return {
+        productsData: inactiveProductsData,
+        loading: loadingInactive,
+        error: errorInactive,
+        total: totalInactive,
+      };
+    }
+    if (showNoStock) {
+      return {
+        productsData: noStockProductsData,
+        loading: loadingNoStock,
+        error: errorNoStock,
+        total: totalNoStock,
+      };
+    }
+    if (debouncedSearchTerm) {
+      return {
+        productsData: searchProductsData?.productos,
+        loading: loadingSearch,
+        error: errorSearch,
+        total: searchProductsData?.total || 0,
+      };
+    }
+    return {
+      productsData: allProductsData?.productos,
+      loading: loadingAllProducts,
+      error: errorAllProducts,
+      total: allProductsData?.total || 0,
+    };
+  };
 
-  const error = showInactive
-    ? errorInactive
-    : showNoStock
-    ? errorNoStock
-    : debouncedSearchTerm
-    ? errorSearch
-    : errorAllProducts;
-
-  const total = showInactive
-    ? totalInactive
-    : showNoStock
-    ? totalNoStock
-    : debouncedSearchTerm
-    ? searchProductsData?.total || 0
-    : allProductsData?.total || 0;
+  const { productsData, loading, error, total } = getCurrentState();
 
   const totalPages = total > 0 ? Math.ceil(total / limit) : 1;
   const currentPage = Math.floor(offset / limit) + 1;
 
-  // Funciones de paginación independientes
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      if (showInactive) {
-        setOffsetInactive((prevOffset) => prevOffset + limit);
-      } else {
-        setOffsetActive((prevOffset) => prevOffset + limit);
-      }
+      setOffset((prevOffset) => prevOffset + limit);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      if (showInactive) {
-        setOffsetInactive((prevOffset) => prevOffset - limit);
-      } else {
-        setOffsetActive((prevOffset) => prevOffset - limit);
-      }
+      setOffset((prevOffset) => prevOffset - limit);
     }
   };
 
   const toggleInactiveFilter = () => {
     setShowInactive((prev) => !prev);
+    setShowNoStock(false);
+    setOffset(0);
+  };
+
+  const toggleNoStockFilter = () => {
+    setShowNoStock((prev) => !prev);
+    setShowInactive(false);
+    setOffset(0);
   };
 
   return {
@@ -158,8 +156,8 @@ export const useProductSearch = (limit) => {
     handleNextPage,
     handlePrevPage,
     showInactive,
-    setShowInactive,
+    toggleInactiveFilter,
     showNoStock,
-    setShowNoStock,
+    toggleNoStockFilter,
   };
 };

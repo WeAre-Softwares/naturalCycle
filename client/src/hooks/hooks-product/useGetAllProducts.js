@@ -6,23 +6,22 @@ export function useGetAllProducts(limit, offset) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await getAllProductsService(limit, offset);
-        // console.log(data);
-        setProductsData(data);
-      } catch (error) {
-        console.log(error);
-        setError('Error al obtener todos los productos');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllProductsService(limit, offset);
+      setProductsData(data);
+    } catch (error) {
+      console.log(error);
+      setError('Error al obtener todos los productos');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [limit, offset]); // Dependencias
 
-  return { productsData, loading, error };
+  return { productsData, loading, error, refetch: fetchData };
 }

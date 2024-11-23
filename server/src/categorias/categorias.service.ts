@@ -109,18 +109,22 @@ export class CategoriasService {
     }
   }
 
-  async findOne(id: string): Promise<CategoriaInterface> {
+  async findOne(
+    id: string,
+    esta_activo?: boolean,
+  ): Promise<CategoriaInterface> {
     try {
-      const categoria = await this.categoriaRepository.findOne({
-        where: {
-          categoria_id: id,
-          esta_activo: true,
-        },
-      });
+      // Construcción dinámica del filtro `where`
+      const where: Record<string, any> = { categoria_id: id };
+      if (esta_activo !== undefined) {
+        where.esta_activo = esta_activo;
+      }
+
+      const categoria = await this.categoriaRepository.findOne({ where });
 
       if (!categoria) {
         throw new NotFoundException(
-          `No se encontro la categoria con el id: ${id}`,
+          `No se encontró la categoría con el id: ${id}`,
         );
       }
 

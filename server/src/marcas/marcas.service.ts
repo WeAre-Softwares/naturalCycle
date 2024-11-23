@@ -168,10 +168,19 @@ export class MarcasService {
     }
   }
 
-  async findOne(marca_id: string): Promise<MarcaInterface> {
+  async findOne(
+    marca_id: string,
+    esta_activo?: boolean,
+  ): Promise<MarcaInterface> {
     try {
+      // Construcción dinámica del filtro `where`
+      const where: Record<string, any> = { marca_id };
+      if (esta_activo !== undefined) {
+        where.esta_activo = esta_activo;
+      }
+
       const marca = await this.marcaRepository.findOne({
-        where: { marca_id, esta_activo: true },
+        where,
       });
 
       if (!marca) {
