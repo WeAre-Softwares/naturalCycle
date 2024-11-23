@@ -16,25 +16,18 @@ export const ProductosDestacadosItem = ({ producto }) => {
   // Verificar si el usuario está autenticado y tiene rol de usuario
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
-  
+
   // Verificar si el usuario tiene al menos uno de los roles permitidos
   const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
-  
   const verDetallesProducto = () => {
     navigate(`/producto/${producto.producto_id}`);
   };
-  
+
   // Estado local para la cantidad de productos
   const [cantidad, setCantidad] = useState(1);
 
   const agregarAlCarrito = () => {
-<<<<<<< HEAD
-    for (let i = 0; i < cantidad; i++) {
-      addToCart(producto);
-    }
-    setCantidad(1); // Restablecer la cantidad a 1 después de añadir
-=======
     if (!isUserLoggedIn) {
       // Mostrar una alerta si el usuario no está autenticado
       toast.error('Debes registrarte para agregar productos al carrito.', {
@@ -50,7 +43,6 @@ export const ProductosDestacadosItem = ({ producto }) => {
       // Si está autenticado, agregar al carrito
       addToCart(producto);
     }
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
   };
 
   const aumentarCantidad = () => {
@@ -64,10 +56,13 @@ export const ProductosDestacadosItem = ({ producto }) => {
     if (cantidad > 1) setCantidad(cantidad - 1);
   };
 
-
   return (
     <div className="card-producto">
-      {producto.disponible === true ? <SiStockLogo></SiStockLogo> : <NoStockLogo></NoStockLogo>}
+      {producto.disponible === true ? (
+        <SiStockLogo></SiStockLogo>
+      ) : (
+        <NoStockLogo></NoStockLogo>
+      )}
       <div className="info-producto-card">
         <img
           name={`img-producto-card-${producto.producto_id}`}
@@ -106,29 +101,24 @@ export const ProductosDestacadosItem = ({ producto }) => {
           </>
         )}
         {/* Controles de cantidad */}
-      <div className="control-cantidad">
-        <button onClick={disminuirCantidad} disabled={cantidad === 1}>
-          -
-        </button>
-        <span>{cantidad}</span>
-        <button onClick={aumentarCantidad} disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}>
-          +
-        </button>
-      </div>
+        <div className="control-cantidad">
+          <button onClick={disminuirCantidad} disabled={cantidad === 1}>
+            -
+          </button>
+          <span>{cantidad}</span>
+          <button
+            onClick={aumentarCantidad}
+            disabled={
+              !producto.disponible || (!isUserLoggedIn && !hasAccessRole)
+            }
+          >
+            +
+          </button>
+        </div>
       </div>
       <div className="botones-card-producto">
-<<<<<<< HEAD
-        {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
-
-        <button
-          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
-          onClick={agregarAlCarrito}
-        >
-          {producto.disponible === true ? `Añadir al carrito` : 'Agotado'}
-=======
         <button onClick={agregarAlCarrito}>
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
 

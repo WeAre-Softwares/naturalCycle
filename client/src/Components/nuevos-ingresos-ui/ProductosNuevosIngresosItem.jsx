@@ -26,12 +26,6 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
   const [cantidad, setCantidad] = useState(1);
 
   const agregarAlCarrito = () => {
-<<<<<<< HEAD
-    for (let i = 0; i < cantidad; i++) {
-      addToCart(producto);
-    }
-    setCantidad(1); // Restablecer la cantidad a 1 después de añadir
-=======
     if (!isUserLoggedIn) {
       // Mostrar una alerta si el usuario no está autenticado
       toast.error('Debes registrarte para agregar productos al carrito.', {
@@ -47,7 +41,6 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
       // Si está autenticado, agregar al carrito
       addToCart(producto);
     }
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
   };
 
   const aumentarCantidad = () => {
@@ -60,7 +53,6 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
   const disminuirCantidad = () => {
     if (cantidad > 1) setCantidad(cantidad - 1);
   };
-
 
   return (
     <div className="card-producto">
@@ -104,33 +96,29 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
         )}
 
         {/* Controles de cantidad */}
-      <div className="control-cantidad">
-        <button onClick={disminuirCantidad} disabled={cantidad === 1}>
-          -
-        </button>
-        <span>{cantidad}</span>
-        <button onClick={aumentarCantidad}disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}>
-          +
-        </button>
-      </div>
+        <div className="control-cantidad">
+          <button onClick={disminuirCantidad} disabled={cantidad === 1}>
+            -
+          </button>
+          <span>{cantidad}</span>
+          <button
+            onClick={aumentarCantidad}
+            disabled={
+              !producto.disponible || (!isUserLoggedIn && !hasAccessRole)
+            }
+          >
+            +
+          </button>
+        </div>
 
         <span>
           {producto.disponible === true ? 'Stock disponible' : 'Agotado'}
         </span>
       </div>
       <div className="botones-card-producto">
-<<<<<<< HEAD
-        {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
-
-        <button
-          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
-          onClick={agregarAlCarrito}
-        >
-          {producto.disponible === true ? `Añadi al carrito` : 'Agotado'}
-=======
         <button onClick={agregarAlCarrito}>
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
+
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
 

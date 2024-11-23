@@ -28,23 +28,6 @@ export const ProductCard = ({ producto }) => {
   };
 
   const agregarAlCarrito = () => {
-<<<<<<< HEAD
-    for (let i = 0; i < cantidad; i++) {
-      addToCart(producto);
-    }
-    setCantidad(1); // Restablecer la cantidad a 1 después de añadir
-  };
-
-  const aumentarCantidad = () => {
-    // Verificar si el producto está disponible antes de aumentar
-    if (producto.disponible) {
-      setCantidad(cantidad + 1);
-    }
-  };
-
-  const disminuirCantidad = () => {
-    if (cantidad > 1) setCantidad(cantidad - 1);
-=======
     if (!isUserLoggedIn) {
       // Mostrar una alerta si el usuario no está autenticado
       toast.error('Debes registrarte para agregar productos al carrito.', {
@@ -60,7 +43,17 @@ export const ProductCard = ({ producto }) => {
       // Si está autenticado, agregar al carrito
       addToCart(producto);
     }
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
+  };
+
+  const aumentarCantidad = () => {
+    // Verificar si el producto está disponible antes de aumentar
+    if (producto.disponible) {
+      setCantidad(cantidad + 1);
+    }
+  };
+
+  const disminuirCantidad = () => {
+    if (cantidad > 1) setCantidad(cantidad - 1);
   };
 
   return (
@@ -112,23 +105,17 @@ export const ProductCard = ({ producto }) => {
           -
         </button>
         <span>{cantidad}</span>
-        <button onClick={aumentarCantidad} disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}>
+        <button
+          onClick={aumentarCantidad}
+          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
+        >
           +
         </button>
       </div>
 
       <div className="botones-card-producto">
-<<<<<<< HEAD
-        {/* Botón "Añadir al carrito" */}
-        <button
-          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
-          onClick={agregarAlCarrito}
-        >
-          {producto.disponible ? `Añadir al carrito` : 'Agotado'}
-=======
         <button onClick={agregarAlCarrito}>
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
         <button onClick={() => verDetallesProducto(producto)}>
