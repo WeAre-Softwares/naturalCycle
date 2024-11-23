@@ -134,6 +134,7 @@ export class UsuariosService {
           nombre_comercio: true,
           dom_fiscal: true,
           email: true,
+          telefono: true,
           esta_activo: true,
           roles: true,
           dado_de_alta: true,

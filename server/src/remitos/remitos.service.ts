@@ -193,11 +193,12 @@ export class RemitosService {
   }
 
   private agregarEncabezado(doc: PDFKit.PDFDocument, remito: Remito) {
-    const fechaFormateada = new Date().toLocaleDateString('es-ES', {
+    const fechaFormateada = new Intl.DateTimeFormat('es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
-    });
+      timeZone: 'America/Argentina/Buenos_Aires',
+    }).format(new Date());
 
     // Ajuste del encabezado NATURAL CYCLE y MAYORISTA
     doc
@@ -252,7 +253,7 @@ export class RemitosService {
       .fontSize(10)
       //TODO: Add campo
       .text(`Dueño | ${remito.nombre_comercio_comprador}`)
-      .text(`DNI: ${remito.dni_comprador}`)
+      .text(`CUIT: ${remito.dni_comprador}`)
       .text(`Domicilio: ${remito.domicilio_comprador}`);
 
     // Información del vendedor
@@ -271,7 +272,7 @@ export class RemitosService {
     doc
       .fontSize(10)
       .text('Dueño | NATURAL CYCLE')
-      .text(`DNI: ${VENDEDOR_INFO.dni}`)
+      .text(`CUIT: ${VENDEDOR_INFO.cuit}`)
       .text(`Domicilio: ${VENDEDOR_INFO.domicilio}.`);
 
     // Línea separadora

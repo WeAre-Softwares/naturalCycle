@@ -99,10 +99,10 @@ export class PedidosService {
         nombre_comprador: `${comprador_info.nombre}  ${comprador_info.apellido}`,
         nombre_comercio_comprador: comprador_info.nombre_comercio,
         domicilio_comprador: comprador_info.dom_fiscal,
-        dni_comprador: comprador_info.dni,
+        cuit_comprador: comprador_info.dni,
         nombre_vendedor: VENDEDOR_INFO.nombre,
         domicilio_vendedor: VENDEDOR_INFO.domicilio,
-        dni_vendedor: VENDEDOR_INFO.dni,
+        cuit_vendedor: VENDEDOR_INFO.cuit,
         total_precio: savedPedido.total_precio, // Utilizo el total_precio calculado
       };
 
