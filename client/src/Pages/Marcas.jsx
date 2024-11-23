@@ -19,7 +19,7 @@ export const Marcas = () => {
   const { marcaNombre } = useParams();
   const navigate = useNavigate();
   const [marcaSeleccionada, setMarcaSeleccionada] = useState(marcaNombre);
-  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(true); // Iniciar con el menú abierto
   const [busqueda, setBusqueda] = useState('');
 
   // Debounced valor busqueda
