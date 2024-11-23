@@ -168,6 +168,15 @@ export class ProductosController {
     return this.productosService.findBultoCerradoProducts(paginationDto);
   }
 
+  @Get('sinstock')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Buscar todos los productos sin stock' })
+  findProductsSinStock(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    return this.productosService.findProductsSinStock(paginationDto);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Buscar producto por id' })
   findOne(

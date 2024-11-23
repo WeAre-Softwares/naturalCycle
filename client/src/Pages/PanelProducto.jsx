@@ -28,7 +28,9 @@ export const PanelProducto = () => {
     handleNextPage,
     handlePrevPage,
     showInactive,
-    toggleInactiveFilter,
+    setShowInactive,
+    showNoStock,
+    setShowNoStock,
   } = useProductSearch(LIMIT);
 
   const { activateProduct, isLoading: activating } = useActivateProduct();
@@ -78,7 +80,16 @@ export const PanelProducto = () => {
               style={{ margin: '0.5rem' }}
               type="checkbox"
               checked={showInactive}
-              onChange={toggleInactiveFilter}
+              onChange={() => setShowInactive((prev) => !prev)}
+            />
+          </label>
+          <label style={{ margin: '1rem' }}>
+            Sin stock
+            <input
+              style={{ margin: '0.5rem' }}
+              type="checkbox"
+              checked={showNoStock}
+              onChange={() => setShowNoStock((prev) => !prev)}
             />
           </label>
 

@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { useGetAllProducts } from './useGetAllProducts';
 import { useSearchProducts } from './useSearchProducts';
 import { getInactiveProductsService } from '../../services/products-services/getInactiveProducts';
+import { getAllProductsSinStock } from '../../services/products-services/getAll-productsSinStock';
 import { useDebouncedValue } from '../useDebouncedValue';
 import useAuthStore from '../../store/use-auth-store';
 
 export const useProductSearch = (limit) => {
-  const [offsetActive, setOffsetActive] = useState(0);
-  const [offsetInactive, setOffsetInactive] = useState(0);
+  const [offset, setOffset] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [showInactive, setShowInactive] = useState(false);
+  const [showNoStock, setShowNoStock] = useState(false);
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 600);
 
   const { token } = useAuthStore();
@@ -20,15 +21,16 @@ export const useProductSearch = (limit) => {
     loading: loadingAllProducts,
     error: errorAllProducts,
     refetch: refetchActiveProducts,
-  } = useGetAllProducts(limit, offsetActive);
+  } = useGetAllProducts(limit, offset);
 
   // Obtener productos según la búsqueda
   const {
     productsData: searchProductsData,
     loading: loadingSearch,
     error: errorSearch,
-  } = useSearchProducts(debouncedSearchTerm, limit, offsetActive);
+  } = useSearchProducts(debouncedSearchTerm, limit, offset);
 
+  // Productos inactivos
   const [inactiveProductsData, setInactiveProductsData] = useState([]);
   const [loadingInactive, setLoadingInactive] = useState(false);
   const [errorInactive, setErrorInactive] = useState(null);
@@ -40,7 +42,7 @@ export const useProductSearch = (limit) => {
     try {
       const { productos, total } = await getInactiveProductsService(
         limit,
-        offsetInactive,
+        offset,
         token,
       );
       setInactiveProductsData(productos);
@@ -52,41 +54,73 @@ export const useProductSearch = (limit) => {
     }
   };
 
-  // Cargar productos inactivos al activar el filtro
+  // Productos sin stock
+  const [noStockProductsData, setNoStockProductsData] = useState([]);
+  const [loadingNoStock, setLoadingNoStock] = useState(false);
+  const [errorNoStock, setErrorNoStock] = useState(null);
+  const [totalNoStock, setTotalNoStock] = useState(0);
+
+  const loadNoStockProducts = async () => {
+    setLoadingNoStock(true);
+    try {
+      const offsetValue = offset || 0;
+      const { productos, total } = await getAllProductsSinStock(
+        limit,
+        offsetValue,
+      );
+      setNoStockProductsData(productos);
+      setTotalNoStock(total);
+    } catch (error) {
+      setErrorNoStock(error);
+    } finally {
+      setLoadingNoStock(false);
+    }
+  };
+
+  // Cargar inactivos o sin stock según el filtro activado
   useEffect(() => {
     if (showInactive) {
       loadInactiveProducts();
+    } else if (showNoStock) {
+      loadNoStockProducts();
     }
-  }, [showInactive, offsetInactive]);
+  }, [showInactive, showNoStock, offset]);
 
-  // Determinar los datos y el estado de carga de productos según el filtro
+  // Determinar datos y estado según el filtro
   const productsData = showInactive
     ? inactiveProductsData
+    : showNoStock
+    ? noStockProductsData
     : debouncedSearchTerm
     ? searchProductsData?.productos
     : allProductsData?.productos;
 
   const loading = showInactive
     ? loadingInactive
+    : showNoStock
+    ? loadingNoStock
     : debouncedSearchTerm
     ? loadingSearch
     : loadingAllProducts;
 
   const error = showInactive
     ? errorInactive
+    : showNoStock
+    ? errorNoStock
     : debouncedSearchTerm
     ? errorSearch
     : errorAllProducts;
 
   const total = showInactive
     ? totalInactive
+    : showNoStock
+    ? totalNoStock
     : debouncedSearchTerm
     ? searchProductsData?.total || 0
     : allProductsData?.total || 0;
 
   const totalPages = total > 0 ? Math.ceil(total / limit) : 1;
-  const currentPage =
-    Math.floor((showInactive ? offsetInactive : offsetActive) / limit) + 1;
+  const currentPage = Math.floor(offset / limit) + 1;
 
   // Funciones de paginación independientes
   const handleNextPage = () => {
@@ -124,6 +158,8 @@ export const useProductSearch = (limit) => {
     handleNextPage,
     handlePrevPage,
     showInactive,
-    toggleInactiveFilter,
+    setShowInactive,
+    showNoStock,
+    setShowNoStock,
   };
 };

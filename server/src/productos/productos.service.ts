@@ -290,6 +290,47 @@ export class ProductosService {
     }
   }
 
+  async findProductsSinStock(
+    paginationDto: PaginationDto,
+  ): Promise<GetProductosResponse> {
+    const { limit = 10, offset = 0 } = paginationDto;
+    try {
+      const [productos, total] = await this.productoRepository.findAndCount({
+        where: {
+          disponible: false,
+        },
+        relations: {
+          marca: true,
+          imagenes: true,
+          productosCategorias: {
+            categoria: true,
+          },
+          productosEtiquetas: {
+            etiqueta: true,
+          },
+        },
+        take: limit,
+        skip: offset,
+      });
+
+      // Aplano los productos en una estructura más simple
+      const productosPlains = productos.map(this.plainProduct);
+
+      return {
+        productos: productosPlains,
+        total,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(
+        'Error al buscar los productos sin stock',
+        error,
+      );
+    }
+  }
+
   async findProductsByBrand(
     marcaId: string,
     paginationDto: PaginationDto,
