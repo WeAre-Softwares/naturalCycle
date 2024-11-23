@@ -26,12 +26,6 @@ export const ProductosPromocionesItem = ({ producto }) => {
   };
 
   const agregarAlCarrito = () => {
-<<<<<<< HEAD
-    for (let i = 0; i < cantidad; i++) {
-      addToCart(producto);
-    }
-    setCantidad(1); // Restablecer la cantidad a 1 después de añadir
-=======
     if (!isUserLoggedIn) {
       // Mostrar una alerta si el usuario no está autenticado
       toast.error('Debes registrarte para agregar productos al carrito.', {
@@ -47,7 +41,6 @@ export const ProductosPromocionesItem = ({ producto }) => {
       // Si está autenticado, agregar al carrito
       addToCart(producto);
     }
->>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
   };
 
   const aumentarCantidad = () => {
@@ -60,7 +53,6 @@ export const ProductosPromocionesItem = ({ producto }) => {
   const disminuirCantidad = () => {
     if (cantidad > 1) setCantidad(cantidad - 1);
   };
-
 
   return (
     <div className="card-producto">
@@ -104,15 +96,20 @@ export const ProductosPromocionesItem = ({ producto }) => {
         )}
 
         {/* Controles de cantidad */}
-      <div className="control-cantidad">
-        <button onClick={disminuirCantidad} disabled={cantidad === 1}>
-          -
-        </button>
-        <span>{cantidad}</span>
-        <button onClick={aumentarCantidad}disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}>
-          +
-        </button>
-      </div>
+        <div className="control-cantidad">
+          <button onClick={disminuirCantidad} disabled={cantidad === 1}>
+            -
+          </button>
+          <span>{cantidad}</span>
+          <button
+            onClick={aumentarCantidad}
+            disabled={
+              !producto.disponible || (!isUserLoggedIn && !hasAccessRole)
+            }
+          >
+            +
+          </button>
+        </div>
 
         <span>
           {producto.disponible === true ? 'Stock disponible' : 'Agotado'}
