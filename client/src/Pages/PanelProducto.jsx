@@ -57,7 +57,10 @@ export const PanelProducto = () => {
       // Recargar los productos según el filtro activo
       if (showInactive) toggleInactiveFilter();
       else if (showNoStock) toggleNoStockFilter();
-      else navigate(`/panel-principal`);
+      else
+        setTimeout(() => {
+          navigate(`/panel-principal`);
+        }, 2200);
     }
   };
 
