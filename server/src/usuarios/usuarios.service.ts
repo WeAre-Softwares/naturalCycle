@@ -99,6 +99,8 @@ export class UsuariosService {
           'usuario.roles',
           'usuario.dado_de_alta',
         ])
+        .orderBy('usuario.nombre', 'ASC') // Ordenar por nombre
+        .addOrderBy('usuario.apellido', 'ASC') // Luego ordenar por apellido
         .take(limit)
         .skip(offset);
 
@@ -139,6 +141,7 @@ export class UsuariosService {
           roles: true,
           dado_de_alta: true,
         },
+        order: { created_at: 'DESC' }, // Ordenar por fecha de creación
         take: limit,
         skip: offset,
       });

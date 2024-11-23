@@ -103,6 +103,13 @@ export class Usuario {
   })
   last_password_reset_request: Date | null;
 
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  created_at: Date;
+
   @OneToMany(() => Pedido, (pedido) => pedido.usuario)
   pedidos: Pedido[];
 }
