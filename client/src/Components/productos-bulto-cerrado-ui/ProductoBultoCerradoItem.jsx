@@ -1,5 +1,7 @@
 import React, { useState } from 'react'; // Asegúrate de importar useState
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import useCartStore from '../../store/use-cart-store';
 import useAuthStore from '../../store/use-auth-store';
 import { allowedRoles } from '../../constants/allowed-roles';
@@ -25,6 +27,7 @@ export const ProductoBultoCerradoItem = ({ producto }) => {
   };
 
   const agregarAlCarrito = () => {
+<<<<<<< HEAD
     for (let i = 0; i < cantidad; i++) {
       addToCart(producto);
     }
@@ -40,6 +43,23 @@ export const ProductoBultoCerradoItem = ({ producto }) => {
 
   const disminuirCantidad = () => {
     if (cantidad > 1) setCantidad(cantidad - 1);
+=======
+    if (!isUserLoggedIn) {
+      // Mostrar una alerta si el usuario no está autenticado
+      toast.error('Debes registrarte para agregar productos al carrito.', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'dark',
+      });
+    } else {
+      // Si está autenticado, agregar al carrito
+      addToCart(producto);
+    }
+>>>>>>> 202e17189d51e753e0f190b71d4095c2f52bf0bc
   };
 
   return (
@@ -96,12 +116,7 @@ export const ProductoBultoCerradoItem = ({ producto }) => {
 
       </div>
       <div className="botones-card-producto">
-        {/* Activar el botón "Añadir al carrito" solo si el usuario tiene un rol permitido */}
-
-        <button
-          disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
-          onClick={agregarAlCarrito}
-        >
+        <button onClick={agregarAlCarrito}>
           {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
           <i className="fa-solid fa-cart-shopping"></i>
         </button>

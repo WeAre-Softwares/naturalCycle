@@ -33,9 +33,7 @@ export const ProductDetails = () => {
   // Agregar la cantidad seleccionada al carrito
   const agregarAlCarrito = () => {
     if (product) {
-      for (let i = 0; i < quantity; i++) {
-        addToCart({ ...product, cantidad: 1 }); // Se agrega cada producto individualmente
-      }
+      addToCart({ ...product, cantidad: quantity });
     }
   };
 

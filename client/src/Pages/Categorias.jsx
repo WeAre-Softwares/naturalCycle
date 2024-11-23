@@ -21,7 +21,7 @@ export const Categorias = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     categoriaNombre || '',
   );
-  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(true); // Iniciar con el menú abierto
   const [busqueda, setBusqueda] = useState('');
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
 

@@ -10,26 +10,27 @@ const useCartStore = create(
 
       // Agregar producto al carrito
       addToCart: (producto) => {
+        const cantidad = producto.cantidad || 1; // Predeterminado a 1
         const existingProduct = get().carrito.find(
-          (p) => p.producto_id === producto.producto_id
+          (p) => p.producto_id === producto.producto_id,
         );
-      
+
         if (existingProduct) {
           // Si el producto ya está en el carrito, aumentamos su cantidad
           set({
             carrito: get().carrito.map((p) =>
               p.producto_id === producto.producto_id
-                ? { ...p, cantidad: p.cantidad + 1 }
-                : p
+                ? { ...p, cantidad: p.cantidad + cantidad }
+                : p,
             ),
           });
         } else {
           // Si no está, lo agregamos al carrito con la estructura completa
           set({
-            carrito: [...get().carrito, { ...producto, cantidad: 1 }],
+            carrito: [...get().carrito, { ...producto, cantidad }],
           });
         }
-      
+
         // Mostrar la notificación siempre que se agrega un producto
         toast.success('Producto agregado al carrito!', {
           position: 'top-center',
@@ -41,7 +42,6 @@ const useCartStore = create(
           theme: 'dark',
         });
       },
-      
 
       // Remover producto del carrito
       removeFromCart: (productId) => {

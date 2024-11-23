@@ -28,7 +28,7 @@ export class CreateRemitoDto {
 
   @IsNumber()
   @IsNotEmpty()
-  cuit_comprador: number;
+  dni_comprador: number;
 
   @IsString()
   @MaxLength(255)
@@ -42,7 +42,7 @@ export class CreateRemitoDto {
 
   @IsNumber()
   @IsNotEmpty()
-  cuit_vendedor: number;
+  dni_vendedor: number;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsNotEmpty()
