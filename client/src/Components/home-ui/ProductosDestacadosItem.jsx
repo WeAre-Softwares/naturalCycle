@@ -24,8 +24,8 @@ export const ProductosDestacadosItem = ({ producto }) => {
     navigate(`/producto/${producto.producto_id}`);
   };
 
-  // Estado local para la cantidad de productos
-  const [cantidad, setCantidad] = useState(1);
+  // Estado para manejar la cantidad seleccionada
+  const [quantity, setQuantity] = useState(1);
 
   const agregarAlCarrito = () => {
     if (!isUserLoggedIn) {
@@ -41,19 +41,18 @@ export const ProductosDestacadosItem = ({ producto }) => {
       });
     } else {
       // Si está autenticado, agregar al carrito
-      addToCart(producto);
+      addToCart({ ...producto, cantidad: quantity });
     }
   };
 
-  const aumentarCantidad = () => {
-    // Verificar si el producto está disponible antes de aumentar
-    if (producto.disponible) {
-      setCantidad(cantidad + 1);
-    }
+  // Incrementar la cantidad seleccionada
+  const incrementarCantidad = () => {
+    setQuantity((prev) => prev + 1);
   };
 
-  const disminuirCantidad = () => {
-    if (cantidad > 1) setCantidad(cantidad - 1);
+  // Decrementar la cantidad seleccionada
+  const decrementarCantidad = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
   return (
@@ -102,12 +101,12 @@ export const ProductosDestacadosItem = ({ producto }) => {
         )}
         {/* Controles de cantidad */}
         <div className="control-cantidad">
-          <button onClick={disminuirCantidad} disabled={cantidad === 1}>
+          <button onClick={decrementarCantidad} disabled={quantity === 1}>
             -
           </button>
-          <span>{cantidad}</span>
+          <span>{quantity}</span>
           <button
-            onClick={aumentarCantidad}
+            onClick={incrementarCantidad}
             disabled={
               !producto.disponible || (!isUserLoggedIn && !hasAccessRole)
             }
