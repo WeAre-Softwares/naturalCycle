@@ -3,7 +3,6 @@ import '../Styles/Inicio/Inicio.css';
 import {
   BannerCarrusel,
   BannerInfoInicio,
-  CategoriasTopTres,
   MarcasDestacadasGrid,
   PasosCompra,
   ProductosDestacadosGrid,

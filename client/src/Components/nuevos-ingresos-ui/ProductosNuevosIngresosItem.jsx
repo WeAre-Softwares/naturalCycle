@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // Asegúrate de importar useState
 import { useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/use-cart-store';
 import useAuthStore from '../../store/use-auth-store';
@@ -20,9 +20,27 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
     navigate(`/producto/${producto.producto_id}`);
   };
 
+  // Estado local para la cantidad de productos
+  const [cantidad, setCantidad] = useState(1);
+
   const agregarAlCarrito = () => {
-    addToCart(producto);
+    for (let i = 0; i < cantidad; i++) {
+      addToCart(producto);
+    }
+    setCantidad(1); // Restablecer la cantidad a 1 después de añadir
   };
+
+  const aumentarCantidad = () => {
+    // Verificar si el producto está disponible antes de aumentar
+    if (producto.disponible) {
+      setCantidad(cantidad + 1);
+    }
+  };
+
+  const disminuirCantidad = () => {
+    if (cantidad > 1) setCantidad(cantidad - 1);
+  };
+
 
   return (
     <div className="card-producto">
@@ -65,6 +83,17 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
           </>
         )}
 
+        {/* Controles de cantidad */}
+      <div className="control-cantidad">
+        <button onClick={disminuirCantidad} disabled={cantidad === 1}>
+          -
+        </button>
+        <span>{cantidad}</span>
+        <button onClick={aumentarCantidad}disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}>
+          +
+        </button>
+      </div>
+
         <span>
           {producto.disponible === true ? 'Stock disponible' : 'Agotado'}
         </span>
@@ -76,7 +105,7 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
           disabled={!producto.disponible || (!isUserLoggedIn && !hasAccessRole)}
           onClick={agregarAlCarrito}
         >
-          {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
+          {producto.disponible === true ? `Añadi al carrito` : 'Agotado'}
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
 

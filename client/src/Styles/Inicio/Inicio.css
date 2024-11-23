@@ -708,3 +708,15 @@ text-transform: uppercase;
     box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
   }
 }
+
+.control-cantidad button{
+  margin: 5px;
+  border-radius: 100%;
+  background-color: #2d4d33;
+  color: rgb(255, 255, 255);
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+}

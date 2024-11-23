@@ -11,7 +11,7 @@ export const BannerInfoInicio = () => {
       <div className="card-banner-info-inicio">
         <i className="fa-regular fa-credit-card"></i>
         <h3>Medios de pago</h3>
-        <p>Transferencia, efectivo, tarjetas</p>
+        <p>Transferencia, efectivo, cheques</p>
       </div>
       <div className="card-banner-info-inicio">
         <i className="fa-solid fa-store"></i>
