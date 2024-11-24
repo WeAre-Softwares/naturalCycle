@@ -214,8 +214,9 @@ export class MarcasService {
           'marcas.nombre',
           'marcas.marca_destacada',
           'marcas.imagen_url',
+          'marcas.esta_activo',
         ])
-        .where('marcas.esta_activo = :esta_activo', { esta_activo: true })
+        // .where('marcas.esta_activo = :esta_activo', { esta_activo: true })
         .andWhere('(LOWER(marcas.nombre) LIKE LOWER(:term))', {
           term: `%${term}%`,
         })
@@ -230,10 +231,11 @@ export class MarcasService {
 
       // Aplanar los resultados
       const listaMarcasAplanadas = marcas.map((marca) => ({
-        id: marca.marca_id,
+        marca_id: marca.marca_id,
         nombre: marca.nombre,
         marca_destacada: marca.marca_destacada,
         imagen_url: marca.imagen_url,
+        esta_activo: marca.esta_activo,
       }));
 
       return {

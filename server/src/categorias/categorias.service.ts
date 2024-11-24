@@ -151,8 +151,12 @@ export class CategoriasService {
     try {
       const queryBuilder = this.categoriaRepository
         .createQueryBuilder('categorias')
-        .select(['categorias.categoria_id', 'categorias.nombre'])
-        .where('categorias.esta_activo = :esta_activo', { esta_activo: true })
+        .select([
+          'categorias.categoria_id',
+          'categorias.nombre',
+          'categorias.esta_activo',
+        ])
+        // .where('categorias.esta_activo = :esta_activo', { esta_activo: true })
         .andWhere('(LOWER(categorias.nombre) LIKE LOWER(:term))', {
           term: `%${term}%`,
         })
@@ -163,8 +167,9 @@ export class CategoriasService {
 
       // Aplanar los resultados
       const listaCategoriasAplanadas = categorias.map((categoria) => ({
-        id: categoria.categoria_id,
+        categoria_id: categoria.categoria_id,
         nombre: categoria.nombre,
+        esta_activo: categoria.esta_activo,
       }));
 
       return {

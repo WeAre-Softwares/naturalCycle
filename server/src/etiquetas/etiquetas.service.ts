@@ -11,6 +11,7 @@ import { CreateCategoriaDto, UpdateCategoriaDto } from '../categorias/dto';
 import { PaginationDto, SearchWithPaginationDto } from 'src/common/dtos';
 import type { GetEtiquetasResponse } from './interfaces/get-etiquetas-response.interface';
 import type { EtiquetaInterface } from './interfaces';
+import e from 'express';
 
 @Injectable()
 export class EtiquetasService {
@@ -151,8 +152,12 @@ export class EtiquetasService {
     try {
       const queryBuilder = this.etiquetaRepository
         .createQueryBuilder('etiquetas')
-        .select(['etiquetas.etiqueta_id', 'etiquetas.nombre'])
-        .where('etiquetas.esta_activo = :esta_activo', { esta_activo: true })
+        .select([
+          'etiquetas.etiqueta_id',
+          'etiquetas.nombre',
+          'etiquetas.esta_activo',
+        ])
+        // .where('etiquetas.esta_activo = :esta_activo', { esta_activo: true })
         .andWhere('(LOWER(etiquetas.nombre) LIKE LOWER(:term))', {
           term: `%${term}%`,
         })
@@ -163,8 +168,9 @@ export class EtiquetasService {
 
       // Aplanar los resultados
       const listaEtiquetasAplanadas = etiquetas.map((etiqueta) => ({
-        id: etiqueta.etiqueta_id,
+        etiqueta_id: etiqueta.etiqueta_id,
         nombre: etiqueta.nombre,
+        esta_activo: etiqueta.esta_activo,
       }));
 
       return {

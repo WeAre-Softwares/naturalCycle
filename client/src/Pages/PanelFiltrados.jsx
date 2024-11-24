@@ -180,7 +180,7 @@ export const PanelFiltrados = () => {
                             className="crear-filtrado-button"
                             onClick={() => handleDeactivateOrActivate(item)}
                           >
-                            {item.esta_activo ? 'Eliminar' : 'Activar'}
+                            {item.esta_activo === true ? 'Eliminar' : 'Activar'}
                           </button>
                         </div>
                       </li>
