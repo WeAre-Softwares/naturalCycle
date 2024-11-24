@@ -109,16 +109,19 @@ export const ProductosPromocionesItem = ({ producto }) => {
             +
           </button>
         </div>
-
-        <span>
-          {producto.disponible === true ? 'Stock disponible' : 'Agotado'}
-        </span>
       </div>
       <div className="botones-card-producto">
-        <button onClick={agregarAlCarrito}>
-          {producto.disponible === true ? 'Añadir al carrito' : 'Agotado'}
-          <i className="fa-solid fa-cart-shopping"></i>
-        </button>
+        {/* Botón "Añadir al carrito" */}
+        {producto.disponible === true ? (
+          <button onClick={agregarAlCarrito} className="btn-view">
+            Añadir al carrito <i className="fa-solid fa-cart-shopping"></i>
+          </button>
+        ) : (
+          <button className="btn-iniciar-compra-disabled btn-view" disabled>
+            Agotado
+            <i className="fa-solid fa-cart-shopping"></i>
+          </button>
+        )}
 
         <button onClick={() => verDetallesProducto(producto)}>
           Ver producto <i className="fa-solid fa-eye"></i>

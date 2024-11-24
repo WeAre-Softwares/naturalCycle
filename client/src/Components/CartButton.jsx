@@ -175,9 +175,15 @@ export const CartButton = () => {
                         ? item.cantidad > 1
                           ? 'unidades x'
                           : 'unidad x'
-                        : item.cantidad > 1
-                        ? 'kilos x'
-                        : 'kilo x'}
+                        : item.tipo_de_precio === 'por_kilo'
+                        ? item.cantidad > 1
+                          ? 'kilos x'
+                          : 'kilo x'
+                        : item.tipo_de_precio === 'por_bulto_cerrado'
+                        ? item.cantidad > 1
+                          ? 'bultos cerrados'
+                          : 'bulto cerrado'
+                        : 'tipo desconocido'}
                     </p>
                     <p>${item.precio.toLocaleString()} </p>
                     <div className="cantidad-controles">
