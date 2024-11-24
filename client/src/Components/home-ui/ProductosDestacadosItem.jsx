@@ -118,11 +118,11 @@ export const ProductosDestacadosItem = ({ producto }) => {
       <div className="botones-card-producto">
         {/* Botón "Añadir al carrito" */}
         {producto.disponible === true ? (
-          <button onClick={agregarAlCarrito} className="btn-view">
+          <button onClick={agregarAlCarrito}>
             Añadir al carrito <i className="fa-solid fa-cart-shopping"></i>
           </button>
         ) : (
-          <button className="btn-iniciar-compra-disabled btn-view" disabled>
+          <button className="btn-iniciar-compra-disabled" disabled>
             Agotado
             <i className="fa-solid fa-cart-shopping"></i>
           </button>
