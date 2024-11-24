@@ -297,7 +297,7 @@ export class UsuariosService {
 
       // Aplanar los resultados
       const listaUsuariosAplanados = usuarios.map((usuario) => ({
-        id: usuario.usuario_id,
+        usuario_id: usuario.usuario_id,
         nombre: usuario.nombre,
         apellido: usuario.apellido,
         dni: usuario.dni,
