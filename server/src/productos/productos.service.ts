@@ -9,9 +9,8 @@ import { DataSource, In, Repository } from 'typeorm';
 import {
   CreateProductoDto,
   UpdateProductoDto,
-  type CategoryFilterDto,
-  type CreateProductosCategoriasDto,
-  type CreateProductosEtiquetasDto,
+  BrandFilterDto,
+  CategoryFilterDto,
 } from './dto';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { Producto } from './entities/producto.entity';
@@ -332,15 +331,16 @@ export class ProductosService {
   }
 
   async findProductsByBrand(
-    marcaId: string,
+    filterDto: BrandFilterDto,
     paginationDto: PaginationDto,
   ): Promise<GetProductosResponse> {
+    const { id, nombre } = filterDto;
     const { limit = 10, offset = 0 } = paginationDto;
     try {
       const [productos, total] = await this.productoRepository.findAndCount({
         where: {
           esta_activo: true,
-          marca: { marca_id: marcaId }, // Filtrar por la marca usando el ID
+          marca: id ? { marca_id: id } : { nombre }, // Filtrar por la marca usando el ID y nombre
         },
         relations: {
           marca: true,

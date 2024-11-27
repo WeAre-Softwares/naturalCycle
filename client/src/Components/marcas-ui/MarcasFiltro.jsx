@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const MarcasFiltro = ({
   marcas,
@@ -7,7 +7,6 @@ export const MarcasFiltro = ({
   menuAbierto,
   setMenuAbierto,
 }) => {
-  const navigate = useNavigate();
   return (
     <>
       <div className="container-boton-filtrado">
@@ -31,18 +30,14 @@ export const MarcasFiltro = ({
         <ul className="marcas-lista">
           {marcas.map((marca) => (
             <li key={marca.marca_id}>
-              <a
+              <Link
+                to={`/marcas/${marca.nombre}`}
                 onClick={() => {
-                  const marcaUrl = marca.nombre
-                    .toLowerCase()
-                    .replace(/\s+/g, '-');
-                  navigate(`/marcas/${marcaUrl}`);
-                  setMarcaSeleccionada(marca.marca_id); // Actualiza el estado con el ID
-                  setMenuAbierto(true);
+                  setMarcaSeleccionada(marca.nombre);
                 }}
               >
                 {marca.nombre}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

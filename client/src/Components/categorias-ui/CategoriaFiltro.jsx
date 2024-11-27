@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const CategoriaFiltro = ({
   categorias,
@@ -7,7 +7,6 @@ export const CategoriaFiltro = ({
   menuAbierto,
   setMenuAbierto,
 }) => {
-  const navigate = useNavigate();
   return (
     <>
       <div className="container-boton-filtrado">
@@ -31,18 +30,14 @@ export const CategoriaFiltro = ({
         <ul className="categorias-lista">
           {categorias.map((categoria) => (
             <li key={categoria.categoria_id}>
-              <a
+              <Link
+                to={`/categorias/${categoria.nombre}`}
                 onClick={() => {
-                  const categoriaUrl = categoria.nombre
-                    .toLowerCase()
-                    .replace(/\s+/g, '-');
-                  navigate(`/categorias/${categoriaUrl}`);
-                  setCategoriaSeleccionada(categoria.categoria_id); // Actualiza el estado con el ID
-                  setMenuAbierto(true);
+                  setCategoriaSeleccionada(categoria.nombre);
                 }}
               >
                 {categoria.nombre}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

@@ -126,13 +126,15 @@ export class ProductosController {
     return this.productosService.findPromotionalProducts(paginationDto);
   }
 
-  @Get('/marca/:id')
+  @Get('/marca/:filter')
   @ApiOperation({ summary: 'Buscar productos por marca' })
   findByBrand(
-    @Param('id') marcaId: string,
+    @Param('filter') filter: string,
     @Query() paginationDto: PaginationDto,
   ): Promise<GetProductosResponse> {
-    return this.productosService.findProductsByBrand(marcaId, paginationDto);
+    // Determina si el filtro es un UUID o un nombre de categoría
+    const filterDto = this.createFilterDto(filter);
+    return this.productosService.findProductsByBrand(filterDto, paginationDto);
   }
 
   @Get('/categoria/:filter')

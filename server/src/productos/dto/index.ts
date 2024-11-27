@@ -1,3 +1,4 @@
+export { BrandFilterDto } from './brand-filter.dto';
 export { CategoryFilterDto } from './category-filter.dto';
 export { CreateProductoDto } from './create-producto.dto';
 export { CreateProductosCategoriasDto } from './create-productos-categorias.dto';

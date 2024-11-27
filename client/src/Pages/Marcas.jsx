@@ -18,7 +18,7 @@ const LIMIT = 9;
 export const Marcas = () => {
   const { marcaNombre } = useParams();
   const navigate = useNavigate();
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState(marcaNombre);
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState(marcaNombre || '');
   const [menuAbierto, setMenuAbierto] = useState(true); // Iniciar con el menú abierto
   const [busqueda, setBusqueda] = useState('');
 
@@ -40,38 +40,17 @@ export const Marcas = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
+  // Inicializa la categoría seleccionada desde la URL
   useEffect(() => {
-    if (marcaNombre && marcas.length > 0) {
-      const marcaMatch = marcas.find(
-        (marca) => marca.nombre.toLowerCase() === marcaNombre.toLowerCase(),
-      );
-      if (marcaMatch) {
-        setMarcaSeleccionada(marcaMatch.marca_id);
-      }
+    if (marcaNombre) {
+      setMarcaSeleccionada(marcaNombre);
     }
-  }, [marcaNombre, marcas]);
+  }, [marcaNombre]);
 
-  const handleMarcaSeleccionada = (id) => {
-    setMarcaSeleccionada(id);
-    const marcaUrl = marcas
-      .find((mar) => mar.marca_id === id)
-      ?.nombre.toLowerCase()
-      .replace(/\s+/g, '-');
-    if (marcaUrl) {
-      navigate(`/marcas/${marcaUrl}`);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (page > 0) {
-      handlePageChange(page - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (page < totalPaginas - 1) {
-      handlePageChange(page + 1);
-    }
+  // Actualiza la URL cuando cambia la marca seleccionada
+  const handleMarcaChange = (marca) => {
+    setMarcaSeleccionada(marca);
+    navigate(`/marcas/${marca}`);
   };
 
   return (
@@ -79,10 +58,7 @@ export const Marcas = () => {
       <Buscador setBusqueda={setBusqueda} />
       <MarcasFiltro
         marcas={marcas}
-        setMarcaSeleccionada={(id) => {
-          handleMarcaSeleccionada(id);
-          setMenuAbierto(false);
-        }}
+        setMarcaSeleccionada={handleMarcaChange}
         menuAbierto={menuAbierto}
         setMenuAbierto={setMenuAbierto}
       />

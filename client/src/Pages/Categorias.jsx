@@ -12,7 +12,6 @@ import { useProductSearchAndPaginationCategories } from '../hooks/hooks-category
 import { useGetAllCategories } from '../hooks/hooks-category/useGetAllCategories';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
-// Límite de productos para centralizar su valor
 const LIMIT = 9;
 
 export const Categorias = () => {
@@ -21,7 +20,7 @@ export const Categorias = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     categoriaNombre || '',
   );
-  const [menuAbierto, setMenuAbierto] = useState(true); // Iniciar con el menú abierto
+  const [menuAbierto, setMenuAbierto] = useState(true);
   const [busqueda, setBusqueda] = useState('');
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
 
@@ -40,36 +39,17 @@ export const Categorias = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
-  // Sincronización inicial de estado solo en la primera carga
+  // Inicializa la categoría seleccionada desde la URL
   useEffect(() => {
-    if (categoriaNombre && categorias.length > 0) {
-      const categoriaMatch = categorias.find(
-        (categoria) =>
-          categoria.nombre.toLowerCase() === categoriaNombre.toLowerCase() ||
-          categoria.categoria_id === categoriaNombre,
-      );
-
-      setCategoriaSeleccionada(
-        categoriaMatch ? categoriaMatch.categoria_id : '',
-      );
-    } else {
-      setCategoriaSeleccionada('');
+    if (categoriaNombre) {
+      setCategoriaSeleccionada(categoriaNombre);
     }
-  }, [categorias]);
+  }, [categoriaNombre]);
 
   // Actualiza la URL cuando cambia la categoría seleccionada
-  useEffect(() => {
-    if (!categoriaSeleccionada) return;
-    const categoriaUrl = categorias
-      .find((cat) => cat.categoria_id === categoriaSeleccionada)
-      ?.nombre.toLowerCase()
-      .replace(/\s+/g, '-');
-    if (categoriaUrl) navigate(`/categorias/${categoriaUrl}`);
-  }, [categoriaSeleccionada, navigate]);
-
-  const handleCategoriaChange = (id) => {
-    setCategoriaSeleccionada(id);
-    setMenuAbierto(false);
+  const handleCategoriaChange = (categoria) => {
+    setCategoriaSeleccionada(categoria);
+    navigate(`/categorias/${categoria}`);
   };
 
   return (
@@ -103,7 +83,6 @@ export const Categorias = () => {
           <NoHayProductos />
         )}
       </div>
-      {/* Mostrar paginación sólo si hay al menos una página de resultados */}
       {totalPaginas > 0 && (
         <Pagination
           currentPage={page + 1}

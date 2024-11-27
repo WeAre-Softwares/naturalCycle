@@ -5,7 +5,7 @@ import { getAllProductsByBrandService } from '../../services/marca-services/getA
 
 export function useProductSearchAndPaginationBrand(
   term = '',
-  marcaId = '',
+  filter = '',
   limit = 9,
 ) {
   const [page, setPage] = useState(0);
@@ -22,7 +22,7 @@ export function useProductSearchAndPaginationBrand(
   // Reinicia la paginación al cambiar la búsqueda o la categoría
   useEffect(() => {
     setPage(0);
-  }, [term, marcaId]);
+  }, [term, filter]);
 
   // Determina y ejecuta la lógica de búsqueda
   useEffect(() => {
@@ -33,9 +33,9 @@ export function useProductSearchAndPaginationBrand(
         if (term) {
           // Caso de búsqueda
           response = await searchProductsService(term, limit, offset);
-        } else if (marcaId) {
+        } else if (filter) {
           // Caso de filtrado por marca
-          response = await getAllProductsByBrandService(marcaId, limit, offset);
+          response = await getAllProductsByBrandService(filter, limit, offset);
         } else {
           // Caso de productos generales
           response = await getAllProductsService(limit, offset);
@@ -49,7 +49,7 @@ export function useProductSearchAndPaginationBrand(
     };
 
     fetchData();
-  }, [term, marcaId, limit, offset]);
+  }, [term, filter, limit, offset]);
 
   const handlePageChange = (newPage) => setPage(newPage);
 
