@@ -38,7 +38,7 @@ export const MarcasFiltro = ({
                     .replace(/\s+/g, '-');
                   navigate(`/marcas/${marcaUrl}`);
                   setMarcaSeleccionada(marca.marca_id); // Actualiza el estado con el ID
-                  setMenuAbierto(false);
+                  setMenuAbierto(true);
                 }}
               >
                 {marca.nombre}

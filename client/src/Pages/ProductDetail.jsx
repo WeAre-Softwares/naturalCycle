@@ -5,13 +5,15 @@ import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useCartStore from '../store/use-cart-store';
 import useAuthStore from '../store/use-auth-store';
 import { allowedRoles } from '../constants/allowed-roles';
+import { useNavigate } from 'react-router-dom';
 
 export const ProductDetails = () => {
   const { id } = useParams();
   const { product, error, loading } = useGetProductById(id);
   const { addToCart } = useCartStore();
   const { isAuthenticated, getRoles } = useAuthStore();
-
+  const navigate = useNavigate();
+  
   // Roles y autenticación
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
@@ -40,11 +42,10 @@ export const ProductDetails = () => {
   return (
     <div className="ver-producto-container">
       <div className="button-volver-container">
-        <Link to="/inicio">
-          <button className="button-volver-panel-producto">
+        
+          <button className="button-volver-panel-producto" onClick={() => navigate(-1)}>
             <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Volver
           </button>
-        </Link>
       </div>
 
       {loading && (

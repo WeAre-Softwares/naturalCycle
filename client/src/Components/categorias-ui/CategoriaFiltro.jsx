@@ -38,7 +38,7 @@ export const CategoriaFiltro = ({
                     .replace(/\s+/g, '-');
                   navigate(`/categorias/${categoriaUrl}`);
                   setCategoriaSeleccionada(categoria.categoria_id); // Actualiza el estado con el ID
-                  setMenuAbierto(false);
+                  setMenuAbierto(true);
                 }}
               >
                 {categoria.nombre}
