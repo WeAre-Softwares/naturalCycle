@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createEtiquetaSchema } from '../../schemas/create-etiqueta-schema';
 import { useUpdateEtiqueta } from '../../hooks/hooks-etiqueta/useUpdateEtiqueta';
 import { useGetEtiquetaById } from '../../hooks/hooks-etiqueta/useGetEtiquetaById';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioActualizarEtiqueta = () => {
   const { etiqueta_id } = useParams();
@@ -40,6 +41,7 @@ export const FormularioActualizarEtiqueta = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container panel-margin-necesario"
       >
         <Link to="/panel-filtrado">

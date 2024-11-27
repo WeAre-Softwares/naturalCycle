@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createBrandSchema } from '../../schemas/create-brand-schema';
 import { useCreateBrand } from '../../hooks/hooks-brand/useCreatedBrand';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioCrearMarca = () => {
   const { createBrand, loading } = useCreateBrand();
@@ -31,6 +32,7 @@ export const FormularioCrearMarca = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container"
       >
         <Link to="/panel-filtrado">

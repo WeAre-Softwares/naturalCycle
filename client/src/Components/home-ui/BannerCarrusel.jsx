@@ -77,7 +77,8 @@ export const BannerCarrusel = () => {
                 alt={producto.nombre}
               />
             </div>
-            <div className="precio-producto-banner"
+            <div
+              className="precio-producto-banner"
               onClick={() => verDetallesProducto(producto.producto_id)}
             >
               <h2 className="texto-Banner" name="texto-Banner">
@@ -86,11 +87,10 @@ export const BannerCarrusel = () => {
               {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
               {isUserLoggedIn && hasAccessRole && (
                 <h2 className="precio-banner" name="precio-banner">
-                  A tan sólo ${Number(producto.precio).toLocaleString()}
+                  A tan sólo ${Number(producto.precio)}
                 </h2>
               )}
             </div>
-            
           </div>
         ))}
       </Slider>

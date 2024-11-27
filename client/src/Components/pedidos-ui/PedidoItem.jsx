@@ -24,8 +24,7 @@ export const PedidoItem = ({ pedido, colorEstado, cambiarEstado }) => {
     >
       <div className="pedido-detalles">
         <p>
-          <strong>Total del Pedido:</strong> $
-          {Number(pedido.total_precio).toLocaleString()}
+          <strong>Total del Pedido:</strong> ${Number(pedido.total_precio)}
         </p>
         <p>
           <strong>Fecha del Pedido:</strong>{' '}

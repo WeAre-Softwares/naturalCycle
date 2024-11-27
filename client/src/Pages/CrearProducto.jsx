@@ -8,6 +8,7 @@ import { createProductoSchema } from '../schemas/create-product-schema';
 import { createProductService } from '../services/products-services/create-product';
 import { useProductoFormulario } from '../hooks/hooks-product/useProductoFormulario';
 import useAuthStore from '../store/use-auth-store';
+import { preventFormSubmitOnEnter } from '../helpers/formHelpers';
 
 export const CrearProducto = () => {
   const { categorias, error, etiquetas, loading, marcas } =
@@ -99,6 +100,7 @@ export const CrearProducto = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container"
       >
         <Link to="/panel-producto">

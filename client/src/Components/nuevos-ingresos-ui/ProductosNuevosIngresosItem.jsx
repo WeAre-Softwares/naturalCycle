@@ -84,11 +84,11 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
               {producto.precio_antes_oferta != null &&
                 !isNaN(Number(producto.precio_antes_oferta)) && (
                   <h2 className="precio-producto-card precio-viejo-promo">
-                    ${Number(producto.precio_antes_oferta).toLocaleString()}
+                    ${Number(producto.precio_antes_oferta)}
                   </h2>
                 )}
               <h2 className="precio-producto-card">
-                ${Number(producto.precio).toLocaleString()}
+                ${Number(producto.precio)}
               </h2>
             </div>
           </>

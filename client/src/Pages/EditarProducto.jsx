@@ -9,6 +9,7 @@ import { updateProductService } from '../services/products-services/update-produ
 import { useProductoFormulario } from '../hooks/hooks-product/useProductoFormulario';
 import { useGetProductById } from '../hooks/hooks-product/useGetProductById';
 import useAuthStore from '../store/use-auth-store';
+import { preventFormSubmitOnEnter } from '../helpers/formHelpers';
 
 export const EditarProducto = () => {
   // Obtener el Id del producto desde los parámetros de la URL
@@ -144,6 +145,7 @@ export const EditarProducto = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container"
       >
         <Link to="/panel-producto">

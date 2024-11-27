@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createCategorySchema } from '../../schemas/create-category-schema';
 import { useCreateCategory } from '../../hooks/hooks-category/useCreateCategory';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioCrearCategoria = () => {
   const { createCategory, loading } = useCreateCategory();
@@ -26,6 +27,7 @@ export const FormularioCrearCategoria = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container"
       >
         <Link to="/panel-filtrado">

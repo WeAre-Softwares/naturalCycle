@@ -137,12 +137,10 @@ export const Checkout = () => {
               <div key={item.id} className="checkout-item">
                 <p>{item.nombre}</p>
                 <p>Cantidad: {item.cantidad}</p>
-                <p>Total: ${(item.precio * item.cantidad).toLocaleString()}</p>
+                <p>Total: ${item.precio * item.cantidad}</p>
               </div>
             ))}
-            <h3>
-              Precio total del pedido: ${calcularSubtotal().toLocaleString()}
-            </h3>
+            <h3>Precio total del pedido: ${calcularSubtotal()}</h3>
             <div className="div-button-container-prod-checkout">
               {' '}
               <button className="btn-finalizar-compra" onClick={realizarCompra}>

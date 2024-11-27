@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { updateBrandSchema } from '../../schemas/update-brand-schema';
 import { useUpdateBrand } from '../../hooks/hooks-brand/useUpdateBrand';
 import { useGetBrandById } from '../../hooks/hooks-brand/useGetBrandById';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioActualizarMarca = () => {
   const { marca_id } = useParams();
@@ -45,6 +46,7 @@ export const FormularioActualizarMarca = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container panel-margin-necesario"
       >
         <Link to="/panel-filtrado">

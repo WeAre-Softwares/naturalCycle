@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createCategorySchema } from '../../schemas/create-category-schema';
 import { useUpdateCategory } from '../../hooks/hooks-category/useUpdateCategory';
 import { useGetCategoryById } from '../../hooks/hooks-category/useGetCategoryById';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioActualizarCategoria = () => {
   const { categoria_id } = useParams();
@@ -40,6 +41,7 @@ export const FormularioActualizarCategoria = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container panel-margin-necesario"
       >
         <Link to="/panel-filtrado">

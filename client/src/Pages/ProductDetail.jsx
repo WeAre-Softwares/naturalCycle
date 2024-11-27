@@ -103,12 +103,10 @@ export const ProductDetails = () => {
                 {product.precio_antes_oferta != null &&
                   !isNaN(Number(product.precio_antes_oferta)) && (
                     <h3 className="precio-producto-card precio-viejo-promo">
-                      ${Number(product.precio_antes_oferta).toLocaleString()}
+                      ${Number(product.precio_antes_oferta)}
                     </h3>
                   )}
-                <p className="precio-view">
-                  ${Number(product.precio).toLocaleString()}
-                </p>
+                <p className="precio-view">${Number(product.precio)}</p>
                 <span style={{ marginLeft: '8px' }}>
                   &#8722; {product.tipo_de_precio.replace(/_/g, ' ')}
                 </span>

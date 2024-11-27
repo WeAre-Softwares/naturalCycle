@@ -185,7 +185,7 @@ export const CartButton = () => {
                           : 'bulto cerrado'
                         : 'tipo desconocido'}
                     </p>
-                    <p>${item.precio.toLocaleString()} </p>
+                    <p>${item.precio} </p>
                     <div className="cantidad-controles">
                       <button
                         onClick={() => decrementQuantity(item.producto_id)}
@@ -216,10 +216,7 @@ export const CartButton = () => {
                     </div>
                   </div>
                   <div className="precio-producto">
-                    <p>
-                      Subtotal: $
-                      {(item.precio * item.cantidad).toLocaleString()}
-                    </p>
+                    <p>Subtotal: ${item.precio * item.cantidad}</p>
                   </div>
                   <button
                     className="eliminar-producto"
@@ -236,7 +233,7 @@ export const CartButton = () => {
             <>
               <div className="total">
                 <h3>Total:</h3>
-                <h3>${getTotalPrice().toLocaleString()}</h3>
+                <h3>${getTotalPrice()}</h3>
               </div>
 
               {getTotalPrice() < 50000 && (

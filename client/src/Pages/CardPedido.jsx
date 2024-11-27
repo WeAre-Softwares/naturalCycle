@@ -36,9 +36,7 @@ export const CardPedido = () => {
               </p>
               <p className="p-pedido-card">
                 <strong>Total Precio del Pedido:</strong> $
-                {Number(
-                  detallePedido[0].pedido?.total_precio,
-                ).toLocaleString() || '0'}
+                {Number(detallePedido[0].pedido?.total_precio) || '0'}
               </p>
             </div>
 
@@ -59,11 +57,11 @@ export const CardPedido = () => {
                   </p>
                   <p className="p-pedido-card">
                     <strong>Precio Unitario:</strong> $
-                    {Number(detalle.precio_unitario).toLocaleString() || 'N/A'}
+                    {Number(detalle.precio_unitario) || 'N/A'}
                   </p>
                   <p className="p-pedido-card">
                     <strong>Total Precio:</strong> $
-                    {Number(detalle.total_precio).toLocaleString() || '0'}
+                    {Number(detalle.total_precio) || '0'}
                   </p>
                 </div>
               </div>

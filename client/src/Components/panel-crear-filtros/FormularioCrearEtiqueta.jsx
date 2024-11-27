@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createEtiquetaSchema } from '../../schemas/create-etiqueta-schema';
 import { useCreateEtiqueta } from '../../hooks/hooks-etiqueta/useCreateEtiqueta';
+import { preventFormSubmitOnEnter } from '../../helpers/formHelpers';
 
 export const FormularioCrearEtiqueta = () => {
   const { createEtiqueta, loading } = useCreateEtiqueta();
@@ -27,6 +28,7 @@ export const FormularioCrearEtiqueta = () => {
       <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={preventFormSubmitOnEnter}
         className="crear-producto-container"
       >
         <Link to="/panel-filtrado">
