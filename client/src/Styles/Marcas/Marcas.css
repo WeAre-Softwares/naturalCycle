@@ -64,6 +64,10 @@
   color: #2d4d33;
 }
 
+.marcas-lista a:focus {
+  color: #2d4d33;
+}
+
 .container-boton-filtrado {
   display: flex;
   justify-content: flex-end;

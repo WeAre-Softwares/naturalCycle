@@ -34,7 +34,7 @@
 .img-prod-banner {
   width: 300px; /* Ajusta el tamaño de la imagen a un 50% del contenedor */
   height: 300px;
-  border-radius: 10px;
+  border-radius: 2px;
 }
 
 /* Texto y precio del producto en el banner */
@@ -86,6 +86,7 @@
   background-color: rgb(159, 159, 159); /* Negro con transparencia */
   color: white;
   padding: 5px;
+  border-radius: 2px;
   width: 300px;
   text-align: center;
 }
@@ -98,7 +99,7 @@
   padding: 10px;
   color: white;
   background-color: rgba(0, 0, 0, 0.8); /* Negro con transparencia */
-  border-radius: 4px;
+  border-radius: 2px;
   width: 292px;
 }
 
@@ -445,6 +446,7 @@ text-transform: uppercase;
   width: 100%;
   gap: 20px;
   padding: 20px;
+  margin-bottom: 20px;
   -ms-overflow-style: -ms-autohiding-scrollbar; 
 }
 
@@ -671,6 +673,10 @@ text-transform: uppercase;
   border-radius: 10px;
   background-color: #b3d4fc;
   animation: pulse 1.5s infinite ease-in-out;
+}
+
+.description-view-prod{
+  margin-bottom: 10px;
 }
 
 .dot-inicio:last-child {
