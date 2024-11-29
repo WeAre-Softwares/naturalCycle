@@ -161,10 +161,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   border: none;
   outline: none;
-  padding-left: 10px; /* Espacio dentro del input */
+  margin-bottom: 20px;
 }
 
 .h1-login h1 {
