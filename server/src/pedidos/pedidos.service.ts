@@ -16,6 +16,7 @@ import type { GetPedidosResponse, PedidoInterface } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { CreateRemitoDto } from '../remitos/dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
+import { MailsService } from '../mails/mails.service';
 import { VENDEDOR_INFO } from '../remitos/constants/vendedor-info.constant';
 import { EstadoPedido } from './types/estado-pedido.enum';
 
@@ -27,6 +28,7 @@ export class PedidosService {
     @InjectRepository(Pedido)
     private readonly pedidoRepository: Repository<Pedido>,
     private readonly usuariosService: UsuariosService,
+    private readonly mailsService: MailsService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -115,6 +117,13 @@ export class PedidosService {
 
       // 5. Confirmar la transacción
       await queryRunner.commitTransaction();
+
+      try {
+        // Enviar correo de notificación al admin
+        await this.mailsService.sendNotificationNewOrder();
+      } catch (error) {
+        this.logger.warn('Error al enviar la notificación por correo:', error);
+      }
 
       return savedPedido;
     } catch (error) {

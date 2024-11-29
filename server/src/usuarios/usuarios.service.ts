@@ -47,8 +47,14 @@ export class UsuariosService {
 
       await this.usuarioRepository.save(usuario);
 
-      // Enviar notificación por correo
-      await this.MailsService.sendAccountPendingApprovalEmail(usuario);
+      try {
+        // Enviar notificación por correo
+        await this.MailsService.sendAccountPendingApprovalEmail(usuario);
+        // Enviar correo de notificación al admin
+        await this.MailsService.sendNotificationNewUser();
+      } catch (error) {
+        this.logger.warn('Error al enviar correos de notificación:', error);
+      }
 
       // Eliminar campos sensibles del objeto: Usuario directamente
       delete usuario.email;

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Usuario } from '../usuarios/entities/usuario.entity';
+import { INFO_ADMIN } from './constants/info-admin.constant';
 
 @Injectable()
 export class MailsService {
@@ -46,6 +47,28 @@ export class MailsService {
       template: './account-activated',
       context: {
         name: usuario.nombre + ' ' + usuario.apellido,
+      },
+    });
+  }
+
+  async sendNotificationNewUser(): Promise<void> {
+    await this.mailerService.sendMail({
+      to: INFO_ADMIN.email,
+      subject: 'Notificación nuevo usuario registrado',
+      template: './notificationNewUser',
+      context: {
+        name: INFO_ADMIN.nombre,
+      },
+    });
+  }
+
+  async sendNotificationNewOrder(): Promise<void> {
+    await this.mailerService.sendMail({
+      to: INFO_ADMIN.email,
+      subject: 'Notificación nuevo pedido',
+      template: './newPedido',
+      context: {
+        name: INFO_ADMIN.nombre,
       },
     });
   }
