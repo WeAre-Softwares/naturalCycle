@@ -11,7 +11,7 @@ import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
 export const ProductosPorBultoCerrado = () => {
   const [page, setPage] = useState(1);
   const { productos, loading, error, totalPages } = useGetBultoCerradoProducts(
-    9,
+    8,
     page,
   );
 

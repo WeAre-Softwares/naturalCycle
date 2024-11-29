@@ -9,7 +9,7 @@ import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
 export const NuevosIngresos = () => {
   const [page, setPage] = useState(1);
   const { productos, loading, error, totalPages } = useGetAllNewArrivalProducts(
-    5,
+    8,
     page,
   );
 
