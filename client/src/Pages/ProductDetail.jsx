@@ -115,11 +115,11 @@ export const ProductDetails = () => {
             )}
 
             <div className="container-cantidad">
-              <button onClick={decrementarCantidad} className="btn-view">
+              <button onClick={decrementarCantidad} disabled={!isUserLoggedIn && !hasAccessRole} className="btn-view">
                 -
               </button>
               <span className="cantidad-view">{quantity}</span>
-              <button onClick={incrementarCantidad} className="btn-view">
+              <button onClick={incrementarCantidad} disabled={!isUserLoggedIn && !hasAccessRole} className="btn-view">
                 +
               </button>
             </div>
