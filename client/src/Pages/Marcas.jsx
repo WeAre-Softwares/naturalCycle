@@ -55,13 +55,13 @@ export const Marcas = () => {
 
   return (
     <div className="container-general-categorias">
-      <Buscador setBusqueda={setBusqueda} />
       <MarcasFiltro
         marcas={marcas}
         setMarcaSeleccionada={handleMarcaChange}
         menuAbierto={menuAbierto}
         setMenuAbierto={setMenuAbierto}
       />
+      <Buscador setBusqueda={setBusqueda} />
       <div className="container-productos-categorias">
         {loading ? (
           <section class="dots-container-inicio">
