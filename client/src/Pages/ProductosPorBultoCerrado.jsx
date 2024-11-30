@@ -7,9 +7,11 @@ import {
 import { PaginationControls } from '../Components/PaginationControls';
 import { useGetBultoCerradoProducts } from '../hooks/hooks-product/useGetBultoCerradoProducts';
 import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
+import { Buscador } from '../Components/categorias-ui';
 
 export const ProductosPorBultoCerrado = () => {
   const [page, setPage] = useState(1);
+  const [busqueda, setBusqueda] = useState(''); // Estado de búsqueda
   const { productos, loading, error, totalPages } = useGetBultoCerradoProducts(
     8,
     page,
@@ -28,18 +30,26 @@ export const ProductosPorBultoCerrado = () => {
     }
   };
 
+  // Filtrar productos según el término de búsqueda
+  const productosFiltrados = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
+  );
+
   return (
     <div className="div-general-nuevos-ingresos">
       <IntroProductosBultoCerrado />
 
+      {/* Pasar setBusqueda al buscador */}
+      <Buscador setBusqueda={setBusqueda} />
+
       {/* Mostrar mensaje de carga */}
       {loading && (
-        <section class="dots-container-inicio">
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
+        <section className="dots-container-inicio">
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
         </section>
       )}
 
@@ -52,13 +62,13 @@ export const ProductosPorBultoCerrado = () => {
       )}
 
       {/* Mostrar mensaje de "sin resultados" */}
-      {!loading && !error && productos.length === 0 && (
+      {!loading && !error && productosFiltrados.length === 0 && (
         <NoHayProductos></NoHayProductos>
       )}
 
       {/* Mostrar grid de productos solo si hay resultados */}
-      {!loading && !error && productos.length > 0 && (
-        <ProductosBultoCerradoGrid productos={productos} />
+      {!loading && !error && productosFiltrados.length > 0 && (
+        <ProductosBultoCerradoGrid productos={productosFiltrados} />
       )}
 
       {/* Mostrar paginación sólo si hay al menos una página de resultados */}
