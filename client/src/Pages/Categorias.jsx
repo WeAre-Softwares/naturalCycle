@@ -54,13 +54,13 @@ export const Categorias = () => {
 
   return (
     <div className="container-general-categorias">
-      <Buscador setBusqueda={setBusqueda} />
       <CategoriaFiltro
         categorias={categorias}
         setCategoriaSeleccionada={handleCategoriaChange}
         menuAbierto={menuAbierto}
         setMenuAbierto={setMenuAbierto}
       />
+      <Buscador setBusqueda={setBusqueda} />
       <div className="container-productos-categorias">
         {loading ? (
           <section className="dots-container-inicio">
