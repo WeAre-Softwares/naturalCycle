@@ -5,8 +5,8 @@ const imagenesSchema = yup
   .of(
     yup
       .mixed()
-      .test('fileSize', 'Cada archivo debe ser menor de 4MB.', (file) =>
-        file instanceof File ? file.size <= 1024 * 1024 * 4 : true,
+      .test('fileSize', 'Cada archivo debe ser menor de 6MB.', (file) =>
+        file instanceof File ? file.size <= 1024 * 1024 * 6 : true,
       )
       .test(
         'fileFormat',

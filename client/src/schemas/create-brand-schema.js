@@ -2,8 +2,8 @@ import * as yup from 'yup';
 
 export const imagenSchema = yup
   .mixed()
-  .test('fileSize', 'El archivo debe ser menor de 4MB.', (file) =>
-    file instanceof File ? file.size <= 1024 * 1024 * 4 : true,
+  .test('fileSize', 'El archivo debe ser menor de 6MB.', (file) =>
+    file instanceof File ? file.size <= 1024 * 1024 * 6 : true,
   )
   .test(
     'fileFormat',

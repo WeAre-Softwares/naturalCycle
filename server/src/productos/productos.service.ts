@@ -201,6 +201,7 @@ export class ProductosService {
         );
       }
       this.logger.error(error);
+      console.log(error);
 
       throw new InternalServerErrorException(
         'Error al crear el Producto',
