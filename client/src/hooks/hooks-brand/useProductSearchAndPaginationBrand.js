@@ -6,7 +6,7 @@ import { getAllProductsByBrandService } from '../../services/marca-services/getA
 export function useProductSearchAndPaginationBrand(
   term = '',
   filter = '',
-  limit = 9,
+  limit = 10,
 ) {
   const [page, setPage] = useState(0);
   const [offset, setOffset] = useState(0);

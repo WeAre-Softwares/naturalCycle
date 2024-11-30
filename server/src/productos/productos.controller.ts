@@ -92,6 +92,36 @@ export class ProductosController {
     return this.productosService.findAllByTerm(searchWithPaginationDto);
   }
 
+  @Get('searchBultoCerrado')
+  @ApiOperation({ summary: 'Buscar productos por término' })
+  @ApiQuery({
+    name: 'term',
+    required: false,
+    description: 'Término de búsqueda',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Límite de resultados',
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    description: 'Desplazamiento de resultados',
+  })
+  async findAllProductsBultoCerradoByTerm(
+    @Query() searchWithPaginationDto: SearchWithPaginationDto,
+  ): Promise<{
+    productos: ProductoPlainResponse[];
+    total: number;
+    limit: number;
+    offset: number;
+  }> {
+    return this.productosService.findAllProductsBultoCerradoByTerm(
+      searchWithPaginationDto,
+    );
+  }
+
   @Get()
   @ApiOperation({ summary: 'Buscar todos los productos' })
   findAll(

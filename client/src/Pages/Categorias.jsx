@@ -12,7 +12,7 @@ import { useProductSearchAndPaginationCategories } from '../hooks/hooks-category
 import { useGetAllCategories } from '../hooks/hooks-category/useGetAllCategories';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
-const LIMIT = 9;
+const LIMIT = 10;
 
 export const Categorias = () => {
   const { categoriaNombre } = useParams();

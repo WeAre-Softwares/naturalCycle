@@ -6,7 +6,7 @@ import { getAllProductsService } from '../../services/products-services/getAll-p
 export function useProductSearchAndPaginationCategories(
   term = '',
   categoriaNombre = '',
-  limit = 9,
+  limit = 10,
 ) {
   const [page, setPage] = useState(0);
   const [offset, setOffset] = useState(0);

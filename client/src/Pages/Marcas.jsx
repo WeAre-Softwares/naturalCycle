@@ -13,7 +13,7 @@ import { useGetAllBrands } from '../hooks/hooks-brand/useGetAllBrands';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
 // Límite de productos para centralizar su valor
-const LIMIT = 9;
+const LIMIT = 10;
 
 export const Marcas = () => {
   const { marcaNombre } = useParams();

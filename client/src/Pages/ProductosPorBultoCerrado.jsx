@@ -5,35 +5,24 @@ import {
   ProductosBultoCerradoGrid,
 } from '../Components/productos-bulto-cerrado-ui/';
 import { PaginationControls } from '../Components/PaginationControls';
-import { useGetBultoCerradoProducts } from '../hooks/hooks-product/useGetBultoCerradoProducts';
+import { useProductsBultoCerradoSearchAndPagination } from '../hooks/hooks-product/useProductsBultoCerradoSearchAndPagination';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { NoHayProductos } from '../Components/categorias-ui/NoHayProductos';
 import { Buscador } from '../Components/categorias-ui';
 
+const LIMIT = 10;
+
 export const ProductosPorBultoCerrado = () => {
-  const [page, setPage] = useState(1);
-  const [busqueda, setBusqueda] = useState(''); // Estado de búsqueda
-  const { productos, loading, error, totalPages } = useGetBultoCerradoProducts(
-    8,
+  const [busqueda, setBusqueda] = useState('');
+  const debouncedBusqueda = useDebouncedValue(busqueda, 600);
+  const {
+    products: productos,
+    loading,
+    error,
+    totalPages,
     page,
-  );
-
-  // Manejo de cambio de página
-  const handlePrevPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
-  };
-
-  // Filtrar productos según el término de búsqueda
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
-  );
+    handlePageChange,
+  } = useProductsBultoCerradoSearchAndPagination(debouncedBusqueda, LIMIT);
 
   return (
     <div className="div-general-nuevos-ingresos">
@@ -62,22 +51,22 @@ export const ProductosPorBultoCerrado = () => {
       )}
 
       {/* Mostrar mensaje de "sin resultados" */}
-      {!loading && !error && productosFiltrados.length === 0 && (
+      {!loading && !error && productos.length === 0 && (
         <NoHayProductos></NoHayProductos>
       )}
 
       {/* Mostrar grid de productos solo si hay resultados */}
-      {!loading && !error && productosFiltrados.length > 0 && (
-        <ProductosBultoCerradoGrid productos={productosFiltrados} />
+      {!loading && !error && productos.length > 0 && (
+        <ProductosBultoCerradoGrid productos={productos} />
       )}
 
       {/* Mostrar paginación sólo si hay al menos una página de resultados */}
       {totalPages > 0 && (
         <PaginationControls
-          page={page}
+          page={page + 1}
           totalPages={totalPages}
-          onPrevPage={handlePrevPage}
-          onNextPage={handleNextPage}
+          onPrevPage={() => handlePageChange(page - 1)}
+          onNextPage={() => handlePageChange(page + 1)}
         />
       )}
     </div>
