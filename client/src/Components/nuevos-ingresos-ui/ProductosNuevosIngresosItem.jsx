@@ -6,6 +6,7 @@ import useCartStore from '../../store/use-cart-store';
 import useAuthStore from '../../store/use-auth-store';
 import { allowedRoles } from '../../constants/allowed-roles';
 import { NewLogo } from '../New-logo';
+import { strToUppercase } from '../../helpers/strToUpercase';
 
 export const ProductosNuevosIngresosItem = ({ producto }) => {
   const navigate = useNavigate();
@@ -64,7 +65,9 @@ export const ProductosNuevosIngresosItem = ({ producto }) => {
           alt={producto.nombre}
         />
 
-        <h2 className="nombre-producto-card">{producto.nombre}</h2>
+        <h2 className="nombre-producto-card">
+          {strToUppercase(producto.nombre)}
+        </h2>
         {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
         {isUserLoggedIn && hasAccessRole && (
           <>

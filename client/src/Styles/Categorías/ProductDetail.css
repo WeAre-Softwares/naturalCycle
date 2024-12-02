@@ -10,12 +10,12 @@
 }
 
 @media (max-width:1080px) {
-  .ver-producto-container{
+  .ver-producto-container {
     padding-top: 170px;
   }
 }
 
-.description-view-prod{
+.description-view-prod {
   max-width: 500px;
 }
 
@@ -51,7 +51,7 @@
 
 .nombre-view {
   text-align: start;
-  text-transform: lowercase;
+  text-transform: uppercase;
 }
 
 .nombre-view::first-letter {

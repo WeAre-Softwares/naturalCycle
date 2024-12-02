@@ -13,7 +13,7 @@ export const ProductDetails = () => {
   const { addToCart } = useCartStore();
   const { isAuthenticated, getRoles } = useAuthStore();
   const navigate = useNavigate();
-  
+
   // Roles y autenticación
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
@@ -42,10 +42,12 @@ export const ProductDetails = () => {
   return (
     <div className="ver-producto-container">
       <div className="button-volver-container">
-        
-          <button className="button-volver-panel-producto" onClick={() => navigate(-1)}>
-            <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Volver
-          </button>
+        <button
+          className="button-volver-panel-producto"
+          onClick={() => navigate(-1)}
+        >
+          <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Volver
+        </button>
       </div>
 
       {loading && (
@@ -115,11 +117,19 @@ export const ProductDetails = () => {
             )}
 
             <div className="container-cantidad">
-              <button onClick={decrementarCantidad} disabled={!isUserLoggedIn && !hasAccessRole} className="btn-view">
+              <button
+                onClick={decrementarCantidad}
+                disabled={!isUserLoggedIn && !hasAccessRole}
+                className="btn-view"
+              >
                 -
               </button>
               <span className="cantidad-view">{quantity}</span>
-              <button onClick={incrementarCantidad} disabled={!isUserLoggedIn && !hasAccessRole} className="btn-view">
+              <button
+                onClick={incrementarCantidad}
+                disabled={!isUserLoggedIn && !hasAccessRole}
+                className="btn-view"
+              >
                 +
               </button>
             </div>

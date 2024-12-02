@@ -7,6 +7,7 @@ import useAuthStore from '../../store/use-auth-store';
 import { allowedRoles } from '../../constants/allowed-roles';
 import { NoStockLogo } from '../NoStockLogo';
 import { SiStockLogo } from '../SiStockLogo';
+import { strToUppercase } from '../../helpers/strToUpercase';
 
 export const ProductCard = ({ producto }) => {
   const navigate = useNavigate();
@@ -66,7 +67,9 @@ export const ProductCard = ({ producto }) => {
           alt={producto.nombre}
         />
 
-        <h2 className="nombre-producto-card">{producto.nombre}</h2>
+        <h2 className="nombre-producto-card">
+          {strToUppercase(producto.nombre)}
+        </h2>
 
         {/* Mostrar el precio solo si el usuario tiene un rol permitido */}
         {isUserLoggedIn && hasAccessRole && (

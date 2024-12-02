@@ -8,6 +8,7 @@ import { useGetAllProductosDestacados } from '../../hooks/hooks-product/useGetAl
 import useAuthStore from '../../store/use-auth-store';
 import { allowedRoles } from '../../constants/allowed-roles';
 import ImgAbout from '/imagenes/logo-sin-fondo.png';
+import { strToUppercase } from '../../helpers/strToUpercase';
 
 export const BannerCarrusel = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ export const BannerCarrusel = () => {
               onClick={() => verDetallesProducto(producto.producto_id)}
             >
               <h2 className="texto-Banner" name="texto-Banner">
-                {producto.nombre}
+                {strToUppercase(producto.nombre)}
               </h2>
               {/* Mostrar el precio solo si el usuario está logueado y tiene rol "usuario" */}
               {isUserLoggedIn && hasAccessRole && (
