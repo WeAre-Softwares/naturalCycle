@@ -9,7 +9,7 @@ import { NoHayProductos } from '../Components/categorias-ui';
 export const Promociones = () => {
   const [page, setPage] = useState(1);
   const { productos, error, loading, totalPages } =
-    useGetAllProductsPromotional(4, page);
+    useGetAllProductsPromotional(10, page);
 
   const handleNextPage = () => {
     if (page < totalPages) {

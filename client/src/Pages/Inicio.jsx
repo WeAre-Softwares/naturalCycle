@@ -14,8 +14,8 @@ import { useGetAllProductosDestacados } from '../hooks/hooks-product/useGetAllPr
 import { Pagination } from '../Components/panel-productos/Pagination';
 
 export const Inicio = () => {
-  const limitMarcas = 12;
-  const limitProductos = 9;
+  const limitMarcas = 500;
+  const limitProductos = 10;
   const ofsset = 0;
   const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
   const {
