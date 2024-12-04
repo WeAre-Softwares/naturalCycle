@@ -681,9 +681,12 @@ export class ProductosService {
         .leftJoinAndSelect('productos.productosEtiquetas', 'productosEtiquetas')
         .leftJoinAndSelect('productosEtiquetas.etiqueta', 'etiqueta')
         .where('productos.esta_activo = :esta_activo', { esta_activo: true })
-        .andWhere('(LOWER(productos.nombre) LIKE LOWER(:term))', {
-          term: `%${term}%`,
-        })
+        .andWhere(
+          'unaccent(LOWER(productos.nombre)) ILIKE unaccent(LOWER(:term))',
+          {
+            term: `%${term}%`,
+          },
+        )
         .take(limit)
         .skip(offset);
 
@@ -736,9 +739,12 @@ export class ProductosService {
         .where('productos.tipo_de_precio = :tipo_de_precio', {
           tipo_de_precio: TipoPrecio.por_bulto_cerrado,
         })
-        .andWhere('(LOWER(productos.nombre) LIKE LOWER(:term))', {
-          term: `%${term}%`,
-        })
+        .andWhere(
+          'unaccent(LOWER(productos.nombre)) ILIKE unaccent(LOWER(:term))',
+          {
+            term: `%${term}%`,
+          },
+        )
         .take(limit)
         .skip(offset);
 

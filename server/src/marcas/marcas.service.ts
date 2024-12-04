@@ -217,9 +217,12 @@ export class MarcasService {
           'marcas.esta_activo',
         ])
         // .where('marcas.esta_activo = :esta_activo', { esta_activo: true })
-        .andWhere('(LOWER(marcas.nombre) LIKE LOWER(:term))', {
-          term: `%${term}%`,
-        })
+        .andWhere(
+          'unaccent(LOWER(marcas.nombre)) ILIKE unaccent(LOWER(:term))',
+          {
+            term: `%${term}%`,
+          },
+        )
         .take(limit)
         .skip(offset);
 

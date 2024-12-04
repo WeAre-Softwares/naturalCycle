@@ -158,9 +158,12 @@ export class EtiquetasService {
           'etiquetas.esta_activo',
         ])
         // .where('etiquetas.esta_activo = :esta_activo', { esta_activo: true })
-        .andWhere('(LOWER(etiquetas.nombre) LIKE LOWER(:term))', {
-          term: `%${term}%`,
-        })
+        .andWhere(
+          'unaccent(LOWER(etiquetas.nombre)) ILIKE unaccent(LOWER(:term))',
+          {
+            term: `%${term}%`,
+          },
+        )
         .take(limit)
         .skip(offset);
 

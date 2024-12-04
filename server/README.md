@@ -48,3 +48,15 @@ $ npm run test:cov
    Accede a la documentación en: `http://localhost:3000/api` cuando ejecutes la aplicación en modo desarrollo o test.
    **En producción, Swagger estará deshabilitado por seguridad.**
 8. Crear registros de las tablas para poder hacer las pruebas con el front.
+
+## Habilitar extensión **unaccent** en la base de datos PostgreSQL: Esto es obligatorio para poder agregar flexibilidad(inmunidad para los acentos) a las barras de busqueda.
+
+1. Acceder al contenedor de Docker:
+   `docker exec -it naturalcycle bash`
+2. Ingresa al cliente de PostgreSQL:
+   `psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}`
+3. Ingrese la siguiente consulta:
+
+```
+CREATE EXTENSION IF NOT EXISTS unaccent;
+```

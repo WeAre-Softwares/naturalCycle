@@ -291,11 +291,18 @@ export class UsuariosService {
           'usuarios.dado_de_alta',
         ])
         .where(
-          '(LOWER(usuarios.nombre) LIKE LOWER(:term) OR LOWER(usuarios.apellido) LIKE LOWER(:term) OR CAST(usuarios.dni AS TEXT) LIKE :term)',
+          `(
+          unaccent(LOWER(usuarios.nombre)) ILIKE unaccent(LOWER(:term))
+          OR unaccent(LOWER(usuarios.apellido)) ILIKE unaccent(LOWER(:term))
+          OR CAST(usuarios.dni AS TEXT) ILIKE :term
+        )`,
           {
             term: `%${term}%`,
           },
         )
+        .andWhere('NOT (:admin = ANY(usuarios.roles))', {
+          admin: RolesUsuario.admin,
+        })
         .take(limit)
         .skip(offset);
 

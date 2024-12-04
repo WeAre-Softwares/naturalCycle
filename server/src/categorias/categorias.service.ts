@@ -157,9 +157,12 @@ export class CategoriasService {
           'categorias.esta_activo',
         ])
         // .where('categorias.esta_activo = :esta_activo', { esta_activo: true })
-        .andWhere('(LOWER(categorias.nombre) LIKE LOWER(:term))', {
-          term: `%${term}%`,
-        })
+        .andWhere(
+          ' unaccent(LOWER(categorias.nombre)) ILIKE unaccent(LOWER(:term))',
+          {
+            term: `%${term}%`,
+          },
+        )
         .take(limit)
         .skip(offset);
 
