@@ -26,8 +26,8 @@ export const MarcasFiltro = ({
         <button className="cerrar-menu" onClick={() => setMenuAbierto(false)}>
           X
         </button>
-        <h2 className="marcas-header">MARCAS</h2>
         <ul className="marcas-lista">
+        <h2 className="marcas-header">MARCAS</h2>
           {marcas.map((marca) => (
             <li key={marca.marca_id}>
               <Link

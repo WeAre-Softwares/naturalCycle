@@ -26,8 +26,8 @@ export const CategoriaFiltro = ({
         <button className="cerrar-menu" onClick={() => setMenuAbierto(false)}>
           X
         </button>
-        <h2 className="categorias-header">CATEGORÍAS</h2>
         <ul className="categorias-lista">
+        <h2 className="categorias-header">CATEGORÍAS</h2>
           {categorias.map((categoria) => (
             <li key={categoria.categoria_id}>
               <Link
