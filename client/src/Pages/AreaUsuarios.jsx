@@ -12,7 +12,7 @@ import { useDarRangoEmpleadoUsuario } from '../hooks/hooks-users/useDarRangoEmpl
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 export const AreaUsuarios = () => {
   const [isInactive, setIsInactive] = useState(true);

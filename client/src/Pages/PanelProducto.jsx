@@ -13,7 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NoHayResultados } from '../Components/NoHayResultados';
 
-const LIMIT = 3;
+const LIMIT = 10;
 
 export const PanelProducto = () => {
   const navigate = useNavigate();

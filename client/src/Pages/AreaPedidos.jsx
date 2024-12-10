@@ -20,7 +20,7 @@ const colorEstado = {
 };
 
 export const AreaPedidos = () => {
-  const limit = 4;
+  const limit = 10;
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const navigate = useNavigate();
 
