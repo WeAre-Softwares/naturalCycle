@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
 import { createProductoSchema } from '../schemas/create-product-schema';
 import { createProductService } from '../services/products-services/create-product';
 import { useProductoFormulario } from '../hooks/hooks-product/useProductoFormulario';
@@ -31,6 +32,17 @@ export const CrearProducto = () => {
       imagenes: [],
     },
   });
+
+  // Mapea las opciones para React-Select
+  const categoriasOptions = categorias.map((categoria) => ({
+    value: categoria.categoria_id,
+    label: categoria.nombre,
+  }));
+
+  const etiquetasOptions = etiquetas.map((etiqueta) => ({
+    value: etiqueta.etiqueta_id,
+    label: etiqueta.nombre,
+  }));
 
   // Verificar si el checkbox "en_promocion" está activo
   const enPromocion = watch('en_promocion');
@@ -191,17 +203,16 @@ export const CrearProducto = () => {
         {/* End Marca */}
         {/* Categoria */}
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Categoría</span>
-        <select
-          {...register('productos_categorias')}
-          multiple
+        <Select
+          options={categoriasOptions}
+          isMulti
           className="crear-producto-select"
-        >
-          {categorias.map((categoria) => (
-            <option key={categoria.categoria_id} value={categoria.categoria_id}>
-              {categoria.nombre}
-            </option>
-          ))}
-        </select>
+          placeholder="Selecciona categorías"
+          onChange={(selectedOptions) => {
+            const values = selectedOptions.map((option) => option.value);
+            setValue('productos_categorias', values, { shouldValidate: true });
+          }}
+        />
         {errors.productos_categorias && (
           <p style={{ color: 'red' }}>{errors.productos_categorias.message}</p>
         )}
@@ -209,17 +220,16 @@ export const CrearProducto = () => {
 
         {/* Etiquetas */}
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Etiqueta</span>
-        <select
-          {...register('productos_etiquetas')}
-          multiple
+        <Select
+          options={etiquetasOptions}
+          isMulti
           className="crear-producto-select"
-        >
-          {etiquetas.map((etiqueta) => (
-            <option key={etiqueta.etiqueta_id} value={etiqueta.etiqueta_id}>
-              {etiqueta.nombre}
-            </option>
-          ))}
-        </select>
+          placeholder="Selecciona etiquetas"
+          onChange={(selectedOptions) => {
+            const values = selectedOptions.map((option) => option.value);
+            setValue('productos_etiquetas', values, { shouldValidate: true });
+          }}
+        />
         {errors.productos_etiquetas && (
           <p style={{ color: 'red' }}>{errors.productos_etiquetas.message}</p>
         )}

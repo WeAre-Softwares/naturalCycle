@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
 import { UpdateProductoSchema } from '../schemas/';
 import { updateProductService } from '../services/products-services/update-product';
 import { useProductoFormulario } from '../hooks/hooks-product/useProductoFormulario';
@@ -27,6 +28,8 @@ export const EditarProducto = () => {
   const { token } = useAuthStore();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+  const [selectedEtiquetas, setSelectedEtiquetas] = useState([]);
   const navigate = useNavigate();
   const {
     register,
@@ -51,14 +54,17 @@ export const EditarProducto = () => {
       setValue('precio_antes_oferta', product.precio_antes_oferta);
       setValue('tipo_de_precio', product.tipo_de_precio);
       setValue('marca_id', product.marca.marca_id);
-      setValue(
-        'productos_categorias',
-        product.categorias.map((c) => c.categoria_id),
-      );
-      setValue(
-        'productos_etiquetas',
-        product.etiquetas.map((e) => e.etiqueta_id),
-      );
+      const categoriasOptions = product.categorias.map((c) => ({
+        value: c.categoria_id,
+        label: c.nombre,
+      }));
+      setSelectedCategorias(categoriasOptions);
+
+      const etiquetasOptions = product.etiquetas.map((e) => ({
+        value: e.etiqueta_id,
+        label: e.nombre,
+      }));
+      setSelectedEtiquetas(etiquetasOptions);
       setSelectedFiles(product.imagenes || []);
       setValue('imagenes', product.imagenes || []);
       setValue('en_promocion', product.en_promocion);
@@ -82,9 +88,7 @@ export const EditarProducto = () => {
       product.imagenes.forEach((url) => formData.append('imagenes', url));
     }
 
-    const categorias = data.productos_categorias.length
-      ? data.productos_categorias
-      : product.categorias.map((cat) => cat.categoria_id);
+    const categorias = selectedCategorias.map((c) => c.value);
     categorias.forEach((categoriaId, index) =>
       formData.append(
         `productos_categorias[${index}][categoria_id]`,
@@ -92,9 +96,7 @@ export const EditarProducto = () => {
       ),
     );
 
-    const etiquetas = data.productos_etiquetas.length
-      ? data.productos_etiquetas
-      : product.etiquetas.map((et) => et.etiqueta_id);
+    const etiquetas = selectedEtiquetas.map((e) => e.value);
     etiquetas.forEach((etiquetaId, index) =>
       formData.append(`productos_etiquetas[${index}][etiqueta_id]`, etiquetaId),
     );
@@ -139,6 +141,15 @@ export const EditarProducto = () => {
       </section>
     );
   if (error || productError) return <p>Error al cargar los datos</p>;
+
+  const categoriasOptions = categorias.map((c) => ({
+    value: c.categoria_id,
+    label: c.nombre,
+  }));
+  const etiquetasOptions = etiquetas.map((e) => ({
+    value: e.etiqueta_id,
+    label: e.nombre,
+  }));
 
   return (
     <>
@@ -233,49 +244,27 @@ export const EditarProducto = () => {
         )}
 
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Categoría</span>
-        <select
-          className="crear-producto-select"
-          {...register('productos_categorias')}
-          multiple
-          value={watch('productos_categorias') || []}
-          onChange={(e) =>
-            setValue(
-              'productos_categorias',
-              Array.from(e.target.selectedOptions, (option) => option.value),
-              { shouldValidate: true },
-            )
-          }
-        >
-          {categorias.map((categoria) => (
-            <option key={categoria.categoria_id} value={categoria.categoria_id}>
-              {categoria.nombre}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={categoriasOptions}
+          isMulti
+          value={selectedCategorias}
+          onChange={setSelectedCategorias}
+          className="react-select-container"
+          classNamePrefix="react-select"
+        />
         {errors.productos_categorias && (
           <p style={{ color: 'red' }}>{errors.productos_categorias.message}</p>
         )}
 
         <span style={{ marginBottom: '1rem', fontWeight: 600 }}>Etiqueta</span>
-        <select
-          className="crear-producto-select"
-          {...register('productos_etiquetas')}
-          multiple
-          value={watch('productos_etiquetas') || []}
-          onChange={(e) =>
-            setValue(
-              'productos_etiquetas',
-              Array.from(e.target.selectedOptions, (option) => option.value),
-              { shouldValidate: true },
-            )
-          }
-        >
-          {etiquetas.map((etiqueta) => (
-            <option key={etiqueta.etiqueta_id} value={etiqueta.etiqueta_id}>
-              {etiqueta.nombre}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={etiquetasOptions}
+          isMulti
+          value={selectedEtiquetas}
+          onChange={setSelectedEtiquetas}
+          className="react-select-container"
+          classNamePrefix="react-select"
+        />
         {errors.productos_etiquetas && (
           <p style={{ color: 'red' }}>{errors.productos_etiquetas.message}</p>
         )}
