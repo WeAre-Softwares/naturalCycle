@@ -293,14 +293,17 @@ export class RemitosService {
     }
 
     const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'SUBTOTAL'];
-    const columnWidths = [50, 130, 100, 100, 100];
-    let y = 270;
+    const columnWidths = [50, 170, 100, 100, 100]; // Ajustar ancho para descripción
+    let y = 270; // Posición inicial después del encabezado de la tabla
+    const rowHeight = 25; // Altura de fila aumentada para mayor separación
+    const pageBottomMargin = 50; // Margen inferior de la página
+    const availableHeight = doc.page.height - pageBottomMargin;
 
-    // **Encabezados de la tabla**
+    // Dibujar encabezados de la tabla
     doc
       .fontSize(10)
       .font('Helvetica-Bold')
-      .rect(50, y, doc.page.width - 100, 20)
+      .rect(50, y, doc.page.width - 100, rowHeight)
       .fill('#333');
 
     headers.forEach((header, i) => {
@@ -313,13 +316,39 @@ export class RemitosService {
       );
     });
 
-    y += 20;
+    y += rowHeight;
 
-    // **Generar filas para cada producto**
+    // Dibujar filas de productos
     detallesPedido.forEach((detalle, index) => {
       const { producto, cantidad } = detalle;
       const total = Number(detalle.total_precio);
 
+      // Verificar si queda espacio suficiente para la fila, si no, crear nueva página
+      if (y + rowHeight > availableHeight) {
+        doc.addPage();
+        y = 50; // Reiniciar posición vertical en la nueva página
+
+        // Redibujar encabezados en la nueva página
+        doc
+          .fontSize(10)
+          .font('Helvetica-Bold')
+          .rect(50, y, doc.page.width - 100, rowHeight)
+          .fill('#333');
+
+        headers.forEach((header, i) => {
+          doc.fillColor('white');
+          doc.text(
+            header,
+            50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+            y + 5,
+            { width: columnWidths[i], align: 'center' },
+          );
+        });
+
+        y += rowHeight;
+      }
+
+      // Dibujar la fila de producto
       const row = [
         (index + 1).toString(), // Índice
         producto.nombre,
@@ -330,15 +359,32 @@ export class RemitosService {
 
       row.forEach((cell, i) => {
         doc.fillColor('#333');
-        doc.text(
-          cell,
-          50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-          y + 5,
-          { width: columnWidths[i], align: 'center' },
-        );
+
+        // Ajustar texto para la columna de descripción (nombre del producto)
+        if (i === 1) {
+          doc.text(
+            cell,
+            50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+            y + 5,
+            {
+              width: columnWidths[i],
+              align: 'left', // Alineación izquierda para descripción
+              lineGap: 3, // Espaciado entre líneas
+              ellipsis: true, // Acorta el texto si es muy largo
+            },
+          );
+        } else {
+          doc.text(
+            cell,
+            50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
+            y + 5,
+            { width: columnWidths[i], align: 'center' },
+          );
+        }
       });
 
-      y += 20;
+      // Separación entre filas
+      y += rowHeight + 2; // Espacio adicional entre filas
     });
   }
 
