@@ -293,9 +293,9 @@ export class RemitosService {
     }
 
     const headers = ['#', 'DESCRIPCIÓN', 'PRECIO', 'CANTIDAD', 'SUBTOTAL'];
-    const columnWidths = [50, 170, 100, 100, 100]; // Ajustar ancho para descripción
+    const columnWidths = [50, 200, 80, 80, 100]; // Ajustar ancho para descripción
     let y = 270; // Posición inicial después del encabezado de la tabla
-    const rowHeight = 25; // Altura de fila aumentada para mayor separación
+    const rowHeight = 30; // Altura de fila aumentada para mayor separación
     const pageBottomMargin = 50; // Margen inferior de la página
     const availableHeight = doc.page.height - pageBottomMargin;
 
@@ -311,7 +311,7 @@ export class RemitosService {
       doc.text(
         header,
         50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-        y + 5,
+        y + 8,
         { width: columnWidths[i], align: 'center' },
       );
     });
@@ -340,7 +340,7 @@ export class RemitosService {
           doc.text(
             header,
             50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-            y + 5,
+            y + 8,
             { width: columnWidths[i], align: 'center' },
           );
         });
@@ -365,11 +365,11 @@ export class RemitosService {
           doc.text(
             cell,
             50 + columnWidths.slice(0, i).reduce((a, b) => a + b, 0),
-            y + 5,
+            y + 8,
             {
               width: columnWidths[i],
               align: 'left', // Alineación izquierda para descripción
-              lineGap: 3, // Espaciado entre líneas
+              lineGap: 2, // Espaciado entre líneas
               ellipsis: true, // Acorta el texto si es muy largo
             },
           );
