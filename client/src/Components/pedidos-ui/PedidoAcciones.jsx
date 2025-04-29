@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDownloadRemito } from '../../hooks/hooks-remito/useDownloadRemito';
 
 export const PedidoAcciones = ({
@@ -8,9 +8,19 @@ export const PedidoAcciones = ({
   estadosDisponibles,
 }) => {
   const downloadRemito = useDownloadRemito();
+  const Navigate = useNavigate();
 
   return (
     <div className="pedido-acciones">
+      <button className="icono-accion" onClick={() => Navigate(`/pedido/editar/${pedido.pedido_id}`)}
+        disabled={
+          pedido.estado_pedido !== 'esperando_aprobacion'
+        }>
+          <i
+            className="fa-solid fa-solid fa-edit"
+            title="Editar pedido"
+          ></i>
+      </button>
       <button className="icono-accion">
         <Link to={`/pedido/${pedido.pedido_id}`}>
           <i

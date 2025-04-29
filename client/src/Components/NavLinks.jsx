@@ -1,17 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/use-auth-store';
+import useMarca from '../context/marcas/useMarcaContext';
+import useCategoria from '../context/categorias/useCategoriasContext';
+import useGetNotifications from '../hooks/useGetNotifications';
 
 export const NavLinks = ({ isOpen, toggleMenu }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const getRoles = useAuthStore((state) => state.getRoles);
   const navigate = useNavigate();
   const [shouldRedirect, setShouldRedirect] = useState(false);
+  const { setSidebarOpen: setSidebarOpenMarcas } = useMarca()
+  const { setSidebarOpen: setSidebarOpenCategorias } = useCategoria()
+
+  const handleMarcas = () => {
+    setSidebarOpenMarcas(true)
+    toggleMenu()
+  }
+
+  const handleCategorias = () => {
+    setSidebarOpenCategorias(true)
+    toggleMenu()
+  }
 
   // Verificar si el usuario tiene el rol 'admin' o 'empleado'
   const hasAccess =
     isAuthenticated() &&
     (getRoles().includes('admin') || getRoles().includes('empleado'));
+
+  const { data, loading, error } = useGetNotifications(hasAccess)
+
+  const handleNotifications = () => {
+    if (!loading && !error) {
+      if (data.length > 0) {
+        for (const notification of data) {
+          if (notification.esta_activo) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
+  };
 
   useEffect(() => {
     if (shouldRedirect && !isAuthenticated()) {
@@ -35,13 +66,13 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
           <Link
             to="/categorias"
             className="link-categorias"
-            onClick={toggleMenu}
+            onClick={handleCategorias}
           >
             Categorías
           </Link>
         </li>
         <li>
-          <Link to="/marcas" className="link-marcas" onClick={toggleMenu}>
+          <Link to="/marcas" className="link-marcas" onClick={handleMarcas}>
             Marcas
           </Link>
         </li>
@@ -67,18 +98,19 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
         </li>
         {isAuthenticated() ? (
           <>
+            <li>
+              <Link to="/usuario-info" onClick={toggleMenu}>
+                <span name="nombre-usuario-login">Mi cuenta</span>
+              </Link>
+            </li>
             {hasAccess && (
               <li>
                 <Link to="/panel-principal" onClick={toggleMenu}>
                   Panel Administrador
+                  { handleNotifications() && <i className="fa-solid fa-bell" style={{ paddingLeft: '5px', color: '#798a3f'}}></i>}
                 </Link>
               </li>
             )}
-            <li>
-              <Link to="/usuario-info" onClick={toggleMenu}>
-                <p name="nombre-usuario-login">Mi cuenta</p>
-              </Link>
-            </li>
           </>
         ) : (
           <li>

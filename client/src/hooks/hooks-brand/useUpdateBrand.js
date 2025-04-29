@@ -17,7 +17,7 @@ export const useUpdateBrand = () => {
       await updateBrandService(token, marca_id, formData);
       toast.success('Marca Actualizada con éxito!');
       setTimeout(() => {
-        navigate('/panel-principal');
+        navigate('/panel-filtrado');
       }, 2000);
     } catch (error) {
       toast.error('Error al actualizar la marca');

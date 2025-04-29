@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../Styles/Marcas/Marcas.css';
 import {
@@ -11,6 +11,8 @@ import { MarcasFiltro } from '../Components/marcas-ui/MarcasFiltro';
 import { useProductSearchAndPaginationBrand } from '../hooks/hooks-brand/useProductSearchAndPaginationBrand';
 import { useGetAllBrands } from '../hooks/hooks-brand/useGetAllBrands';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import useMarca from '../context/marcas/useMarcaContext';
+import _ from 'lodash'
 
 // Límite de productos para centralizar su valor
 const LIMIT = 10;
@@ -19,8 +21,8 @@ export const Marcas = () => {
   const { marcaNombre } = useParams();
   const navigate = useNavigate();
   const [marcaSeleccionada, setMarcaSeleccionada] = useState(marcaNombre || '');
-  const [menuAbierto, setMenuAbierto] = useState(true); // Iniciar con el menú abierto
   const [busqueda, setBusqueda] = useState('');
+  const { orderBy } = useMarca()
 
   // Debounced valor busqueda
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
@@ -40,6 +42,32 @@ export const Marcas = () => {
 
   const totalPaginas = Math.ceil(total / LIMIT);
 
+  const handleSorting = () => {
+    let sorted = [...products];
+
+    sorted.sort((a, b) => {
+      const parsePrice = (price) => {
+        const parsed = parseFloat(price)
+        return isNaN(parsed) ? 0 : parsed
+      }
+
+      const priceA = parsePrice(a.precio)
+      const priceB = parsePrice(b.precio)
+
+      switch (orderBy) {
+        case 'precio_desc': return priceA - priceB;
+        case 'precio_asc': return priceB - priceA;
+        case 'nombre_asc': return a.nombre.localeCompare(b.nombre);
+        case 'nombre_desc': return b.nombre.localeCompare(a.nombre);
+        default: return 0
+      }
+    })
+
+    return sorted
+  }
+
+  const sortedProducts = handleSorting()
+
   // Inicializa la categoría seleccionada desde la URL
   useEffect(() => {
     if (marcaNombre) {
@@ -56,28 +84,27 @@ export const Marcas = () => {
   return (
     <div className="container-general-categorias">
       <MarcasFiltro
+        loading={loadingMarcas}
         marcas={marcas}
         setMarcaSeleccionada={handleMarcaChange}
-        menuAbierto={menuAbierto}
-        setMenuAbierto={setMenuAbierto}
       />
       <Buscador setBusqueda={setBusqueda} />
       <div className="container-productos-categorias">
         {loading ? (
-          <section class="dots-container-inicio">
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
-            <div class="dot-inicio"></div>
+          <section className="dots-container-inicio">
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
+            <div className="dot-inicio"></div>
           </section>
         ) : error ? (
           <div className="no-productos">
             <i className="fas fa-exclamation-circle"></i>
             <p>{error}</p>
           </div>
-        ) : products.length > 0 ? (
-          products.map((producto) => (
+        ) : sortedProducts.length > 0 ? (
+          sortedProducts.map((producto) => (
             <ProductCard key={producto.producto_id} producto={producto} />
           ))
         ) : (

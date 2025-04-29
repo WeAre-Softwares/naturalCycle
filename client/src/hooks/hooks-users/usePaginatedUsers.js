@@ -3,6 +3,7 @@ import useAuthStore from '../../store/use-auth-store';
 import { getInactiveUsers } from '../../services/users-services/getInactiveUsers';
 import { getAllUsersService } from '../../services/users-services/getAll-users';
 import { searchUsersService } from '../../services/users-services/search-users';
+import useNotificacionStore from '../../store/useNotification';
 
 export const usePaginatedUsers = (
   searchTerm = '',
@@ -14,6 +15,7 @@ export const usePaginatedUsers = (
   const [totalItems, setTotalItems] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuthStore();
+  const { usuarioNotificaciones } = useNotificacionStore()
 
   useEffect(() => {
     setCurrentPage(1); // Resetea la página cuando cambian los filtros
@@ -52,7 +54,7 @@ export const usePaginatedUsers = (
     };
 
     fetchData();
-  }, [searchTerm, currentPage, itemsPerPage, isInactive, token]);
+  }, [searchTerm, currentPage, itemsPerPage, isInactive, token, usuarioNotificaciones]);
 
   const goToPage = (pageNumber) => setCurrentPage(pageNumber);
 

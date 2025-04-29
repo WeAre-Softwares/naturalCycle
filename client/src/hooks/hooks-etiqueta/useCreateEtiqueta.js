@@ -17,7 +17,7 @@ export const useCreateEtiqueta = () => {
       await createEtiquetaService(token, data);
       toast.success('Etiqueta creada con éxito!');
       setTimeout(() => {
-        navigate('/panel-principal');
+        navigate('/panel-filtrado');
       }, 2000);
     } catch (error) {
       toast.error('Error al crear la etiqueta');

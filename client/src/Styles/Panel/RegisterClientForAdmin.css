@@ -1,0 +1,98 @@
+.form-updateRemito {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 20px 40px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    box-shadow: none; 
+    width: 100%; 
+    border-radius: 10px; 
+    position: relative;
+    overflow-y: auto; /* Por si la cosa crece */
+    max-height: 90vh;  /* Que no se nos desmadre */
+  }
+  
+  @media (max-width: 700px) {
+    .form-updateRemito {
+      width: 400px;
+    }
+  }
+  
+  @media (max-width: 470px) {
+    .form-updateRemito {
+      width: 350px;
+    }
+  }
+  
+  .form-updateRemito h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #151717;
+  }
+  
+
+  .form-updateRemito label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: #151717;
+  }
+  
+  /* Input */
+  .form-updateRemito input {
+    border: 1.5px solid #ecedec;
+    border-radius: 8px;
+    height: 45px;
+    padding: 0 10px;
+    margin-top: 5px;
+    transition: border 0.2s ease-in-out;
+  }
+  
+  .form-updateRemito input:focus {
+    outline: none;
+    border-color: #2d79f3;
+  }
+  
+
+  .form-updateRemito span {
+    font-size: 13px;
+    color: red;
+    margin-top: 2px;
+    font-style: italic;
+  }
+  
+
+  .btn-createUser {
+    background-color: #4CAF50;
+    color: white;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn-createUser:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+  }
+  .btn-createUser:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .btn-cancelUser {
+    background: none;
+    border: none;
+    color: #2d4d33;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+  }

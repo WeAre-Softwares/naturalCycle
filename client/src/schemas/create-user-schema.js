@@ -21,6 +21,7 @@ export const CreateUsuarioSchema = yup.object().shape({
     .number()
     .required('El DNI es obligatorio.')
     .typeError('El DNI debe ser un número válido.'),
+    // .max(11,'El DNI debe tener como maximo 11 digitos'),
   nombre_comercio: yup
     .string()
     .required('El nombre del comercio es obligatorio.')

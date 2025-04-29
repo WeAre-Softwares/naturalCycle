@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useAuthStore from '../../store/use-auth-store';
 import { getPedidosFiltrados } from '../../services/pedidos-service/get-pedidos-filtrados';
 import { getAllPedidosService } from '../../services/pedidos-service/getAll-pedidos';
+import useNotificacionStore from '../../store/useNotification';
 
 export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
   const { token } = useAuthStore();
@@ -11,6 +12,8 @@ export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPedidos, setTotalPedidos] = useState(0);
+  const { pedidoNotificaciones } = useNotificacionStore();
+
 
   useEffect(() => {
     setCurrentPage(1); // Resetea la paginación al cambiar el filtro
@@ -46,7 +49,7 @@ export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
     return () => {
       isMounted = false;
     };
-  }, [limit, currentPage, estadoFiltro, token]);
+  }, [limit, currentPage, estadoFiltro, token, pedidoNotificaciones]);
 
   const totalPages = Math.ceil(totalPedidos / limit);
 

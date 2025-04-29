@@ -108,35 +108,34 @@ export const AreaPedidos = () => {
       <MenuLateralPanel />
 
       <div className="area-pedidos">
-        <h1 className="titulo-area">Área de Pedidos</h1>
-        {/* Filtrado con menú desplegable */}
-        <div className="filtros">
-          <label htmlFor="filtro-estado"></label>
-          <select
-            id="filtro-estado"
-            value={estadoFiltro}
-            onChange={(e) => setEstadoFiltro(e.target.value)}
-            className="filtro-select-panel"
-          >
-            <option value="">Todos los pedidos</option>
-            {[
-              'esperando_aprobacion',
-              'aprobado',
-              'enviado',
-              'recibido',
-              'cancelado',
-            ].map((estado) => (
-              <option key={estado} value={estado}>
-                {estado}
-              </option>
-            ))}
-          </select>
+        <div>
+          <h1 className="titulo-area">Área de Pedidos</h1>
+          {/* Filtrado con menú desplegable */}
+          <div className="filtros">
+            <label htmlFor="filtro-estado"></label>
+            <select
+              id="filtro-estado"
+              value={estadoFiltro}
+              onChange={(e) => setEstadoFiltro(e.target.value)}
+              className="filtro-select-panel"
+            >
+              <option value="">Todos los pedidos</option>
+              {[
+                'esperando_aprobacion',
+                'aprobado',
+                'enviado',
+                'recibido',
+                'cancelado',
+              ].map((estado) => (
+                <option key={estado} value={estado}>
+                  {estado}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-
-        <div className="lista-pedidos">
-          {(pedidos.length === 0 && !loading) || error ? (
-            <NoHayResultados entidad={'pedidos'} />
-          ) : loading ? (
+        {
+          loading ? (
             <section className="dots-container-inicio">
               <div className="dot-inicio"></div>
               <div className="dot-inicio"></div>
@@ -145,26 +144,34 @@ export const AreaPedidos = () => {
               <div className="dot-inicio"></div>
             </section>
           ) : (
-            pedidos.map((pedido) => (
-              <div key={pedido.pedido_id}>
-                <PedidoItem
-                  pedido={pedido}
-                  colorEstado={colorEstado[pedido.estado_pedido]} // Asigna el color basado en el estado
-                  cambiarEstado={cambiarEstado}
-                />
-              </div>
-            ))
-          )}
-        </div>
-        {/* Mostrar paginación sólo si hay al menos una página de resultados */}
-        {totalPages > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onNext={nextPage}
-            onPrev={prevPage}
-          />
-        )}
+          <div>
+            <div className="lista-pedidos">
+              {(pedidos.length === 0 && !loading) || error ? (
+                <NoHayResultados entidad={'pedidos'} />
+              ) : (
+                pedidos.map((pedido) => (
+                  <div key={pedido.pedido_id}>
+                    <PedidoItem
+                      pedido={pedido}
+                      colorEstado={colorEstado[pedido.estado_pedido]} // Asigna el color basado en el estado
+                      cambiarEstado={cambiarEstado}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+            {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+            {totalPages > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onNext={nextPage}
+                onPrev={prevPage}
+              />
+            )}
+          </div>
+          )
+        }
       </div>
     </div>
   );

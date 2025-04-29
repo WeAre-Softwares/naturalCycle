@@ -11,14 +11,13 @@ import {
   AreaUsuarios,
   CardInfoUsuario,
   CardPedido,
-  Categorias,
   CrearProducto,
   EditarProducto,
+  Marcas,
   Footer,
   Header,
   Inicio,
   Login,
-  Marcas,
   NotFound,
   NuevosIngresos,
   OlvideContraseña,
@@ -30,6 +29,8 @@ import {
   Promociones,
   RegisterForm,
   RestablecerPassword,
+  Categorias,
+  EditarPedido,
 } from './Pages';
 import { ScrollToTop } from './Components/ScrolltoTop';
 import { PrivateRoute } from './routes/PrivateRoute';
@@ -43,6 +44,8 @@ import {
   FormularioCrearEtiqueta,
   FormularioCrearMarca,
 } from './Components/panel-crear-filtros';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const {
@@ -64,6 +67,7 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer />
       <ScrollToTop />
       <Header
         carrito={carrito}
@@ -115,6 +119,10 @@ function App() {
           <Route
             path="/pedido/:pedido_id"
             element={<PrivateRoute element={CardPedido} />}
+          />
+          <Route
+            path="/pedido/editar/:pedido_id"
+            element={<PrivateRoute element={EditarPedido} />}
           />
           <Route
             path="/panel-usuarios"

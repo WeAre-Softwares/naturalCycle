@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -8,6 +7,11 @@
 .container-header {
   display: flex;
   flex-direction: column;
+  /* Adrian */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* Adrian */
 }
 
 .nav {
@@ -18,10 +22,7 @@
   padding: 30px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: fixed;
   width: 100%;
-  top: 0;
-  z-index: 1000;
 }
 
 .links-header {
@@ -79,7 +80,7 @@
   transition: .2s linear;
 }
 
-.btn-cart:hover > .icon-cart {
+.btn-cart:hover>.icon-cart {
   transform: scale(1.2);
 }
 
@@ -87,18 +88,18 @@
   display: none;
 }
 
-.logo-header{
+.logo-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.imagen-logo{
-  width: 260px;
+.imagen-logo {
+  width: 200px;
   margin-left: 22px;
 }
 
-.fa-chevron-down{
+.fa-chevron-down {
   color: rgb(129, 180, 121);
   cursor: pointer;
 }
@@ -137,18 +138,19 @@
 
 
 /* Media query para pantallas menores a 660px */
-@media (max-width: 1080px) {  
-  
+@media (max-width: 1080px) {
+
   /* Mostrar el icono de la hamburguesa */
   .hamburger {
     display: flex;
   }
-  
+
   /* Estilos para el menú hamburguesa */
   .links-header {
     position: fixed;
     top: 0;
-    left: -100%; /* Fuera de la pantalla inicialmente */
+    left: -100%;
+    /* Fuera de la pantalla inicialmente */
     width: 40%;
     height: 100vh;
     background-color: #000000;
@@ -164,62 +166,64 @@
 
   .open {
     left: 0;
-}
+  }
 
-  .close-menu{
+  .close-menu {
     display: flex;
   }
 
   .links-header ul {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
   }
 
-  .fa-chevron-down{
+  .fa-chevron-down {
     display: none;
   }
 
   .links-header ul li a {
-      font-size: 20px; 
-      color: rgb(207, 207, 207);   
+    font-size: 20px;
+    color: rgb(207, 207, 207);
   }
 
   .links-header ul li a:hover {
-    border: transparent;    
-}
+    border: transparent;
+  }
 
-  .links-header ul li{
+  .links-header ul li {
     border-bottom: 2px solid rgb(129, 180, 121);
     width: 100%;
-    
+
   }
 }
 
-/* Barra buscadora header */ 
+/* Barra buscadora header */
 .group {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-bottom: 10px;
-  width: 100%; /* Ajusta según el diseño */
+  width: 100%;
+  /* Ajusta según el diseño */
 }
 
 .input-busca-productos {
   line-height: 28px;
   padding: 10px 0;
   border-start-start-radius: 0px;
-  border-end-end-radius:10px ;
+  border-end-end-radius: 10px;
   width: 40%;
   outline: none;
   background-color: #000000;
   color: #ffffff;
   padding-left: 5px;
-  font-size: 0.9rem; /* Ajustar tamaño de fuente */
+  font-size: 0.9rem;
+  /* Ajustar tamaño de fuente */
 }
 
 @media (max-width:1000px) {
-  .input-busca-productos{
+  .input-busca-productos {
     width: 60%;
   }
 }
@@ -246,20 +250,24 @@
 
 .icon {
   display: flex;
-  left: 328px; /* Ajusta para que el ícono no se superponga */
-  color: #ffffff; /* Cambié a blanco para mayor visibilidad en el fondo negro */
+  left: 328px;
+  /* Ajusta para que el ícono no se superponga */
+  color: #ffffff;
+  /* Cambié a blanco para mayor visibilidad en el fondo negro */
   font-size: 0.9rem;
   height: 100%;
-  padding-left:10px;
-  padding-right:10px;
-  padding-top:18px;
-  padding-bottom:19px;
-  border-right: 2px solid white; 
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 18px;
+  padding-bottom: 19px;
+  border-right: 2px solid white;
   border-start-start-radius: 10px;
-  border-end-end-radius: 0 ;
+  border-end-end-radius: 0;
   background-color: black;
-  pointer-events: none; /* Para evitar que el ícono sea clickeable */
-  z-index: 1; /* Asegura que el ícono esté por encima del campo de entrada */
+  pointer-events: none;
+  /* Para evitar que el ícono sea clickeable */
+  z-index: 1;
+  /* Asegura que el ícono esté por encima del campo de entrada */
 }
 
 
@@ -270,24 +278,33 @@
   justify-content: center;
   z-index: 1000;
   align-items: center;
-  position: absolute; /* Asegúrate de usar posicionamiento adecuado */
+  position: absolute;
+  /* Asegúrate de usar posicionamiento adecuado */
   left: 0px;
   right: 0px;
   text-align: center;
-  background-color: white; /* Para que el contenedor sea visible */
-  opacity: 0; /* Comienza oculto */
-  transform: translateY(-10px); /* Comienza ligeramente movido hacia arriba */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
-  pointer-events: none; /* Desactiva eventos del mouse cuando no está visible */
+  background-color: white;
+  /* Para que el contenedor sea visible */
+  opacity: 0;
+  /* Comienza oculto */
+  transform: translateY(-10px);
+  /* Comienza ligeramente movido hacia arriba */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* Transiciones suaves */
+  pointer-events: none;
+  /* Desactiva eventos del mouse cuando no está visible */
 }
 
 /* Para el contenedor visible */
-.link-categorias:hover + .container-categorias,
-.link-marcas:hover + .container-categorias,
+.link-categorias:hover+.container-categorias,
+.link-marcas:hover+.container-categorias,
 .container-categorias:hover {
-  opacity: 1; /* Cambia la opacidad a 1 */
-  transform: translateY(0); /* Restablece la transformación */
-  pointer-events: auto; /* Activa eventos del mouse cuando está visible */
+  opacity: 1;
+  /* Cambia la opacidad a 1 */
+  transform: translateY(0);
+  /* Restablece la transformación */
+  pointer-events: auto;
+  /* Activa eventos del mouse cuando está visible */
 }
 
 .lista-categorias {
@@ -303,20 +320,26 @@
 .lista-categorias a {
   font-size: 18px;
   cursor: pointer;
-  text-decoration: none; /* Esto elimina el subrayado por defecto */
-  color: inherit; /* Usa el color por defecto del tema */
+  text-decoration: none;
+  /* Esto elimina el subrayado por defecto */
+  color: inherit;
+  /* Usa el color por defecto del tema */
 }
 
-.lista-categorias a:hover { /* Cambiar 'Link' a 'a' */
+.lista-categorias a:hover {
+  /* Cambiar 'Link' a 'a' */
   border: none;
   font-weight: bold;
 }
 
 /* Desactivar el hover en pantallas de 900px o menos */
 @media (max-width: 900px) {
-  .link-categorias:hover + .container-categorias,
-  .link-marcas:hover + .container-categorias {
-    opacity: 0; /* Cambia la opacidad a 0 */
-    pointer-events: none; /* Desactiva eventos del mouse */
+
+  .link-categorias:hover+.container-categorias,
+  .link-marcas:hover+.container-categorias {
+    opacity: 0;
+    /* Cambia la opacidad a 0 */
+    pointer-events: none;
+    /* Desactiva eventos del mouse */
   }
 }

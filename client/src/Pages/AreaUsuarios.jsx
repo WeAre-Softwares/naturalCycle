@@ -76,7 +76,7 @@ export const AreaUsuarios = () => {
             <div className="dot"></div>
           </section>
         ) : (
-          <>
+          <div className="area-usuarios-scrollable-container">
             <UsuariosGrid
               usuarios={usuarios}
               mostrarDetallesUsuario={handleUsuarioClick}
@@ -101,7 +101,7 @@ export const AreaUsuarios = () => {
                 onPrev={() => goToPage(currentPage - 1)}
               />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
