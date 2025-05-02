@@ -23,7 +23,6 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
     toggleMenu()
   }
 
-  // Verificar si el usuario tiene el rol 'admin' o 'empleado'
   const hasAccess =
     isAuthenticated() &&
     (getRoles().includes('admin') || getRoles().includes('empleado'));
@@ -47,7 +46,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
   useEffect(() => {
     if (shouldRedirect && !isAuthenticated()) {
       navigate('/login');
-      setShouldRedirect(false); // Resetear para evitar redirección continua
+      setShouldRedirect(false); 
     }
   }, [shouldRedirect, isAuthenticated, navigate]);
 
@@ -107,7 +106,7 @@ export const NavLinks = ({ isOpen, toggleMenu }) => {
               <li>
                 <Link to="/panel-principal" onClick={toggleMenu}>
                   Panel Administrador
-                  { handleNotifications() && <i className="fa-solid fa-bell" style={{ paddingLeft: '5px', color: '#798a3f'}}></i>}
+                  { handleNotifications() && <i className="fa-solid fa-bell" style={{ paddingLeft: '5px', color: 'rgb(199, 0, 57)'}}></i>}
                 </Link>
               </li>
             )}

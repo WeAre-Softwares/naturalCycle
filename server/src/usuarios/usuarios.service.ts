@@ -21,6 +21,8 @@ import { MailsService } from '../mails/mails.service';
 import type { CreateUserResponse, FindAllUsersResponse } from './interfaces';
 import { PaginationDto, SearchWithPaginationDto } from '../common/dtos';
 import { RolesUsuario } from './types/roles.enum';
+import { NotificacionesService } from 'src/notificaciones/notificaciones.service';
+import { TipoNotificacion } from 'src/notificaciones/entities/notificacion.entity';
 
 @Injectable()
 export class UsuariosService {
@@ -33,6 +35,7 @@ export class UsuariosService {
     private readonly authService: AuthService,
     private readonly MailsService: MailsService,
     private readonly dataSource: DataSource,
+    private readonly notificacionesService: NotificacionesService,
   ) {}
 
   async create(
@@ -47,18 +50,23 @@ export class UsuariosService {
 
       await this.usuarioRepository.save(usuario);
 
+      // try {
+      //   // Enviar notificación por correo
+      //   await this.MailsService.sendAccountPendingApprovalEmail(usuario);
+      //   // Enviar correo de notificación al admin
+      //   await this.MailsService.sendNotificationNewUser();
+      // } catch (error) {
+      //   this.logger.warn('Error al enviar correos de notificación:', error);
+      // }
+
       try {
-        // Enviar notificación por correo
-        await this.MailsService.sendAccountPendingApprovalEmail(usuario);
-        // Enviar correo de notificación al admin
-        await this.MailsService.sendNotificationNewUser();
+        await this.notificacionesService.createNotification(TipoNotificacion.USUARIO)
       } catch (error) {
-        this.logger.warn('Error al enviar correos de notificación:', error);
+        this.logger.warn('Error al crear una notificación de usuario:', error);
       }
 
       // Eliminar campos sensibles del objeto: Usuario directamente
       delete usuario.email;
-      delete usuario.usuario_id;
       delete usuario.esta_activo;
       delete usuario.password;
       delete usuario.roles;
@@ -550,7 +558,7 @@ export class UsuariosService {
 
       // Enviar correo de notificación de activación
       this.logger.debug(`Enviando correo a: ${usuario.email}`);
-      await this.MailsService.sendAccountActivatedEmail(usuario);
+      // await this.MailsService.sendAccountActivatedEmail(usuario);
 
       await queryRunner.commitTransaction();
 

@@ -4,6 +4,7 @@ import useAuthStore from '../../store/use-auth-store';
 import { getPedidosFiltrados } from '../../services/pedidos-service/get-pedidos-filtrados';
 import { getAllPedidosService } from '../../services/pedidos-service/getAll-pedidos';
 import useNotificacionStore from '../../store/useNotification';
+import usePedido from '../../context/panelAdmin/usePedidoContext';
 
 export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
   const { token } = useAuthStore();
@@ -13,6 +14,7 @@ export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPedidos, setTotalPedidos] = useState(0);
   const { pedidoNotificaciones } = useNotificacionStore();
+  const { hayCambios } = usePedido();
 
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export function useGetAllPedidosWithPagination(limit, estadoFiltro = '') {
     return () => {
       isMounted = false;
     };
-  }, [limit, currentPage, estadoFiltro, token, pedidoNotificaciones]);
+  }, [limit, currentPage, estadoFiltro, token, pedidoNotificaciones, hayCambios]);
 
   const totalPages = Math.ceil(totalPedidos / limit);
 

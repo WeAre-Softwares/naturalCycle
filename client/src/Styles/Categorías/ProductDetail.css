@@ -27,6 +27,7 @@
   height: 400px;
   width: 400px;
   border-radius: 10px;
+  object-fit: contain; 
 }
 
 .container-precio-nombre-ver-producto {

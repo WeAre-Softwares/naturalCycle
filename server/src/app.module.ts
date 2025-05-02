@@ -17,6 +17,8 @@ import { ProductosImagenesModule } from './productos_imagenes/productos_imagenes
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { MailsModule } from './mails/mails.module';
+import { WebsocketsModule } from './websocket/websocket.module';
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { MailsModule } from './mails/mails.module';
     CloudinaryModule,
     AuthModule,
     MailsModule,
-  ],
+    WebsocketsModule,
+    NotificacionesModule,
+  ]
 })
 export class AppModule {}

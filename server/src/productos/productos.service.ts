@@ -26,8 +26,6 @@ import { MarcasService } from '../marcas/marcas.service';
 import { EtiquetasService } from '../etiquetas/etiquetas.service';
 import { CategoriasService } from '../categorias/categorias.service';
 import { ProductosCategorias, ProductosEtiquetas } from './entities';
-import { Marca } from '../marcas/entities/marca.entity';
-import { Categoria } from '../categorias/entities/categoria.entity';
 import { TipoPrecio } from './types/tipo-precio.enum';
 
 @Injectable()

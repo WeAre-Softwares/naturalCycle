@@ -34,6 +34,7 @@ export class UsuariosController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
+    
     return this.usuariosService.create(createUsuarioDto);
   }
 

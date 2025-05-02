@@ -110,7 +110,7 @@ export const RegisterForm = () => {
         <InputField
           label="CUIT/CUIL"
           placeholder="Ingresa tu CUIT/CUIL"
-          type="number"
+          type="text"
           className="input-register"
           register={register('dni')}
           error={errors.dni}

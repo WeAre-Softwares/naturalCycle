@@ -7,11 +7,9 @@
 .container-header {
   display: flex;
   flex-direction: column;
-  /* Adrian */
   position: sticky;
   top: 0;
   z-index: 1000;
-  /* Adrian */
 }
 
 .nav {

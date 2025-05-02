@@ -3,19 +3,17 @@ import { Await, Form, useNavigate } from 'react-router-dom';
 import useCartStore from '../store/use-cart-store';
 import useAuthStore from '../store/use-auth-store';
 import '../Styles/Header/Cart.css';
-/////////////////
 import { useForm } from 'react-hook-form';
 import { crearPedidoAdmin } from '../services/pedidos-service/crear-pedido';
 import UserList from '../Components/userList';
 import { ResgisterUserForAdmin } from './RegisterUserforAdmin';
-/////
 import { crearPedido } from '../services/pedidos-service/crear-pedido';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 
 export const CartButton = () => {
-  const { user } = useAuthStore(); // Obtén el usuario desde el estado global
+  const { user } = useAuthStore(); 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated } = useAuthStore();
   const isUserLoggedIn = isAuthenticated();
@@ -126,7 +124,6 @@ export const CartButton = () => {
       precio_unitario: Number(item.precio),
     }));
 
-    // Configuración de SweetAlert para la confirmación
     const customAlert = Swal.mixin({
       customClass: {
         confirmButton: 'custom-confirm-button',
@@ -165,7 +162,7 @@ export const CartButton = () => {
               },
             );
 
-            clearCart(); // Vaciar el carrito después de confirmar el pedido
+            clearCart();
 
             setTimeout(() => {
               closeCart();
@@ -203,12 +200,9 @@ export const CartButton = () => {
   };
 
 
-  /** --------------------------------------PARAMETROS CHOREADOS--------------------------------------*/
 
-  /** ----------------------------------------------------------------------------   */
   return (
     <div className="cart-container">
-      <ToastContainer />
       <button
         data-quantity={getTotalProducts()}
         className="btn-cart"
@@ -232,7 +226,6 @@ export const CartButton = () => {
           ></path>
         </svg>
       </button>
-    
       {isCartOpen && (
         <div className={`carrito-container ${isCartOpen ? 'carrito-open' : ''}`}>
           <div className="header-carrito">
@@ -352,8 +345,8 @@ export const CartButton = () => {
 
                   >
                     {isLoading ? (
-                      <div className="loader">
-                        <div className="justify-content-center jimu-primary-loading"></div>
+                      <div class="loader">
+                        <div class="justify-content-center jimu-primary-loading"></div>
                       </div>
                     ) : (
                       'Realizar pedido'
@@ -372,11 +365,11 @@ export const CartButton = () => {
               )}
             </>
           )}
-        </div>//div carrito open *____*
+        </div>
       )}
 
 
-    </div>//carrito container *-----*
+    </div>
 
 
   );

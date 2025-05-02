@@ -6,6 +6,7 @@ import useGetPedidosGananciasAlaSemana from "../hooks/useGetPedidosGananciasAlaS
 import useGetPedidosGananciasAlMes from "../hooks/useGetPedidosGananciasAlMes";
 import useGetProductosVendidos from "../hooks/useGetProductosVendidos";
 import useGetCategoriasMasVendidas from "../hooks/useGetCategoriasMasVendidas";
+import { getProductosVendidos } from "../services/getProductosVendidos";
 
 ChartJS.register(
   CategoryScale,
@@ -105,67 +106,69 @@ const RevenueChart = () => {
   return (
     <div className="dashboard">
       <div className="wrapper-chart">
-        <div className="revenue-chart">
-          <div className="tabs">
-            <button className={range === "week" ? "active-tab" : ""} onClick={() => setRange("week")}>Semana Actual</button>
-            <button className={range === "month" ? "active-tab" : ""} onClick={() => setRange("month")}>Mes Actual</button>
-          </div>
-
-          <div className="summary-cards">
-            <div className="card green">
-              { loadingSemana ? (
-                <h3>0</h3> ): <h3>${ getTotalGanancias() }</h3>}
-              <p>Total Ganancias</p>
+        {
+          loadingSemana || loadingMes || loadingProductosVendidos || loadingCategorias ? (
+            <section className="dots-container-inicio">
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+              <div className="dot-inicio"></div>
+            </section>
+          ) : range === "week" && productosVendidos === 0 && (
+            <div className="tabs">
+              <button className={range === "week" ? "active-tab" : ""} onClick={() => setRange("week")}>Semana Actual</button>
+              <button className={range === "month" ? "active-tab" : ""} onClick={() => setRange("month")}>Mes Actual</button>
+              <h3 style={{ marginTop: "20px", color: "rgb(199, 0, 57)", textAlign: "center", width: "100%" }}>No hay productos vendidos en esta semana</h3>
             </div>
-            <div className="card red">
-              <h3>{ loadingProductosVendidos ? '0' : productosVendidos }</h3>
-              <p>Total Productos</p>
-            </div>
-          </div>
-
-          <div className="chart-container">
-            <h3>Total de Ganancias</h3>
-            {
-              loadingSemana ? (
-                <section className="dots-container-inicio">
-                  <div className="dot-inicio"></div>
-                  <div className="dot-inicio"></div>
-                  <div className="dot-inicio"></div>
-                  <div className="dot-inicio"></div>
-                  <div className="dot-inicio"></div>
-                </section>
-              ) : (
-                chartData.labels && <Bar type="bar" data={chartData} options={options} />
-              )
-            }
-          </div>
-        </div>
-        <div className="categories-chart">
-          <div className="categories">
-            <h4>Top categorías en ventas</h4>
-            <div className="categories-cards">
-              {
-                loadingCategorias ? (
-                  <section className="dots-container-inicio">
-                    <div className="dot-inicio"></div>
-                    <div className="dot-inicio"></div>
-                    <div className="dot-inicio"></div>
-                    <div className="dot-inicio"></div>
-                    <div className="dot-inicio"></div>
-                  </section>
-                ) : (
-                  categoriasMasVendidas.map((categoria, index) => (
-                    <div className={`card ${getStyles(index)}`} key={index}>
-                      <h4>{categoria.categoria}</h4>
-                      <p>${categoria.ganancia}</p>
+            ) || range === "month" && productosVendidos === 0 && (
+              <div className="tabs">
+                <button className={range === "week" ? "active-tab" : ""} onClick={() => setRange("week")}>Semana Actual</button>
+                <button className={range === "month" ? "active-tab" : ""} onClick={() => setRange("month")}>Mes Actual</button>
+                <h3 style={{ marginTop: "20px", color: "rgb(199, 0, 57)", textAlign: "center", width: "100%" }}>No hay productos vendidos en este mes</h3>
+              </div>
+            ) || (
+              <>
+                <div className="revenue-chart">
+                    <div className="tabs">
+                      <button className={range === "week" ? "active-tab" : ""} onClick={() => setRange("week")}>Semana Actual</button>
+                      <button className={range === "month" ? "active-tab" : ""} onClick={() => setRange("month")}>Mes Actual</button>
                     </div>
-                  ))
-                )
-              }
-            </div>
-          </div>
-          <CategoryPieChart range={range} />
-        </div>
+                    <div className="summary-cards">
+                    <div className="card green">
+                      <h3>${ getTotalGanancias() }</h3>
+                      <p>Total Ganancias</p>
+                    </div>
+                    <div className="card red">
+                      <h3>{ productosVendidos }</h3>
+                      <p>Total Productos</p>
+                    </div>
+                </div>
+
+                <div className="chart-container">
+                  <h3>Total de Ganancias</h3>
+                    { chartData.labels && <Bar type="bar" data={chartData} options={options} />}
+                </div>
+              </div>
+              <div className="categories-chart">
+                <div className="categories">
+                  <h4>Top categorías en ventas</h4>
+                  <div className="categories-cards">
+                    {
+                        categoriasMasVendidas.map((categoria, index) => (
+                          <div className={`card ${getStyles(index)}`} key={index}>
+                            <h4>{categoria.categoria}</h4>
+                            <p>${categoria.ganancia}</p>
+                          </div>
+                        ))
+                    }
+                  </div>
+                </div>
+                <CategoryPieChart range={range} />
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   )

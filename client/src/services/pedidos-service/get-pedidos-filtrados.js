@@ -11,7 +11,6 @@ export const getPedidosFiltrados = async (token, estado, limit, offset) => {
       },
       params: { limit, offset },
     });
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

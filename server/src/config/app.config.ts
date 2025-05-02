@@ -16,4 +16,5 @@ export const EnvConfiguration = () => ({
   emailPassword: process.env.EMAIL_PASSWORD,
   emailFrom: process.env.EMAIL_FROM,
   emailPort: process.env.EMAIL_PORT,
+  frontendEndPoint: process.env.FRONTEND_URL
 });

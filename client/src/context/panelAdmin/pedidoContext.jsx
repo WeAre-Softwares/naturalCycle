@@ -5,6 +5,7 @@ const PedidoContext = createContext();
 const PedidoProvider = ({ children }) => {
   const [detallesOriginales, setDetallesOriginales] = useState([]);
   const [detallesEditados, setDetallesEditados] = useState([]);
+  const [hayCambios, setHayCambios] = useState(false);
 
   const actualizarDetalle = (nuevoDetalle) => {
     setDetallesEditados((prev) => {
@@ -38,6 +39,8 @@ const PedidoProvider = ({ children }) => {
         actualizarDetalle,
         limpiarCambios,
         eliminarDetalle,
+        hayCambios,
+        setHayCambios
       }}
     >
       {children}

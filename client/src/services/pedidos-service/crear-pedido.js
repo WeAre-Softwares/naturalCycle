@@ -17,7 +17,6 @@ export const crearPedido = async (detalles, usuarioId) => {
       },
     );
 
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error al crear el pedido:', error);
@@ -39,7 +38,6 @@ export const crearPedidoAdmin = async (detalles, usuarioId) => {
       },
     );
 
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error al crear el pedido:', error);

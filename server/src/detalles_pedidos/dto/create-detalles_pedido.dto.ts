@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
 
 export class CreateDetallesPedidoDto {
   @ApiProperty({
@@ -26,4 +26,13 @@ export class CreateDetallesPedidoDto {
   @IsUUID('4', { message: 'El ID del producto debe ser un UUID válido' })
   @IsNotEmpty()
   producto_id: string;
+
+  @ApiProperty({
+    description: 'Descuento a aplicar (en porcentaje) para el cálculo, no se almacena',
+    example: 10,
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  descuento?: number;
 }

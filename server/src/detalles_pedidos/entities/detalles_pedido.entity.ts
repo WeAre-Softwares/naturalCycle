@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Producto } from '../../productos/entities/producto.entity';
 import { Pedido } from '../../pedidos/entities/pedido.entity';
+import { IsNumber, IsOptional } from 'class-validator';
 
 @Entity({ name: 'detalles_pedidos' })
 export class DetallesPedido {
@@ -52,4 +53,14 @@ export class DetallesPedido {
   })
   @JoinColumn({ name: 'pedido_id' })
   pedido: Pedido;
+
+  @IsNumber()
+  @IsOptional()
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+  })
+  descuento?: number;
 }

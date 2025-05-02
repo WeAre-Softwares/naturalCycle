@@ -15,8 +15,6 @@ export function useGetAllBrands(limit, offset = 0) {
       try {
         const response = await getAllMarcasService(limit, offset);
         if (isMounted) {
-          // Solo actualizamos si el componente está montado
-          // console.log(response);
           setMarcas(response.marcas);
         }
       } catch (error) {

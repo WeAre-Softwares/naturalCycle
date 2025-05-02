@@ -9,7 +9,6 @@ export const deactivateBrandService = async (marca_id, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

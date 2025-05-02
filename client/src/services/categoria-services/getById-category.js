@@ -5,7 +5,6 @@ import { handleAxiosError } from '../errorHandler';
 export const getCategoryByIdService = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/categorias/${id}`);
-    // console.log(response.data);
 
     return response.data;
   } catch (error) {

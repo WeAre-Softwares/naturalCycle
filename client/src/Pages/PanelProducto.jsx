@@ -71,9 +71,7 @@ export const PanelProducto = () => {
         <MenuLateralPanel />
         <div className="productos-creados-container">
           <div>
-            {/* Adrian */}
             <h2>Lista de productos</h2>
-            {/* Adrian */}
             <SearchBar
               searchTerm={searchTerm}
               onSearchChange={handleSearchChange}

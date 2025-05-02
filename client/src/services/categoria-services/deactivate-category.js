@@ -12,7 +12,6 @@ export const deactivateCategoryService = async (categoria_id, token) => {
         },
       },
     );
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

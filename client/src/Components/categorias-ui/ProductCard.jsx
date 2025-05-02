@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useCartStore from '../../store/use-cart-store';
 import useAuthStore from '../../store/use-auth-store';
@@ -8,17 +8,14 @@ import { allowedRoles } from '../../constants/allowed-roles';
 import { NoStockLogo } from '../NoStockLogo';
 import { SiStockLogo } from '../SiStockLogo';
 import { strToUppercase } from '../../helpers/strToUpercase';
-//
 import {quantityProductSchema} from '/src/schemas/quantity-Product-schema.js';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-//
 export const ProductCard = ({ producto }) => {
   
   const navigate = useNavigate();
   const { addToCart } = useCartStore();
   const { isAuthenticated, getRoles } = useAuthStore();
-  //
   const {
     register,
     handleSubmit,
@@ -37,16 +34,11 @@ export const ProductCard = ({ producto }) => {
   const newQuantity = Number(watch('quantityProduct'));
   const sum = currentProdQuantity + newQuantity;
 
-  //
-  // Definir roles permitidos para ver el precio y añadir al carrito
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
 
-  // Verificar si el usuario tiene al menos uno de los roles permitidos
   const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
-  // Estado para manejar la cantidad seleccionada
-  // const [quantity, setQuantity] = useState(1);
 
   const verDetallesProducto = () => {
     navigate(`/producto/${producto.producto_id}`);
@@ -55,7 +47,6 @@ export const ProductCard = ({ producto }) => {
   const agregarAlCarrito = () => {
     
     if (!isUserLoggedIn ) {
-      // Mostrar una alerta si el usuario no está autenticado
       toast.error('Debes registrarte para agregar productos al carrito.', {
         position: 'top-center',
         autoClose: 3000,
@@ -88,20 +79,19 @@ export const ProductCard = ({ producto }) => {
 
   };
 
-  // Incrementar la cantidad seleccionada
   const incrementarCantidad = () => {
-    // setQuantity((prev) => prev + 1);
     const current = Number(watch('quantityProduct')||0);
     if (current < 999) setValue('quantityProduct', current + 1);
   };
 
-  // Decrementar la cantidad seleccionada
   const decrementarCantidad = () => {
     const current = Number(watch('quantityProduct')||0);
     if (current > 1) setValue('quantityProduct', current - 1);
   };
 
   return (
+    <>
+    <ToastContainer/>
     <div className="card-producto">
       {producto.disponible === true ? <SiStockLogo /> : <NoStockLogo />}
       <div className="info-producto-card">
@@ -191,5 +181,7 @@ export const ProductCard = ({ producto }) => {
         </button>
       </div>
     </div>
+    </>
+
   );
 };

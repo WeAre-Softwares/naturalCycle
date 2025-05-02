@@ -35,7 +35,6 @@ const UserList = ({onUsuarioSeleccionado,onSalir}) => {
       try {
         const result = await getAllUsersService(100, 0, token);
         setUsuarios(result.usuarios);
-        console.log(result.usuarios)
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
       }
