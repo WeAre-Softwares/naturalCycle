@@ -23,7 +23,7 @@
     transform: translateX(-100%);
     transition: transform 0.5s ease;
     position: fixed;
-    top: 165px;
+    top: 190px;
     left: 0;
     z-index: 1000;
 }
