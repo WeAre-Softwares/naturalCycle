@@ -17,7 +17,7 @@ export const useUpdateEtiqueta = () => {
       await updateEtiquetaService(token, etiqueta_id, data);
       toast.success('Etiqueta actualizada con éxito!');
       setTimeout(() => {
-        navigate('/panel-principal');
+        navigate('/panel-filtrado');
       }, 2000);
     } catch (error) {
       toast.error('Error al actualizar la etiqueta');

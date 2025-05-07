@@ -32,12 +32,12 @@ export const NuevosIngresos = () => {
 
       {/* Mostrar mensaje de carga */}
       {loading && (
-        <section class="dots-container-inicio">
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
+        <section className="dots-container-inicio">
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
         </section>
       )}
 

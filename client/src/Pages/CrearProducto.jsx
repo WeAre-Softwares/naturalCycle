@@ -86,7 +86,6 @@ export const CrearProducto = () => {
     formData.append('producto_destacado', !!data.producto_destacado);
     formData.append('nuevo_ingreso', !!data.nuevo_ingreso);
 
-    // console.log([...formData]);
 
     try {
       const response = await createProductService(token, formData);
@@ -94,7 +93,7 @@ export const CrearProducto = () => {
       // Verifica que la respuesta tenga un indicativo de éxito
       if (response) {
         toast.success('Producto creado con éxito!', { autoClose: 5000 });
-        setTimeout(() => navigate('/panel-principal'), 3000);
+        setTimeout(() => navigate('/panel-producto'), 3000);
       } else {
         toast.error('Error al crear el producto');
         throw new Error('Error al crear el producto.');
@@ -118,7 +117,7 @@ export const CrearProducto = () => {
         <Link to="/panel-producto">
           <button className="button-volver-panel-producto">
             {' '}
-            <i class="fas fa-arrow-left"></i>
+            <i className="fas fa-arrow-left"></i>
             &nbsp;&nbsp;Volver
           </button>
         </Link>

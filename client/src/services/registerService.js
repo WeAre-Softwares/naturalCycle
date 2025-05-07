@@ -12,7 +12,9 @@ export const registerService = async (
   email,
   password,
 ) => {
+
   try {
+    
     const response = await axios.post(`${API_URL}/usuarios`, {
       nombre,
       apellido,

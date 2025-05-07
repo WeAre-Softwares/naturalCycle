@@ -11,6 +11,8 @@ import { Pagination } from '../Components/panel-productos/Pagination';
 import { useProductSearchAndPaginationCategories } from '../hooks/hooks-category/useProductSearchAndPaginationCategories';
 import { useGetAllCategories } from '../hooks/hooks-category/useGetAllCategories';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import useCategoria from '../context/categorias/useCategoriasContext';
+import useMarca from '../context/marcas/useMarcaContext';
 
 const LIMIT = 10;
 
@@ -20,10 +22,10 @@ export const Categorias = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     categoriaNombre || '',
   );
-  const [menuAbierto, setMenuAbierto] = useState(true);
   const [busqueda, setBusqueda] = useState('');
   const debouncedBusqueda = useDebouncedValue(busqueda, 600);
-
+  const { orderBy } = useCategoria()
+  
   const {
     categorias,
     loading: loadingCategorias,
@@ -38,6 +40,32 @@ export const Categorias = () => {
     );
 
   const totalPaginas = Math.ceil(total / LIMIT);
+
+  const handleSorting = () => {
+    let sorted = [...products];
+
+    sorted.sort((a, b) => {
+      const parsePrice = (price) => {
+        const parsed = parseFloat(price)
+        return isNaN(parsed) ? 0 : parsed
+      }
+
+      const priceA = parsePrice(a.precio)
+      const priceB = parsePrice(b.precio)
+
+      switch (orderBy) {
+        case 'precio_desc': return priceA - priceB;
+        case 'precio_asc': return priceB - priceA;
+        case 'nombre_asc': return a.nombre.localeCompare(b.nombre);
+        case 'nombre_desc': return b.nombre.localeCompare(a.nombre);
+        default: return 0
+      }
+    })
+
+    return sorted
+  }
+
+  const sortedProducts = handleSorting()
 
   // Inicializa la categoría seleccionada desde la URL
   useEffect(() => {
@@ -55,10 +83,9 @@ export const Categorias = () => {
   return (
     <div className="container-general-categorias">
       <CategoriaFiltro
+        loading={loadingCategorias}
         categorias={categorias}
         setCategoriaSeleccionada={handleCategoriaChange}
-        menuAbierto={menuAbierto}
-        setMenuAbierto={setMenuAbierto}
       />
       <Buscador setBusqueda={setBusqueda} />
       <div className="container-productos-categorias">
@@ -75,8 +102,8 @@ export const Categorias = () => {
             <i className="fas fa-exclamation-circle"></i>
             <p>{error}</p>
           </div>
-        ) : products.length > 0 ? (
-          products.map((producto) => (
+        ) : sortedProducts.length > 0 ? (
+          sortedProducts.map((producto) => (
             <ProductCard key={producto.producto_id} producto={producto} />
           ))
         ) : (

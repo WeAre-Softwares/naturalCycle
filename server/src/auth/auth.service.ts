@@ -24,7 +24,7 @@ export class AuthService {
     private readonly usuarioService: UsuariosService,
     private readonly mailsService: MailsService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginUserDto: LoginUserDto): Promise<{ token: string }> {
     try {
@@ -123,8 +123,6 @@ export class AuthService {
     // Encontrar el usuario asociado al token
     const usuario =
       await this.usuarioService.findOneByResetPasswordToken(userId);
-    console.log('Token almacenado:', usuario.reset_password_token);
-    console.log('Token recibido:', token);
 
     if (!usuario || usuario.reset_password_token !== token) {
       throw new NotFoundException('Token inválido o ya utilizado');

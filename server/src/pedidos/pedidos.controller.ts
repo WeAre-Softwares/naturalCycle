@@ -39,7 +39,15 @@ export class PedidosController {
   ): Promise<PedidoInterface> {
     return this.pedidosService.create(createPedidoDto, usuario.usuario_id);
   }
-
+  @Post('/adminPedidos')
+  @ApiOperation({ summary: 'Crear un pedido' })
+  @Auth('admin', 'empleado') // Para crear un pedido tiene que estar autenticado
+  createPedido(
+    @Query('usuarioId') usuarioId: string,
+    @Body() createPedidoDto: CreatePedidoDto,
+  ): Promise<PedidoInterface> {
+    return this.pedidosService.createPedidoAdmin(createPedidoDto, usuarioId);
+  }
   @Get('search')
   @Auth('admin', 'empleado')
   @ApiOperation({ summary: 'Buscar pedidos por término' })
@@ -62,6 +70,27 @@ export class PedidosController {
     @Query() searchWithPaginationDto: SearchWithPaginationDto,
   ): Promise<Partial<PedidoInterface>[]> {
     return this.pedidosService.findAllByTerm(searchWithPaginationDto);
+  }
+
+  @Get('ganancia-dia')
+  @Auth('admin')
+  @ApiOperation({ summary: 'Ganancia del día' })
+  async getGananciaDelDia(): Promise<{ labels: string[]; data: number[] }> {
+    return this.pedidosService.obtenerGananciasPorDia();
+  }
+
+  @Get('ganancia-mes')
+  @Auth('admin')
+  @ApiOperation({ summary: 'Ganancia del mes' })
+  async getGananciaDelMes(): Promise<{ semana: string; ganancia: number }[]> {
+    return this.pedidosService.obtenerGananciasPorSemana();
+  }
+
+  @Get('productos-vendidos/:rango')
+  @Auth('admin')
+  @ApiOperation({ summary: 'Productos más vendidos' })
+  async getProductosVendidos(@Param('rango') rango: 'week' | 'month'): Promise<number>{
+    return this.pedidosService.obtenerTotalProductosVendidos(rango);
   }
 
   @Get(':estado')

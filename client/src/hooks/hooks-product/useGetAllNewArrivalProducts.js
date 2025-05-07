@@ -17,7 +17,6 @@ export function useGetAllNewArrivalProducts(limit = 10, page = 1) {
         const response = await getAllNewArrivalProductsService(limit, offset);
 
         if (isMounted) {
-          // console.log(response.productos);
           setProductos(response.productos || []);
           setTotal(response.total || 0); // Total de productos, necesario para calcular páginas
         }

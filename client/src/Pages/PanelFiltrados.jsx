@@ -13,14 +13,15 @@ import { useActivateBrand } from '../hooks/hooks-brand/useActivateBrand';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NoHayResultados } from '../Components/NoHayResultados';
+import usePanelFiltrado from '../context/panelFiltrado/usePanelFiltradoContext';
 
 const LIMIT = 10;
 
 export const PanelFiltrados = () => {
   const navigate = useNavigate();
-  const [tipoCreacion, setTipoCreacion] = useState('marca');
   const [searchTerm, setSearchTerm] = useState('');
   const [isInactive, setIsInactive] = useState(false);
+  const { tipoCreacion, setTipoCreacion } = usePanelFiltrado()
 
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 600);
 
@@ -98,58 +99,60 @@ export const PanelFiltrados = () => {
   };
 
   return (
-    <div className="div-gral-prod-creados">
+    <>
       <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
-          <h2>Filtrados</h2>
+          <div>
+            <h2>Filtrados</h2>
 
-          <input
-            type="text"
-            placeholder={`Buscar por ${tipoCreacion}`}
-            className="buscar-producto-input"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-
-          <select
-            value={tipoCreacion}
-            onChange={handleTipoCreacion}
-            className="select-tipo-filtrado"
-          >
-            <option value="marca">Marca</option>
-            <option value="categoria">Categoría</option>
-            <option value="etiqueta">Etiqueta</option>
-          </select>
-
-          <button
-            onClick={handleRedirect}
-            className="button-abrir-crear-producto"
-          >
-            <i className="fas fa-plus"></i>
-          </button>
-
-          <label style={{ margin: '1rem' }}>
-            Mostrar inactivos
             <input
-              style={{ margin: '0.5rem' }}
-              type="checkbox"
-              checked={isInactive}
-              onChange={toggleInactiveFilter}
+              type="text"
+              placeholder={`Buscar por ${tipoCreacion}`}
+              className="buscar-producto-input"
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
-          </label>
+
+            <select
+              value={tipoCreacion}
+              onChange={handleTipoCreacion}
+              className="select-tipo-filtrado"
+            >
+              <option value="marca">Marca</option>
+              <option value="categoria">Categoría</option>
+              <option value="etiqueta">Etiqueta</option>
+            </select>
+
+            <button
+              onClick={handleRedirect}
+              className="button-abrir-crear-producto"
+            >
+              <i className="fas fa-plus"></i>
+            </button>
+
+            <label style={{ margin: '1rem' }}>
+              Mostrar inactivos
+              <input
+                style={{ margin: '0.5rem' }}
+                type="checkbox"
+                checked={isInactive}
+                onChange={toggleInactiveFilter}
+              />
+            </label>
+          </div>
 
           {isLoading ? (
-            <section class="dots-container">
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
+            <section className="dots-container">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
             </section>
-          ) : (
-            <>
+          ) : ( 
+          <div>
               <h3>
                 {tipoCreacion.charAt(0).toUpperCase() + tipoCreacion.slice(1)}:
               </h3>
@@ -188,21 +191,23 @@ export const PanelFiltrados = () => {
                 ) : (
                   <NoHayResultados entidad={'resultados'} />
                 )}
-              </ul>
+                </ul>
+                {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+                {totalItems > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onNext={() => goToPage(currentPage + 1)}
+                    onPrev={() => goToPage(currentPage - 1)}
+                  />
+                )}
+              </div>
+          )
+          }
 
-              {/* Mostrar paginación sólo si hay al menos una página de resultados */}
-              {totalItems > 0 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onNext={() => goToPage(currentPage + 1)}
-                  onPrev={() => goToPage(currentPage - 1)}
-                />
-              )}
-            </>
-          )}
+
         </div>
       </div>
-    </div>
+    </>
   );
 };

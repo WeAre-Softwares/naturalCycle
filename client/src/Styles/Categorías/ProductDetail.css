@@ -1,7 +1,7 @@
 .ver-producto-container {
   display: flex;
   justify-content: center;
-  padding-top: 230px;
+  padding-top: 50px;
   padding-bottom: 30px;
   flex-wrap: wrap;
   align-items: center;
@@ -11,7 +11,7 @@
 
 @media (max-width:1080px) {
   .ver-producto-container {
-    padding-top: 170px;
+    padding-top: 50px;
   }
 }
 
@@ -27,6 +27,7 @@
   height: 400px;
   width: 400px;
   border-radius: 10px;
+  object-fit: contain; 
 }
 
 .container-precio-nombre-ver-producto {

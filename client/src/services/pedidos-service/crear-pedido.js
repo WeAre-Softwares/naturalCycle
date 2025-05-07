@@ -17,7 +17,27 @@ export const crearPedido = async (detalles, usuarioId) => {
       },
     );
 
-    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear el pedido:', error);
+    handleAxiosError(error);
+  }
+};
+
+export const crearPedidoAdmin = async (detalles, usuarioId) => {
+  try {
+    const { token } = useAuthStore.getState();
+
+    const response = await axios.post(
+      `${API_URL}/pedidos/adminPedidos?usuarioId=${usuarioId}`,
+      { detalles },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
     return response.data;
   } catch (error) {
     console.error('Error al crear el pedido:', error);

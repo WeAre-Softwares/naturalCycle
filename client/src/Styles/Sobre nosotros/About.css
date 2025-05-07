@@ -1,20 +1,20 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.container-general-quienes-somos{
+.container-general-quienes-somos {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 170px;
+  padding-top: 25px;
   padding-bottom: 60px;
   font-family: Arial, Helvetica, sans-serif;
   flex-direction: column;
 }
 
-.container-h2-quienes-somos{
+.container-h2-quienes-somos {
   display: flex;
   width: 80%;
   justify-content: flex-start;
@@ -36,7 +36,7 @@
   max-width: 1200px;
 }
 
-.texto-quienes-somos{
+.texto-quienes-somos {
   display: flex;
   justify-content: flex-start;
   width: 50%;
@@ -47,12 +47,12 @@
   color: black;
 }
 
-.texto-quienes-somos p{
+.texto-quienes-somos p {
   font-size: 20px;
   letter-spacing: 1px;
 }
 
-.imagen-quienes-somos{
+.imagen-quienes-somos {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,9 +60,10 @@
   width: 30%;
 }
 
-.imagen-quienes-somos img{
-  height: 350px;
+.imagen-quienes-somos img {
+  height: 250px;
   width: 350px;
+  object-fit: contain;
 }
 
 
@@ -71,15 +72,15 @@
 
 @media (max-width: 1300px) {
 
-  .container-h2-quienes-somos{
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  .container-h2-quienes-somos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .imagen-quienes-somos img{
-      height: 300px;
-      width: 300px;
+  .imagen-quienes-somos img {
+    height: 300px;
+    width: 300px;
   }
 
 
@@ -97,7 +98,7 @@
 }
 
 @media (max-width:730px) {
-  .texto-quienes-somos{
-      width: 90%;
+  .texto-quienes-somos {
+    width: 90%;
   }
 }

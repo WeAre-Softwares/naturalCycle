@@ -10,8 +10,9 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 230px 10px 20px;
   align-items: center;
+  padding: 0 10px 20px;
+  align-self: flex-start;
 }
 
 /* Contenedor principal del panel de administración */
@@ -81,6 +82,22 @@
   display: none; /* Solo se mostrará en pantallas pequeñas */
 }
 
+.li-notificaciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.span-notificaciones {
+  background-color: #798a3f;;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+  font-size: 16px;
+  padding-top: 4px;
+}
+
 /* Media Queries para pantallas pequeñas */
 @media (max-width: 900px) {
   .menu-toggle-btn {
@@ -88,9 +105,8 @@
   }
 
   .div-superior-panel-admin{
-    padding-top: 120px;
     justify-content: flex-start;
-    width: 110%;
+    width: 100%;
   }
 
   .div-superior-panel-admin2{

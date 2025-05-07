@@ -5,8 +5,8 @@ export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Desplazar a la parte superior de la página
+    window.scrollTo(0, 0); 
   }, [pathname]);
 
-  return null; // No renderiza nada
+  return null;
 };

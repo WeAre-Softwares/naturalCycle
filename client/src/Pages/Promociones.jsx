@@ -28,12 +28,12 @@ export const Promociones = () => {
       <PromocionesStatic />
 
       {loading ? (
-        <section class="dots-container-inicio">
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
-          <div class="dot-inicio"></div>
+        <section className="dots-container-inicio">
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
+          <div className="dot-inicio"></div>
         </section>
       ) : error ? (
         <div className="no-productos-promo">

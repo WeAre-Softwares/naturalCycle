@@ -8,12 +8,34 @@ import { allowedRoles } from '../../constants/allowed-roles';
 import { NoStockLogo } from '../NoStockLogo';
 import { SiStockLogo } from '../SiStockLogo';
 import { strToUppercase } from '../../helpers/strToUpercase';
+//
+import {quantityProductSchema} from '/src/schemas/quantity-Product-schema.js';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+//
 
 export const ProductosDestacadosItem = ({ producto }) => {
   const navigate = useNavigate();
   const { addToCart } = useCartStore();
   const { isAuthenticated, getRoles } = useAuthStore();
-
+  //
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(quantityProductSchema ),
+    defaultValues: {
+      quantityProduct: 0,
+    },
+  });
+  const quantityProduct = watch('quantityProduct');
+  const {carrito}=useCartStore();
+  const currentProdQuantity = carrito.find(p => p.producto_id === producto.producto_id)?.cantidad || 0;
+  const newQuantity = Number(watch('quantityProduct'));
+  const sum = currentProdQuantity + newQuantity;
   // Verificar si el usuario está autenticado y tiene rol de usuario
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
@@ -29,31 +51,50 @@ export const ProductosDestacadosItem = ({ producto }) => {
   const [quantity, setQuantity] = useState(1);
 
   const agregarAlCarrito = () => {
-    if (!isUserLoggedIn) {
-      // Mostrar una alerta si el usuario no está autenticado
-      toast.error('Debes registrarte para agregar productos al carrito.', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'dark',
-      });
-    } else {
-      // Si está autenticado, agregar al carrito
-      addToCart({ ...producto, cantidad: quantity });
-    }
-  };
+      if (!isUserLoggedIn ) {
+        // Mostrar una alerta si el usuario no está autenticado
+        toast.error('Debes registrarte para agregar productos al carrito.', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'dark',
+        });
+        setValue('quantityProduct', 0);
+      } else if (!quantityProduct || quantityProduct < 1) {
+        toast.error('La cantidad debe ser mayor a 0.', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'dark',
+        });
+        setValue('quantityProduct', 0);
+      }else if(sum > 1000){
+        toast.warning('La cantidad máxima permitida es 1000 unidades.');
+        addToCart({ ...producto, cantidad: 1000 - currentProdQuantity });
+        setValue('quantityProduct', 0);
+      }else{
+        addToCart({ ...producto, cantidad:Number (watch('quantityProduct')) });
+        setValue('quantityProduct', 0);
+      }
+  
+    };
 
   // Incrementar la cantidad seleccionada
   const incrementarCantidad = () => {
-    setQuantity((prev) => prev + 1);
+    const current = Number(watch('quantityProduct')||0);
+    if (current < 999) setValue('quantityProduct', current + 1);
   };
 
   // Decrementar la cantidad seleccionada
   const decrementarCantidad = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
+    const current = Number(watch('quantityProduct')||0);
+    if (current > 1) setValue('quantityProduct', current - 1);
   };
 
   return (
@@ -107,7 +148,18 @@ export const ProductosDestacadosItem = ({ producto }) => {
           <button onClick={decrementarCantidad} disabled={quantity === 1}>
             -
           </button>
-          <span>{quantity}</span>
+          <input
+            type="text"
+            {...register('quantityProduct')}
+            onChange={(e) => {
+              const raw = e.target.value;
+              if (/^\d{0,3}$/.test(raw)) {
+                setValue('quantityProduct', raw === '' ? '' : Number(raw));
+              }
+            }}
+            value={watch('quantityProduct')}
+            className={`input_ForProducCard ${errors.quantityProduct ? 'error' : ''}`}
+          />
           <button
             onClick={incrementarCantidad}
             disabled={

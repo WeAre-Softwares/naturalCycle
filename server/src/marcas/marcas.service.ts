@@ -226,9 +226,6 @@ export class MarcasService {
         .take(limit)
         .skip(offset);
 
-      // Verificar la consulta generada
-      // console.log('SQL generada:', queryBuilder.getSql());
-      // console.log('Término de búsqueda aplicado:', term);
 
       const [marcas, total] = await queryBuilder.getManyAndCount();
 

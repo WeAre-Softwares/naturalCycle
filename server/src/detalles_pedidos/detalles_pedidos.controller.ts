@@ -33,6 +33,27 @@ export class DetallesPedidosController {
     return this.detallesPedidosService.findAll(paginationDto);
   }
 
+  @Get('/productos-mas-vendidos/:range')
+  @ApiBearerAuth()
+  @Auth('admin', 'empleado')
+  @ApiOperation({ summary: 'Obtener los productos mas vendidos' })
+  obtenerTopCategoriasEnVentas(@Param('range') range: 'week' | 'month'){
+    return this.detallesPedidosService.obtenerTopCategoriasEnVentas(range);
+  }
+
+  @Get('/total-productos-vendidos/:range')
+  @ApiBearerAuth()
+  @Auth('admin')
+  @ApiOperation({ summary: 'Obtener el total de productos vendidos' })
+  obtenerTotalProductosVendidos(
+    @Param('range') range: 'week' | 'month',
+  ): Promise<{
+    categoria: string[];
+    cantidad: number[];
+  }> {
+    return this.detallesPedidosService.obtenerTopCategoriasEnVentasPorProducto(range);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @Auth('admin', 'empleado')

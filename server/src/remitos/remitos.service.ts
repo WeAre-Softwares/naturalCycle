@@ -130,7 +130,7 @@ export class RemitosService {
 
     // Calcular el total a partir de los detalles del pedido
     const totalCalculado = detallesPedido.reduce((total, detalle) => {
-      return total + detalle.precio_unitario * detalle.cantidad;
+      return total + Number(detalle.total_precio);
     }, 0);
 
     const pdfBuffer: Buffer = await new Promise((resolve) => {
@@ -320,8 +320,13 @@ export class RemitosService {
 
     // Dibujar filas de productos
     detallesPedido.forEach((detalle, index) => {
-      const { producto, cantidad } = detalle;
+      const { producto, cantidad, precio_unitario } = detalle;
       const total = Number(detalle.total_precio);
+      let precio = producto.precio
+
+      if (producto.precio !== precio_unitario) {
+        precio = precio_unitario
+      }
 
       // Verificar si queda espacio suficiente para la fila, si no, crear nueva página
       if (y + rowHeight > availableHeight) {
@@ -352,7 +357,7 @@ export class RemitosService {
       const row = [
         (index + 1).toString(), // Índice
         producto.nombre,
-        `$${Number(producto.precio).toFixed(2)}`, // Precio unitario
+        `$${Number(precio).toFixed(2)}`, // Precio unitario
         cantidad.toString(),
         `$${total.toFixed(2)}`, // Total calculado
       ];

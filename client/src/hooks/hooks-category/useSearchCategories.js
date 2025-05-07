@@ -11,7 +11,6 @@ export function useSearchCategories(term, limit, offset) {
       setLoading(true);
       try {
         const response = await searchProductsService(term, limit, offset);
-        // console.log('Search results:', response);
         setCategoriesData(response);
       } catch (error) {
         setError('Error al buscar categorias');

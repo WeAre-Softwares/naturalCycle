@@ -134,7 +134,7 @@ export const UsuarioCard = ({
         onClick={() => mostrarDetallesUsuario(usuario)} // Mostrar detalles al hacer clic
       >
         {usuario.nombre} {usuario.apellido}{' '}
-        <i class="fa-solid fa-circle-info"></i>
+        <i className="fa-solid fa-circle-info"></i>
       </p>
       <div
         style={{

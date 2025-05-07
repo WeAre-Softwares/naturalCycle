@@ -117,7 +117,7 @@ export const EditarProducto = () => {
       const response = await updateProductService(token, producto_id, formData);
       if (response) {
         toast.success('Producto actualizado con éxito!', { autoClose: 3000 });
-        setTimeout(() => navigate('/panel-principal'), 3000);
+        setTimeout(() => navigate('/panel-producto'), 3000);
       } else {
         toast.error('Error al actualizar el producto');
         throw new Error('Error al actualizar el producto.');

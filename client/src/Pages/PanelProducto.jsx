@@ -65,77 +65,84 @@ export const PanelProducto = () => {
   };
 
   return (
-    <div className="div-gral-prod-creados">
+    <>
       <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
-          <h2 style={{ marginTop: '160px' }}>Lista de productos</h2>
-          <SearchBar
-            searchTerm={searchTerm}
-            onSearchChange={handleSearchChange}
-          />
-          <Link to="/crear-producto">
-            <button className="button-abrir-crear-producto">
-              <i className="fas fa-plus"></i>
-            </button>
-          </Link>
-
-          <label style={{ margin: '1rem' }}>
-            Mostrar inactivos
-            <input
-              style={{ margin: '0.5rem' }}
-              type="checkbox"
-              checked={showInactive}
-              onChange={toggleInactiveFilter}
+          <div>
+            <h2>Lista de productos</h2>
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchChange={handleSearchChange}
             />
-          </label>
-          <label style={{ margin: '1rem' }}>
-            Sin stock
-            <input
-              style={{ margin: '0.5rem' }}
-              type="checkbox"
-              checked={showNoStock}
-              onChange={toggleNoStockFilter}
-            />
-          </label>
+            <Link to="/crear-producto">
+              <button className="button-abrir-crear-producto">
+                <i className="fas fa-plus"></i>
+              </button>
+            </Link>
 
-          {loading ? (
-            <section className="dots-container">
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
-            </section>
-          ) : error ? (
-            <NoHayResultados entidad={'productos'} />
-          ) : productsData && productsData.length > 0 ? (
-            <ul className="lista-productos-creados">
-              {productsData.map((producto) => (
-                <PanelProductItem
-                  key={producto.producto_id}
-                  producto={producto}
-                  onEdit={handleEdit}
-                  onToggleActive={handleToggleActive}
-                  isProcessing={activating || deactivating}
+            <label style={{ margin: '1rem' }}>
+              Mostrar inactivos
+              <input
+                style={{ margin: '0.5rem' }}
+                type="checkbox"
+                checked={showInactive}
+                onChange={toggleInactiveFilter}
+              />
+            </label>
+            <label style={{ margin: '1rem' }}>
+              Sin stock
+              <input
+                style={{ margin: '0.5rem' }}
+                type="checkbox"
+                checked={showNoStock}
+                onChange={toggleNoStockFilter}
+              />
+            </label>
+          </div>
+          {
+            loading ? (
+              <section className="dots-container">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+              </section>
+            ) : (
+              <div>
+              { error ? (
+                <NoHayResultados entidad={'productos'} />
+              ) : productsData && productsData.length > 0 ? (
+                <ul className="lista-productos-creados">
+                  {productsData.map((producto) => (
+                    <PanelProductItem
+                      key={producto.producto_id}
+                      producto={producto}
+                      onEdit={handleEdit}
+                      onToggleActive={handleToggleActive}
+                      isProcessing={activating || deactivating}
+                    />
+                  ))}
+                </ul>
+              ) : (
+                <NoHayResultados entidad={'productos'} />
+              )}
+  
+              {totalPages > 0 && productsData && productsData.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onNext={handleNextPage}
+                  onPrev={handlePrevPage}
                 />
-              ))}
-            </ul>
-          ) : (
-            <NoHayResultados entidad={'productos'} />
-          )}
-
-          {totalPages > 0 && productsData && productsData.length > 0 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onNext={handleNextPage}
-              onPrev={handlePrevPage}
-            />
-          )}
+              )}
+            </div>
+            )
+          }
         </div>
       </div>
-    </div>
+    </>
   );
 };

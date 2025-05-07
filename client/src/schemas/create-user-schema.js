@@ -17,10 +17,16 @@ export const CreateUsuarioSchema = yup.object().shape({
     .transform(
       (value) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
     ), // Capitaliza la primera letra
-  dni: yup
+    dni: yup
     .number()
+    .typeError('El DNI debe ser un número válido.')
     .required('El DNI es obligatorio.')
-    .typeError('El DNI debe ser un número válido.'),
+    .positive('El DNI debe ser un número positivo.')
+    .test(
+      'len',
+      'El DNI debe tener entre 11 dígitos.',
+      (val) => val && val.toString().length === 11
+    ),
   nombre_comercio: yup
     .string()
     .required('El nombre del comercio es obligatorio.')

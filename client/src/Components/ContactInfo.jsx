@@ -11,7 +11,7 @@ export const ContactInfo = () => {
         <i className="fa-solid fa-envelope"></i> contacto@naturalcycle.com.ar
       </p>
       <p>
-        <i class="fa-solid fa-location-dot"></i> Pergamino, Buenos Aires.
+        <i className="fa-solid fa-location-dot"></i> Pergamino, Buenos Aires.
       </p>
     </div>
   );

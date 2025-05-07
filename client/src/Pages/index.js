@@ -23,3 +23,4 @@ export { ProductosPorBultoCerrado } from './ProductosPorBultoCerrado';
 export { Promociones } from './Promociones';
 export { RegisterForm } from './RegisterForm';
 export { RestablecerPassword } from './RestablecerPassword';
+export { EditarPedido } from './EditarPedido'

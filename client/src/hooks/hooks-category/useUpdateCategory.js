@@ -17,7 +17,7 @@ export const useUpdateCategory = () => {
       await updateCategoryService(token, categoria_id, data);
       toast.success('Categoría actualizada con éxito!');
       setTimeout(() => {
-        navigate('/panel-principal');
+        navigate('/panel-filtrado');
       }, 2000);
     } catch (error) {
       toast.error('Error al actualizar la categoría');

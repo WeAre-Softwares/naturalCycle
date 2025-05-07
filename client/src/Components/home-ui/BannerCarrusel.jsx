@@ -12,19 +12,17 @@ import { strToUppercase } from '../../helpers/strToUpercase';
 
 export const BannerCarrusel = () => {
   const navigate = useNavigate();
-  const limit = 15; // Límite de productos destacados para mostrar
+  const limit = 15; 
   const { error, loading, productos } = useGetAllProductosDestacados(limit);
   const { isAuthenticated, getRoles } = useAuthStore();
 
-  // Verificar si el usuario está autenticado y tiene rol de usuario
   const isUserLoggedIn = isAuthenticated();
   const userRoles = getRoles();
-  // Verificar si el usuario tiene al menos uno de los roles permitidos
   const hasAccessRole = allowedRoles.some((role) => userRoles.includes(role));
 
   const settings = {
     dots: true,
-    infinite: productos.length > 1, // Solo habilitar infinito si hay más de un producto
+    infinite: productos.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,

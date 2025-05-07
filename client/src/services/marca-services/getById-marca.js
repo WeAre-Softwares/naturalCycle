@@ -5,7 +5,6 @@ import { handleAxiosError } from '../errorHandler';
 export const getMarcaByIdService = async (marca_id) => {
   try {
     const response = await axios.get(`${API_URL}/marcas/${marca_id}`);
-    // console.log(response.data);
 
     return response.data;
   } catch (error) {
