@@ -9,7 +9,6 @@ import { UsuarioDetalleCard } from '../Components/panel-usuarios/UsuarioDetalleC
 import { useDarDeAltaUsuario } from '../hooks/hooks-users/useDarDeAltaUsuario';
 import { useDarDeBajaUsuario } from '../hooks/hooks-users/useDarDeBajaUsuario';
 import { useDarRangoEmpleadoUsuario } from '../hooks/hooks-users/useDarRangoEmpleadoUsuario';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const LIMIT = 10;
@@ -50,7 +49,6 @@ export const AreaUsuarios = () => {
 
   return (
     <div className="div-general-categoria-panel">
-      <ToastContainer />
       <MenuLateralPanel />
       <div className="area-usuarios-container">
         <h1 className="area-usuarios-header">Área de Usuarios</h1>

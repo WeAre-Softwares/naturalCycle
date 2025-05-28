@@ -5,7 +5,7 @@ import { useGetAllPedidosWithPagination } from '../hooks/hooks-pedido/useGetAllP
 import { Pagination } from '../Components/panel-productos/Pagination';
 import { PedidoItem } from '../Components/pedidos-ui/PedidoItem';
 import { useActualizarEstadoPedido } from '../hooks/hooks-pedido/useActualizarEstadoPedido';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { NoHayResultados } from '../Components/NoHayResultados';
@@ -45,32 +45,31 @@ export const AreaPedidos = () => {
     try {
       await cambiarEstadoPedido(id, nuevoEstado);
       setHayCambios((prev) => !prev);
-        toast.success('Estado del pedido actualizado correctamente.', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
-      } catch (error) {
-        console.error('Error al cambiar el estado del pedido:', error);
-        toast.error('Error al actualizar el estado del pedido.', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
-      }
+      toast.success('Estado del pedido actualizado correctamente.', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    } catch (error) {
+      console.error('Error al cambiar el estado del pedido:', error);
+      toast.error('Error al actualizar el estado del pedido.', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    }
   };
 
   return (
     <div className="div-general-categoria-panel">
-      <ToastContainer />
       <MenuLateralPanel />
 
       <div className="area-pedidos">
@@ -110,32 +109,32 @@ export const AreaPedidos = () => {
               <div className="dot-inicio"></div>
             </section>
           ) : (
-          <div>
-            <div className="lista-pedidos">
-              {(pedidos.length === 0 && !loading) || error ? (
-                <NoHayResultados entidad={'pedidos'} />
-              ) : (
-                pedidos.map((pedido) => (
-                  <div key={pedido.pedido_id}>
-                    <PedidoItem
-                      pedido={pedido}
-                      colorEstado={colorEstado[pedido.estado_pedido]} // Asigna el color basado en el estado
-                      cambiarEstado={cambiarEstado}
-                    />
-                  </div>
-                ))
+            <div>
+              <div className="lista-pedidos">
+                {(pedidos.length === 0 && !loading) || error ? (
+                  <NoHayResultados entidad={'pedidos'} />
+                ) : (
+                  pedidos.map((pedido) => (
+                    <div key={pedido.pedido_id}>
+                      <PedidoItem
+                        pedido={pedido}
+                        colorEstado={colorEstado[pedido.estado_pedido]} // Asigna el color basado en el estado
+                        cambiarEstado={cambiarEstado}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
+              {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+              {totalPages > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onNext={nextPage}
+                  onPrev={prevPage}
+                />
               )}
             </div>
-            {/* Mostrar paginación sólo si hay al menos una página de resultados */}
-            {totalPages > 0 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onNext={nextPage}
-                onPrev={prevPage}
-              />
-            )}
-          </div>
           )
         }
       </div>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useParams } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateBrandSchema } from '../../schemas/update-brand-schema';
 import { useUpdateBrand } from '../../hooks/hooks-brand/useUpdateBrand';
@@ -43,7 +42,6 @@ export const FormularioActualizarMarca = () => {
 
   return (
     <>
-      <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
         onKeyDown={preventFormSubmitOnEnter}

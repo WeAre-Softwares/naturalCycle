@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../Styles/Olvide Contraseña/OlvideContraseña.css';
 import { resetPasswordSchema } from '../schemas/reset-password-schema';
@@ -43,7 +43,6 @@ export const RestablecerPassword = () => {
 
   return (
     <div className="olvide-contraseña-container">
-      <ToastContainer />
       <h3>Crear nueva contraseña</h3>
       <div className="olvide-contraseña-form-container">
         <form
