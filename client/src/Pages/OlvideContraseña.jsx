@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PasswordResetSchema } from '../schemas';
 import '../Styles/Olvide Contraseña/OlvideContraseña.css';
@@ -85,7 +85,6 @@ export const OlvideContraseña = () => {
   };
   return (
     <div className="olvide-contraseña-container">
-      <ToastContainer />
       <h3>
         Rellená el siguiente formulario y te llegará un mail para reestablecer
         tu contraseña.

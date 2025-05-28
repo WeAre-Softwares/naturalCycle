@@ -10,7 +10,6 @@ import { useDeactivateBrand } from '../hooks/hooks-brand/useDeactivateBrand';
 import { useActivateCategory } from '../hooks/hooks-category/useActivateCategory';
 import { useActivateEtiqueta } from '../hooks/hooks-etiqueta/useActivateEtiqueta';
 import { useActivateBrand } from '../hooks/hooks-brand/useActivateBrand';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NoHayResultados } from '../Components/NoHayResultados';
 import usePanelFiltrado from '../context/panelFiltrado/usePanelFiltradoContext';
@@ -100,7 +99,6 @@ export const PanelFiltrados = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
@@ -151,8 +149,8 @@ export const PanelFiltrados = () => {
               <div className="dot"></div>
               <div className="dot"></div>
             </section>
-          ) : ( 
-          <div>
+          ) : (
+            <div>
               <h3>
                 {tipoCreacion.charAt(0).toUpperCase() + tipoCreacion.slice(1)}:
               </h3>
@@ -191,17 +189,17 @@ export const PanelFiltrados = () => {
                 ) : (
                   <NoHayResultados entidad={'resultados'} />
                 )}
-                </ul>
-                {/* Mostrar paginación sólo si hay al menos una página de resultados */}
-                {totalItems > 0 && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onNext={() => goToPage(currentPage + 1)}
-                    onPrev={() => goToPage(currentPage - 1)}
-                  />
-                )}
-              </div>
+              </ul>
+              {/* Mostrar paginación sólo si hay al menos una página de resultados */}
+              {totalItems > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onNext={() => goToPage(currentPage + 1)}
+                  onPrev={() => goToPage(currentPage - 1)}
+                />
+              )}
+            </div>
           )
           }
 

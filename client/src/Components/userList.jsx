@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { getAllUsersService } from "../services/users-services/getAll-users";
 import useAuthStore from '../store/use-auth-store';
 import Swal from 'sweetalert2';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../Styles/Panel/userlistForAdmin.css'
 import { set } from "react-hook-form";
 
 
 
-const UserList = ({onUsuarioSeleccionado,onSalir}) => {
-  const {token} = useAuthStore();   
-  const [isLoading, setIsLoading]=useState(false);
+const UserList = ({ onUsuarioSeleccionado, onSalir }) => {
+  const { token } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [usuarios, setUsuarios] = useState([]);
   const [userSelect, setUserSelect] = useState(null);
@@ -39,20 +39,20 @@ const UserList = ({onUsuarioSeleccionado,onSalir}) => {
         console.error("Error al obtener los usuarios:", error);
       }
     };
-    
+
 
     fetchUsuarios();
-    }, []);
-  const totalPages = Math.ceil((busqueda?usuariosFiltrados.length: usuarios.length)/elementsPerPage)||1;
+  }, []);
+  const totalPages = Math.ceil((busqueda ? usuariosFiltrados.length : usuarios.length) / elementsPerPage) || 1;
   const getVisiblePages = () => {
     let start = Math.max(1, page - Math.floor(maxPagesToShow / 2));
     let end = start + maxPagesToShow - 1;
-  
+
     if (end > totalPages) {
       end = totalPages;
       start = Math.max(1, end - maxPagesToShow + 1);
-      }
-      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    }
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
   useEffect(() => {
     if (page > totalPages) {
@@ -64,19 +64,19 @@ const UserList = ({onUsuarioSeleccionado,onSalir}) => {
 
     setUserSelect(seleccionado);
   };
-  const handleConfirmar = async ()=>{
+  const handleConfirmar = async () => {
     setIsLoading(true);
     const customAlert = Swal.mixin({
-        customClass: {
+      customClass: {
         confirmButton: 'custom-confirm-button',
         cancelButton: 'custom-cancel-button',
         popup: 'custom-alert-container',
-        },
-        buttonsStyling: false,
-    });    
-    
+      },
+      buttonsStyling: false,
+    });
+
     customAlert
-        .fire({
+      .fire({
         title: `¿Crar pedido para ${userSelect.email}?`,
         text: 'Confirma tu pedido para continuar.',
         icon: 'warning',
@@ -84,29 +84,29 @@ const UserList = ({onUsuarioSeleccionado,onSalir}) => {
         confirmButtonText: 'Sí, confirmar',
         cancelButtonText: 'No, cancelar',
         reverseButtons: true,
-        })
-        .then(async (result) => {
+      })
+      .then(async (result) => {
         if (result.isConfirmed) {
           setIsLoading(false);
           onUsuarioSeleccionado?.(userSelect)
           handleSalir();
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          setIsLoading(false);  
+          setIsLoading(false);
           customAlert.fire({
             title: 'Cancelado',
             text: 'Tu pedido no ha sido confirmado.',
             icon: 'error',
-            });
+          });
         }
-        });
-   }
+      });
+  }
   const handleCancelar = () => {
     setUserSelect(null);
   }
-  const handleSalir=()=>{
+  const handleSalir = () => {
     onSalir();
   }
-return (
+  return (
     <div className="form-vacio">
       <h2 className="text-xl font-semibold mb-4">Buscar Cliente</h2>
       <input
@@ -120,57 +120,57 @@ return (
         }}
         className="border p-2 rounded w-full"
       />
-    
-        {(busqueda ? usuariosFiltrados.length > 0 : usuarios.length > 0) && (
-            <>
-              <ul className="border rounded mt-2 max-h-40 overflow-y-auto bg-white shadow">
-                {(busqueda ? usuariosFiltrados : usuarios)
-                  .slice((page - 1) * elementsPerPage, page * elementsPerPage)
-                  .map((usuario) => {
-                    const isSelected = userSelect?.usuario_id === usuario.usuario_id;
 
-                    return (
-                      <li
-                        key={usuario.usuario_id}
-                        className={`user-card ${isSelected ? 'selected' : ''}`}
-                        onClick={() => handleSeleccionar(usuario.usuario_id)}
-                      >
-                        <div className="dato"><strong>Nombre:</strong> {usuario.nombre}</div>
-                        <div className="dato"><strong>Comercio:</strong> {usuario.nombre_comercio}</div>
-                        <div className="dato"><strong>DNI:</strong> {usuario.dni}</div>
-                        <div className="dato"><strong>Email:</strong> {usuario.email}</div>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </>
-         )}
+      {(busqueda ? usuariosFiltrados.length > 0 : usuarios.length > 0) && (
+        <>
+          <ul className="border rounded mt-2 max-h-40 overflow-y-auto bg-white shadow">
+            {(busqueda ? usuariosFiltrados : usuarios)
+              .slice((page - 1) * elementsPerPage, page * elementsPerPage)
+              .map((usuario) => {
+                const isSelected = userSelect?.usuario_id === usuario.usuario_id;
+
+                return (
+                  <li
+                    key={usuario.usuario_id}
+                    className={`user-card ${isSelected ? 'selected' : ''}`}
+                    onClick={() => handleSeleccionar(usuario.usuario_id)}
+                  >
+                    <div className="dato"><strong>Nombre:</strong> {usuario.nombre}</div>
+                    <div className="dato"><strong>Comercio:</strong> {usuario.nombre_comercio}</div>
+                    <div className="dato"><strong>DNI:</strong> {usuario.dni}</div>
+                    <div className="dato"><strong>Email:</strong> {usuario.email}</div>
+                  </li>
+                );
+              })}
+          </ul>
+        </>
+      )}
       <div className="pagination-container">
-      {getVisiblePages().map((p) => (
-        <button
-          key={p}
-          onClick={() => setPage(p)}
-          className={`page-button ${p === page ? 'active' : ''}`}
-        >
-          {p}
-        </button>
-      ))}
+        {getVisiblePages().map((p) => (
+          <button
+            key={p}
+            onClick={() => setPage(p)}
+            className={`page-button ${p === page ? 'active' : ''}`}
+          >
+            {p}
+          </button>
+        ))}
       </div>
 
       {busqueda && usuariosFiltrados.length === 0 && (<p className="mt-2 text-red-500">No se encontraron usuarios.</p>)}
-      
+
       {userSelect && (
         <div className="mt-4 p-4 border rounded bg-gray-100">
           <button className="btn-confirmUser" disabled={isLoading} onClick={handleConfirmar}>
-          {isLoading ? (
-            <div className="loader">
-            <div className="justify-content-center jimu-primary-loading"></div>
-          </div>
+            {isLoading ? (
+              <div className="loader">
+                <div className="justify-content-center jimu-primary-loading"></div>
+              </div>
             ) : (
-            'Confirmar'
+              'Confirmar'
             )}
-            </button>
-          <button className="btn-cancel"onClick={handleCancelar} disabled={isLoading}>Cancelar</button>
+          </button>
+          <button className="btn-cancel" onClick={handleCancelar} disabled={isLoading}>Cancelar</button>
         </div>
       )}
       <button className="btn-back" onClick={handleSalir}>salir</button>

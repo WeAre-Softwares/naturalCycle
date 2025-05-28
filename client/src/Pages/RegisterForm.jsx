@@ -9,7 +9,7 @@ import { RegisterLink } from '../Components/RegisterLink';
 import { RegisterFormContainer } from '../Components/RegisterFormContainer';
 import '../Styles/Register/Register.css';
 import { registerService } from '../services/registerService';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const RegisterForm = () => {
@@ -77,7 +77,6 @@ export const RegisterForm = () => {
 
   return (
     <RegisterFormContainer>
-      <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)} className="form-register">
         <h2>Solicitud de registro</h2>
         <InputField
