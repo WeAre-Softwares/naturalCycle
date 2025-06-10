@@ -9,7 +9,6 @@ import {
 import { useProductSearch } from '../hooks/hooks-product/usePanelProductSearch';
 import { useActivateProduct } from '../hooks/hooks-product/useActivateProduct';
 import { useDeactivateProduct } from '../hooks/hooks-product/useDeactivateProduct';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NoHayResultados } from '../Components/NoHayResultados';
 
@@ -66,7 +65,6 @@ export const PanelProducto = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="div-general-categoria-panel">
         <MenuLateralPanel />
         <div className="productos-creados-container">
@@ -112,33 +110,33 @@ export const PanelProducto = () => {
               </section>
             ) : (
               <div>
-              { error ? (
-                <NoHayResultados entidad={'productos'} />
-              ) : productsData && productsData.length > 0 ? (
-                <ul className="lista-productos-creados">
-                  {productsData.map((producto) => (
-                    <PanelProductItem
-                      key={producto.producto_id}
-                      producto={producto}
-                      onEdit={handleEdit}
-                      onToggleActive={handleToggleActive}
-                      isProcessing={activating || deactivating}
-                    />
-                  ))}
-                </ul>
-              ) : (
-                <NoHayResultados entidad={'productos'} />
-              )}
-  
-              {totalPages > 0 && productsData && productsData.length > 0 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onNext={handleNextPage}
-                  onPrev={handlePrevPage}
-                />
-              )}
-            </div>
+                {error ? (
+                  <NoHayResultados entidad={'productos'} />
+                ) : productsData && productsData.length > 0 ? (
+                  <ul className="lista-productos-creados">
+                    {productsData.map((producto) => (
+                      <PanelProductItem
+                        key={producto.producto_id}
+                        producto={producto}
+                        onEdit={handleEdit}
+                        onToggleActive={handleToggleActive}
+                        isProcessing={activating || deactivating}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <NoHayResultados entidad={'productos'} />
+                )}
+
+                {totalPages > 0 && productsData && productsData.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onNext={handleNextPage}
+                    onPrev={handlePrevPage}
+                  />
+                )}
+              </div>
             )
           }
         </div>

@@ -8,12 +8,12 @@ import { crearPedidoAdmin } from '../services/pedidos-service/crear-pedido';
 import UserList from '../Components/userList';
 import { ResgisterUserForAdmin } from './RegisterUserforAdmin';
 import { crearPedido } from '../services/pedidos-service/crear-pedido';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 
 export const CartButton = () => {
-  const { user } = useAuthStore(); 
+  const { user } = useAuthStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated } = useAuthStore();
   const isUserLoggedIn = isAuthenticated();

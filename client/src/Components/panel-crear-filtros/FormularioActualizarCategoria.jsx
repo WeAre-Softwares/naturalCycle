@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useParams } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createCategorySchema } from '../../schemas/create-category-schema';
 import { useUpdateCategory } from '../../hooks/hooks-category/useUpdateCategory';
@@ -38,7 +37,6 @@ export const FormularioActualizarCategoria = () => {
 
   return (
     <>
-      <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
         onKeyDown={preventFormSubmitOnEnter}
